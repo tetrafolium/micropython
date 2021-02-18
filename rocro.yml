@@ -17,7 +17,7 @@ inspecode:
 
     cpd:
       options:
-        --skip-lexical-errors: true
+        --skip-lexical-errors:
       thresholds: {num-issues: 999}
 
     clang-format:
