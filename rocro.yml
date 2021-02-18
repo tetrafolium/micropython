@@ -141,7 +141,9 @@ inspecode:
     # understand:
 
     unused:
-      options: {--single-occurrence:}
+      options:
+        - --single-occurrence
+        - --all-likelihoods
       machine: {cpu: 0.75}    # default is 0.5 ... timeout in default settings
       thresholds: {num-issues: 999}
 
