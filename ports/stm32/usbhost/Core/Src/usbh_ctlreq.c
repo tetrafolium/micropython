@@ -117,7 +117,7 @@ USBH_StatusTypeDef USBH_Get_DevDesc(USBH_HandleTypeDef *phost, uint8_t length) {
 /**
  * @brief  USBH_Get_CfgDesc
  *         Issues Configuration Descriptor to the device. Once the response
- *         received, it parses the configuartion descriptor and updates the
+ *         received, it parses the configuration descriptor and updates the
  *         status.
  * @param  phost: Host Handle
  * @param  length: Length of the descriptor
@@ -284,7 +284,7 @@ USBH_StatusTypeDef USBH_ClrFeature(USBH_HandleTypeDef *phost, uint8_t ep_num) {
 /**
  * @brief  USBH_ParseDevDesc
  *         This function Parses the device descriptor
- * @param  dev_desc: device_descriptor destinaton address
+ * @param  dev_desc: device_descriptor destination address
  * @param  buf: Buffer where the source descriptor is available
  * @param  length: Length of the descriptor
  * @retval None
@@ -418,7 +418,7 @@ static void USBH_ParseStringDesc(uint8_t *psrc, uint8_t *pdest,
   uint16_t idx;
 
   /* The UNICODE string descriptor is not NULL-terminated. The string length is
-  computed by substracting two from the value of the first byte of the
+  computed by subtracting two from the value of the first byte of the
   descriptor.
   */
 
@@ -581,7 +581,7 @@ static USBH_StatusTypeDef USBH_HandleControl(USBH_HandleTypeDef *phost) {
 
     URB_Status = USBH_LL_GetURBState(phost, phost->Control.pipe_in);
 
-    /* check is DATA packet transfered successfully */
+    /* check is DATA packet transferred successfully */
     if (URB_Status == USBH_URB_DONE) {
       phost->Control.state = CTRL_STATUS_OUT;
 #if (USBH_USE_OS == 1)

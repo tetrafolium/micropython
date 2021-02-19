@@ -153,8 +153,8 @@
 #define EOC_TIMEOUT (10)
 
 /* Core temperature sensor definitions */
-#define CORE_TEMP_V25 (943)     /* (0.76v/3.3v)*(2^ADC resoultion) */
-#define CORE_TEMP_AVG_SLOPE (3) /* (2.5mv/3.3v)*(2^ADC resoultion) */
+#define CORE_TEMP_V25 (943)     /* (0.76v/3.3v)*(2^ADC resolution) */
+#define CORE_TEMP_AVG_SLOPE (3) /* (2.5mv/3.3v)*(2^ADC resolution) */
 
 // scale and calibration values for VBAT and VREF
 #define ADC_SCALE (ADC_SCALE_V / ((1 << ADC_CAL_BITS) - 1))

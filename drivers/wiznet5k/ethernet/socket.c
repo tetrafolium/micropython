@@ -607,7 +607,7 @@ int8_t WIZCHIP_EXPORT(ctlsocket)(uint8_t sn, ctlsock_type cstype, void *arg) {
       return SOCKERR_ARG;
     break;
   case CS_GET_IOMODE:
-    // M20140501 : implict type casting -> explict type casting
+    // M20140501 : implicit type casting -> explicit type casting
     //*((uint8_t*)arg) = (sock_io_mode >> sn) & 0x0001;
     *((uint8_t *)arg) = (uint8_t)((sock_io_mode >> sn) & 0x0001);
     //

@@ -326,13 +326,13 @@ extern "C" {
 #define SL_SO_CHANGE_CHANNEL                                                   \
   (28) /* This option is available only when transceiver started */
 #define SL_SO_SECURE_FILES_PRIVATE_KEY_FILE_NAME                               \
-  (30) /* This option used to configue secure file */
+  (30) /* This option used to configure secure file */
 #define SL_SO_SECURE_FILES_CERTIFICATE_FILE_NAME                               \
-  (31) /* This option used to configue secure file */
+  (31) /* This option used to configure secure file */
 #define SL_SO_SECURE_FILES_CA_FILE_NAME                                        \
-  (32) /* This option used to configue secure file */
+  (32) /* This option used to configure secure file */
 #define SL_SO_SECURE_FILES_DH_KEY_FILE_NAME                                    \
-  (33) /* This option used to configue secure file */
+  (33) /* This option used to configure secure file */
 
 #define SL_IP_MULTICAST_IF (60) /* Specify outgoing multicast interface */
 #define SL_IP_MULTICAST_TTL                                                    \

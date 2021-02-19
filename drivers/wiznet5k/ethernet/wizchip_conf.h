@@ -152,9 +152,9 @@
 #endif
 
 #if _WIZCHIP_ > 5100
-#define _WIZCHIP_SOCK_NUM_ 8 ///< The count of independant socket of @b WIZCHIP
+#define _WIZCHIP_SOCK_NUM_ 8 ///< The count of independent socket of @b WIZCHIP
 #else
-#define _WIZCHIP_SOCK_NUM_ 4 ///< The count of independant socket of @b WIZCHIP
+#define _WIZCHIP_SOCK_NUM_ 4 ///< The count of independent socket of @b WIZCHIP
 #endif
 
 /********************************************************
@@ -173,7 +173,7 @@ typedef struct __WIZCHIP {
    * The set of critical section callback func.
    */
   struct _CRIS {
-    void (*_enter)(void); ///< crtical section enter
+    void (*_enter)(void); ///< critical section enter
     void (*_exit)(void);  ///< critial section exit
   } CRIS;
   /**
@@ -332,7 +332,7 @@ typedef struct wiz_PhyConf_t {
  */
 typedef enum {
   NETINFO_STATIC = 1, ///< Static IP configuration by manually.
-  NETINFO_DHCP        ///< Dynamic IP configruation from a DHCP sever
+  NETINFO_DHCP        ///< Dynamic IP configurations from a DHCP sever
 } dhcp_mode;
 
 /**
@@ -365,7 +365,7 @@ typedef enum {
 /**
  * @ingroup DATA_TYPE
  *  Used in CN_SET_TIMEOUT or CN_GET_TIMEOUT of @ref ctlwizchip() for timeout
- * configruation.
+ * configurations.
  */
 typedef struct wiz_NetTimeout_t {
   uint8_t retry_cnt;   ///< retry count
@@ -388,7 +388,7 @@ void reg_wizchip_cris_cbfunc(void (*cris_en)(void), void (*cris_ex)(void));
 /**
  *@brief Registers call back function for WIZCHIP select & deselect.
  *@param cs_sel : callback function for WIZCHIP select
- *@param cs_desel : callback fucntion for WIZCHIP deselect
+ *@param cs_desel : callback function for WIZCHIP deselect
  *@todo Describe @ref wizchip_cs_select and @ref wizchip_cs_deselect function or
  *register your functions.
  *@note If you do not describe or register, null function is called.

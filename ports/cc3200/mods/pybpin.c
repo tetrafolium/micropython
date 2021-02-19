@@ -65,7 +65,7 @@ STATIC void pin_get_hibernate_pin_and_idx(const pin_obj_t *self, uint *wake_pin,
                                           uint *idx);
 STATIC void pin_irq_enable(mp_obj_t self_in);
 STATIC void pin_irq_disable(mp_obj_t self_in);
-STATIC void pin_extint_register(pin_obj_t *self, uint32_t intmode,
+STATIC void pin_extinct_register(pin_obj_t *self, uint32_t intmode,
                                 uint32_t priority);
 STATIC void pin_validate_mode(uint mode);
 STATIC void pin_validate_pull(uint pull);
@@ -120,7 +120,7 @@ STATIC pybpin_wake_pin_t pybpin_wake_pin[PYBPIN_NUM_WAKE_PINS] = {
  DEFINE PUBLIC FUNCTIONS
  ******************************************************************************/
 void pin_init0(void) {
-// this initalization also reconfigures the JTAG/SWD pins
+// this initialization also reconfigures the JTAG/SWD pins
 #ifndef DEBUG
   // assign all pins to the GPIO module so that peripherals can be connected to
   // any pins without conflicts after a soft reset
@@ -409,7 +409,7 @@ STATIC int pin_irq_flags(mp_obj_t self_in) {
   return self->irq_flags;
 }
 
-STATIC void pin_extint_register(pin_obj_t *self, uint32_t intmode,
+STATIC void pin_extinct_register(pin_obj_t *self, uint32_t intmode,
                                 uint32_t priority) {
   void *handler;
   uint32_t intnum;
@@ -583,7 +583,7 @@ STATIC mp_obj_t pin_obj_init_helper(pin_obj_t *self, size_t n_args,
     }
   }
 
-  // get the strenght
+  // get the strength
   uint strength = args[3].u_int;
   pin_validate_drive(strength);
 
@@ -903,7 +903,7 @@ STATIC mp_obj_t pin_irq(size_t n_args, const mp_obj_t *pos_args,
   pin_irq_disable(self);
   if (pwrmode & PYB_PWR_MODE_ACTIVE) {
     // register the interrupt
-    pin_extint_register((pin_obj_t *)self, trigger, priority);
+    pin_extinct_register((pin_obj_t *)self, trigger, priority);
     if (idx < PYBPIN_NUM_WAKE_PINS) {
       pybpin_wake_pin[idx].active = true;
     }

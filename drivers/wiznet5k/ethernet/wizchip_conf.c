@@ -11,7 +11,7 @@
 //            Issued by Mathias ClauBen.
 //!           uint32_t type converts into ptrdiff_t first. And then recoverting
 //!           it into uint8_t* For remove the warning when pointer type size is
-//!           not 32bit. If ptrdiff_t doesn't support in your complier, You
+//!           not 32bit. If ptrdiff_t doesn't support in your compiler, You
 //!           should must replace ptrdiff_t into your suitable pointer type.
 //!       <2013/10/21> 1st Release
 //! \author MidnightCow
@@ -82,7 +82,7 @@ void wizchip_cs_deselect(void){};
  * @note This function help not to access wrong address. If you do not describe
  * this function or register any functions, null function is called.
  */
-// M20140501 : Explict pointer type casting
+// M20140501 : Explicit pointer type casting
 // uint8_t wizchip_bus_readbyte(uint32_t AddrSel) { return * ((volatile uint8_t
 // *) AddrSel); };
 uint8_t wizchip_bus_readbyte(uint32_t AddrSel) {
@@ -94,7 +94,7 @@ uint8_t wizchip_bus_readbyte(uint32_t AddrSel) {
  * this function or register any functions, null function is called.
  */
 
-// M20140501 : Explict pointer type casting
+// M20140501 : Explicit pointer type casting
 // void 	wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb)  { *((volatile
 // uint8_t*) AddrSel) = wb; };
 void wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb) {

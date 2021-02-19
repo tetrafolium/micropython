@@ -1765,7 +1765,7 @@ create_chain(/* 0:No free cluster, 1:Internal error, 0xFFFFFFFF:Disk error,
     if (obj->stat != 2) {    /* Is the file non-contiguous? */
       if (ncl == clst + 1) { /* Is the cluster next to previous one? */
         obj->n_frag = obj->n_frag ? obj->n_frag + 1
-                                  : 2; /* Increment size of last framgent */
+                                  : 2; /* Increment size of last fragment */
       } else {                         /* New fragment */
         if (obj->n_frag == 0)
           obj->n_frag = 1;
@@ -2355,7 +2355,7 @@ xsum32(          /* Returns 32-bit checksum */
 /*------------------------------------------------------*/
 
 static void
-get_xfileinfo(BYTE *dirb,  /* Pointer to the direcotry entry block 85+C0+C1s */
+get_xfileinfo(BYTE *dirb,  /* Pointer to the directory entry block 85+C0+C1s */
               FILINFO *fno /* Buffer to store the extracted file information */
 ) {
   WCHAR wc, hs;
@@ -2410,12 +2410,12 @@ get_xfileinfo(BYTE *dirb,  /* Pointer to the direcotry entry block 85+C0+C1s */
 /*-----------------------------------*/
 
 static FRESULT load_xdir(        /* FR_INT_ERR: invalid entry block */
-                         DIR *dp /* Reading direcotry object pointing top of the
+                         DIR *dp /* Reading directory object pointing top of the
                                     entry block to load */
 ) {
   FRESULT res;
   UINT i, sz_ent;
-  BYTE *dirb = dp->obj.fs->dirbuf; /* Pointer to the on-memory direcotry entry
+  BYTE *dirb = dp->obj.fs->dirbuf; /* Pointer to the on-memory directory entry
                                       block 85+C0+C1s */
 
   /* Load file-directory entry */
@@ -2489,7 +2489,7 @@ static void init_alloc_info(
 /*------------------------------------------------*/
 
 static FRESULT load_obj_xdir(
-    DIR *dp, /* Blank directory object to be used to access containing direcotry
+    DIR *dp, /* Blank directory object to be used to access containing directory
               */
     const FFOBJID *obj /* Object with its containing directory information */
 ) {
@@ -2516,18 +2516,18 @@ static FRESULT load_obj_xdir(
 /* exFAT: Store the directory entry block */
 /*----------------------------------------*/
 
-static FRESULT store_xdir(DIR *dp /* Pointer to the direcotry object */
+static FRESULT store_xdir(DIR *dp /* Pointer to the directory object */
 ) {
   FRESULT res;
   UINT nent;
   BYTE *dirb =
-      dp->obj.fs->dirbuf; /* Pointer to the direcotry entry block 85+C0+C1s */
+      dp->obj.fs->dirbuf; /* Pointer to the directory entry block 85+C0+C1s */
 
   /* Create set sum */
   st_word(dirb + XDIR_SetSum, xdir_sum(dirb));
   nent = dirb[XDIR_NumSec] + 1;
 
-  /* Store the direcotry entry block to the directory */
+  /* Store the directory entry block to the directory */
   res = dir_sdi(dp, dp->blk_ofs);
   while (res == FR_OK) {
     res = move_window(dp->obj.fs, dp->sect);
@@ -2548,7 +2548,7 @@ static FRESULT store_xdir(DIR *dp /* Pointer to the direcotry object */
 /*-------------------------------------------*/
 
 static void
-create_xdir(BYTE *dirb,      /* Pointer to the direcotry entry block buffer */
+create_xdir(BYTE *dirb,      /* Pointer to the directory entry block buffer */
             const WCHAR *lfn /* Pointer to the object name */
 ) {
   UINT i;
@@ -3638,7 +3638,7 @@ find_volume(           /* FR_OK(0): successful, !=0: an error occurred */
     } while (LD2PT(fs) == 0 && fmt >= 2 && ++i < 4);
   }
   if (fmt == 4)
-    return FR_DISK_ERR; /* An error occured in the disk I/O layer */
+    return FR_DISK_ERR; /* An error occurred in the disk I/O layer */
   if (fmt >= 2)
     return FR_NO_FILESYSTEM; /* No FAT volume is found */
 
@@ -4029,7 +4029,7 @@ FRESULT f_open(FATFS *fs, FIL *fp, /* Pointer to the blank file object */
         }
       }
     } else {                        /* Open an existing file */
-      if (res == FR_OK) {           /* Is the object exsiting? */
+      if (res == FR_OK) {           /* Is the object existing? */
         if (dj.obj.attr & AM_DIR) { /* File open against a directory */
           res = FR_NO_FILE;
         } else {
@@ -5370,7 +5370,7 @@ FRESULT f_mkdir(FATFS *fs, const TCHAR *path /* Pointer to the directory path */
             fs->wflag = 1;
           }
           res = dir_register(
-              &dj); /* Register the object to the parent directoy */
+              &dj); /* Register the object to the parent directory */
         }
       }
       if (res == FR_OK) {

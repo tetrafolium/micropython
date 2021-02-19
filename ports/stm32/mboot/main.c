@@ -1123,7 +1123,7 @@ static uint8_t *pyb_usbdd_StrDescriptor(USBD_HandleTypeDef *pdev, uint8_t idx,
     //
     //     dfu-util -l
     //
-    // See: https://my.st.com/52d187b7 for the algorithim used.
+    // See: https://my.st.com/52d187b7 for the algorithm used.
     uint8_t *id = (uint8_t *)MP_HAL_UNIQUE_ID_ADDRESS;
     char serial_buf[16];
     format_hex(&serial_buf[0], id[11]);

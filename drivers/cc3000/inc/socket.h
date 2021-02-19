@@ -111,7 +111,7 @@ extern "C" {
 
 #define ASIC_ADDR_LEN 8
 
-#define NO_QUERY_RECIVED -3
+#define NO_QUERY_RECEIVED -3
 
 typedef struct _in_addr_t {
   UINT32 s_addr; // load with inet_aton()

@@ -430,7 +430,7 @@ bool sdram_test(bool fast) {
     }
   }
 
-  /* Check for aliasing (overlaping addresses) */
+  /* Check for aliasing (overlapping addresses) */
   mem_base[0] = antipattern;
   for (uint32_t i = 1; i < MICROPY_HW_SDRAM_SIZE; i <<= 1) {
     if (mem_base[i] != pattern) {

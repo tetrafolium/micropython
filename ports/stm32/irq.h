@@ -118,7 +118,7 @@ static inline void restore_irq_pri(uint32_t state) { enable_irq(state); }
 #define IRQ_PRI_TIM5 2
 #define IRQ_PRI_CAN 2
 #define IRQ_PRI_TIMX 2
-#define IRQ_PRI_EXTINT 2
+#define IRQ_PRI_EXTINCT 2
 #define IRQ_PRI_PENDSV 3
 #define IRQ_PRI_RTC_WKUP 3
 
@@ -154,7 +154,7 @@ static inline void restore_irq_pri(uint32_t state) { enable_irq(state); }
 // Interrupt priority for non-special timers.
 #define IRQ_PRI_TIMX NVIC_EncodePriority(NVIC_PRIORITYGROUP_4, 13, 0)
 
-#define IRQ_PRI_EXTINT NVIC_EncodePriority(NVIC_PRIORITYGROUP_4, 14, 0)
+#define IRQ_PRI_EXTINCT NVIC_EncodePriority(NVIC_PRIORITYGROUP_4, 14, 0)
 
 // PENDSV should be at the lowst priority so that other interrupts complete
 // before exception is raised.

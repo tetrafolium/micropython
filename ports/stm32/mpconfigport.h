@@ -327,7 +327,7 @@ struct _mp_bluetooth_btstack_root_pointers_t;
   mp_obj_t pin_class_mapper;                                                   \
   mp_obj_t pin_class_map_dict;                                                 \
                                                                                \
-  mp_obj_t pyb_extint_callback[PYB_EXTI_NUM_VECTORS];                          \
+  mp_obj_t pyb_extinct_callback[PYB_EXTI_NUM_VECTORS];                          \
                                                                                \
   struct _soft_timer_entry_t *soft_timer_heap;                                 \
                                                                                \

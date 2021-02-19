@@ -127,7 +127,7 @@ extern "C" {
   (51) /*  The dependent filter has Drop action, thus the filter can't be      \
           created */
 #define RXFL_FILTER_DO_NOT_EXISTS (50) /*  The filter doesn't exists */
-#define RXFL_DEPEDENCY_NOT_ON_THE_SAME_LAYER                                   \
+#define RXFL_DEPENDENCY_NOT_ON_THE_SAME_LAYER                                   \
   (49) /*  The filter and its dependency must be on the same layer */
 #define RXFL_NUMBER_OF_ARGS_EXCEEDED (48) /*  Number of arguments excceded */
 #define RXFL_ACTION_NO_REG_NUMBER (47)    /*  Action require counter number */
@@ -142,7 +142,7 @@ extern "C" {
 #define RXFL_RULE_HEADER_ACTION_TYPE_NOT_SUPPORTED                             \
   (42) /*  The action type is not supported */
 #define RXFL_RULE_HEADER_TRIGGER_COMPARE_FUNC_OUT_OF_RANGE                     \
-  (41) /*  The Trigger comparision function is out of range */
+  (41) /*  The Trigger comparison function is out of range */
 #define RXFL_RULE_HEADER_TRIGGER_OUT_OF_RANGE                                  \
   (40) /*  The Trigger is out of range */
 #define RXFL_RULE_HEADER_COMPARE_FUNC_OUT_OF_RANGE                             \
@@ -561,7 +561,7 @@ typedef union SlrxFilterTriggerRoles_t {
   /*         _u8 PromiscuousMode :1;                             */
   /*         _u8 RoleReserved :5;                                */
   /*     };                                                                */
-  /* ! Bit fiels of the Filter role    */
+  /* ! Bit fields of the Filter role    */
   _u8 IntRepresentation;
 
 } SlrxFilterTriggerRoles_t;
@@ -681,7 +681,7 @@ typedef struct SlrxFilterTrigger_t {
 
 /*! \typedef SlrxFilterActionType_t
  *  The actions are executed only if the filter is matched,\n
- *  In case of false match the packet is transfered to the HOST. \n
+ *  In case of false match the packet is transferred to the HOST. \n
  *  The action is composed of bit field structure,
  *  up to 2 actions can be defined per filter.
  *

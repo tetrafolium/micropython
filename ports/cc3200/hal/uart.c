@@ -54,7 +54,7 @@
 
 //*****************************************************************************
 //
-// A mapping of UART base address to interupt number.
+// A mapping of UART base address to interrupt number.
 //
 //*****************************************************************************
 static const unsigned long g_ppulUARTIntMap[][2] = {

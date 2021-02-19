@@ -730,7 +730,7 @@
 // devinit, and whole 32 bit should
 // be output of the config register
 // module. This register is not used
-// , similar register availble in
+// , similar register available in
 // GPRCM space.
 
 #define OCP_SHARED_DEVINIT_ROM_START_ADDR_MEM_DEVINIT_ROM_START_ADDR_S 0
@@ -2953,7 +2953,7 @@
 // strength control. These 2 bits
 // are connected to DEV PAD drive
 // strength control. possible drive
-// stregnths are 2MA, 4MA and 6 MA
+// strengths are 2MA, 4MA and 6 MA
 // for the these IO's. bit 0: when
 // set to logic value '1' enable 2MA
 // drive strength for DEVPAD01 to 07

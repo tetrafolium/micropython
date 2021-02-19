@@ -1662,7 +1662,7 @@ _SlReturnVal_t _SlFindAndSetActiveObj(_SlOpcode_t Opcode, _u8 Sd) {
 #ifndef SL_TINY_EXT
   while (MAX_CONCURRENT_ACTIONS > ActiveIndex)
 #else
-  /* Only one Active action is availabe in tiny mode, so we can replace the loop
+  /* Only one Active action is available in tiny mode, so we can replace the loop
    * with if condition */
   if (MAX_CONCURRENT_ACTIONS > ActiveIndex)
 #endif

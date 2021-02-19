@@ -507,7 +507,7 @@ void ADCDMADisable(unsigned long ulBase, unsigned long ulChannel) {
 //! Configures the ADC internal timer
 //!
 //! \param ulBase is the base address of the ADC
-//! \param ulValue is wrap arround value of the timer
+//! \param ulValue is wrap around value of the timer
 //!
 //! This function Configures the ADC internal timer. The ADC timer is a 17 bit
 //! used to timestamp the ADC data samples internally.

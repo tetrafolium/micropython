@@ -598,7 +598,7 @@ int mp_bluetooth_init(void) {
   // By default, just register the default gap/gatt service.
   ble_svc_gap_init();
   ble_svc_gatt_init();
-  // The preceeding two calls allocate service definitions on the heap,
+  // The preceding two calls allocate service definitions on the heap,
   // then we must now call gatts_start to register those services
   // and free the heap memory.
   // Otherwise it will be realloc'ed on the next stack startup.

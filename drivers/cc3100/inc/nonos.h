@@ -261,7 +261,7 @@ _SlNonOsRetVal_t _SlNonOsSpawn(_SlSpawnEntryFunc_t pEntry, void *pValue,
 
 /*!
         \brief 	This function must be called from the main loop in non-os
-   paltforms
+   platforms
 
         \param	None
 

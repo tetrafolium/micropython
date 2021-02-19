@@ -93,7 +93,7 @@ mp_obj_t mpy_init(mp_obj_fun_bc_t *self, size_t n_args, size_t n_kw,
   // This must be first, it sets up the globals dict and other things
   MP_DYNRUNTIME_INIT_ENTRY
 
-  // Messages can be printed as usualy
+  // Messages can be printed as usually
   mp_printf(&mp_plat_print, "initialising module self=%p\n", self);
 
   // Make the functions available in the module's namespace

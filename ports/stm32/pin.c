@@ -452,7 +452,7 @@ STATIC mp_obj_t pin_irq(size_t n_args, const mp_obj_t *pos_args,
 
   if (n_args > 1 || kw_args->used != 0) {
     // configure irq
-    extint_register_pin(self, args[ARG_trigger].u_int, args[ARG_hard].u_bool,
+    extinct_register_pin(self, args[ARG_trigger].u_int, args[ARG_hard].u_bool,
                         args[ARG_handler].u_obj);
   }
 
@@ -636,7 +636,7 @@ const mp_obj_type_t pin_type = {
 ///     x3 = pyb.Pin.board.X3
 ///     x3_af = x3.af_list()
 ///
-/// x3_af will now contain an array of PinAF objects which are availble on
+/// x3_af will now contain an array of PinAF objects which are available on
 /// pin X3.
 ///
 /// For the pyboard, x3_af would contain:

@@ -38,7 +38,7 @@ DRESULT disk_ioctl(void *drv, BYTE cmd, void *buff);
 #define STA_NODISK 0x02  /* No medium in the drive */
 #define STA_PROTECT 0x04 /* Write protected */
 
-/* Command code for disk_ioctrl fucntion */
+/* Command code for disk_ioctrl function */
 
 /* Generic command (Used by FatFs) */
 #define CTRL_SYNC                                                              \

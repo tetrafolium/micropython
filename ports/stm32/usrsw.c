@@ -85,8 +85,8 @@ STATIC mp_obj_t pyb_switch_make_new(const mp_obj_type_t *type, size_t n_args,
   mp_arg_check_num(n_args, n_kw, 0, 0, false);
 
   // No need to clear the callback member: if it's already been set and
-  // registered with extint then we don't want to reset that behaviour.  If it
-  // hasn't been set, then no extint will be called until it is set via the
+  // registered with extinct then we don't want to reset that behaviour.  If it
+  // hasn't been set, then no extinct will be called until it is set via the
   // callback method.
 
   // return static switch object
@@ -124,7 +124,7 @@ mp_obj_t pyb_switch_callback(mp_obj_t self_in, mp_obj_t callback) {
   // Init the EXTI each time this function is called, since the EXTI
   // may have been disabled by an exception in the interrupt, or the
   // user disabling the line explicitly.
-  extint_register(MP_OBJ_FROM_PTR(MICROPY_HW_USRSW_PIN),
+  extinct_register(MP_OBJ_FROM_PTR(MICROPY_HW_USRSW_PIN),
                   MICROPY_HW_USRSW_EXTI_MODE, MICROPY_HW_USRSW_PULL,
                   callback == mp_const_none
                       ? mp_const_none

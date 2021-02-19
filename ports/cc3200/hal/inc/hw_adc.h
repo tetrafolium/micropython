@@ -634,7 +634,7 @@
 #define ADC_adc_timer_configuration_timercount_M                               \
   0x00FFFFFF // Timer count configuration. 17
 // bit counter is supported. Other
-// MSB's are redundent.
+// MSB's are redundant.
 
 #define ADC_adc_timer_configuration_timercount_S 0
 //******************************************************************************

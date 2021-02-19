@@ -57,7 +57,7 @@ static inline int IS_GPIO_RESET(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
 
  - The STM32 embeds in ROM a bootloader that allows to
    obtain code and boot from a number of different interfaces,
-   including USB in a mode called "DFU" (Device Frimware Update)
+   including USB in a mode called "DFU" (Device Firmware Update)
    [see AN3606 from ST for full details]
    This bootloader code is executed instead of the regular
    application code when pin BOOT0 is pulled-up (which on

@@ -68,12 +68,12 @@
 //*****************************************************************************
 //
 //! \internal
-//! Releases the specifed submodule out of reset.
+//! Releases the specified submodule out of reset.
 //!
 //! \param ulBase is the base address of the I2S module.
 //! \param ulFlag is one of the valid sub module.
 //!
-//! This function Releases the specifed submodule out of reset.
+//! This function Releases the specified submodule out of reset.
 //!
 //! \return None.
 //
@@ -97,7 +97,7 @@ static void I2SGBLEnable(unsigned long ulBase, unsigned long ulFlag) {
   HWREG(ulBase + MCASP_O_GBLCTL) = ulReg;
 
   //
-  // Wait for write completeion
+  // Wait for write completion
   //
   while (HWREG(ulBase + MCASP_O_GBLCTL) != ulReg) {
   }
@@ -375,7 +375,7 @@ long I2SDataGetNonBlocking(unsigned long ulBase, unsigned long ulDataLine,
 //! The \e ulConfig parameter is the logical OR of three values: the slot size
 //! the data read/write port select, Master or Slave mode
 //!
-//! Follwoing selects the Master-Slave mode
+//! Following selects the Master-Slave mode
 //! -\b I2S_MODE_MASTER
 //! -\b I2S_MODE_SLAVE
 //!
@@ -917,7 +917,7 @@ void I2SIntUnregister(unsigned long ulBase) {
 //! \param ulActSlot is the bit-mask of activ slots
 //!
 //! This function sets the active slots for the transmitter. By default both
-//! the slots are active. The parameter \e ulActSlot is logical OR follwoing
+//! the slots are active. The parameter \e ulActSlot is logical OR following
 //! values:
 //! -\b I2S_ACT_SLOT_EVEN
 //! -\b I2S_ACT_SLOT_ODD
@@ -937,7 +937,7 @@ void I2STxActiveSlotSet(unsigned long ulBase, unsigned long ulActSlot) {
 //! \param ulActSlot is the bit-mask of activ slots
 //!
 //! This function sets the active slots for the receiver. By default both
-//! the slots are active. The parameter \e ulActSlot is logical OR follwoing
+//! the slots are active. The parameter \e ulActSlot is logical OR following
 //! values:
 //! -\b I2S_ACT_SLOT_EVEN
 //! -\b I2S_ACT_SLOT_ODD

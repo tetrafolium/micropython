@@ -169,7 +169,7 @@ STATIC uint8_t *USBD_StrDescriptor(USBD_HandleTypeDef *pdev, uint8_t idx,
     // the 96-bit unique ID, so for consistency we go with this algorithm.
     // You can see the serial number if you use: lsusb -v
     //
-    // See: https://my.st.com/52d187b7 for the algorithim used.
+    // See: https://my.st.com/52d187b7 for the algorithm used.
 
     uint8_t *id = (uint8_t *)MP_HAL_UNIQUE_ID_ADDRESS;
     snprintf(str_buf, sizeof(str_buf), "%02X%02X%02X%02X%02X%02X", id[11],

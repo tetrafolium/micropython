@@ -304,7 +304,7 @@ void I2CMasterEnable(uint32_t ui32Base) {
 //!
 //! \param ui32Base is the base address of the I2C Slave module.
 //!
-//! This fucntion enables operation of the I2C Slave block.
+//! This function enables operation of the I2C Slave block.
 //!
 //! \return None.
 //

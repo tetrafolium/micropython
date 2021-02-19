@@ -533,7 +533,7 @@ def main():
     cmd_parser.add_argument("--outdir",
                             metavar="<output dir>",
                             default="gendoc-out",
-                            help="ouput directory")
+                            help="output directory")
     cmd_parser.add_argument("--format",
                             default="html",
                             help="output format: html or rst")

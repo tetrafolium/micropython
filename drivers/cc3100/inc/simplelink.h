@@ -777,7 +777,7 @@ typedef void (*_SlSpawnEntryFunc_t)(void *pValue);
    SlErrorSender_e enum
 
         - <b>pSlDeviceEvent->Event = SL_DEVICE_ABORT_ERROR_EVENT </b>
-              Indicates a severe error occured and the device stopped
+              Indicates a severe error occurred and the device stopped
               - pSlDeviceEvent->EventData.deviceReport fields:
                   - AbortType: An idication of the event type
                   - AbortData: Additional info about the data error

@@ -168,8 +168,8 @@ STATIC int cyw43_ensure_up(cyw43_t *self) {
 #if USE_SDIOIT
   SDMMC1->MASK |= SDMMC_MASK_SDIOITIE;
 #else
-  extern void extint_set(const pin_obj_t *pin, uint32_t mode);
-  extint_set(pyb_pin_WL_HOST_WAKE, GPIO_MODE_IT_FALLING);
+  extern void extinct_set(const pin_obj_t *pin, uint32_t mode);
+  extinct_set(pyb_pin_WL_HOST_WAKE, GPIO_MODE_IT_FALLING);
 #endif
 
   CYW_EXIT

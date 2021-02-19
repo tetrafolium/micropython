@@ -2,7 +2,7 @@
 //
 //! \file dns.c
 //! \brief DNS APIs Implement file.
-//! \details Send DNS query & Receive DNS reponse.  \n
+//! \details Send DNS query & Receive DNS response.  \n
 //!          It depends on stdlib.h & string.h in ansi-c library
 //! \version 1.1.0
 //! \date 2013/11/18

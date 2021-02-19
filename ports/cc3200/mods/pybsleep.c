@@ -169,7 +169,7 @@ void pyb_sleep_init0(void) {
                                        PRCM_HIB_GPIO17 | PRCM_HIB_GPIO11 |
                                        PRCM_HIB_GPIO24 | PRCM_HIB_GPIO26);
 
-  // check the reset casue (if it's soft reset, leave it as it is)
+  // check the reset cause (if it's soft reset, leave it as it is)
   if (pybsleep_reset_cause != PYB_SLP_SOFT_RESET) {
     switch (MAP_PRCMSysResetCauseGet()) {
     case PRCM_POWER_ON:

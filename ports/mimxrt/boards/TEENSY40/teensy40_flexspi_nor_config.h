@@ -202,7 +202,7 @@ typedef struct _FlexSPIConfig {
                       //!< for more details
   uint8_t sflashPadType; //!< [0x045-0x045] Serial Flash Pad Type: 1 - Single, 2
                          //!< - Dual, 4 - Quad, 8 - Octal
-  uint8_t serialClkFreq; //!< [0x046-0x046] Serial Flash Frequencey, device
+  uint8_t serialClkFreq; //!< [0x046-0x046] Serial Flash Frequency, device
                          //!< specific definitions, See System Boot
   //! Chapter for more details
   uint8_t lutCustomSeqEnable; //!< [0x047-0x047] LUT customization Enable, it is
@@ -298,7 +298,7 @@ typedef struct _flexspi_nor_config {
   uint8_t halfClkForNonReadCmd; //!< Half the Serial Clock for non-read command:
                                 //!< true/false
   uint8_t needRestoreNoCmdMode; //!< Need to Restore NoCmd mode after IP
-                                //!< commmand execution
+                                //!< command execution
   uint32_t blockSize;           //!< Block size
   uint32_t reserve2[11];        //!< Reserved for future use
 } flexspi_nor_config_t;

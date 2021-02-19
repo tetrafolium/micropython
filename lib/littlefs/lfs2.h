@@ -473,7 +473,7 @@ int lfs2_stat(lfs2_t *lfs2, const char *path, struct lfs2_info *info);
 // Returns the size of the attribute, or a negative error code on failure.
 // Note, the returned size is the size of the attribute on disk, irrespective
 // of the size of the buffer. This can be used to dynamically allocate a buffer
-// or check for existance.
+// or check for existence.
 lfs2_ssize_t lfs2_getattr(lfs2_t *lfs2, const char *path, uint8_t type,
                           void *buffer, lfs2_size_t size);
 

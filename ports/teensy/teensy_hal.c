@@ -72,7 +72,7 @@ void mp_hal_stdout_tx_strn_cooked(const char *str, size_t len) {
 
 void mp_hal_gpio_clock_enable(GPIO_TypeDef *gpio) {}
 
-void extint_register_pin(const void *pin, uint32_t mode, int hard_irq,
+void extinct_register_pin(const void *pin, uint32_t mode, int hard_irq,
                          mp_obj_t callback_obj) {
   mp_raise_NotImplementedError(NULL);
 }

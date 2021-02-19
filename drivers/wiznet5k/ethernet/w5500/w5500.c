@@ -200,7 +200,7 @@ void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len) {
   if (len == 0)
     return;
   ptr = getSn_TX_WR(sn);
-  // M20140501 : implict type casting -> explict type casting
+  // M20140501 : implicit type casting -> explicit type casting
   // addrsel = (ptr << 8) + (WIZCHIP_TXBUF_BLOCK(sn) << 3);
   addrsel = ((uint32_t)ptr << 8) + (WIZCHIP_TXBUF_BLOCK(sn) << 3);
   //
@@ -217,7 +217,7 @@ void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len) {
   if (len == 0)
     return;
   ptr = getSn_RX_RD(sn);
-  // M20140501 : implict type casting -> explict type casting
+  // M20140501 : implicit type casting -> explicit type casting
   // addrsel = ((ptr << 8) + (WIZCHIP_RXBUF_BLOCK(sn) << 3);
   addrsel = ((uint32_t)ptr << 8) + (WIZCHIP_RXBUF_BLOCK(sn) << 3);
   //

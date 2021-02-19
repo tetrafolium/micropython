@@ -188,7 +188,7 @@ long SDHostCmdSend(unsigned long ulBase, unsigned long ulCmd, unsigned ulArg) {
 //! Writes a data word into the SDHost write buffer.
 //!
 //! \param ulBase is the base address of SDHost module.
-//! \param ulData is data word to be transfered.
+//! \param ulData is data word to be transferred.
 //!
 //! This function writes a single data word into the SDHost write buffer. The
 //! function returns \b true if there was a space available in the buffer else
@@ -226,7 +226,7 @@ tBoolean SDHostDataNonBlockingWrite(unsigned long ulBase,
 //! Waits to write a data word into the SDHost write buffer.
 //!
 //! \param ulBase is the base address of SDHost module.
-//! \param ulData is data word to be transfered.
+//! \param ulData is data word to be transferred.
 //!
 //! This function writes \e ulData into the SDHost write buffer. If there is no
 //! space in the write buffer this function waits until there is a space

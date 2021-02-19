@@ -528,7 +528,7 @@ soft_reset:
 
   readline_init0();
   pin_init0();
-  extint_init0();
+  extinct_init0();
   timer_init0();
 
 #if MICROPY_HW_ENABLE_CAN

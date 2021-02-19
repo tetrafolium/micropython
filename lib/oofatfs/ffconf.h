@@ -145,7 +145,7 @@ enable this option. */
 /   3: Enable LFN with dynamic working buffer on the HEAP.
 /
 /  To enable the LFN, ffunicode.c needs to be added to the project. The LFN
-function /  requiers certain internal working buffer occupies (FF_MAX_LFN + 1) *
+function /  requires certain internal working buffer occupies (FF_MAX_LFN + 1) *
 2 bytes and /  additional (FF_MAX_LFN + 44) / 15 * 32 bytes when exFAT is
 enabled. /  The FF_MAX_LFN defines size of the working buffer in UTF-16 code
 unit and it can /  be in range of 12 to 255. It is recommended to be set 255 to
@@ -228,7 +228,7 @@ defined as:
 /  number and only an FAT volume found on the physical drive will be mounted.
 /  When this function is enabled (1), each logical drive number can be bound to
 /  arbitrary physical drive and partition listed in the VolToPart[]. Also
-f_fdisk() /  funciton will be available. */
+f_fdisk() /  function will be available. */
 
 #define FF_MIN_SS 512
 #ifdef MICROPY_FATFS_MAX_SS
@@ -265,7 +265,7 @@ function needs to implement /  GET_SECTOR_SIZE command. */
 
 #define FF_FS_TINY 1
 /* This option switches tiny buffer configuration. (0:Normal or 1:Tiny)
-/  At the tiny configuration, size of file object (FIL) is shrinked FF_MAX_SS
+/  At the tiny configuration, size of file object (FIL) is shrunk FF_MAX_SS
 bytes. /  Instead of private sector buffer eliminated from the file object,
 common sector /  buffer in the filesystem object (FATFS) is used for the file
 data transfer. */

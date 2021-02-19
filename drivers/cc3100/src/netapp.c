@@ -620,7 +620,7 @@ _i32 sl_NetAppDnsGetHostByService(
   VERIFY_RET_OK(
       _SlDrvCmdOp((_SlCmdCtrl_t *)&_SlGetHostByServiceCtrl, &Msg, &CmdExt));
 
-  /* If the immediate reponse is O.K. than  wait for aSYNC event response. */
+  /* If the immediate response is O.K. than  wait for aSYNC event response. */
   if (SL_RET_CODE_OK == Msg.Rsp.status) {
     _SlDrvSyncObjWaitForever(&g_pCB->ObjPool[ObjIdx].SyncObj);
 
@@ -753,7 +753,7 @@ void _sl_HandleAsync_DnsGetHostByService(void *pVoidBuf) {
     /**************************************************************************************************
 
     2. Copy the payload part of the evnt (the text) to the payload part of the
-    response the lenght of the copy is according to the text length in the
+    response the length of the copy is according to the text length in the
     attribute part. */
 
     sl_Memcpy(

@@ -157,7 +157,7 @@ void CRCSeedSet(uint32_t ui32Base, uint32_t ui32Seed) {
 //! when the \b EC_CRC_CFG_SIZE_8BIT or \b EC_CRC_CFG_SIZE_32BIT flag
 //! is set using the CRCConfigSet() function.
 //!
-//! When writing 8 bits of data, ensure the data is in the least signficant
+//! When writing 8 bits of data, ensure the data is in the least significant
 //! byte position.  The remaining bytes should be written with zero.  For
 //! example, when writing 0xAB, \e ui32Data should be 0x000000AB.
 //!

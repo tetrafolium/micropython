@@ -319,7 +319,7 @@ void PRCMClearSpecialBit(unsigned char bit) {
 tBoolean PRCMGetSpecialBit(unsigned char bit) {
   tBoolean value =
       (MAP_PRCMHIBRegRead(RTC_MSEC_U32_REG_ADDR) & (1 << bit)) ? true : false;
-  // special bits must be cleared immediatelly after reading
+  // special bits must be cleared immediately after reading
   PRCMClearSpecialBit(bit);
   return value;
 }
@@ -964,9 +964,9 @@ void PRCMSRAMRetentionDisable(unsigned long ulSramColSel,
 //!
 //! \param ulHIBWakupSrc is logical OR of valid HIB wakeup sources.
 //!
-//! This function enables individual HIB wakeup source(s). The paramter
+//! This function enables individual HIB wakeup source(s). The parameter
 //! \e ulHIBWakupSrc is the bit mask of HIB wakeup sources and should be
-//! logical OR of one or more of the follwoing :-
+//! logical OR of one or more of the following :-
 //! -\b PRCM_HIB_SLOW_CLK_CTR
 //! -\b PRCM_HIB_GPIO2
 //! -\b PRCM_HIB_GPIO4
@@ -1019,7 +1019,7 @@ void PRCMHibernateWakeupSourceEnable(unsigned long ulHIBWakupSrc) {
 //!
 //! \param ulHIBWakupSrc is logical OR of valid HIB wakeup sources.
 //!
-//! This function disable individual HIB wakeup source(s). The paramter
+//! This function disable individual HIB wakeup source(s). The parameter
 //! \e ulHIBWakupSrc is same as bit fileds defined in
 //! PRCMEnableHibernateWakeupSource()
 //!
@@ -1126,8 +1126,8 @@ void PRCMHibernateIntervalSet(unsigned long long ullTicks) {
 //! This function setects the wakeup GPIO for hibernate and can be
 //! used to select any combination of 7 pre-defined GPIO(s).
 //!
-//! This function enables individual HIB wakeup source(s). The paramter
-//! \e ulGPIOBitMap should be one of the follwoing :-
+//! This function enables individual HIB wakeup source(s). The parameter
+//! \e ulGPIOBitMap should be one of the following :-
 //! -\b PRCM_HIB_GPIO2
 //! -\b PRCM_HIB_GPIO4
 //! -\b PRCM_HIB_GPIO13
@@ -1479,7 +1479,7 @@ unsigned long PRCMIntStatus(void) {
 //!
 //! Specifically, this feature reserves user's HIB Register-1 accessed through
 //! PRCMOCRRegisterWrite(1) for internal work / purpose, therefore, the stated
-//! register is not available to user. Also, users must not excercise the Slow
+//! register is not available to user. Also, users must not exercise the Slow
 //! Clock Counter API(s), if RTC has been set for use.
 //!
 //! \return None.

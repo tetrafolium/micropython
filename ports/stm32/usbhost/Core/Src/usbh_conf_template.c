@@ -86,7 +86,7 @@ USBH_StatusTypeDef USBH_LL_ResetPort(USBH_HandleTypeDef *phost) {
 
 /**
  * @brief  USBH_LL_GetLastXferSize
- *         Return the last transfered packet size.
+ *         Return the last transferred packet size.
  * @param  phost: Host handle
  * @param  pipe: Pipe index
  * @retval Packet Size

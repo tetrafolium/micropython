@@ -364,7 +364,7 @@ void patch_prog_start() {
   ucStatus_Dr = 1;
   printf("Updating driver patch...\n");
   while (ucStatus_Dr) {
-    // Writing driver patch to EEPRROM - PROTABLE CODE
+    // Writing driver patch to EEPRROM - PORTABLE CODE
     // Note that the array itself is changing between the
     // different Service Packs.
     ucStatus_Dr = nvmem_write_patch(NVMEM_WLAN_DRIVER_SP_FILEID, drv_length,
@@ -375,7 +375,7 @@ void patch_prog_start() {
   ucStatus_FW = 1;
   printf("Updating firmware patch...\n");
   while (ucStatus_FW) {
-    // Writing FW patch to EEPRROM - PROTABLE CODE
+    // Writing FW patch to EEPRROM - PORTABLE CODE
     // Note that the array itself is changing between the
     // different Service Packs.
     ucStatus_FW =

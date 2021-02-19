@@ -42,7 +42,7 @@ except ImportError:
         "ERROR: pyhy not found. Please install python pyhy for encrypted mboot support: pip3 install pyhy"
     )
 
-# Currenty supported version of a packed DFU file.
+# Currently supported version of a packed DFU file.
 MBOOT_PACK_HEADER_VERSION = 1
 
 # Must match MBOOT_PACK_HYDRO_CONTEXT in mboot/pack.h

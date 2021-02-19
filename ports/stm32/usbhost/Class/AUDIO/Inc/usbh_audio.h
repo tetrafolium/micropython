@@ -170,12 +170,12 @@ typedef struct {
   uint8_t Poll;
   uint32_t timer;
 
-  uint8_t asociated_as;
-  uint8_t asociated_mixer;
-  uint8_t asociated_selector;
-  uint8_t asociated_feature;
-  uint8_t asociated_terminal;
-  uint8_t asociated_channels;
+  uint8_t associated_as;
+  uint8_t associated_mixer;
+  uint8_t associated_selector;
+  uint8_t associated_feature;
+  uint8_t associated_terminal;
+  uint8_t associated_channels;
 
   uint32_t frequency;
   uint8_t *buf;
@@ -226,7 +226,7 @@ typedef struct {
 
 /*Class-Specific AS(Audio Streaming) Format Type Descriptor*/
 typedef struct {
-  uint8_t bLength; /*At to be deside*/
+  uint8_t bLength; /*At to be decide*/
   uint8_t bDescriptorType;
   uint8_t bDescriptorSubtype;
   uint8_t bFormatType;
