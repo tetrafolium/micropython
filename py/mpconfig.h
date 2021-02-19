@@ -32,16 +32,15 @@
 #define MICROPY_VERSION_MICRO 0
 
 // Combined version as a 32-bit number for convenience
-#define MICROPY_VERSION ( \
-    MICROPY_VERSION_MAJOR << 16 \
-        | MICROPY_VERSION_MINOR << 8 \
-        | MICROPY_VERSION_MICRO)
+#define MICROPY_VERSION                                                        \
+  (MICROPY_VERSION_MAJOR << 16 | MICROPY_VERSION_MINOR << 8 |                  \
+   MICROPY_VERSION_MICRO)
 
 // String version
-#define MICROPY_VERSION_STRING \
-    MP_STRINGIFY(MICROPY_VERSION_MAJOR) "." \
-    MP_STRINGIFY(MICROPY_VERSION_MINOR) "." \
-    MP_STRINGIFY(MICROPY_VERSION_MICRO)
+#define MICROPY_VERSION_STRING                                                 \
+  MP_STRINGIFY(MICROPY_VERSION_MAJOR)                                          \
+  "." MP_STRINGIFY(MICROPY_VERSION_MINOR) "." MP_STRINGIFY(                    \
+      MICROPY_VERSION_MICRO)
 
 // This file contains default configuration settings for MicroPython.
 // You can override any of the options below using mpconfigport.h file
@@ -90,21 +89,29 @@
 //  - s1111111 1xxxxxxx xxxxxxxx xxxxx010 nan, x != 0
 //  - seeeeeee efffffff ffffffff ffffff10 30-bit fp, e != 0xff
 //  - pppppppp pppppppp pppppppp pppppp00 ptr (4 byte alignment)
-// Str, immediate and float stored as O = R + 0x80800000, retrieved as R = O - 0x80800000.
-// This makes strs/immediates easier to encode/decode as they have zeros in the top 9 bits.
-// This scheme only works with 32-bit word size and float enabled.
+// Str, immediate and float stored as O = R + 0x80800000, retrieved as R = O -
+// 0x80800000. This makes strs/immediates easier to encode/decode as they have
+// zeros in the top 9 bits. This scheme only works with 32-bit word size and
+// float enabled.
 #define MICROPY_OBJ_REPR_C (2)
 
 // A MicroPython object is a 64-bit word having the following form (called R):
-//  - seeeeeee eeeeffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff 64-bit fp, e != 0x7ff
-//  - s1111111 11110000 00000000 00000000 00000000 00000000 00000000 00000000 +/- inf
-//  - 01111111 11111000 00000000 00000000 00000000 00000000 00000000 00000000 normalised nan
-//  - 01111111 11111101 iiiiiiii iiiiiiii iiiiiiii iiiiiiii iiiiiiii iiiiiii1 small int
-//  - 01111111 11111110 00000000 00000000 qqqqqqqq qqqqqqqq qqqqqqqq qqqqqqq1 str
-//  - 01111111 11111111 ss000000 00000000 00000000 00000000 00000000 00000000 immediate object
-//  - 01111111 11111100 00000000 00000000 pppppppp pppppppp pppppppp pppppp00 ptr (4 byte alignment)
-// Stored as O = R + 0x8004000000000000, retrieved as R = O - 0x8004000000000000.
-// This makes pointers have all zeros in the top 32 bits.
+//  - seeeeeee eeeeffff ffffffff ffffffff ffffffff ffffffff ffffffff ffffffff
+//  64-bit fp, e != 0x7ff
+//  - s1111111 11110000 00000000 00000000 00000000 00000000 00000000 00000000
+//  +/- inf
+//  - 01111111 11111000 00000000 00000000 00000000 00000000 00000000 00000000
+//  normalised nan
+//  - 01111111 11111101 iiiiiiii iiiiiiii iiiiiiii iiiiiiii iiiiiiii iiiiiii1
+//  small int
+//  - 01111111 11111110 00000000 00000000 qqqqqqqq qqqqqqqq qqqqqqqq qqqqqqq1
+//  str
+//  - 01111111 11111111 ss000000 00000000 00000000 00000000 00000000 00000000
+//  immediate object
+//  - 01111111 11111100 00000000 00000000 pppppppp pppppppp pppppppp pppppp00
+//  ptr (4 byte alignment)
+// Stored as O = R + 0x8004000000000000, retrieved as R = O -
+// 0x8004000000000000. This makes pointers have all zeros in the top 32 bits.
 // Small-ints and strs have 1 as LSB to make sure they don't look like pointers
 // to the garbage collector.
 #define MICROPY_OBJ_REPR_D (3)
@@ -143,10 +150,10 @@
 #define MICROPY_GC_STACK_ENTRY_TYPE size_t
 #endif
 
-// Be conservative and always clear to zero newly (re)allocated memory in the GC.
-// This helps eliminate stray pointers that hold on to memory that's no longer
-// used.  It decreases performance due to unnecessary memory clearing.
-// A memory manager which always clears memory can set this to 0.
+// Be conservative and always clear to zero newly (re)allocated memory in the
+// GC. This helps eliminate stray pointers that hold on to memory that's no
+// longer used.  It decreases performance due to unnecessary memory clearing. A
+// memory manager which always clears memory can set this to 0.
 // TODO Do analysis to understand why some memory is not properly cleared and
 // find a more efficient way to clear it.
 #ifndef MICROPY_GC_CONSERVATIVE_CLEAR
@@ -291,7 +298,9 @@
 // Whether generated code can persist independently of the VM/runtime instance
 // This is enabled automatically when needed by other features
 #ifndef MICROPY_PERSISTENT_CODE
-#define MICROPY_PERSISTENT_CODE (MICROPY_PERSISTENT_CODE_LOAD || MICROPY_PERSISTENT_CODE_SAVE || MICROPY_MODULE_FROZEN_MPY)
+#define MICROPY_PERSISTENT_CODE                                                \
+  (MICROPY_PERSISTENT_CODE_LOAD || MICROPY_PERSISTENT_CODE_SAVE ||             \
+   MICROPY_MODULE_FROZEN_MPY)
 #endif
 
 // Whether to emit x64 native code
@@ -350,23 +359,29 @@
 #endif
 
 // Convenience definition for whether any native emitter is enabled
-#define MICROPY_EMIT_NATIVE (MICROPY_EMIT_X64 || MICROPY_EMIT_X86 || MICROPY_EMIT_THUMB || MICROPY_EMIT_ARM || MICROPY_EMIT_XTENSA || MICROPY_EMIT_XTENSAWIN)
+#define MICROPY_EMIT_NATIVE                                                    \
+  (MICROPY_EMIT_X64 || MICROPY_EMIT_X86 || MICROPY_EMIT_THUMB ||               \
+   MICROPY_EMIT_ARM || MICROPY_EMIT_XTENSA || MICROPY_EMIT_XTENSAWIN)
 
 // Select prelude-as-bytes-object for certain emitters
 #define MICROPY_EMIT_NATIVE_PRELUDE_AS_BYTES_OBJ (MICROPY_EMIT_XTENSAWIN)
 
 // Convenience definition for whether any inline assembler emitter is enabled
-#define MICROPY_EMIT_INLINE_ASM (MICROPY_EMIT_INLINE_THUMB || MICROPY_EMIT_INLINE_XTENSA)
+#define MICROPY_EMIT_INLINE_ASM                                                \
+  (MICROPY_EMIT_INLINE_THUMB || MICROPY_EMIT_INLINE_XTENSA)
 
-// Convenience definition for whether any native or inline assembler emitter is enabled
-#define MICROPY_EMIT_MACHINE_CODE (MICROPY_EMIT_NATIVE || MICROPY_EMIT_INLINE_ASM)
+// Convenience definition for whether any native or inline assembler emitter is
+// enabled
+#define MICROPY_EMIT_MACHINE_CODE                                              \
+  (MICROPY_EMIT_NATIVE || MICROPY_EMIT_INLINE_ASM)
 
 // Whether native relocatable code loaded from .mpy files is explicitly tracked
 // so that the GC cannot reclaim it.  Needed on architectures that allocate
 // executable memory on the MicroPython heap and don't explicitly track this
 // data some other way.
 #ifndef MICROPY_PERSISTENT_CODE_TRACK_RELOC_CODE
-#if !MICROPY_EMIT_MACHINE_CODE || defined(MP_PLAT_ALLOC_EXEC) || defined(MP_PLAT_COMMIT_EXEC)
+#if !MICROPY_EMIT_MACHINE_CODE || defined(MP_PLAT_ALLOC_EXEC) ||               \
+    defined(MP_PLAT_COMMIT_EXEC)
 #define MICROPY_PERSISTENT_CODE_TRACK_RELOC_CODE (0)
 #else
 #define MICROPY_PERSISTENT_CODE_TRACK_RELOC_CODE (1)
@@ -389,10 +404,13 @@
 
 // Configure dynamic compiler macros
 #if MICROPY_DYNAMIC_COMPILER
-#define MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE_DYNAMIC (mp_dynamic_compiler.opt_cache_map_lookup_in_bytecode)
-#define MICROPY_PY_BUILTINS_STR_UNICODE_DYNAMIC (mp_dynamic_compiler.py_builtins_str_unicode)
+#define MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE_DYNAMIC                       \
+  (mp_dynamic_compiler.opt_cache_map_lookup_in_bytecode)
+#define MICROPY_PY_BUILTINS_STR_UNICODE_DYNAMIC                                \
+  (mp_dynamic_compiler.py_builtins_str_unicode)
 #else
-#define MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE_DYNAMIC MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE
+#define MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE_DYNAMIC                       \
+  MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE
 #define MICROPY_PY_BUILTINS_STR_UNICODE_DYNAMIC MICROPY_PY_BUILTINS_STR_UNICODE
 #endif
 
@@ -464,7 +482,8 @@
 #define MICROPY_DEBUG_MP_OBJ_SENTINELS (0)
 #endif
 
-// Whether to print parse rule names (rather than integers) in mp_parse_node_print
+// Whether to print parse rule names (rather than integers) in
+// mp_parse_node_print
 #ifndef MICROPY_DEBUG_PARSE_RULE_NAME
 #define MICROPY_DEBUG_PARSE_RULE_NAME (0)
 #endif
@@ -498,8 +517,8 @@
 #define MICROPY_OPT_MPZ_BITWISE (0)
 #endif
 
-
-// Whether math.factorial is large, fast and recursive (1) or small and slow (0).
+// Whether math.factorial is large, fast and recursive (1) or small and slow
+// (0).
 #ifndef MICROPY_OPT_MATH_FACTORIAL
 #define MICROPY_OPT_MATH_FACTORIAL (0)
 #endif
@@ -578,11 +597,13 @@
 #endif
 #if MICROPY_ENABLE_EMERGENCY_EXCEPTION_BUF
 #ifndef MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE
-#define MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE (0)      // 0 - implies dynamic allocation
+#define MICROPY_EMERGENCY_EXCEPTION_BUF_SIZE                                   \
+  (0) // 0 - implies dynamic allocation
 #endif
 #endif
 
-// Whether to provide the mp_kbd_exception object, and micropython.kbd_intr function
+// Whether to provide the mp_kbd_exception object, and micropython.kbd_intr
+// function
 #ifndef MICROPY_KBD_EXCEPTION
 #define MICROPY_KBD_EXCEPTION (0)
 #endif
@@ -609,16 +630,17 @@
 #endif
 
 // Whether to include emacs-style word movement/kill readline behavior in REPL.
-// This adds Alt+F, Alt+B, Alt+D and Alt+Backspace for forward-word, backward-word, forward-kill-word
-// and backward-kill-word, respectively.
+// This adds Alt+F, Alt+B, Alt+D and Alt+Backspace for forward-word,
+// backward-word, forward-kill-word and backward-kill-word, respectively.
 #ifndef MICROPY_REPL_EMACS_WORDS_MOVE
 #define MICROPY_REPL_EMACS_WORDS_MOVE (0)
 #endif
 
-// Whether to include extra convenience keys for word movement/kill in readline REPL.
-// This adds Ctrl+Right, Ctrl+Left and Ctrl+W for forward-word, backward-word and backward-kill-word
-// respectively. Ctrl+Delete is not implemented because it's a very different escape sequence.
-// Depends on MICROPY_REPL_EMACS_WORDS_MOVE.
+// Whether to include extra convenience keys for word movement/kill in readline
+// REPL. This adds Ctrl+Right, Ctrl+Left and Ctrl+W for forward-word,
+// backward-word and backward-kill-word respectively. Ctrl+Delete is not
+// implemented because it's a very different escape sequence. Depends on
+// MICROPY_REPL_EMACS_WORDS_MOVE.
 #ifndef MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
 #define MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE (0)
 #endif
@@ -663,9 +685,9 @@ typedef long long mp_longint_impl_t;
 #endif
 
 // Exception messages are short static strings
-#define MICROPY_ERROR_REPORTING_TERSE    (1)
+#define MICROPY_ERROR_REPORTING_TERSE (1)
 // Exception messages provide basic error details
-#define MICROPY_ERROR_REPORTING_NORMAL   (2)
+#define MICROPY_ERROR_REPORTING_NORMAL (2)
 // Exception messages provide full info, e.g. object names
 #define MICROPY_ERROR_REPORTING_DETAILED (3)
 
@@ -776,7 +798,8 @@ typedef double mp_float_t;
 
 // Convenience macro for whether frozen modules are supported
 #ifndef MICROPY_MODULE_FROZEN
-#define MICROPY_MODULE_FROZEN (MICROPY_MODULE_FROZEN_STR || MICROPY_MODULE_FROZEN_MPY)
+#define MICROPY_MODULE_FROZEN                                                  \
+  (MICROPY_MODULE_FROZEN_STR || MICROPY_MODULE_FROZEN_MPY)
 #endif
 
 // Whether you can override builtins in the builtins module
@@ -798,7 +821,8 @@ typedef double mp_float_t;
 #define MICROPY_USE_INTERNAL_ERRNO (0)
 #endif
 
-// Whether to use internally defined *printf() functions (otherwise external ones)
+// Whether to use internally defined *printf() functions (otherwise external
+// ones)
 #ifndef MICROPY_USE_INTERNAL_PRINTF
 #define MICROPY_USE_INTERNAL_PRINTF (1)
 #endif
@@ -1175,7 +1199,8 @@ typedef double mp_float_t;
 #define MICROPY_PY_MATH_MODF_FIX_NEGZERO (0)
 #endif
 
-// Whether to provide fix for pow(1, NaN) and pow(NaN, 0), which both should be 1 not NaN.
+// Whether to provide fix for pow(1, NaN) and pow(NaN, 0), which both should be
+// 1 not NaN.
 #ifndef MICROPY_PY_MATH_POW_FIX_NAN
 #define MICROPY_PY_MATH_POW_FIX_NAN (0)
 #endif
@@ -1398,7 +1423,7 @@ typedef double mp_float_t;
 #endif
 
 #ifndef MICROPY_PY_UHASHLIB_SHA1
-#define MICROPY_PY_UHASHLIB_SHA1  (0)
+#define MICROPY_PY_UHASHLIB_SHA1 (0)
 #endif
 
 #ifndef MICROPY_PY_UHASHLIB_SHA256
@@ -1474,17 +1499,20 @@ typedef double mp_float_t;
 /*****************************************************************************/
 /* Hooks for a port to add builtins                                          */
 
-// Additional builtin function definitions - see modbuiltins.c:mp_module_builtins_globals_table for format.
+// Additional builtin function definitions - see
+// modbuiltins.c:mp_module_builtins_globals_table for format.
 #ifndef MICROPY_PORT_BUILTINS
 #define MICROPY_PORT_BUILTINS
 #endif
 
-// Additional builtin module definitions - see objmodule.c:mp_builtin_module_table for format.
+// Additional builtin module definitions - see
+// objmodule.c:mp_builtin_module_table for format.
 #ifndef MICROPY_PORT_BUILTIN_MODULES
 #define MICROPY_PORT_BUILTIN_MODULES
 #endif
 
-// Additional constant definitions for the compiler - see compile.c:mp_constants_table.
+// Additional constant definitions for the compiler - see
+// compile.c:mp_constants_table.
 #ifndef MICROPY_PORT_CONSTANTS
 #define MICROPY_PORT_CONSTANTS
 #endif
@@ -1540,7 +1568,8 @@ typedef double mp_float_t;
 #define MP_BITS_PER_BYTE (8)
 #endif
 // mp_int_t value with most significant bit set
-#define MP_OBJ_WORD_MSBIT_HIGH (((mp_uint_t)1) << (MP_BYTES_PER_OBJ_WORD * MP_BITS_PER_BYTE - 1))
+#define MP_OBJ_WORD_MSBIT_HIGH                                                 \
+  (((mp_uint_t)1) << (MP_BYTES_PER_OBJ_WORD * MP_BITS_PER_BYTE - 1))
 
 // Make sure both MP_ENDIANNESS_LITTLE and MP_ENDIANNESS_BIG are
 // defined and that they are the opposite of each other.
@@ -1578,11 +1607,15 @@ typedef double mp_float_t;
 #define MICROPY_MAKE_POINTER_CALLABLE(p) (p)
 #endif
 
-// If these MP_PLAT_*_EXEC macros are overridden then the memory allocated by them
-// must be somehow reachable for marking by the GC, since the native code
+// If these MP_PLAT_*_EXEC macros are overridden then the memory allocated by
+// them must be somehow reachable for marking by the GC, since the native code
 // generators store pointers to GC managed memory in the code.
 #ifndef MP_PLAT_ALLOC_EXEC
-#define MP_PLAT_ALLOC_EXEC(min_size, ptr, size) do { *ptr = m_new(byte, min_size); *size = min_size; } while (0)
+#define MP_PLAT_ALLOC_EXEC(min_size, ptr, size)                                \
+  do {                                                                         \
+    *ptr = m_new(byte, min_size);                                              \
+    *size = min_size;                                                          \
+  } while (0)
 #endif
 
 #ifndef MP_PLAT_FREE_EXEC
@@ -1649,7 +1682,9 @@ typedef double mp_float_t;
 #if defined(__GNUC__)
 #define MP_UNREACHABLE __builtin_unreachable();
 #else
-#define MP_UNREACHABLE for (;;);
+#define MP_UNREACHABLE                                                         \
+  for (;;)                                                                     \
+    ;
 #endif
 #endif
 
@@ -1662,7 +1697,7 @@ typedef double mp_float_t;
 
 #ifndef MP_HTOBE16
 #if MP_ENDIANNESS_LITTLE
-#define MP_HTOBE16(x) ((uint16_t)((((x) & 0xff) << 8) | (((x) >> 8) & 0xff)))
+#define MP_HTOBE16(x) ((uint16_t)((((x)&0xff) << 8) | (((x) >> 8) & 0xff)))
 #define MP_BE16TOH(x) MP_HTOBE16(x)
 #else
 #define MP_HTOBE16(x) (x)
@@ -1672,7 +1707,9 @@ typedef double mp_float_t;
 
 #ifndef MP_HTOBE32
 #if MP_ENDIANNESS_LITTLE
-#define MP_HTOBE32(x) ((uint32_t)((((x) & 0xff) << 24) | (((x) & 0xff00) << 8) | (((x) >> 8) & 0xff00) | (((x) >> 24) & 0xff)))
+#define MP_HTOBE32(x)                                                          \
+  ((uint32_t)((((x)&0xff) << 24) | (((x)&0xff00) << 8) |                       \
+              (((x) >> 8) & 0xff00) | (((x) >> 24) & 0xff)))
 #define MP_BE32TOH(x) MP_HTOBE32(x)
 #else
 #define MP_HTOBE32(x) (x)
@@ -1694,7 +1731,8 @@ typedef double mp_float_t;
 // Feature dependency check.
 #if MICROPY_PY_SYS_SETTRACE
 #if !MICROPY_PERSISTENT_CODE_SAVE
-#error "MICROPY_PY_SYS_SETTRACE requires MICROPY_PERSISTENT_CODE_SAVE to be enabled"
+#error                                                                         \
+    "MICROPY_PY_SYS_SETTRACE requires MICROPY_PERSISTENT_CODE_SAVE to be enabled"
 #endif
 #if MICROPY_COMP_CONST
 #error "MICROPY_PY_SYS_SETTRACE requires MICROPY_COMP_CONST to be disabled"

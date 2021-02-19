@@ -12,7 +12,8 @@
 //!            If 1st DNS_run failed, call DNS_run with 2nd DNS again
 //!         2. DNS_timerHandler -> DNS_time_handler
 //!         3. Move the no reference define to dns.c
-//!         4. Integrated dns.h dns.c & dns_parse.h dns_parse.c into dns.h & dns.c
+//!         4. Integrated dns.h dns.c & dns_parse.h dns_parse.c into dns.h &
+//!         dns.c
 //!       <2013/12/20> V1.1.0
 //!
 //! \author Eric Jung & MidnightCow
@@ -48,8 +49,8 @@
 //
 //*****************************************************************************
 
-#ifndef	_DNS_H_
-#define	_DNS_H_
+#ifndef _DNS_H_
+#define _DNS_H_
 
 #include <stdint.h>
 /*
@@ -59,26 +60,29 @@
 
 //#define _DNS_DEBUG_
 
-#define	MAX_DNS_BUF_SIZE	256		///< maximum size of DNS buffer. */
+#define MAX_DNS_BUF_SIZE 256 ///< maximum size of DNS buffer. */
 /*
  * @brief Maximum length of your queried Domain name
- * @todo SHOULD BE defined it equal as or greater than your Domain name length + null character(1)
- * @note SHOULD BE careful to stack overflow because it is allocated 1.5 times as MAX_DOMAIN_NAME in stack.
+ * @todo SHOULD BE defined it equal as or greater than your Domain name length +
+ * null character(1)
+ * @note SHOULD BE careful to stack overflow because it is allocated 1.5 times
+ * as MAX_DOMAIN_NAME in stack.
  */
-#define  MAX_DOMAIN_NAME   32       // for example "www.google.com"
+#define MAX_DOMAIN_NAME 32 // for example "www.google.com"
 
-#define	MAX_DNS_RETRY     2        ///< Requery Count
-#define	DNS_WAIT_TIME     4        ///< Wait response time. unit 1s.
+#define MAX_DNS_RETRY 2 ///< Requery Count
+#define DNS_WAIT_TIME 4 ///< Wait response time. unit 1s.
 
-#define	IPPORT_DOMAIN     53       ///< DNS server port number
+#define IPPORT_DOMAIN 53 ///< DNS server port number
 
-#define DNS_MSG_ID         0x1122   ///< ID for DNS message. You can be modified it any number
+#define DNS_MSG_ID                                                             \
+  0x1122 ///< ID for DNS message. You can be modified it any number
 /*
  * @brief DNS process initialize
  * @param s   : Socket number for DNS
  * @param buf : Buffer for DNS message
  */
-void DNS_init(uint8_t s, uint8_t * buf);
+void DNS_init(uint8_t s, uint8_t *buf);
 
 /*
  * @brief DNS process
@@ -89,8 +93,9 @@ void DNS_init(uint8_t s, uint8_t * buf);
  * @return  -1 : failed. @ref MAX_DOMIN_NAME is too small \n
  *           0 : failed  (Timeout or Parse error)\n
  *           1 : success
- * @note This function blocks until success or fail. max time = @ref MAX_DNS_RETRY * @ref DNS_WAIT_TIME
+ * @note This function blocks until success or fail. max time = @ref
+ * MAX_DNS_RETRY * @ref DNS_WAIT_TIME
  */
-int8_t DNS_run(uint8_t * dns_ip, uint8_t * name, uint8_t * ip_from_dns);
+int8_t DNS_run(uint8_t *dns_ip, uint8_t *name, uint8_t *ip_from_dns);
 
-#endif	/* _DNS_H_ */
+#endif /* _DNS_H_ */

@@ -1,39 +1,39 @@
 /*****************************************************************************
-*
-*  wlan.h  - CC3000 Host Driver Implementation.
-*  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*    Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-*    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the
-*    distribution.
-*
-*    Neither the name of Texas Instruments Incorporated nor the names of
-*    its contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *  wlan.h  - CC3000 Host Driver Implementation.
+ *  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *    Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ *    Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ *    Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 #ifndef __CC3000_WLAN_H__
-#define	__CC3000_WLAN_H__
+#define __CC3000_WLAN_H__
 
 #include "cc3000_common.h"
 
@@ -43,21 +43,20 @@
 // have a C binding.
 //
 //*****************************************************************************
-#ifdef	__cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
-#define      WLAN_SEC_UNSEC (0)
-#define      WLAN_SEC_WEP	(1)
-#define      WLAN_SEC_WPA	(2)
-#define      WLAN_SEC_WPA2	(3)
+#define WLAN_SEC_UNSEC (0)
+#define WLAN_SEC_WEP (1)
+#define WLAN_SEC_WPA (2)
+#define WLAN_SEC_WPA2 (3)
 //*****************************************************************************
 //
 //! \addtogroup wlan_api
 //! @{
 //
 //*****************************************************************************
-
 
 //*****************************************************************************
 //
@@ -104,16 +103,13 @@ extern "C" {
 //!  @warning This function must be called before ANY other wlan driver function
 //
 //*****************************************************************************
-extern void wlan_init(		tWlanCB	 	sWlanCB,
-                            tFWPatches sFWPatches,
-                            tDriverPatches sDriverPatches,
-                            tBootLoaderPatches sBootLoaderPatches,
-                            tWlanReadInteruptPin  sReadWlanInterruptPin,
-                            tWlanInterruptEnable  sWlanInterruptEnable,
-                            tWlanInterruptDisable sWlanInterruptDisable,
-                            tWriteWlanPin         sWriteWlanPin);
-
-
+extern void wlan_init(tWlanCB sWlanCB, tFWPatches sFWPatches,
+                      tDriverPatches sDriverPatches,
+                      tBootLoaderPatches sBootLoaderPatches,
+                      tWlanReadInteruptPin sReadWlanInterruptPin,
+                      tWlanInterruptEnable sWlanInterruptEnable,
+                      tWlanInterruptDisable sWlanInterruptDisable,
+                      tWriteWlanPin sWriteWlanPin);
 
 //*****************************************************************************
 //
@@ -130,9 +126,9 @@ extern void wlan_init(		tWlanCB	 	sWlanCB,
 //!
 //!  @brief        Start WLAN device. This function asserts the enable pin of
 //!                the device (WLAN_EN), starting the HW initialization process.
-//!                The function blocked until device Initialization is completed.
-//!                Function also configure patches (FW, driver or bootloader)
-//!                and calls appropriate device callbacks.
+//!                The function blocked until device Initialization is
+//!                completed. Function also configure patches (FW, driver or
+//!                bootloader) and calls appropriate device callbacks.
 //!
 //!  @Note          Prior calling the function wlan_init shall be called.
 //!  @Warning       This function must be called after wlan_init and before any
@@ -239,17 +235,11 @@ extern INT32 wlan_disconnect(void);
 //
 //*****************************************************************************
 
-extern INT32 wlan_add_profile(UINT32 ulSecType, UINT8* ucSsid,
-                              UINT32 ulSsidLen,
-                              UINT8 *ucBssid,
-                              UINT32 ulPriority,
+extern INT32 wlan_add_profile(UINT32 ulSecType, UINT8 *ucSsid, UINT32 ulSsidLen,
+                              UINT8 *ucBssid, UINT32 ulPriority,
                               UINT32 ulPairwiseCipher_Or_Key,
-                              UINT32 ulGroupCipher_TxKeyLen,
-                              UINT32 ulKeyMgmt,
-                              UINT8* ucPf_OrKey,
-                              UINT32 ulPassPhraseLen);
-
-
+                              UINT32 ulGroupCipher_TxKeyLen, UINT32 ulKeyMgmt,
+                              UINT8 *ucPf_OrKey, UINT32 ulPassPhraseLen);
 
 //*****************************************************************************
 //
@@ -305,7 +295,6 @@ extern INT32 wlan_set_event_mask(UINT32 ulMask);
 //*****************************************************************************
 extern INT32 wlan_ioctl_statusget(void);
 
-
 //*****************************************************************************
 //
 //!  wlan_ioctl_set_connection_policy
@@ -337,10 +326,9 @@ extern INT32 wlan_ioctl_statusget(void);
 //!  @sa         wlan_add_profile , wlan_ioctl_del_profile
 //
 //*****************************************************************************
-extern INT32 wlan_ioctl_set_connection_policy(
-    UINT32 should_connect_to_open_ap,
-    UINT32 should_use_fast_connect,
-    UINT32 ulUseProfiles);
+extern INT32 wlan_ioctl_set_connection_policy(UINT32 should_connect_to_open_ap,
+                                              UINT32 should_use_fast_connect,
+                                              UINT32 ulUseProfiles);
 
 //*****************************************************************************
 //
@@ -365,7 +353,8 @@ extern INT32 wlan_ioctl_set_connection_policy(
 //!                 - 2 bits: securityMode - security mode of the AP:
 //!                           0 - Open, 1 - WEP, 2 WPA, 3 WPA2
 //!         				- 6 bits: SSID name length
-//!         				- 2 bytes: the time at which the entry has entered into
+//!         				- 2 bytes: the time at which the entry has entered
+//!         into
 //!                            scans result table
 //!         				- 32 bytes: SSID name
 //!                 - 6 bytes:	BSSID
@@ -376,9 +365,8 @@ extern INT32 wlan_ioctl_set_connection_policy(
 //
 //*****************************************************************************
 
-
 extern INT32 wlan_ioctl_get_scan_results(UINT32 ulScanTimeout,
-        UINT8 *ucResults);
+                                         UINT8 *ucResults);
 
 //*****************************************************************************
 //
@@ -416,14 +404,10 @@ extern INT32 wlan_ioctl_get_scan_results(UINT32 ulScanTimeout,
 //!  @sa        wlan_ioctl_get_scan_results
 //
 //*****************************************************************************
-extern INT32 wlan_ioctl_set_scan_params(UINT32 uiEnable, UINT32
-                                        uiMinDwellTime,UINT32 uiMaxDwellTime,
-                                        UINT32 uiNumOfProbeRequests,
-                                        UINT32 uiChannelMask,
-                                        INT32 iRSSIThreshold,UINT32 uiSNRThreshold,
-                                        UINT32 uiDefaultTxPower,
-                                        UINT32 *aiIntervalList);
-
+extern INT32 wlan_ioctl_set_scan_params(
+    UINT32 uiEnable, UINT32 uiMinDwellTime, UINT32 uiMaxDwellTime,
+    UINT32 uiNumOfProbeRequests, UINT32 uiChannelMask, INT32 iRSSIThreshold,
+    UINT32 uiSNRThreshold, UINT32 uiDefaultTxPower, UINT32 *aiIntervalList);
 
 //*****************************************************************************
 //
@@ -439,14 +423,14 @@ extern INT32 wlan_ioctl_set_scan_params(UINT32 uiEnable, UINT32
 //!           In case AES128 encryption is not used, a profile is created by
 //!           CC3000 internally.
 //!
-//!  @Note    An asynchronous event - Smart Config Done will be generated as soon
+//!  @Note    An asynchronous event - Smart Config Done will be generated as
+//!  soon
 //!           as the process finishes successfully.
 //!
 //!  @sa      wlan_smart_config_set_prefix , wlan_smart_config_stop
 //
 //*****************************************************************************
 extern INT32 wlan_smart_config_start(UINT32 algoEncryptedFlag);
-
 
 //*****************************************************************************
 //
@@ -479,7 +463,7 @@ extern INT32 wlan_smart_config_stop(void);
 //!  @sa      wlan_smart_config_start , wlan_smart_config_stop
 //
 //*****************************************************************************
-extern INT32 wlan_smart_config_set_prefix(CHAR* cNewPrefix);
+extern INT32 wlan_smart_config_set_prefix(CHAR *cNewPrefix);
 
 //*****************************************************************************
 //
@@ -504,15 +488,13 @@ extern INT32 wlan_smart_config_process(void);
 //
 //*****************************************************************************
 
-
-
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.
 //
 //*****************************************************************************
-#ifdef	__cplusplus
+#ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif	// __CC3000_WLAN_H__
+#endif // __CC3000_WLAN_H__

@@ -29,15 +29,15 @@
 #if MICROPY_NLR_SETJMP
 
 void nlr_jump(void *val) {
-    nlr_buf_t **top_ptr = &MP_STATE_THREAD(nlr_top);
-    nlr_buf_t *top = *top_ptr;
-    if (top == NULL) {
-        nlr_jump_fail(val);
-    }
-    top->ret_val = val;
-    MP_NLR_RESTORE_PYSTACK(top);
-    *top_ptr = top->prev;
-    longjmp(top->jmpbuf, 1);
+  nlr_buf_t **top_ptr = &MP_STATE_THREAD(nlr_top);
+  nlr_buf_t *top = *top_ptr;
+  if (top == NULL) {
+    nlr_jump_fail(val);
+  }
+  top->ret_val = val;
+  MP_NLR_RESTORE_PYSTACK(top);
+  *top_ptr = top->prev;
+  longjmp(top->jmpbuf, 1);
 }
 
 #endif

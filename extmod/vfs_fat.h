@@ -26,14 +26,14 @@
 #ifndef MICROPY_INCLUDED_EXTMOD_VFS_FAT_H
 #define MICROPY_INCLUDED_EXTMOD_VFS_FAT_H
 
-#include "py/obj.h"
-#include "lib/oofatfs/ff.h"
 #include "extmod/vfs.h"
+#include "lib/oofatfs/ff.h"
+#include "py/obj.h"
 
 typedef struct _fs_user_mount_t {
-    mp_obj_base_t base;
-    mp_vfs_blockdev_t blockdev;
-    FATFS fatfs;
+  mp_obj_base_t base;
+  mp_vfs_blockdev_t blockdev;
+  FATFS fatfs;
 } fs_user_mount_t;
 
 extern const byte fresult_to_errno_table[20];

@@ -32,40 +32,34 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
-*/
-
-
+ */
 
 /*****************************************************************************/
 /* Include files                                                             */
 /*****************************************************************************/
-#include "simplelink.h"
-#include "protocol.h"
-#include "driver.h"
 #include "flowcont.h"
-
+#include "driver.h"
+#include "protocol.h"
+#include "simplelink.h"
 
 /*****************************************************************************/
 /* _SlDrvFlowContInit */
 /*****************************************************************************/
-void _SlDrvFlowContInit(void)
-{
-    g_pCB->FlowContCB.TxPoolCnt = FLOW_CONT_MIN;
+void _SlDrvFlowContInit(void) {
+  g_pCB->FlowContCB.TxPoolCnt = FLOW_CONT_MIN;
 
-    OSI_RET_OK_CHECK(sl_LockObjCreate(&g_pCB->FlowContCB.TxLockObj, "TxLockObj"));
+  OSI_RET_OK_CHECK(sl_LockObjCreate(&g_pCB->FlowContCB.TxLockObj, "TxLockObj"));
 
-    OSI_RET_OK_CHECK(sl_SyncObjCreate(&g_pCB->FlowContCB.TxSyncObj, "TxSyncObj"));
+  OSI_RET_OK_CHECK(sl_SyncObjCreate(&g_pCB->FlowContCB.TxSyncObj, "TxSyncObj"));
 }
 
 /*****************************************************************************/
 /* _SlDrvFlowContDeinit */
 /*****************************************************************************/
-void _SlDrvFlowContDeinit(void)
-{
-    g_pCB->FlowContCB.TxPoolCnt = 0;
+void _SlDrvFlowContDeinit(void) {
+  g_pCB->FlowContCB.TxPoolCnt = 0;
 
-    OSI_RET_OK_CHECK(sl_LockObjDelete(&g_pCB->FlowContCB.TxLockObj));
+  OSI_RET_OK_CHECK(sl_LockObjDelete(&g_pCB->FlowContCB.TxLockObj));
 
-    OSI_RET_OK_CHECK(sl_SyncObjDelete(&g_pCB->FlowContCB.TxSyncObj));
+  OSI_RET_OK_CHECK(sl_SyncObjDelete(&g_pCB->FlowContCB.TxSyncObj));
 }
-

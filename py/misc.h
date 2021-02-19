@@ -31,8 +31,8 @@
 /** types *******************************************************/
 
 #include <stdbool.h>
-#include <stdint.h>
 #include <stddef.h>
+#include <stdint.h>
 
 typedef unsigned char byte;
 typedef unsigned int uint;
@@ -54,36 +54,50 @@ typedef unsigned int uint;
 #define MP_STATIC_ASSERT(cond) ((void)sizeof(char[1 - 2 * !(cond)]))
 
 // Round-up integer division
-#define MP_CEIL_DIVIDE(a, b) (((a) + (b) - 1) / (b))
+#define MP_CEIL_DIVIDE(a, b) (((a) + (b)-1) / (b))
 
 /** memory allocation ******************************************/
 
-// TODO make a lazy m_renew that can increase by a smaller amount than requested (but by at least 1 more element)
+// TODO make a lazy m_renew that can increase by a smaller amount than requested
+// (but by at least 1 more element)
 
 #define m_new(type, num) ((type *)(m_malloc(sizeof(type) * (num))))
 #define m_new_maybe(type, num) ((type *)(m_malloc_maybe(sizeof(type) * (num))))
 #define m_new0(type, num) ((type *)(m_malloc0(sizeof(type) * (num))))
 #define m_new_obj(type) (m_new(type, 1))
 #define m_new_obj_maybe(type) (m_new_maybe(type, 1))
-#define m_new_obj_var(obj_type, var_type, var_num) ((obj_type *)m_malloc(sizeof(obj_type) + sizeof(var_type) * (var_num)))
-#define m_new_obj_var_maybe(obj_type, var_type, var_num) ((obj_type *)m_malloc_maybe(sizeof(obj_type) + sizeof(var_type) * (var_num)))
+#define m_new_obj_var(obj_type, var_type, var_num)                             \
+  ((obj_type *)m_malloc(sizeof(obj_type) + sizeof(var_type) * (var_num)))
+#define m_new_obj_var_maybe(obj_type, var_type, var_num)                       \
+  ((obj_type *)m_malloc_maybe(sizeof(obj_type) + sizeof(var_type) * (var_num)))
 #if MICROPY_ENABLE_FINALISER
-#define m_new_obj_with_finaliser(type) ((type *)(m_malloc_with_finaliser(sizeof(type))))
-#define m_new_obj_var_with_finaliser(type, var_type, var_num) ((type *)m_malloc_with_finaliser(sizeof(type) + sizeof(var_type) * (var_num)))
+#define m_new_obj_with_finaliser(type)                                         \
+  ((type *)(m_malloc_with_finaliser(sizeof(type))))
+#define m_new_obj_var_with_finaliser(type, var_type, var_num)                  \
+  ((type *)m_malloc_with_finaliser(sizeof(type) + sizeof(var_type) * (var_num)))
 #else
 #define m_new_obj_with_finaliser(type) m_new_obj(type)
-#define m_new_obj_var_with_finaliser(type, var_type, var_num) m_new_obj_var(type, var_type, var_num)
+#define m_new_obj_var_with_finaliser(type, var_type, var_num)                  \
+  m_new_obj_var(type, var_type, var_num)
 #endif
 #if MICROPY_MALLOC_USES_ALLOCATED_SIZE
-#define m_renew(type, ptr, old_num, new_num) ((type *)(m_realloc((ptr), sizeof(type) * (old_num), sizeof(type) * (new_num))))
-#define m_renew_maybe(type, ptr, old_num, new_num, allow_move) ((type *)(m_realloc_maybe((ptr), sizeof(type) * (old_num), sizeof(type) * (new_num), (allow_move))))
+#define m_renew(type, ptr, old_num, new_num)                                   \
+  ((type *)(m_realloc((ptr), sizeof(type) * (old_num),                         \
+                      sizeof(type) * (new_num))))
+#define m_renew_maybe(type, ptr, old_num, new_num, allow_move)                 \
+  ((type *)(m_realloc_maybe((ptr), sizeof(type) * (old_num),                   \
+                            sizeof(type) * (new_num), (allow_move))))
 #define m_del(type, ptr, num) m_free(ptr, sizeof(type) * (num))
-#define m_del_var(obj_type, var_type, var_num, ptr) (m_free(ptr, sizeof(obj_type) + sizeof(var_type) * (var_num)))
+#define m_del_var(obj_type, var_type, var_num, ptr)                            \
+  (m_free(ptr, sizeof(obj_type) + sizeof(var_type) * (var_num)))
 #else
-#define m_renew(type, ptr, old_num, new_num) ((type *)(m_realloc((ptr), sizeof(type) * (new_num))))
-#define m_renew_maybe(type, ptr, old_num, new_num, allow_move) ((type *)(m_realloc_maybe((ptr), sizeof(type) * (new_num), (allow_move))))
+#define m_renew(type, ptr, old_num, new_num)                                   \
+  ((type *)(m_realloc((ptr), sizeof(type) * (new_num))))
+#define m_renew_maybe(type, ptr, old_num, new_num, allow_move)                 \
+  ((type *)(m_realloc_maybe((ptr), sizeof(type) * (new_num), (allow_move))))
 #define m_del(type, ptr, num) ((void)(num), m_free(ptr))
-#define m_del_var(obj_type, var_type, var_num, ptr) ((void)(var_num), m_free(ptr))
+#define m_del_var(obj_type, var_type, var_num, ptr)                            \
+  ((void)(var_num), m_free(ptr))
 #endif
 #define m_del_obj(type, ptr) (m_del(type, ptr, 1))
 
@@ -93,7 +107,8 @@ void *m_malloc_with_finaliser(size_t num_bytes);
 void *m_malloc0(size_t num_bytes);
 #if MICROPY_MALLOC_USES_ALLOCATED_SIZE
 void *m_realloc(void *ptr, size_t old_num_bytes, size_t new_num_bytes);
-void *m_realloc_maybe(void *ptr, size_t old_num_bytes, size_t new_num_bytes, bool allow_move);
+void *m_realloc_maybe(void *ptr, size_t old_num_bytes, size_t new_num_bytes,
+                      bool allow_move);
 void m_free(void *ptr, size_t num_bytes);
 #else
 void *m_realloc(void *ptr, size_t new_num_bytes);
@@ -114,7 +129,8 @@ size_t m_get_peak_bytes_allocated(void);
 #define MP_ARRAY_SIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 // align ptr to the nearest multiple of "alignment"
-#define MP_ALIGN(ptr, alignment) (void *)(((uintptr_t)(ptr) + ((alignment) - 1)) & ~((alignment) - 1))
+#define MP_ALIGN(ptr, alignment)                                               \
+  (void *)(((uintptr_t)(ptr) + ((alignment)-1)) & ~((alignment)-1))
 
 /** unichar / UTF-8 *********************************************/
 
@@ -132,15 +148,11 @@ unichar utf8_get_char(const byte *s);
 const byte *utf8_next_char(const byte *s);
 size_t utf8_charlen(const byte *str, size_t len);
 #else
-static inline unichar utf8_get_char(const byte *s) {
-    return *s;
-}
-static inline const byte *utf8_next_char(const byte *s) {
-    return s + 1;
-}
+static inline unichar utf8_get_char(const byte *s) { return *s; }
+static inline const byte *utf8_next_char(const byte *s) { return s + 1; }
 static inline size_t utf8_charlen(const byte *str, size_t len) {
-    (void)str;
-    return len;
+  (void)str;
+  return len;
 }
 #endif
 
@@ -156,20 +168,23 @@ bool unichar_islower(unichar c);
 unichar unichar_tolower(unichar c);
 unichar unichar_toupper(unichar c);
 mp_uint_t unichar_xdigit_value(unichar c);
-#define UTF8_IS_NONASCII(ch) ((ch) & 0x80)
-#define UTF8_IS_CONT(ch) (((ch) & 0xC0) == 0x80)
+#define UTF8_IS_NONASCII(ch) ((ch)&0x80)
+#define UTF8_IS_CONT(ch) (((ch)&0xC0) == 0x80)
 
 /** variable string *********************************************/
 
 typedef struct _vstr_t {
-    size_t alloc;
-    size_t len;
-    char *buf;
-    bool fixed_buf : 1;
+  size_t alloc;
+  size_t len;
+  char *buf;
+  bool fixed_buf : 1;
 } vstr_t;
 
 // convenience macro to declare a vstr with a fixed size buffer on the stack
-#define VSTR_FIXED(vstr, alloc) vstr_t vstr; char vstr##_buf[(alloc)]; vstr_init_fixed_buf(&vstr, (alloc), vstr##_buf);
+#define VSTR_FIXED(vstr, alloc)                                                \
+  vstr_t vstr;                                                                 \
+  char vstr##_buf[(alloc)];                                                    \
+  vstr_init_fixed_buf(&vstr, (alloc), vstr##_buf);
 
 void vstr_init(vstr_t *vstr, size_t alloc);
 void vstr_init_len(vstr_t *vstr, size_t len);
@@ -179,15 +194,9 @@ void vstr_init_print(vstr_t *vstr, size_t alloc, struct _mp_print_t *print);
 void vstr_clear(vstr_t *vstr);
 vstr_t *vstr_new(size_t alloc);
 void vstr_free(vstr_t *vstr);
-static inline void vstr_reset(vstr_t *vstr) {
-    vstr->len = 0;
-}
-static inline char *vstr_str(vstr_t *vstr) {
-    return vstr->buf;
-}
-static inline size_t vstr_len(vstr_t *vstr) {
-    return vstr->len;
-}
+static inline void vstr_reset(vstr_t *vstr) { vstr->len = 0; }
+static inline char *vstr_str(vstr_t *vstr) { return vstr->buf; }
+static inline size_t vstr_len(vstr_t *vstr) { return vstr->len; }
 void vstr_hint_size(vstr_t *vstr, size_t size);
 char *vstr_extend(vstr_t *vstr, size_t size);
 char *vstr_add_len(vstr_t *vstr, size_t len);
@@ -205,14 +214,22 @@ void vstr_printf(vstr_t *vstr, const char *fmt, ...);
 
 /** non-dynamic size-bounded variable buffer/string *************/
 
-#define CHECKBUF(buf, max_size) char buf[max_size + 1]; size_t buf##_len = max_size; char *buf##_p = buf;
-#define CHECKBUF_RESET(buf, max_size) buf##_len = max_size; buf##_p = buf;
-#define CHECKBUF_APPEND(buf, src, src_len) \
-    { size_t l = MIN(src_len, buf##_len); \
-      memcpy(buf##_p, src, l); \
-      buf##_len -= l; \
-      buf##_p += l; }
-#define CHECKBUF_APPEND_0(buf) { *buf##_p = 0; }
+#define CHECKBUF(buf, max_size)                                                \
+  char buf[max_size + 1];                                                      \
+  size_t buf##_len = max_size;                                                 \
+  char *buf##_p = buf;
+#define CHECKBUF_RESET(buf, max_size)                                          \
+  buf##_len = max_size;                                                        \
+  buf##_p = buf;
+#define CHECKBUF_APPEND(buf, src, src_len)                                     \
+  {                                                                            \
+    size_t l = MIN(src_len, buf##_len);                                        \
+    memcpy(buf##_p, src, l);                                                   \
+    buf##_len -= l;                                                            \
+    buf##_p += l;                                                              \
+  }
+#define CHECKBUF_APPEND_0(buf)                                                 \
+  { *buf##_p = 0; }
 #define CHECKBUF_LEN(buf) (buf##_p - buf)
 
 #ifdef va_start
@@ -241,25 +258,21 @@ typedef uint32_t mp_float_uint_t;
 #define MP_FLOAT_EXP_BIAS ((1 << (MP_FLOAT_EXP_BITS - 1)) - 1)
 
 typedef union _mp_float_union_t {
-    mp_float_t f;
+  mp_float_t f;
 #if MP_ENDIANNESS_LITTLE
-    struct {
-mp_float_uint_t frc :
-        MP_FLOAT_FRAC_BITS;
-mp_float_uint_t exp :
-        MP_FLOAT_EXP_BITS;
-        mp_float_uint_t sgn : 1;
-    } p;
+  struct {
+    mp_float_uint_t frc : MP_FLOAT_FRAC_BITS;
+    mp_float_uint_t exp : MP_FLOAT_EXP_BITS;
+    mp_float_uint_t sgn : 1;
+  } p;
 #else
-    struct {
-        mp_float_uint_t sgn : 1;
-mp_float_uint_t exp :
-        MP_FLOAT_EXP_BITS;
-mp_float_uint_t frc :
-        MP_FLOAT_FRAC_BITS;
-    } p;
+  struct {
+    mp_float_uint_t sgn : 1;
+    mp_float_uint_t exp : MP_FLOAT_EXP_BITS;
+    mp_float_uint_t frc : MP_FLOAT_FRAC_BITS;
+  } p;
 #endif
-    mp_float_uint_t i;
+  mp_float_uint_t i;
 } mp_float_union_t;
 
 #endif // MICROPY_PY_BUILTINS_FLOAT
@@ -271,7 +284,8 @@ mp_float_uint_t frc :
 #ifdef NO_QSTR
 
 // Compression enabled but doing QSTR extraction.
-// So leave MP_COMPRESSED_ROM_TEXT in place for makeqstrdefs.py / makecompresseddata.py to find them.
+// So leave MP_COMPRESSED_ROM_TEXT in place for makeqstrdefs.py /
+// makecompresseddata.py to find them.
 
 #else
 
@@ -281,19 +295,26 @@ mp_float_uint_t frc :
 // Force usage of the MP_ERROR_TEXT macro by requiring an opaque type.
 typedef struct {
 #ifdef __clang__
-    // Fix "error: empty struct has size 0 in C, size 1 in C++".
-    char dummy;
+  // Fix "error: empty struct has size 0 in C, size 1 in C++".
+  char dummy;
 #endif
-} *mp_rom_error_text_t;
+} * mp_rom_error_text_t;
 
 #include <string.h>
 
-inline __attribute__((always_inline)) const char *MP_COMPRESSED_ROM_TEXT(const char *msg) {
-    // "genhdr/compressed.data.h" contains an invocation of the MP_MATCH_COMPRESSED macro for each compressed string.
-    // The giant if(strcmp) tree is optimized by the compiler, which turns this into a direct return of the compressed data.
-#define MP_MATCH_COMPRESSED(a, b) if (strcmp(msg, a) == 0) { return b; } else
+inline __attribute__((always_inline)) const char *
+MP_COMPRESSED_ROM_TEXT(const char *msg) {
+  // "genhdr/compressed.data.h" contains an invocation of the
+  // MP_MATCH_COMPRESSED macro for each compressed string. The giant if(strcmp)
+  // tree is optimized by the compiler, which turns this into a direct return of
+  // the compressed data.
+#define MP_MATCH_COMPRESSED(a, b)                                              \
+  if (strcmp(msg, a) == 0) {                                                   \
+    return b;                                                                  \
+  } else
 
-    // It also contains a single invocation of the MP_COMPRESSED_DATA macro, we don't need that here.
+  // It also contains a single invocation of the MP_COMPRESSED_DATA macro, we
+  // don't need that here.
 #define MP_COMPRESSED_DATA(x)
 
 #include "genhdr/compressed.data.h"
@@ -301,7 +322,7 @@ inline __attribute__((always_inline)) const char *MP_COMPRESSED_ROM_TEXT(const c
 #undef MP_COMPRESSED_DATA
 #undef MP_MATCH_COMPRESSED
 
-    return msg;
+  return msg;
 }
 
 #endif
@@ -317,6 +338,6 @@ typedef const char *mp_rom_error_text_t;
 
 // Might add more types of compressed text in the future.
 // For now, forward directly to MP_COMPRESSED_ROM_TEXT.
-#define MP_ERROR_TEXT(x) (mp_rom_error_text_t)MP_COMPRESSED_ROM_TEXT(x)
+#define MP_ERROR_TEXT(x) (mp_rom_error_text_t) MP_COMPRESSED_ROM_TEXT(x)
 
 #endif // MICROPY_INCLUDED_PY_MISC_H

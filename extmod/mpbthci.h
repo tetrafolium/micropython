@@ -34,7 +34,8 @@
 int mp_bluetooth_hci_controller_init(void);
 int mp_bluetooth_hci_controller_deinit(void);
 
-// Tell the controller to go to sleep (e.g. on RX if we don't think we're expecting anything more).
+// Tell the controller to go to sleep (e.g. on RX if we don't think we're
+// expecting anything more).
 int mp_bluetooth_hci_controller_sleep_maybe(void);
 // True if the controller woke us up.
 bool mp_bluetooth_hci_controller_woken(void);
