@@ -1,7 +1,9 @@
 try:
-    import usocket as socket, sys
+    import usocket as socket
+    import sys
 except:
-    import socket, sys
+    import socket
+    import sys
 
 
 def test_non_existent():

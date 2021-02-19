@@ -11,6 +11,8 @@ bβ = 3
 print(α, αβγ, bβ, βb)
 
 # function, argument, local identifiers
+
+
 def α(β, γ):
     δ = β + γ
     print(β, γ, δ)
@@ -19,6 +21,8 @@ def α(β, γ):
 α(1, 2)
 
 # class, method identifiers
+
+
 class φ:
     def __init__(self):
         pass

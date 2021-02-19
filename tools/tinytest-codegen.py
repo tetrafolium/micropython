@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-import os, sys
+import os
+import sys
 from glob import glob
 from re import sub
 import argparse
@@ -49,7 +50,7 @@ testcase_member = '  {{ "{desc}", {func}, TT_ENABLED_, 0, 0 }},'
 testgroup_struct = "struct testgroup_t groups[] = {{\n{body}\n  END_OF_GROUPS\n}};"
 testgroup_member = '  {{ "{name}", {name}_tests }},'
 
-## XXX: may be we could have `--without <groups>` argument...
+# XXX: may be we could have `--without <groups>` argument...
 # currently these tests are selected because they pass on qemu-arm
 test_dirs = (
     "basics",
@@ -107,24 +108,28 @@ tests = []
 argparser = argparse.ArgumentParser(
     description="Convert native MicroPython tests to tinytest/upytesthelper C code"
 )
-argparser.add_argument("--stdin", action="store_true", help="read list of tests from stdin")
+argparser.add_argument("--stdin", action="store_true",
+                       help="read list of tests from stdin")
 args = argparser.parse_args()
 
 if not args.stdin:
     for group in test_dirs:
-        tests += [test for test in glob("{}/*.py".format(group)) if test not in exclude_tests]
+        tests += [test for test in glob("{}/*.py".format(group))
+                  if test not in exclude_tests]
 else:
     for l in sys.stdin:
         tests.append(l.rstrip())
 
 output.extend([test_function.format(**script_to_map(test)) for test in tests])
-testcase_members = [testcase_member.format(**chew_filename(test)) for test in tests]
-output.append(testcase_struct.format(name="", body="\n".join(testcase_members)))
+testcase_members = [testcase_member.format(
+    **chew_filename(test)) for test in tests]
+output.append(testcase_struct.format(
+    name="", body="\n".join(testcase_members)))
 
 testgroup_members = [testgroup_member.format(name=group) for group in [""]]
 
 output.append(testgroup_struct.format(body="\n".join(testgroup_members)))
 
-## XXX: may be we could have `--output <filename>` argument...
+# XXX: may be we could have `--output <filename>` argument...
 # Don't depend on what system locale is set, use utf8 encoding.
 sys.stdout.buffer.write("\n\n".join(output).encode("utf8"))

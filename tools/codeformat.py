@@ -84,7 +84,8 @@ def list_files(paths, exclusions=None, prefix=""):
     for pattern in paths:
         files.update(glob.glob(os.path.join(prefix, pattern), recursive=True))
     for pattern in exclusions or []:
-        files.difference_update(glob.fnmatch.filter(files, os.path.join(prefix, pattern)))
+        files.difference_update(glob.fnmatch.filter(
+            files, os.path.join(prefix, pattern)))
     return sorted(files)
 
 
@@ -131,10 +132,14 @@ def fixup_c(filename):
 
 
 def main():
-    cmd_parser = argparse.ArgumentParser(description="Auto-format C and Python files.")
-    cmd_parser.add_argument("-c", action="store_true", help="Format C code only")
-    cmd_parser.add_argument("-p", action="store_true", help="Format Python code only")
-    cmd_parser.add_argument("-v", action="store_true", help="Enable verbose output")
+    cmd_parser = argparse.ArgumentParser(
+        description="Auto-format C and Python files.")
+    cmd_parser.add_argument("-c", action="store_true",
+                            help="Format C code only")
+    cmd_parser.add_argument("-p", action="store_true",
+                            help="Format Python code only")
+    cmd_parser.add_argument("-v", action="store_true",
+                            help="Enable verbose output")
     cmd_parser.add_argument("files", nargs="*", help="Run on specific globs")
     args = cmd_parser.parse_args()
 

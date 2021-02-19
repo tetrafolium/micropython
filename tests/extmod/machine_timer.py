@@ -1,7 +1,8 @@
 # test machine.Timer
 
 try:
-    import utime, umachine as machine
+    import utime
+    import umachine as machine
 
     machine.Timer
 except:
@@ -28,11 +29,13 @@ t2.deinit()
 t.deinit()
 
 # create one-shot timer with callback and wait for it to print (should be just once)
-t = machine.Timer(period=1, mode=machine.Timer.ONE_SHOT, callback=lambda t: print("one-shot"))
+t = machine.Timer(period=1, mode=machine.Timer.ONE_SHOT,
+                  callback=lambda t: print("one-shot"))
 utime.sleep_ms(5)
 t.deinit()
 
 # create periodic timer with callback and wait for it to print
-t = machine.Timer(period=4, mode=machine.Timer.PERIODIC, callback=lambda t: print("periodic"))
+t = machine.Timer(period=4, mode=machine.Timer.PERIODIC,
+                  callback=lambda t: print("periodic"))
 utime.sleep_ms(14)
 t.deinit()

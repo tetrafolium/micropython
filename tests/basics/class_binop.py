@@ -22,6 +22,7 @@ class foo(object):
         print('ge')
         return self.x >= other.x
 
+
 for i in range(3):
     for j in range(3):
         print(foo(i) == foo(j))

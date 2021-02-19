@@ -97,6 +97,7 @@ class Cud():
     def __dir__(self):
         return ['a', 'b', 'c']
 
+
 cud1 = Cud()
 cud2 = Cud()
 

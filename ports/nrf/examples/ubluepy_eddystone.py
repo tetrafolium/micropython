@@ -30,7 +30,8 @@ def gen_ad_type_content(ad_type, data):
 def generate_eddystone_adv_packet(url):
     # flags
     disc_mode = bytearray([BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE])
-    packet_flags = gen_ad_type_content(constants.ad_types.AD_TYPE_FLAGS, disc_mode)
+    packet_flags = gen_ad_type_content(
+        constants.ad_types.AD_TYPE_FLAGS, disc_mode)
 
     # 16-bit uuid
     uuid = bytearray([0xAA, 0xFE])

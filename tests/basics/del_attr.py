@@ -4,6 +4,7 @@ class C:
 
 # del a class attribute
 
+
 del C.f
 try:
     print(C.x)

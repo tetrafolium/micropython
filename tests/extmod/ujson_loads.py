@@ -37,7 +37,8 @@ my_print(json.loads('"abc\\tdef"'))
 my_print(json.loads('"abc\\uabcd"'))
 
 # whitespace handling
-my_print(json.loads('{\n\t"a":[]\r\n, "b":[1], "c":{"3":4}     \n\r\t\r\r\r\n}'))
+my_print(json.loads(
+    '{\n\t"a":[]\r\n, "b":[1], "c":{"3":4}     \n\r\t\r\r\r\n}'))
 
 # loading nothing should raise exception
 try:

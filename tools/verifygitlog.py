@@ -5,7 +5,8 @@ import subprocess
 import sys
 
 verbosity = 0  # Show what's going on, 0 1 or 2.
-suggestions = 1  # Set to 0 to not include lengthy suggestions in error messages.
+# Set to 0 to not include lengthy suggestions in error messages.
+suggestions = 1
 
 
 def verbose(*args):
@@ -91,7 +92,8 @@ def run(args):
             print("warning:", err)
     if has_errors or has_warnings:
         if suggestions:
-            print("See https://github.com/micropython/micropython/blob/master/CODECONVENTIONS.md")
+            print(
+                "See https://github.com/micropython/micropython/blob/master/CODECONVENTIONS.md")
     else:
         print("ok")
     if has_errors:

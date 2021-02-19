@@ -3,6 +3,7 @@
 class mytuple(tuple):
     pass
 
+
 t = mytuple((1, 2, 3))
 print(t)
 print(t == (1, 2, 3))

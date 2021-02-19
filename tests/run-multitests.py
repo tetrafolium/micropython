@@ -4,18 +4,23 @@
 # The MIT License (MIT)
 # Copyright (c) 2020 Damien P. George
 
-import sys, os, time, re, select
+import pyboard
+import sys
+import os
+import time
+import re
+import select
 import argparse
 import itertools
 import subprocess
 import tempfile
 
 sys.path.append("../tools")
-import pyboard
 
 if os.name == "nt":
     CPYTHON3 = os.getenv("MICROPY_CPYTHON3", "python3.exe")
-    MICROPYTHON = os.getenv("MICROPY_MICROPYTHON", "../ports/windows/micropython.exe")
+    MICROPYTHON = os.getenv("MICROPY_MICROPYTHON",
+                            "../ports/windows/micropython.exe")
 else:
     CPYTHON3 = os.getenv("MICROPY_CPYTHON3", "python3")
     MICROPYTHON = os.getenv("MICROPY_MICROPYTHON", "../ports/unix/micropython")
@@ -66,7 +71,8 @@ multitest.flush()
 # The btstack implementation on Unix generates some spurious output that we
 # can't control.
 IGNORE_OUTPUT_MATCHES = (
-    "libusb: error ",  # It tries to open devices that it doesn't have access to (libusb prints unconditionally).
+    # It tries to open devices that it doesn't have access to (libusb prints unconditionally).
+    "libusb: error ",
     "hci_transport_h2_libusb.c",  # Same issue. We enable LOG_ERROR in btstack.
     "USB Path: ",  # Hardcoded in btstack's libusb transport.
     "hci_number_completed_packet",  # Warning from btstack.
@@ -99,7 +105,8 @@ class PyInstance:
 class PyInstanceSubProcess(PyInstance):
     def __init__(self, argv, env=None):
         self.argv = argv
-        self.env = {n: v for n, v in (i.split("=") for i in env)} if env else None
+        self.env = {n: v for n, v in (i.split("=")
+                                      for i in env)} if env else None
         self.popen = None
         self.finished = True
 
@@ -346,14 +353,16 @@ def run_tests(test_files, instances_truth, instances_test):
     failed_tests = []
 
     for test_file, num_instances in test_files:
-        instances_str = "|".join(str(instances_test[i]) for i in range(num_instances))
+        instances_str = "|".join(
+            str(instances_test[i]) for i in range(num_instances))
         print("{} on {}: ".format(test_file, instances_str), end="")
         if cmd_args.show_output or cmd_args.trace_output:
             print()
         sys.stdout.flush()
 
         # Run test on test instances
-        error, skip, output_test = run_test_on_instances(test_file, num_instances, instances_test)
+        error, skip, output_test = run_test_on_instances(
+            test_file, num_instances, instances_test)
 
         if not skip:
             # Check if truth exists in a file, and read it in
@@ -395,13 +404,16 @@ def run_tests(test_files, instances_truth, instances_test):
         if cmd_args.show_output:
             print()
 
-    print("{} tests performed".format(len(skipped_tests) + len(passed_tests) + len(failed_tests)))
+    print("{} tests performed".format(
+        len(skipped_tests) + len(passed_tests) + len(failed_tests)))
     print("{} tests passed".format(len(passed_tests)))
 
     if skipped_tests:
-        print("{} tests skipped: {}".format(len(skipped_tests), " ".join(skipped_tests)))
+        print("{} tests skipped: {}".format(
+            len(skipped_tests), " ".join(skipped_tests)))
     if failed_tests:
-        print("{} tests failed: {}".format(len(failed_tests), " ".join(failed_tests)))
+        print("{} tests failed: {}".format(
+            len(failed_tests), " ".join(failed_tests)))
 
     return not failed_tests
 
@@ -409,7 +421,8 @@ def run_tests(test_files, instances_truth, instances_test):
 def main():
     global cmd_args
 
-    cmd_parser = argparse.ArgumentParser(description="Run network tests for MicroPython")
+    cmd_parser = argparse.ArgumentParser(
+        description="Run network tests for MicroPython")
     cmd_parser.add_argument(
         "-s", "--show-output", action="store_true", help="show test output after running"
     )
@@ -435,7 +448,8 @@ def main():
     test_files = prepare_test_file_list(cmd_args.files)
     max_instances = max(t[1] for t in test_files)
 
-    instances_truth = [PyInstanceSubProcess([PYTHON_TRUTH]) for _ in range(max_instances)]
+    instances_truth = [PyInstanceSubProcess(
+        [PYTHON_TRUTH]) for _ in range(max_instances)]
 
     instances_test = []
     for i in cmd_args.instance:
@@ -444,13 +458,14 @@ def main():
         cmd = i[0]
         env = i[1:]
         if cmd.startswith("exec:"):
-            instances_test.append(PyInstanceSubProcess([cmd[len("exec:") :]], env))
+            instances_test.append(
+                PyInstanceSubProcess([cmd[len("exec:"):]], env))
         elif cmd == "micropython":
             instances_test.append(PyInstanceSubProcess([MICROPYTHON], env))
         elif cmd == "cpython":
             instances_test.append(PyInstanceSubProcess([CPYTHON3], env))
         elif cmd.startswith("pyb:"):
-            instances_test.append(PyInstancePyboard(cmd[len("pyb:") :]))
+            instances_test.append(PyInstancePyboard(cmd[len("pyb:"):]))
         else:
             print("unknown instance string: {}".format(cmd), file=sys.stderr)
             sys.exit(1)
@@ -464,7 +479,8 @@ def main():
             if i >= cmd_args.permutations:
                 break
 
-            all_pass &= run_tests(test_files, instances_truth, instances_test_permutation)
+            all_pass &= run_tests(
+                test_files, instances_truth, instances_test_permutation)
 
     finally:
         for i in instances_truth:

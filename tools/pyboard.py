@@ -113,7 +113,8 @@ class TelnetToSerial:
                     self.fifo = deque()
                     return
 
-        raise PyboardError("Failed to establish a telnet connection with the board")
+        raise PyboardError(
+            "Failed to establish a telnet connection with the board")
 
     def __del__(self):
         self.close()
@@ -234,7 +235,8 @@ class ProcessPtyToTerminal:
         pty = m.group()
         # rtscts, dsrdtr params are to workaround pyserial bug:
         # http://stackoverflow.com/questions/34831131/pyserial-does-not-play-well-with-virtual-port
-        self.ser = serial.Serial(pty, interCharTimeout=1, rtscts=True, dsrdtr=True)
+        self.ser = serial.Serial(
+            pty, interCharTimeout=1, rtscts=True, dsrdtr=True)
 
     def close(self):
         import signal
@@ -255,25 +257,28 @@ class Pyboard:
     def __init__(self, device, baudrate=115200, user="micro", password="python", wait=0):
         self.use_raw_paste = True
         if device.startswith("exec:"):
-            self.serial = ProcessToSerial(device[len("exec:") :])
+            self.serial = ProcessToSerial(device[len("exec:"):])
         elif device.startswith("execpty:"):
-            self.serial = ProcessPtyToTerminal(device[len("qemupty:") :])
+            self.serial = ProcessPtyToTerminal(device[len("qemupty:"):])
         elif device and device[0].isdigit() and device[-1].isdigit() and device.count(".") == 3:
             # device looks like an IP address
-            self.serial = TelnetToSerial(device, user, password, read_timeout=10)
+            self.serial = TelnetToSerial(
+                device, user, password, read_timeout=10)
         else:
             import serial
 
             delayed = False
             for attempt in range(wait + 1):
                 try:
-                    self.serial = serial.Serial(device, baudrate=baudrate, interCharTimeout=1)
+                    self.serial = serial.Serial(
+                        device, baudrate=baudrate, interCharTimeout=1)
                     break
                 except (OSError, IOError):  # Py2 and Py3 have different errors
                     if wait == 0:
                         continue
                     if attempt == 0:
-                        sys.stdout.write("Waiting {} seconds for pyboard ".format(wait))
+                        sys.stdout.write(
+                            "Waiting {} seconds for pyboard ".format(wait))
                         delayed = True
                 time.sleep(1)
                 sys.stdout.write(".")
@@ -315,7 +320,8 @@ class Pyboard:
         return data
 
     def enter_raw_repl(self):
-        self.serial.write(b"\r\x03\x03")  # ctrl-C twice: interrupt any running program
+        # ctrl-C twice: interrupt any running program
+        self.serial.write(b"\r\x03\x03")
 
         # flush input (without relying on serial.flushInput())
         n = self.serial.inWaiting()
@@ -346,7 +352,8 @@ class Pyboard:
 
     def follow(self, timeout, data_consumer=None):
         # wait for normal output
-        data = self.read_until(1, b"\x04", timeout=timeout, data_consumer=data_consumer)
+        data = self.read_until(1, b"\x04", timeout=timeout,
+                               data_consumer=data_consumer)
         if not data.endswith(b"\x04"):
             raise PyboardError("timeout waiting for first EOF reception")
         data = data[:-1]
@@ -380,9 +387,10 @@ class Pyboard:
                     return
                 else:
                     # Unexpected data from device.
-                    raise PyboardError("unexpected read during raw paste: {}".format(data))
+                    raise PyboardError(
+                        "unexpected read during raw paste: {}".format(data))
             # Send out as much data as possible that fits within the allowed window.
-            b = command_bytes[i : min(i + window_remain, len(command_bytes))]
+            b = command_bytes[i: min(i + window_remain, len(command_bytes))]
             self.serial.write(b)
             window_remain -= len(b)
             i += len(b)
@@ -427,7 +435,8 @@ class Pyboard:
 
         # Write command using standard raw REPL, 256 bytes every 10ms.
         for i in range(0, len(command_bytes), 256):
-            self.serial.write(command_bytes[i : min(i + 256, len(command_bytes))])
+            self.serial.write(
+                command_bytes[i: min(i + 256, len(command_bytes))])
             time.sleep(0.01)
         self.serial.write(b"\x04")
 
@@ -457,7 +466,8 @@ class Pyboard:
         return self.exec_(pyfile)
 
     def get_time(self):
-        t = str(self.eval("pyb.RTC().datetime()"), encoding="utf8")[1:-1].split(", ")
+        t = str(self.eval("pyb.RTC().datetime()"),
+                encoding="utf8")[1:-1].split(", ")
         return int(t[4]) * 3600 + int(t[5]) * 60 + int(t[6])
 
     def fs_ls(self, src):
@@ -471,7 +481,8 @@ class Pyboard:
     def fs_cat(self, src, chunk_size=256):
         cmd = (
             "with open('%s') as f:\n while 1:\n"
-            "  b=f.read(%u)\n  if not b:break\n  print(b,end='')" % (src, chunk_size)
+            "  b=f.read(%u)\n  if not b:break\n  print(b,end='')" % (
+                src, chunk_size)
         )
         self.exec_(cmd, data_consumer=stdout_write_bytes)
 
@@ -480,14 +491,16 @@ class Pyboard:
         with open(dest, "wb") as f:
             while True:
                 data = bytearray()
-                self.exec_("print(r(%u))" % chunk_size, data_consumer=lambda d: data.extend(d))
+                self.exec_("print(r(%u))" % chunk_size,
+                           data_consumer=lambda d: data.extend(d))
                 assert data.endswith(b"\r\n\x04")
                 try:
                     data = ast.literal_eval(str(data[:-3], "ascii"))
                     if not isinstance(data, bytes):
                         raise ValueError("Not bytes")
                 except (UnicodeError, ValueError) as e:
-                    raise PyboardError("fs_get: Could not interpret received data: %s" % str(e))
+                    raise PyboardError(
+                        "fs_get: Could not interpret received data: %s" % str(e))
                 if not data:
                     break
                 f.write(data)
@@ -616,7 +629,8 @@ del _injected_buf, _FS
 def main():
     import argparse
 
-    cmd_parser = argparse.ArgumentParser(description="Run scripts on the pyboard.")
+    cmd_parser = argparse.ArgumentParser(
+        description="Run scripts on the pyboard.")
     cmd_parser.add_argument(
         "-d",
         "--device",
@@ -629,9 +643,12 @@ def main():
         default=os.environ.get("PYBOARD_BAUDRATE", "115200"),
         help="the baud rate of the serial device",
     )
-    cmd_parser.add_argument("-u", "--user", default="micro", help="the telnet login username")
-    cmd_parser.add_argument("-p", "--password", default="python", help="the telnet login password")
-    cmd_parser.add_argument("-c", "--command", help="program passed in as string")
+    cmd_parser.add_argument("-u", "--user", default="micro",
+                            help="the telnet login username")
+    cmd_parser.add_argument(
+        "-p", "--password", default="python", help="the telnet login password")
+    cmd_parser.add_argument(
+        "-c", "--command", help="program passed in as string")
     cmd_parser.add_argument(
         "-w",
         "--wait",
@@ -658,7 +675,8 @@ def main():
 
     # open the connection to the pyboard
     try:
-        pyb = Pyboard(args.device, args.baudrate, args.user, args.password, args.wait)
+        pyb = Pyboard(args.device, args.baudrate,
+                      args.user, args.password, args.wait)
     except PyboardError as er:
         print(er)
         sys.exit(1)
@@ -719,7 +737,8 @@ def main():
     # if asked explicitly, or no files given, then follow the output
     if args.follow or (args.command is None and not args.filesystem and len(args.files) == 0):
         try:
-            ret, ret_err = pyb.follow(timeout=None, data_consumer=stdout_write_bytes)
+            ret, ret_err = pyb.follow(
+                timeout=None, data_consumer=stdout_write_bytes)
         except PyboardError as er:
             print(er)
             sys.exit(1)

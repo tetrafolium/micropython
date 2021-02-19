@@ -1,7 +1,8 @@
 # Copyright (c) 2019 Project Nayuki. (MIT License)
 # https://www.nayuki.io/page/free-small-fft-in-multiple-languages
 
-import math, cmath
+import math
+import cmath
 
 
 def transform_radix2(vector, inverse):
@@ -18,7 +19,8 @@ def transform_radix2(vector, inverse):
     levels = int(math.log2(n))
     coef = (2 if inverse else -2) * cmath.pi / n
     exptable = [cmath.rect(1, i * coef) for i in range(n // 2)]
-    vector = [vector[reverse(i, levels)] for i in range(n)]  # Copy with bit-reversed permutation
+    # Copy with bit-reversed permutation
+    vector = [vector[reverse(i, levels)] for i in range(n)]
 
     # Radix-2 decimation-in-time FFT
     size = 2
@@ -49,7 +51,8 @@ bm_params = {
 
 def bm_setup(params):
     state = None
-    signal = [math.cos(2 * math.pi * i / params[1]) + 0j for i in range(params[1])]
+    signal = [math.cos(2 * math.pi * i / params[1]) +
+              0j for i in range(params[1])]
     fft = None
     fft_inv = None
 

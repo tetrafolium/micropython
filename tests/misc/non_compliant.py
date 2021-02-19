@@ -118,6 +118,8 @@ except NotImplementedError:
     print("NotImplementedError")
 
 # can't assign attributes to a function
+
+
 def f():
     pass
 
@@ -135,6 +137,8 @@ except TypeError:
 
 # test when object explicitly listed at not-last position in parent tuple
 # this is not compliant with CPython because of illegal MRO
+
+
 class A:
     def foo(self):
         print("A.foo")
@@ -147,6 +151,8 @@ class B(object, A):
 B().foo()
 
 # can't assign property (or other special accessors) to already-subclassed class
+
+
 class A:
     pass
 

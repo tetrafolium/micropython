@@ -2,8 +2,11 @@
 # MIT license; Copyright (c) 2019-2020 Damien P. George
 
 from micropython import const
-import struct, time
-import uzlib, machine, stm
+import struct
+import time
+import uzlib
+import machine
+import stm
 
 # Constants to be used with update_mpy
 VFS_FAT = 1
@@ -60,7 +63,8 @@ def dfu_read(filename):
 
     for i in range(num_targ):
         hdr = f.read(274)
-        sig, alt, has_name, name, t_size, num_elem = struct.unpack("<6sBi255sII", hdr)
+        sig, alt, has_name, name, t_size, num_elem = struct.unpack(
+            "<6sBi255sII", hdr)
 
         file_offset += 274
         file_offset_t = file_offset
@@ -185,14 +189,17 @@ def update_mpy(filename, fs_base, fs_len, fs_type=VFS_FAT, fs_blocksize=0, statu
     mount_point = 1
     elems = _create_element(
         _ELEM_TYPE_MOUNT,
-        struct.pack("<BBLLL", mount_point, fs_type, fs_base, fs_len, fs_blocksize),
+        struct.pack("<BBLLL", mount_point, fs_type,
+                    fs_base, fs_len, fs_blocksize),
     )
     elems += _create_element(
-        _ELEM_TYPE_FSLOAD, struct.pack("<B", mount_point) + bytes(filename, "ascii")
+        _ELEM_TYPE_FSLOAD, struct.pack(
+            "<B", mount_point) + bytes(filename, "ascii")
     )
     if status_addr is not None:
         # mboot will write 0 to status_addr on succes, or a negative number on failure
         machine.mem32[status_addr] = 1
-        elems += _create_element(_ELEM_TYPE_STATUS, struct.pack("<L", status_addr))
+        elems += _create_element(_ELEM_TYPE_STATUS,
+                                 struct.pack("<L", status_addr))
     elems += _create_element(_ELEM_TYPE_END, b"")
     machine.bootloader(elems)

@@ -10,6 +10,7 @@ class C:
     def __sub__(self, rhs):
         print(self.value, '-', rhs)
 
+
 c = C(0)
 c + 1
 c - 2

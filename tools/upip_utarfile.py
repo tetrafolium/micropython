@@ -69,7 +69,8 @@ class TarFile:
         if not buf:
             return None
 
-        h = uctypes.struct(uctypes.addressof(buf), TAR_HEADER, uctypes.LITTLE_ENDIAN)
+        h = uctypes.struct(uctypes.addressof(
+            buf), TAR_HEADER, uctypes.LITTLE_ENDIAN)
 
         # Empty block means end of archive
         if h.name[0] == 0:

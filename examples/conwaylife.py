@@ -5,6 +5,8 @@ lcd = pyb.LCD("x")
 lcd.light(1)
 
 # do 1 iteration of Conway's Game of Life
+
+
 def conway_step():
     for x in range(128):  # loop over x coordinates
         for y in range(32):  # loop over y coordinates
@@ -25,9 +27,11 @@ def conway_step():
 
             # apply the rules of life
             if self and not (2 <= num_neighbours <= 3):
-                lcd.pixel(x, y, 0)  # not enough, or too many neighbours: cell dies
+                # not enough, or too many neighbours: cell dies
+                lcd.pixel(x, y, 0)
             elif not self and num_neighbours == 3:
-                lcd.pixel(x, y, 1)  # exactly 3 neighbours around an empty cell: cell is born
+                # exactly 3 neighbours around an empty cell: cell is born
+                lcd.pixel(x, y, 1)
 
 
 # randomise the start

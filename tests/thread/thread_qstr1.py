@@ -9,6 +9,8 @@ except ImportError:
 import _thread
 
 # function to check the interned string
+
+
 def check(s, val):
     assert type(s) == str
     assert int(s) == val

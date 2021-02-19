@@ -6,6 +6,7 @@ def f():
             for z in range(2):
                 print(x, y, z)
 
+
 f()
 
 # range with negative step

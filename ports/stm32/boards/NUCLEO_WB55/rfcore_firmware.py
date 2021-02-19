@@ -61,8 +61,10 @@
 # You can use the built-in stm.rfcore_fw_version() to query the installed version
 # from your application code.
 
-import struct, os
-import machine, stm
+import struct
+import os
+import machine
+import stm
 from micropython import const
 
 _OGF_VENDOR = const(0x3F)
@@ -219,7 +221,8 @@ class _Flash:
         self.wait_not_busy()
         cr = page << 3 | 1 << 1  # PNB  # PER
         machine.mem32[stm.FLASH + stm.FLASH_CR] = cr
-        machine.mem32[stm.FLASH + stm.FLASH_CR] = cr | _Flash._FLASH_CR_STRT_MASK
+        machine.mem32[stm.FLASH +
+                      stm.FLASH_CR] = cr | _Flash._FLASH_CR_STRT_MASK
         self.wait_not_busy()
         machine.mem32[stm.FLASH + stm.FLASH_CR] = 0
 
@@ -230,7 +233,8 @@ class _Flash:
         machine.mem32[stm.FLASH + stm.FLASH_CR] = cr
         off = 0
         while off < sz:
-            v = (buf[off]) | (buf[off + 1] << 8) | (buf[off + 2] << 16) | (buf[off + 3] << 24)
+            v = (buf[off]) | (buf[off + 1] << 8) | (buf[off + 2]
+                                                    << 16) | (buf[off + 3] << 24)
             machine.mem32[addr + off] = v ^ key
             off += 4
             if off % 8 == 0:
@@ -356,11 +360,13 @@ def _stat_and_start_copy(path, addr, copying_state, copied_state):
     else:
         log("Copying {} to flash", path)
         # Mark that the flash write has started. Any failure should result in an overall failure.
-        _write_state(copying_state)  # Either _STATE_COPYING_FUS or _STATE_COPYING_WS
+        # Either _STATE_COPYING_FUS or _STATE_COPYING_WS
+        _write_state(copying_state)
         _copy_file_to_flash(path, addr)
         log("Copying complete")
         # The entire write has completed successfully, start the install.
-        _write_state(copied_state)  # Either _STATE_COPIED_FUS or _STATE_COPIED_WS
+        # Either _STATE_COPIED_FUS or _STATE_COPIED_WS
+        _write_state(copied_state)
 
     return True
 

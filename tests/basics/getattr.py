@@ -7,16 +7,21 @@ class A:
     def __getattr__(self, attr):
         return self.d[attr]
 
-a = A({'a':1, 'b':2})
+
+a = A({'a': 1, 'b': 2})
 print(a.a, a.b)
 
 # test that any exception raised in __getattr__ propagates out
+
+
 class A:
     def __getattr__(self, attr):
         if attr == "value":
             raise ValueError(123)
         else:
             raise AttributeError(456)
+
+
 a = A()
 try:
     a.value

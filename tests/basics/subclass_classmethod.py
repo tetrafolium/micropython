@@ -5,11 +5,13 @@ class Base:
     def foo(cls):
         print(cls.__name__)
 
+
 try:
     Base.__name__
 except AttributeError:
     print("SKIP")
     raise SystemExit
+
 
 class Sub(Base):
     pass
@@ -18,6 +20,7 @@ class Sub(Base):
 Sub.foo()
 
 # overriding a member and accessing it via a classmethod
+
 
 class A(object):
     foo = 0
@@ -29,9 +32,11 @@ class A(object):
     def baz(self):
         print(self.foo)
 
+
 class B(A):
     foo = 1
 
-B.bar() # class calling classmethod
-B().bar() # instance calling classmethod
-B().baz() # instance calling normal method
+
+B.bar()  # class calling classmethod
+B().bar()  # instance calling classmethod
+B().baz()  # instance calling normal method

@@ -29,9 +29,11 @@ for i in range(4):
     print(ch)
     tim = Timer(i, mode=Timer.PWM)
     print(tim)
-    ch = tim.channel(Timer.A, freq=50000, duty_cycle=2000, polarity=Timer.POSITIVE)
+    ch = tim.channel(Timer.A, freq=50000, duty_cycle=2000,
+                     polarity=Timer.POSITIVE)
     print(ch)
-    ch = tim.channel(Timer.B, freq=50000, duty_cycle=8000, polarity=Timer.NEGATIVE)
+    ch = tim.channel(Timer.B, freq=50000, duty_cycle=8000,
+                     polarity=Timer.NEGATIVE)
     print(ch)
     tim.deinit()
     print(tim)

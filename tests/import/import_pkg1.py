@@ -1,3 +1,4 @@
+import pkg.mod as mm
 import pkg.mod
 
 print(pkg.__name__)
@@ -11,7 +12,6 @@ print(pkg_ is pkg)
 print(pkg_.mod is pkg.mod)
 
 # import using "as"
-import pkg.mod as mm
 
 print(mm is pkg.mod)
 print(mm.foo())

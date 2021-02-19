@@ -3,6 +3,7 @@
 class C:
     pass
 
+
 c = C()
 c.x = 1
 print(c.x)

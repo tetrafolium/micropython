@@ -1,7 +1,8 @@
 # Simple test creating an SSL connection and transferring some data
 # This test won't run under CPython because it requires key/cert
 
-import usocket as socket, ussl as ssl
+import usocket as socket
+import ussl as ssl
 
 PORT = 8000
 

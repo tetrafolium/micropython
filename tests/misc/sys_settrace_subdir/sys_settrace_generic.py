@@ -1,6 +1,8 @@
 print("Now comes the language constructions tests.")
 
 # function
+
+
 def test_func():
     def test_sub_func():
         print("test_function")
@@ -35,7 +37,7 @@ def test_listcomp():
 
 # lambda
 def test_lambda():
-    func_obj_1 = lambda a, b: a + b
+    def func_obj_1(a, b): return a + b
     print(func_obj_1(10, 20))
 
 

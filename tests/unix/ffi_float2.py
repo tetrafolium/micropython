@@ -17,7 +17,8 @@ def ffi_open(names):
     raise err
 
 
-libm = ffi_open(("libm.so", "libm.so.6", "libc.so.0", "libc.so.6", "libc.dylib"))
+libm = ffi_open(("libm.so", "libm.so.6", "libc.so.0",
+                 "libc.so.6", "libc.dylib"))
 
 # Some libc's implement tgammaf as header macro with tgamma(), so don't assume
 # it'll be in library.

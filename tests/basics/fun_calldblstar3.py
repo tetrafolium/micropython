@@ -3,6 +3,7 @@
 def foo(**kw):
     print(sorted(kw.items()))
 
+
 class Mapping:
     def keys(self):
         # the long string checks the case of string interning
@@ -13,5 +14,6 @@ class Mapping:
             return 1
         else:
             return 2
+
 
 foo(**Mapping())

@@ -10,6 +10,8 @@ except ImportError:
         raise SystemExit
 
 # main task raising an exception
+
+
 async def main():
     print("main start")
     raise ValueError(1)
@@ -22,6 +24,8 @@ except ValueError as er:
     print("ValueError", er.args[0])
 
 # sub-task raising an exception
+
+
 async def task():
     print("task start")
     raise ValueError(2)
@@ -42,6 +46,8 @@ except ValueError as er:
 
 # main task raising an exception with sub-task not yet scheduled
 # TODO not currently working, task is never scheduled
+
+
 async def task():
     # print('task run') uncomment this line when it works
     pass

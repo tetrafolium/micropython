@@ -18,12 +18,16 @@ print(getattr(list, "foo", 456))
 print(getattr(a, "va" + "r2"))
 
 # test a class that defines __getattr__ and may raise AttributeError
+
+
 class B:
     def __getattr__(self, attr):
         if attr == "a":
             return attr
         else:
             raise AttributeError
+
+
 b = B()
 print(getattr(b, "a"))
 print(getattr(b, "a", "default"))

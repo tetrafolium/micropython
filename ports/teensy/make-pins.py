@@ -34,8 +34,8 @@ def split_name_num(name_num):
     num = None
     for num_idx in range(len(name_num) - 1, -1, -1):
         if not name_num[num_idx].isdigit():
-            name = name_num[0 : num_idx + 1]
-            num_str = name_num[num_idx + 1 :]
+            name = name_num[0: num_idx + 1]
+            num_str = name_num[num_idx + 1:]
             if len(num_str) > 0:
                 num = int(num_str)
             break
@@ -180,10 +180,12 @@ class Pin(object):
         print("")
 
     def print_header(self, hdr_file):
-        hdr_file.write("extern const pin_obj_t pin_{:s};\n".format(self.cpu_pin_name()))
+        hdr_file.write(
+            "extern const pin_obj_t pin_{:s};\n".format(self.cpu_pin_name()))
         if self.alt_fn_count > 0:
             hdr_file.write(
-                "extern const pin_af_obj_t pin_{:s}_af[];\n".format(self.cpu_pin_name())
+                "extern const pin_af_obj_t pin_{:s}_af[];\n".format(
+                    self.cpu_pin_name())
             )
 
     def qstr_list(self):
@@ -246,7 +248,8 @@ class Pins(object):
 
     def print_named(self, label, named_pins):
         print(
-            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(label)
+            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(
+                label)
         )
         for named_pin in named_pins:
             pin = named_pin.pin()
@@ -284,7 +287,8 @@ class Pins(object):
                     and (pin.adc_num & (1 << (adc_num - 1)))
                     and (pin.adc_channel == channel)
                 ):
-                    print("  &pin_{:s}, // {:d}".format(pin.cpu_pin_name(), channel))
+                    print(
+                        "  &pin_{:s}, // {:d}".format(pin.cpu_pin_name(), channel))
                     adc_found = True
                     break
             if not adc_found:
@@ -330,7 +334,8 @@ class Pins(object):
             for mux_name in sorted(af_hdr_set):
                 key = "MP_OBJ_NEW_QSTR(MP_QSTR_{}),".format(mux_name)
                 val = "MP_OBJ_NEW_SMALL_INT(GPIO_{})".format(mux_name)
-                print("    { %-*s %s }," % (mux_name_width + 26, key, val), file=af_const_file)
+                print("    { %-*s %s }," %
+                      (mux_name_width + 26, key, val), file=af_const_file)
 
     def print_af_py(self, af_py_filename):
         with open(af_py_filename, "wt") as af_py_file:
@@ -339,7 +344,8 @@ class Pins(object):
                 print("  ('%s', " % named_pin.name(), end="", file=af_py_file)
                 for af in named_pin.pin().alt_fn:
                     if af.is_supported():
-                        print("(%d, '%s'), " % (af.idx, af.af_str), end="", file=af_py_file)
+                        print("(%d, '%s'), " %
+                              (af.idx, af.af_str), end="", file=af_py_file)
                 print("),", file=af_py_file)
             print(")", file=af_py_file)
 

@@ -30,7 +30,8 @@ except TypeError:
     print("TypeError")
 
 # can't assign to aggregate
-S = uctypes.struct(uctypes.addressof(data), {"x": (uctypes.ARRAY | 0, uctypes.INT8 | 2)})
+S = uctypes.struct(uctypes.addressof(data), {
+                   "x": (uctypes.ARRAY | 0, uctypes.INT8 | 2)})
 try:
     S.x = 1
 except TypeError:

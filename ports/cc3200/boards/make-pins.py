@@ -11,7 +11,7 @@ import csv
 SUPPORTED_AFS = {
     "UART": ("TX", "RX", "RTS", "CTS"),
     "SPI": ("CLK", "MOSI", "MISO", "CS0"),
-    #'I2S': ('CLK', 'FS', 'DAT0', 'DAT1'),
+    # 'I2S': ('CLK', 'FS', 'DAT0', 'DAT1'),
     "I2C": ("SDA", "SCL"),
     "TIM": ("PWM"),
     "SD": ("CLK", "CMD", "DAT0"),
@@ -124,7 +124,8 @@ class Pins:
                     continue
                 if not row[pin_col].isdigit():
                     raise ValueError(
-                        "Invalid pin number {:s} in row {:s}".format(row[pin_col]), row
+                        "Invalid pin number {:s} in row {:s}".format(
+                            row[pin_col]), row
                     )
                 # Pin numbers must start from 0 when used with the TI API
                 pin_num = int(row[pin_col]) - 1
@@ -138,7 +139,8 @@ class Pins:
                         type_name = af_splitted[1]
                         if type_name in SUPPORTED_AFS[fn_name]:
                             unit_idx = af_splitted[0][-1]
-                            pin.add_af(AF(af, af_idx, fn_name, int(unit_idx), type_name))
+                            pin.add_af(
+                                AF(af, af_idx, fn_name, int(unit_idx), type_name))
                     af_idx += 1
 
     def parse_board_file(self, filename, cpu_pin_col):
@@ -156,7 +158,8 @@ class Pins:
     def print_named(self, label, pins):
         print("")
         print(
-            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(label)
+            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(
+                label)
         )
         for pin in pins:
             if pin.board_pin:

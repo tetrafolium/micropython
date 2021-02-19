@@ -85,7 +85,8 @@ class NRF24L01:
         self.reg_write(SETUP_RETR, (6 << 4) | 8)
 
         # set rf power and speed
-        self.set_power_speed(POWER_3, SPEED_250K)  # Best for point to point links
+        # Best for point to point links
+        self.set_power_speed(POWER_3, SPEED_250K)
 
         # init CRC
         self.set_crc(2)
@@ -233,7 +234,8 @@ class NRF24L01:
         self.spi.readinto(self.buf, W_TX_PAYLOAD)
         self.spi.write(buf)
         if len(buf) < self.payload_size:
-            self.spi.write(b"\x00" * (self.payload_size - len(buf)))  # pad out data
+            # pad out data
+            self.spi.write(b"\x00" * (self.payload_size - len(buf)))
         self.cs(1)
 
         # enable the chip so it can send the data

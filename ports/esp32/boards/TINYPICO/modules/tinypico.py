@@ -11,7 +11,9 @@
 # Import required libraries
 from micropython import const
 from machine import Pin, SPI, ADC
-import machine, time, esp32
+import machine
+import time
+import esp32
 
 # TinyPICO Hardware Pin Assignments
 
@@ -42,6 +44,8 @@ DAC2 = const(26)
 # Get a *rough* estimate of the current battery voltage
 # If the battery is not present, the charge IC will still report it's trying to charge at X voltage
 # so it will still show a voltage.
+
+
 def get_battery_voltage():
     """
     Returns the current battery voltage. If no battery is connected, returns 3.7V
@@ -49,7 +53,8 @@ def get_battery_voltage():
     """
     adc = ADC(Pin(BAT_VOLTAGE))  # Assign the ADC pin to read
     measuredvbat = adc.read()  # Read the value
-    measuredvbat /= 4095  # divide by 4095 as we are using the default ADC voltage range of 0-1V
+    # divide by 4095 as we are using the default ADC voltage range of 0-1V
+    measuredvbat /= 4095
     measuredvbat *= 3.7  # Multiply by 3.7V, our reference voltage
     return measuredvbat
 
@@ -84,9 +89,11 @@ def set_dotstar_power(state):
     # Set the power pin to the inverse of state
     if state:
         Pin(DOTSTAR_PWR, Pin.OUT, None)  # Break the PULL_HOLD on the pin
-        Pin(DOTSTAR_PWR).value(False)  # Set the pin to LOW to enable the Transistor
+        # Set the pin to LOW to enable the Transistor
+        Pin(DOTSTAR_PWR).value(False)
     else:
-        Pin(13, Pin.IN, Pin.PULL_HOLD)  # Set PULL_HOLD on the pin to allow the 3V3 pull-up to work
+        # Set PULL_HOLD on the pin to allow the 3V3 pull-up to work
+        Pin(13, Pin.IN, Pin.PULL_HOLD)
 
     Pin(
         DOTSTAR_CLK, Pin.OUT if state else Pin.IN

@@ -13,8 +13,11 @@ except AttributeError:
 print(sys.getsizeof([1, 2]) >= 2)
 print(sys.getsizeof({1: 2}) >= 2)
 
+
 class A:
     pass
+
+
 print(sys.getsizeof(A()) > 0)
 
 # Only test deque if we have it

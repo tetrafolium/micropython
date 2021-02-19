@@ -1,10 +1,11 @@
 # Test for VfsLittle using a RAM device, with mount/umount
 
 try:
-    import uos
+import usys
+import uos
 
-    uos.VfsLfs1
-    uos.VfsLfs2
+uos.VfsLfs1
+uos.VfsLfs2
 except (ImportError, AttributeError):
     print("SKIP")
     raise SystemExit
@@ -103,7 +104,6 @@ def test(vfs_class):
 
 
 # initialise path
-import usys
 
 usys.path.clear()
 usys.path.append("/lfs")

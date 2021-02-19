@@ -5,12 +5,15 @@ def gen():
     # This yield is just to make this a generator
     yield
 
+
 f = gen()
+
 
 def run():
     print((yield from f))
     print((yield from f))
     print((yield from f))
+
 
 try:
     next(run())

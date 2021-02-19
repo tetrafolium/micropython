@@ -9,7 +9,8 @@ import usys as sys
 import uos as os
 
 
-tests = ["basics", "micropython", "float", "import", "io", " misc", "unicode", "extmod", "unix"]
+tests = ["basics", "micropython", "float", "import",
+         "io", " misc", "unicode", "extmod", "unix"]
 
 if sys.platform == "win32":
     MICROPYTHON = "micropython.exe"

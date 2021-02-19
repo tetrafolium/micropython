@@ -43,7 +43,10 @@ Other commands:
 
 """
 
-import collections, sys, re, subprocess
+import collections
+import sys
+import re
+import subprocess
 
 MAKE_FLAGS = ["-j3", "CFLAGS_EXTRA=-DNDEBUG"]
 
@@ -129,7 +132,8 @@ def do_diff(args):
         error_threshold = int(args.pop(0))
 
     if len(args) != 2:
-        print("usage: %s diff [--error-threshold <x>] <out1> <out2>" % sys.argv[0])
+        print(
+            "usage: %s diff [--error-threshold <x>] <out1> <out2>" % sys.argv[0])
         sys.exit(1)
 
     data1 = read_build_log(args[0])
@@ -178,7 +182,8 @@ def do_clean(args):
 
     print("CLEANING")
     for port in ports:
-        syscmd("make", "-C", "ports/{}".format(port.dir), port.make_flags, "clean")
+        syscmd("make", "-C", "ports/{}".format(port.dir),
+               port.make_flags, "clean")
 
 
 def do_build(args):
@@ -192,7 +197,8 @@ def do_build(args):
 
     print("BUILDING PORTS")
     for port in ports:
-        syscmd("make", "-C", "ports/{}".format(port.dir), MAKE_FLAGS, port.make_flags)
+        syscmd("make", "-C", "ports/{}".format(port.dir),
+               MAKE_FLAGS, port.make_flags)
 
     do_sizes(args)
 

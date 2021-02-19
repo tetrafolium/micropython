@@ -5,7 +5,9 @@ try:
 except NameError:
     print("const not defined")
 
-const = lambda x: x
+
+def const(x): return x
+
 
 _CNT01 = "CONST01"
 _CNT02 = const(123)

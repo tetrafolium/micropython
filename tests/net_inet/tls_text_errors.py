@@ -1,9 +1,13 @@
 # test that modtls produces a text error message
 
 try:
-    import usocket as socket, ussl as ssl, sys
+    import usocket as socket
+    import ussl as ssl
+    import sys
 except:
-    import socket, ssl, sys
+    import socket
+    import ssl
+    import sys
 
 
 def test(addr):

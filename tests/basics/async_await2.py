@@ -6,10 +6,11 @@ except ImportError:
     import sys
 if sys.implementation.name == 'micropython':
     # uPy allows normal generators to be awaitables
-    coroutine = lambda f: f
+    def coroutine(f): return f
 else:
     import types
     coroutine = types.coroutine
+
 
 @coroutine
 def wait(value):
@@ -17,6 +18,7 @@ def wait(value):
     msg = yield 'message from wait({})'.format(value)
     print('wait got back:', msg)
     return 10
+
 
 async def f():
     x = await wait(1)**2

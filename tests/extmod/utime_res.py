@@ -37,7 +37,8 @@ def test():
         utime.sleep_ms(100)
         for func_name, _ in EXPECTED_MAP:
             try:
-                time_func = getattr(utime, func_name, None) or globals()[func_name]
+                time_func = getattr(utime, func_name, None) or globals()[
+                    func_name]
                 now = time_func()  # may raise AttributeError
             except (KeyError, AttributeError):
                 continue

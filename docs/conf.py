@@ -23,14 +23,15 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # The members of the html_context dict are available inside topindex.html
 micropy_version = os.getenv('MICROPY_VERSION') or 'latest'
-micropy_all_versions = (os.getenv('MICROPY_ALL_VERSIONS') or 'latest').split(',')
+micropy_all_versions = (
+    os.getenv('MICROPY_ALL_VERSIONS') or 'latest').split(',')
 url_pattern = '%s/en/%%s' % (os.getenv('MICROPY_URL_PREFIX') or '/',)
 html_context = {
-    'cur_version':micropy_version,
-    'all_versions':[
+    'cur_version': micropy_version,
+    'all_versions': [
         (ver, url_pattern % ver) for ver in micropy_all_versions
     ],
-    'downloads':[
+    'downloads': [
         ('PDF', url_pattern % micropy_version + '/micropython-docs.pdf'),
     ],
 }
@@ -219,24 +220,24 @@ htmlhelp_basename = 'MicroPythondoc'
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
-# The paper size ('letterpaper' or 'a4paper').
-#'papersize': 'letterpaper',
+    # The paper size ('letterpaper' or 'a4paper').
+    # 'papersize': 'letterpaper',
 
-# The font size ('10pt', '11pt' or '12pt').
-#'pointsize': '10pt',
+    # The font size ('10pt', '11pt' or '12pt').
+    # 'pointsize': '10pt',
 
-# Additional stuff for the LaTeX preamble.
-#'preamble': '',
-# Include 3 levels of headers in PDF ToC
-'preamble': '\setcounter{tocdepth}{2}',
+    # Additional stuff for the LaTeX preamble.
+    # 'preamble': '',
+    # Include 3 levels of headers in PDF ToC
+    'preamble': '\setcounter{tocdepth}{2}',
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-  (master_doc, 'MicroPython.tex', 'MicroPython Documentation',
-   'Damien P. George, Paul Sokolovsky, and contributors', 'manual'),
+    (master_doc, 'MicroPython.tex', 'MicroPython Documentation',
+     'Damien P. George, Paul Sokolovsky, and contributors', 'manual'),
 ]
 
 # The name of an image file (relative to this directory) to place at the top of
@@ -279,9 +280,9 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  (master_doc, 'MicroPython', 'MicroPython Documentation',
-   'Damien P. George, Paul Sokolovsky, and contributors', 'MicroPython', 'One line description of project.',
-   'Miscellaneous'),
+    (master_doc, 'MicroPython', 'MicroPython Documentation',
+     'Damien P. George, Paul Sokolovsky, and contributors', 'MicroPython', 'One line description of project.',
+     'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.

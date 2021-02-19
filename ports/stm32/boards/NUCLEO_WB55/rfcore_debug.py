@@ -87,7 +87,8 @@ def sram2a_dump(num_words=64, width=8):
     for i in range((num_words + width - 1) // width):
         print("  %04x " % (i * 4 * width), end="")
         for j in range(width):
-            print(" %08x" % (mem32[SRAM2A_BASE + (i * width + j) * 4] & 0xFFFFFFFF), end="")
+            print(" %08x" %
+                  (mem32[SRAM2A_BASE + (i * width + j) * 4] & 0xFFFFFFFF), end="")
         print()
 
 
@@ -133,7 +134,8 @@ def ipcc_init():
 
     print("IPCC initialised")
     print("SYS: 0x%08x 0x%08x" % (SYS_CMD_BUF, SYS_SYS_QUEUE))
-    print("BLE: 0x%08x 0x%08x 0x%08x" % (BLE_CMD_BUF, BLE_CS_BUF, BLE_EVT_QUEUE))
+    print("BLE: 0x%08x 0x%08x 0x%08x" %
+          (BLE_CMD_BUF, BLE_CS_BUF, BLE_EVT_QUEUE))
 
 
 def fus_active():
@@ -171,14 +173,19 @@ def dev_info():
             % (x, x >> 24, x >> 16 & 0xFF, (x & 0xFF) * 4)
         )
 
-    print("Device information table @%08x:" % get_ipcc_table(TABLE_DEVICE_INFO))
+    print("Device information table @%08x:" %
+          get_ipcc_table(TABLE_DEVICE_INFO))
     if fus_active():
         # layout when running FUS
         print("FUS is active")
-        print("state                    : 0x%08x" % get_ipcc_table_word(TABLE_DEVICE_INFO, 0))
-        print("last FUS active state    : 0x%02x" % get_ipcc_table_byte(TABLE_DEVICE_INFO, 5))
-        print("last wireless stack state: 0x%02x" % get_ipcc_table_byte(TABLE_DEVICE_INFO, 6))
-        print("cur wireless stack type  : 0x%02x" % get_ipcc_table_byte(TABLE_DEVICE_INFO, 7))
+        print("state                    : 0x%08x" %
+              get_ipcc_table_word(TABLE_DEVICE_INFO, 0))
+        print("last FUS active state    : 0x%02x" %
+              get_ipcc_table_byte(TABLE_DEVICE_INFO, 5))
+        print("last wireless stack state: 0x%02x" %
+              get_ipcc_table_byte(TABLE_DEVICE_INFO, 6))
+        print("cur wireless stack type  : 0x%02x" %
+              get_ipcc_table_byte(TABLE_DEVICE_INFO, 7))
         print("safe boot version        : ", end="")
         dump_version(2)
         print("FUS version              : ", end="")
@@ -189,8 +196,10 @@ def dev_info():
         dump_version(5)
         print("wireless stack mem size  : ", end="")
         dump_memory_size(6)
-        print("wireless FW-BLE info     : 0x%08x" % get_ipcc_table_word(TABLE_DEVICE_INFO, 7))
-        print("wireless FW-thread info  : 0x%08x" % get_ipcc_table_word(TABLE_DEVICE_INFO, 8))
+        print("wireless FW-BLE info     : 0x%08x" %
+              get_ipcc_table_word(TABLE_DEVICE_INFO, 7))
+        print("wireless FW-thread info  : 0x%08x" %
+              get_ipcc_table_word(TABLE_DEVICE_INFO, 8))
         print(
             "UID64                    : 0x%08x 0x%08x"
             % (
@@ -198,7 +207,8 @@ def dev_info():
                 get_ipcc_table_word(TABLE_DEVICE_INFO, 10),
             )
         )
-        print("device ID                : 0x%04x" % get_ipcc_table_word(TABLE_DEVICE_INFO, 11))
+        print("device ID                : 0x%04x" %
+              get_ipcc_table_word(TABLE_DEVICE_INFO, 11))
     else:
         # layout when running WS
         print("WS is active")
@@ -208,26 +218,35 @@ def dev_info():
         dump_version(1)
         print("FUS memory size          : ", end="")
         dump_memory_size(2)
-        print("FUS info                 : 0x%08x" % get_ipcc_table_word(TABLE_DEVICE_INFO, 3))
+        print("FUS info                 : 0x%08x" %
+              get_ipcc_table_word(TABLE_DEVICE_INFO, 3))
         print("wireless stack version   : ", end="")
         dump_version(4)
         print("wireless stack mem size  : ", end="")
         dump_memory_size(5)
-        print("wireless stack info      : 0x%08x" % get_ipcc_table_word(TABLE_DEVICE_INFO, 7))
-        print("wireless reserved        : 0x%08x" % get_ipcc_table_word(TABLE_DEVICE_INFO, 7))
+        print("wireless stack info      : 0x%08x" %
+              get_ipcc_table_word(TABLE_DEVICE_INFO, 7))
+        print("wireless reserved        : 0x%08x" %
+              get_ipcc_table_word(TABLE_DEVICE_INFO, 7))
 
 
 def ipcc_state():
     print("IPCC:")
-    print("  C1CR:     0x%08x" % (mem32[stm.IPCC + stm.IPCC_C1CR] & 0xFFFFFFFF), end="")
-    print("  C2CR:     0x%08x" % (mem32[stm.IPCC + stm.IPCC_C2CR] & 0xFFFFFFFF))
-    print("  C1MR:     0x%08x" % (mem32[stm.IPCC + stm.IPCC_C1MR] & 0xFFFFFFFF), end="")
-    print("  C2MR:     0x%08x" % (mem32[stm.IPCC + stm.IPCC_C2MR] & 0xFFFFFFFF))
+    print("  C1CR:     0x%08x" %
+          (mem32[stm.IPCC + stm.IPCC_C1CR] & 0xFFFFFFFF), end="")
+    print("  C2CR:     0x%08x" %
+          (mem32[stm.IPCC + stm.IPCC_C2CR] & 0xFFFFFFFF))
+    print("  C1MR:     0x%08x" %
+          (mem32[stm.IPCC + stm.IPCC_C1MR] & 0xFFFFFFFF), end="")
+    print("  C2MR:     0x%08x" %
+          (mem32[stm.IPCC + stm.IPCC_C2MR] & 0xFFFFFFFF))
     # these always read 0
     # print('  C1SCR:    0x%08x' % (mem32[stm.IPCC + stm.IPCC_C1SCR] & 0xffffffff), end='')
     # print('  C2SCR:    0x%08x' % (mem32[stm.IPCC + stm.IPCC_C2SCR] & 0xffffffff))
-    print("  C1TOC2SR: 0x%08x" % (mem32[stm.IPCC + stm.IPCC_C1TOC2SR] & 0xFFFFFFFF), end="")
-    print("  C2TOC1SR: 0x%08x" % (mem32[stm.IPCC + stm.IPCC_C2TOC1SR] & 0xFFFFFFFF))
+    print("  C1TOC2SR: 0x%08x" %
+          (mem32[stm.IPCC + stm.IPCC_C1TOC2SR] & 0xFFFFFFFF), end="")
+    print("  C2TOC1SR: 0x%08x" %
+          (mem32[stm.IPCC + stm.IPCC_C2TOC1SR] & 0xFFFFFFFF))
 
 
 sram2a_dump(264)

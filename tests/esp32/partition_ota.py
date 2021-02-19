@@ -2,6 +2,7 @@
 # Running this test requires firmware with an OTA Partition, such as the GENERIC_OTA "board".
 # This test also requires patience as it copies the boot partition into the other OTA slot.
 
+import uos
 import machine
 from esp32 import Partition
 
@@ -22,7 +23,6 @@ def log(*args):
 
 
 # replace boot.py with the test code that will run on each reboot
-import uos
 
 try:
     uos.rename("boot.py", "boot-orig.py")
@@ -88,7 +88,8 @@ def copy_partition(src, dest):
     log("Partition copy: {} --> {}".format(src.info(), dest.info()))
     sz = src.info()[3]
     if dest.info()[3] != sz:
-        raise ValueError("Sizes don't match: {} vs {}".format(sz, dest.info()[3]))
+        raise ValueError(
+            "Sizes don't match: {} vs {}".format(sz, dest.info()[3]))
     addr = 0
     blk = bytearray(4096)
     while addr < sz:

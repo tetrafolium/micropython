@@ -4,10 +4,13 @@
 from . import core
 
 # Event class for primitive events that can be waited on, set, and cleared
+
+
 class Event:
     def __init__(self):
         self.state = False  # False=unset; True=set
-        self.waiting = core.TaskQueue()  # Queue of Tasks waiting on completion of this event
+        # Queue of Tasks waiting on completion of this event
+        self.waiting = core.TaskQueue()
 
     def is_set(self):
         return self.state

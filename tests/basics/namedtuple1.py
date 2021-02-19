@@ -9,7 +9,7 @@ except ImportError:
 
 T = namedtuple("Tup", ["foo", "bar"])
 # CPython prints fully qualified name, what we don't bother to do so far
-#print(T)
+# print(T)
 for t in T(1, 2), T(bar=1, foo=2):
     print(t)
     print(t[0], t[1])

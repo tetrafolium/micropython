@@ -15,7 +15,7 @@ import sys
 import platform
 
 if platform.python_version_tuple()[0] == "2":
-    bytes_cons = lambda val, enc=None: bytearray(val)
+    def bytes_cons(val, enc=None): return bytearray(val)
     from htmlentitydefs import codepoint2name
 elif platform.python_version_tuple()[0] == "3":
     bytes_cons = bytes
@@ -223,6 +223,8 @@ static_qstr_list = [
 ]
 
 # this must match the equivalent function in qstr.c
+
+
 def compute_hash(qstr, bytes_hash):
     hash = 5381
     for b in qstr:
@@ -311,7 +313,8 @@ def parse_input_headers(infiles):
                 qstrs[ident] = (order, ident, qstr)
 
     if not qcfgs:
-        sys.stderr.write("ERROR: Empty preprocessor output - check for errors above\n")
+        sys.stderr.write(
+            "ERROR: Empty preprocessor output - check for errors above\n")
         sys.exit(1)
 
     return qcfgs, qstrs

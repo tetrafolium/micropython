@@ -3,7 +3,9 @@
 # TODO: reconnect after bonding to test that the secrets persist
 
 from micropython import const
-import time, machine, bluetooth
+import time
+import machine
+import bluetooth
 
 TIMEOUT_MS = 4000
 
@@ -106,7 +108,8 @@ def instance1():
 
         # Discover characteristics (before pairing, doesn't need to be encrypted).
         ble.gattc_discover_characteristics(conn_handle, 1, 65535)
-        value_handle = wait_for_event(_IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
+        value_handle = wait_for_event(
+            _IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
         wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
 
         # Pair with the peripheral.

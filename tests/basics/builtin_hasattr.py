@@ -16,6 +16,7 @@ print(hasattr(a, "meth"))
 print(hasattr(a, "_none_such"))
 print(hasattr(list, "foo"))
 
+
 class C:
 
     def __getattr__(self, attr):
@@ -24,6 +25,7 @@ class C:
         elif attr == "raise":
             raise Exception(123)
         raise AttributeError
+
 
 c = C()
 print(hasattr(c, "exists"))

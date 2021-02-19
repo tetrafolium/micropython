@@ -1,6 +1,7 @@
 # test memoryview retains pointer to original object/buffer
 try:
-    memoryview
+import gc
+memoryview
 except:
     print("SKIP")
     raise SystemExit
@@ -12,7 +13,6 @@ for i in range(len(m)):
 
 # reclaim b, but hopefully not the buffer
 b = None
-import gc
 gc.collect()
 
 # allocate lots of memory

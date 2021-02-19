@@ -3,6 +3,7 @@
 def foo(a, b, c):
     print(a, b, c)
 
+
 foo(*(1, 2, 3))
 foo(1, *(2, 3))
 foo(1, 2, *(3,))
@@ -18,15 +19,21 @@ foo(*range(3))
 foo(1, *range(2, 4))
 
 # an iterator with many elements
+
+
 def foo(*rest):
     print(rest)
+
+
 foo(*range(10))
 
 # method calls with *pos
 
+
 class A:
     def foo(self, a, b, c):
         print(a, b, c)
+
 
 a = A()
 a.foo(*(1, 2, 3))

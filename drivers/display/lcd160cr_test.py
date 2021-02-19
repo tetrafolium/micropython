@@ -1,7 +1,10 @@
 # Driver test for official MicroPython LCD160CR display
 # MIT license; Copyright (c) 2017 Damien P. George
 
-import time, math, framebuf, lcd160cr
+import time
+import math
+import framebuf
+import lcd160cr
 
 
 def get_lcd(lcd):
@@ -55,7 +58,8 @@ def test_features(lcd, orient=lcd160cr.PORTRAIT):
     lcd.erase()
 
     # create M-logo
-    mlogo = framebuf.FrameBuffer(bytearray(17 * 17 * 2), 17, 17, framebuf.RGB565)
+    mlogo = framebuf.FrameBuffer(
+        bytearray(17 * 17 * 2), 17, 17, framebuf.RGB565)
     mlogo.fill(0)
     mlogo.fill_rect(1, 1, 15, 15, 0xFFFFFF)
     mlogo.vline(4, 4, 12, 0)

@@ -181,15 +181,20 @@ def generate_c_table(hse, valid_plls):
         p_shift = 16
         p_mask = 0xFF
     print("#define PLL_FREQ_TABLE_SYS(pll) ((pll) & %d)" % (sys_mask,))
-    print("#define PLL_FREQ_TABLE_M(pll) (((pll) >> %d) & %d)" % (m_shift, m_mask))
-    print("#define PLL_FREQ_TABLE_P(pll) (((((pll) >> %d) & %d) + 1) * 2)" % (p_shift, p_mask))
+    print("#define PLL_FREQ_TABLE_M(pll) (((pll) >> %d) & %d)" %
+          (m_shift, m_mask))
+    print("#define PLL_FREQ_TABLE_P(pll) (((((pll) >> %d) & %d) + 1) * 2)" %
+          (p_shift, p_mask))
     print("typedef %s pll_freq_table_t;" % (typedef,))
     print("// (M, P/2-1, SYS) values for %u MHz source" % hse)
-    print("static const pll_freq_table_t pll_freq_table[%u] = {" % (len(valid_plls),))
+    print("static const pll_freq_table_t pll_freq_table[%u] = {" % (
+        len(valid_plls),))
     for sys, (M, N, P, Q) in valid_plls:
-        print("    (%u << %u) | (%u << %u) | %u," % (M, m_shift, P // 2 - 1, p_shift, sys), end="")
+        print("    (%u << %u) | (%u << %u) | %u," %
+              (M, m_shift, P // 2 - 1, p_shift, sys), end="")
         if M >= 2:
-            vco_in, vco_out, pllck, pll48ck = compute_derived(hse, (M, N, P, Q))
+            vco_in, vco_out, pllck, pll48ck = compute_derived(
+                hse, (M, N, P, Q))
             print(
                 " // M=%u N=%u P=%u Q=%u vco_in=%.2f vco_out=%.2f pll48=%.2f"
                 % (M, N, P, Q, vco_in, vco_out, pll48ck),
@@ -210,7 +215,8 @@ def print_table(hse, valid_plls):
 
 def search_header_for_hsx_values(filename, vals):
     regex_inc = re.compile(r'#include "(boards/[A-Za-z0-9_./]+)"')
-    regex_def = re.compile(r"#define +(HSE_VALUE|HSI_VALUE) +\((\(uint32_t\))?([0-9]+)\)")
+    regex_def = re.compile(
+        r"#define +(HSE_VALUE|HSI_VALUE) +\((\(uint32_t\))?([0-9]+)\)")
     with open(filename) as f:
         for line in f:
             line = line.strip()
@@ -262,7 +268,8 @@ def main():
         # extract HSE_VALUE, and optionally HSI_VALUE, from header file
         hse, hsi = search_header_for_hsx_values(argv[0][5:], [None, None])
         if hse is None:
-            raise ValueError("%s does not contain a definition of HSE_VALUE" % argv[0])
+            raise ValueError(
+                "%s does not contain a definition of HSE_VALUE" % argv[0])
         if hsi is not None and hsi > 16:
             # Currently, a HSI value greater than 16MHz is not supported
             hsi = None

@@ -1,11 +1,13 @@
 # comprehensive functionality test for {} format string
 
-int_tests = False # these take a while
+int_tests = False  # these take a while
 char_tests = True
 str_tests = True
 
+
 def test(fmt, *args):
-    print('{:8s}'.format(fmt) + '>' +  fmt.format(*args) + '<')
+    print('{:8s}'.format(fmt) + '>' + fmt.format(*args) + '<')
+
 
 def test_fmt(conv, fill, alignment, sign, prefix, width, precision, type, arg):
     fmt = '{'
@@ -37,6 +39,7 @@ def test_fmt(conv, fill, alignment, sign, prefix, width, precision, type, arg):
         fmt += '}'
         test(fmt, arg)
 
+
 if int_tests:
     int_nums = (-1234, -123, -12, -1, 0, 1, 12, 123, 1234, True, False)
     #int_nums = (-12, -1, 0, 1, 12, True, False)
@@ -47,7 +50,8 @@ if int_tests:
                     for sign in ('', '+', '-', ' '):
                         for prefix in ('', '#'):
                             for num in int_nums:
-                                test_fmt('', fill, alignment, sign, prefix, width, '', type, num)
+                                test_fmt('', fill, alignment, sign,
+                                         prefix, width, '', type, num)
 
 if char_tests:
     for width in ('', '1', '2'):
@@ -61,4 +65,5 @@ if str_tests:
             for alignment in ('', '<', '>', '^'):
                 for fill in ('', ' ', '0', '@'):
                     for str in ('', 'a', 'bcd', 'This is a test with a longer string'):
-                        test_fmt(conv, fill, alignment, '', '', width, '', 's', str)
+                        test_fmt(conv, fill, alignment, '',
+                                 '', width, '', 's', str)

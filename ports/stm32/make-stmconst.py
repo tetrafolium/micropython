@@ -55,7 +55,8 @@ class Lexer:
                 r"#define +(?P<id>[A-Z0-9_]+) +\(?(\(uint32_t\))?(?P<hex>0x[0-9A-F]+)U?L?\)?($| */\*)"
             ),
         ),
-        ("#define X", re.compile(r"#define +(?P<id>[A-Z0-9_]+) +(?P<id2>[A-Z0-9_]+)($| +/\*)")),
+        ("#define X", re.compile(
+            r"#define +(?P<id>[A-Z0-9_]+) +(?P<id2>[A-Z0-9_]+)($| +/\*)")),
         (
             "#define X+hex",
             re.compile(
@@ -73,7 +74,8 @@ class Lexer:
         ("}", re.compile(r"}$")),
         (
             "} TypeDef",
-            re.compile(r"} *(?P<id>[A-Z][A-Za-z0-9_]+)_(?P<global>([A-Za-z0-9_]+)?)TypeDef;$"),
+            re.compile(
+                r"} *(?P<id>[A-Z][A-Za-z0-9_]+)_(?P<global>([A-Za-z0-9_]+)?)TypeDef;$"),
         ),
         (
             "IO reg",
@@ -155,7 +157,8 @@ def parse_file(filename):
                     regs.append((reg, offset, bits, comment))
                 else:
                     for i in range(int(d["array"])):
-                        regs.append((reg + str(i), offset + i * bits // 8, bits, comment))
+                        regs.append((reg + str(i), offset + i *
+                                     bits // 8, bits, comment))
                 m = lexer.next_match()
             if m[0] == "}":
                 pass
@@ -241,7 +244,8 @@ const mp_obj_module_t stm_%s_obj = {
 
 
 def main():
-    cmd_parser = argparse.ArgumentParser(description="Extract ST constants from a C header file.")
+    cmd_parser = argparse.ArgumentParser(
+        description="Extract ST constants from a C header file.")
     cmd_parser.add_argument("file", nargs=1, help="input file")
     cmd_parser.add_argument(
         "-q",
@@ -269,7 +273,8 @@ def main():
     needed_qstrs = set()
     needed_mpzs = set()
 
-    print("// Automatically generated from %s by make-stmconst.py" % args.file[0])
+    print("// Automatically generated from %s by make-stmconst.py" %
+          args.file[0])
     print("")
 
     for periph_name, periph_val in periphs:
@@ -277,11 +282,11 @@ def main():
 
     for reg in (
         "ADC",
-        #'ADC_Common',
-        #'CAN_TxMailBox',
-        #'CAN_FIFOMailBox',
-        #'CAN_FilterRegister',
-        #'CAN',
+        # 'ADC_Common',
+        # 'CAN_TxMailBox',
+        # 'CAN_FIFOMailBox',
+        # 'CAN_FilterRegister',
+        # 'CAN',
         "CRC",
         "DAC",
         "DBGMCU",
@@ -296,7 +301,7 @@ def main():
         "PWR",
         "RCC",
         "RTC",
-        #'SDIO',
+        # 'SDIO',
         "SPI",
         "TIM",
         "USART",

@@ -48,8 +48,10 @@ print("aaaa".count('a', 1, 5))
 print("aaaa".count('a', -1, 5))
 print("abbabba".count("abba"))
 
+
 def t():
     return True
+
 
 print("0000".count('0', t()))
 

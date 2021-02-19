@@ -9,8 +9,10 @@ except:
         print("SKIP")
         raise SystemExit
 
+
 class A():
     pass
+
 
 # pack and unpack objects
 o = A()

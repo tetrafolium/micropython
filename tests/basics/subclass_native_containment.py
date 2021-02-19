@@ -3,17 +3,20 @@
 class mylist(list):
     pass
 
+
 class mydict(dict):
     pass
 
+
 class mybytes(bytes):
     pass
+
 
 l = mylist([1, 2, 3])
 print(0 in l)
 print(1 in l)
 
-d = mydict({1:1, 2:2})
+d = mydict({1: 1, 2: 2})
 print(0 in l)
 print(1 in l)
 

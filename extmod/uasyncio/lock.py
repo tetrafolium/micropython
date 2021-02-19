@@ -4,6 +4,8 @@
 from . import core
 
 # Lock class for primitive mutex capability
+
+
 class Lock:
     def __init__(self):
         # The state can take the following values:

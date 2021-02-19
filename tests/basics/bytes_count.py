@@ -48,7 +48,9 @@ print(b"aaaa".count(b'a', 1, 5))
 print(b"aaaa".count(b'a', -1, 5))
 print(b"abbabba".count(b"abba"))
 
+
 def t():
     return True
+
 
 print(b"0000".count(b'0', t()))

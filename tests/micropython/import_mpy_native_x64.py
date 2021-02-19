@@ -1,7 +1,9 @@
 # test importing of .mpy files with native code (x64 only)
 
 try:
-    import usys, uio, uos
+    import usys
+    import uio
+    import uos
 
     uio.IOBase
     uos.mount
@@ -21,7 +23,7 @@ class UserFile(uio.IOBase):
 
     def readinto(self, buf):
         n = min(len(buf), len(self.data) - self.pos)
-        buf[:n] = self.data[self.pos : self.pos + n]
+        buf[:n] = self.data[self.pos: self.pos + n]
         self.pos += n
         return n
 
@@ -56,45 +58,45 @@ user_files = {
 
     # test loading of viper and asm
     '/mod1.mpy': (
-        b'M\x05\x0b\x1f\x20' # header
+        b'M\x05\x0b\x1f\x20'  # header
 
-        b'\x20' # n bytes, bytecode
-            b'\x00\x08\x02m\x02m' # prelude
-            b'\x51' # LOAD_CONST_NONE
-            b'\x63' # RETURN_VALUE
+        b'\x20'  # n bytes, bytecode
+        b'\x00\x08\x02m\x02m'  # prelude
+        b'\x51'  # LOAD_CONST_NONE
+        b'\x63'  # RETURN_VALUE
 
-            b'\x00\x02' # n_obj, n_raw_code
+        b'\x00\x02'  # n_obj, n_raw_code
 
-        b'\x22' # n bytes, viper code
-            b'\x00\x00\x00\x00\x00\x00' # dummy machine code
-            b'\x00\x00' # qstr0
-            b'\x01\x0c\x0aprint' # n_qstr, qstr0
-            b'\x00\x00\x00' # scope_flags, n_obj, n_raw_code
+        b'\x22'  # n bytes, viper code
+        b'\x00\x00\x00\x00\x00\x00'  # dummy machine code
+        b'\x00\x00'  # qstr0
+        b'\x01\x0c\x0aprint'  # n_qstr, qstr0
+        b'\x00\x00\x00'  # scope_flags, n_obj, n_raw_code
 
-        b'\x23' # n bytes, asm code
-            b'\x00\x00\x00\x00\x00\x00\x00\x00' # dummy machine code
-            b'\x00\x00\x00' # scope_flags, n_pos_args, type_sig
+        b'\x23'  # n bytes, asm code
+        b'\x00\x00\x00\x00\x00\x00\x00\x00'  # dummy machine code
+        b'\x00\x00\x00'  # scope_flags, n_pos_args, type_sig
     ),
 
     # test loading viper with additional scope flags and relocation
     '/mod2.mpy': (
-        b'M\x05\x0b\x1f\x20' # header
+        b'M\x05\x0b\x1f\x20'  # header
 
-        b'\x20' # n bytes, bytecode
-            b'\x00\x08\x02m\x02m' # prelude
-            b'\x51' # LOAD_CONST_NONE
-            b'\x63' # RETURN_VALUE
+        b'\x20'  # n bytes, bytecode
+        b'\x00\x08\x02m\x02m'  # prelude
+        b'\x51'  # LOAD_CONST_NONE
+        b'\x63'  # RETURN_VALUE
 
-            b'\x00\x01' # n_obj, n_raw_code
+        b'\x00\x01'  # n_obj, n_raw_code
 
-        b'\x12' # n bytes(=4), viper code
-            b'\x00\x00\x00\x00' # dummy machine code
-            b'\x00' # n_qstr
-            b'\x70' # scope_flags: VIPERBSS | VIPERRODATA | VIPERRELOC
-            b'\x00\x00' # n_obj, n_raw_code
-            b'\x06rodata' # rodata, 6 bytes
-            b'\x04' # bss, 4 bytes
-            b'\x03\x01\x00' # dummy relocation of rodata
+        b'\x12'  # n bytes(=4), viper code
+        b'\x00\x00\x00\x00'  # dummy machine code
+        b'\x00'  # n_qstr
+        b'\x70'  # scope_flags: VIPERBSS | VIPERRODATA | VIPERRELOC
+        b'\x00\x00'  # n_obj, n_raw_code
+        b'\x06rodata'  # rodata, 6 bytes
+        b'\x04'  # bss, 4 bytes
+        b'\x03\x01\x00'  # dummy relocation of rodata
     ),
 }
 # fmt: on

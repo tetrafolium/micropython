@@ -4,7 +4,10 @@
 # Distributed under Gnu LGPL 3.0
 # see http://www.gnu.org/licenses/lgpl-3.0.txt
 
-import sys, struct, zlib, os
+import sys
+import struct
+import zlib
+import os
 from optparse import OptionParser
 
 DEFAULT_DEVICE = "0x0483:0xdf11"
@@ -60,7 +63,8 @@ def parse(file, dump_images=False):
                 print('    DUMPED IMAGE TO "%s"' % out)
         if len(target):
             print("target %d: PARSE ERROR" % t)
-    suffix = named(struct.unpack("<4H3sBI", data[:16]), "device product vendor dfu ufd len crc")
+    suffix = named(struct.unpack(
+        "<4H3sBI", data[:16]), "device product vendor dfu ufd len crc")
     print(
         "usb: %(vendor)04x:%(product)04x, device: 0x%(device)04x, dfu: 0x%(dfu)04x, %(ufd)s, %(len)d, 0x%(crc)08x"
         % suffix
@@ -81,12 +85,15 @@ def build(file, targets, device=DEFAULT_DEVICE):
             pad = (8 - len(image["data"]) % 8) % 8
             image["data"] = image["data"] + bytes(bytearray(8)[0:pad])
             #
-            tdata += struct.pack("<2I", image["address"], len(image["data"])) + image["data"]
+            tdata += struct.pack("<2I", image["address"],
+                                 len(image["data"])) + image["data"]
         tdata = (
-            struct.pack("<6sBI255s2I", b"Target", 0, 1, b"ST...", len(tdata), len(target)) + tdata
+            struct.pack("<6sBI255s2I", b"Target", 0, 1, b"ST...",
+                        len(tdata), len(target)) + tdata
         )
         data += tdata
-    data = struct.pack("<5sBIB", b"DfuSe", 1, len(data) + 11, len(targets)) + data
+    data = struct.pack("<5sBIB", b"DfuSe", 1, len(
+        data) + 11, len(targets)) + data
     v, d = map(lambda x: int(x, 0) & 0xFFFF, device.split(":", 1))
     data += struct.pack("<4H3sB", 0, d, v, 0x011A, b"UFD", 16)
     crc = compute_crc(data)
@@ -141,7 +148,8 @@ if __name__ == "__main__":
             if not os.path.isfile(binfile):
                 print("Unreadable file '%s'." % binfile)
                 sys.exit(1)
-            target.append({"address": address, "data": open(binfile, "rb").read()})
+            target.append(
+                {"address": address, "data": open(binfile, "rb").read()})
         outfile = args[0]
         device = DEFAULT_DEVICE
         if options.device:

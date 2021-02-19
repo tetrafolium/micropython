@@ -1,6 +1,7 @@
 # test pyb module on F405 MCUs
 
-import os, pyb
+import os
+import pyb
 
 if not "STM32F405" in os.uname().machine:
     print("SKIP")

@@ -9,7 +9,8 @@ Execute it like this:
 python3 run-tests --target wipy --device 192.168.1.1 ../cc3200/tools/smoke.py
 """
 
-pin_map = [23, 24, 11, 12, 13, 14, 15, 16, 17, 22, 28, 10, 9, 8, 7, 6, 30, 31, 3, 0, 4, 5]
+pin_map = [23, 24, 11, 12, 13, 14, 15, 16, 17,
+           22, 28, 10, 9, 8, 7, 6, 30, 31, 3, 0, 4, 5]
 test_bytes = os.urandom(1024)
 
 

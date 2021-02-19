@@ -4,7 +4,7 @@ import micropython
 
 # strict stackless builds can't call functions without allocating a frame on the heap
 try:
-    f = lambda: 0
+    def f(): return 0
     micropython.heap_lock()
     f()
     micropython.heap_unlock()

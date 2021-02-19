@@ -1,7 +1,9 @@
 # Test characteristic read/write/notify from both GATTS and GATTC.
 
 from micropython import const
-import time, machine, bluetooth
+import time
+import machine
+import bluetooth
 
 TIMEOUT_MS = 5000
 
@@ -142,7 +144,8 @@ def instance1():
 
         # Discover characteristics.
         ble.gattc_discover_characteristics(conn_handle, 1, 65535)
-        value_handle = wait_for_event(_IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
+        value_handle = wait_for_event(
+            _IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
         wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
 
         # Issue read of characteristic, should get initial value.
@@ -156,7 +159,8 @@ def instance1():
         wait_for_event(_IRQ_GATTC_WRITE_DONE, TIMEOUT_MS)
         # A
         wait_for_event(_IRQ_GATTC_NOTIFY, TIMEOUT_MS)
-        print("gattc_read")  # Read the new value set immediately before notification.
+        # Read the new value set immediately before notification.
+        print("gattc_read")
         ble.gattc_read(conn_handle, value_handle)
         wait_for_event(_IRQ_GATTC_READ_RESULT, TIMEOUT_MS)
 
@@ -176,7 +180,8 @@ def instance1():
         wait_for_event(_IRQ_GATTC_WRITE_DONE, TIMEOUT_MS)
         # C
         wait_for_event(_IRQ_GATTC_INDICATE, TIMEOUT_MS)
-        print("gattc_read")  # Read the new value set immediately before indication.
+        # Read the new value set immediately before indication.
+        print("gattc_read")
         ble.gattc_read(conn_handle, value_handle)
         wait_for_event(_IRQ_GATTC_READ_RESULT, TIMEOUT_MS)
 

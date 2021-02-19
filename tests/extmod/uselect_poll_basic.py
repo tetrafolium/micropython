@@ -1,8 +1,12 @@
 try:
-    import usocket as socket, uselect as select, uerrno as errno
+    import usocket as socket
+    import uselect as select
+    import uerrno as errno
 except ImportError:
     try:
-        import socket, select, errno
+        import socket
+        import select
+        import errno
 
         select.poll  # Raises AttributeError for CPython implementations without poll()
     except (ImportError, AttributeError):

@@ -16,6 +16,8 @@ p.setter(2)
 p.deleter(3)
 
 # basic use as a decorator
+
+
 class A:
     def __init__(self, x):
         self._x = x
@@ -24,6 +26,7 @@ class A:
     def x(self):
         print("x get")
         return self._x
+
 
 a = A(1)
 print(a.x)
@@ -34,6 +37,8 @@ except AttributeError:
     print("AttributeError")
 
 # explicit use within a class
+
+
 class B:
     def __init__(self, x):
         self._x = x
@@ -51,6 +56,7 @@ class B:
 
     x = property(xget, xset, xdel)
 
+
 b = B(3)
 print(b.x)
 b.x = 4
@@ -58,6 +64,8 @@ print(b.x)
 del b.x
 
 # full use as a decorator
+
+
 class C:
     def __init__(self, x):
         self._x = x
@@ -76,6 +84,7 @@ class C:
     def x(self):
         print("x del")
 
+
 c = C(5)
 print(c.x)
 c.x = 6
@@ -83,8 +92,12 @@ print(c.x)
 del c.x
 
 # a property that has no get, set or del
+
+
 class D:
     prop = property()
+
+
 d = D()
 try:
     d.prop
@@ -100,14 +113,22 @@ except AttributeError:
     print('AttributeError')
 
 # properties take keyword arguments
+
+
 class E:
     p = property(lambda self: 42, doc="This is truth.")
+
+
     # not tested for because the other keyword arguments are not accepted
     # q = property(fget=lambda self: 21, doc="Half the truth.")
 print(E().p)
 
 # a property as an instance member should not be delegated to
+
+
 class F:
     def __init__(self):
         self.prop_member = property()
+
+
 print(type(F().prop_member))

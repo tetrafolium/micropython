@@ -18,8 +18,8 @@ try:
 except:
     import time
 
-    ticks = lambda: int(time.time() * 1000)
-    ticks_diff = lambda t1, t0: t1 - t0
+    def ticks(): return int(time.time() * 1000)
+    def ticks_diff(t1, t0): return t1 - t0
 
 
 async def task(t):
@@ -64,7 +64,8 @@ async def main():
     t1 = ticks()
     await ts2
     t2 = ticks()
-    print("took {} {}".format(round(ticks_diff(t1, t0), -1), round(ticks_diff(t2, t1), -1)))
+    print("took {} {}".format(round(ticks_diff(t1, t0), -1),
+                              round(ticks_diff(t2, t1), -1)))
 
     # Wait on a task that raises an exception
     t = asyncio.create_task(task_raise())

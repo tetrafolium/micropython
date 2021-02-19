@@ -102,7 +102,8 @@ class BLETemperatureCentral:
             if self._scan_callback:
                 if self._addr:
                     # Found a device during the scan (and the scan was explicitly stopped).
-                    self._scan_callback(self._addr_type, self._addr, self._name)
+                    self._scan_callback(
+                        self._addr_type, self._addr, self._name)
                     self._scan_callback = None
                 else:
                     # Scan timed out.

@@ -96,7 +96,7 @@ def huffman_compression(error_strings):
             n += 8 - (n % 8)
         result = ""
         for i in range(0, n, 8):
-            result += "\\{:03o}".format(int(b[i : i + 8], 2))
+            result += "\\{:03o}".format(int(b[i: i + 8], 2))
         if len(result) > len(line) * 4:
             result = line
         error_strings[line] = result
@@ -117,7 +117,7 @@ def ngram_compression(error_strings):
         if len(line) < N:
             continue
         for i in range(0, len(line) - N, N):
-            topn[line[i : i + N]] += 1
+            topn[line[i: i + N]] += 1
 
     def bytes_saved(item):
         w, n = item
@@ -131,13 +131,13 @@ def ngram_compression(error_strings):
     for line in error_strings.keys():
         result = ""
         for i in range(0, len(line) - N + 1, N):
-            word = line[i : i + N]
+            word = line[i: i + N]
             if word in index_lookup:
                 result += "\\{:03o}".format(0b10000000 | index_lookup[word])
             else:
                 result += word
         if len(line) % N != 0:
-            result += line[len(line) - len(line) % N :]
+            result += line[len(line) - len(line) % N:]
         error_strings[line] = result.strip()
 
     return "".join(index)
@@ -194,11 +194,13 @@ def main(collected_path, fn):
     if hasattr(gzip, "compress"):
         gzip_len = len(gzip.compress(all_input_bytes)) + num_uses * 4
         print("// gzip length:             {}".format(gzip_len))
-        print("// Percentage of gzip:      {:.1f}%".format(100 * (comp_len + data_len) / gzip_len))
+        print(
+            "// Percentage of gzip:      {:.1f}%".format(100 * (comp_len + data_len) / gzip_len))
     if hasattr(zlib, "compress"):
         zlib_len = len(zlib.compress(all_input_bytes)) + num_uses * 4
         print("// zlib length:             {}".format(zlib_len))
-        print("// Percentage of zlib:      {:.1f}%".format(100 * (comp_len + data_len) / zlib_len))
+        print(
+            "// Percentage of zlib:      {:.1f}%".format(100 * (comp_len + data_len) / zlib_len))
 
 
 if __name__ == "__main__":

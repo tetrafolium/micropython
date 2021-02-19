@@ -3,7 +3,8 @@
 # - wait_for_ms
 
 try:
-    import utime, uasyncio
+    import utime
+    import uasyncio
 except ImportError:
     print("SKIP")
     raise SystemExit

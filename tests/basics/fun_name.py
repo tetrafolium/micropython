@@ -1,11 +1,14 @@
 def Fun():
     pass
 
+
 class A:
     def __init__(self):
         pass
+
     def Fun(self):
         pass
+
 
 try:
     print(Fun.__name__)
@@ -24,9 +27,14 @@ except AttributeError:
     pass
 
 # name of a function that has closed over variables
+
+
 def outer():
     x = 1
+
     def inner():
         return x
     return inner
+
+
 print(outer.__name__)

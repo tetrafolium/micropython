@@ -28,6 +28,7 @@ class CtxMgr2:
         print("__exit__", repr(a), repr(b))
         return True
 
+
 try:
     with CtxMgr2() as a:
         raise ValueError

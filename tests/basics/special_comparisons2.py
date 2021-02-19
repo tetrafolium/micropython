@@ -6,6 +6,7 @@ class E:
         print('E eq', other)
         return 123
 
+
 class F:
     def __repr__(self):
         return "F"
@@ -13,6 +14,7 @@ class F:
     def __ne__(self, other):
         print('F ne', other)
         return -456
+
 
 print(E() != F())
 print(F() != E())

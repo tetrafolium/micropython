@@ -1,4 +1,5 @@
-import os, pyb
+import os
+import pyb
 
 machine = os.uname().machine
 if "PYBv1." in machine or "PYBLITEv1." in machine:

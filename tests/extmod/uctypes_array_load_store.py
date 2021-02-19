@@ -13,7 +13,8 @@ for endian in ("NATIVE", "LITTLE_ENDIAN", "BIG_ENDIAN"):
         desc = {"arr": (uctypes.ARRAY | 0, getattr(uctypes, type_) | N)}
         sz = uctypes.sizeof(desc)
         data = bytearray(sz)
-        s = uctypes.struct(uctypes.addressof(data), desc, getattr(uctypes, endian))
+        s = uctypes.struct(uctypes.addressof(
+            data), desc, getattr(uctypes, endian))
         for i in range(N):
             s.arr[i] = i - 2
         print(endian, type_, sz, *(s.arr[i] for i in range(N)))

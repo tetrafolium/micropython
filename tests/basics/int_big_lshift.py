@@ -17,4 +17,4 @@ for i in range(8):
     print(-100000000000000000000000000004 >> i)
 
 # shl by zero
-print((1<<70) << 0)
+print((1 << 70) << 0)

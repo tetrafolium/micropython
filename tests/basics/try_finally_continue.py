@@ -14,4 +14,6 @@ def foo(x):
             finally:
                 print('continue')
                 continue
+
+
 print(foo(4))

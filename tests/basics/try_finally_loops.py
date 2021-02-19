@@ -54,15 +54,21 @@ for i in [1]:
 # function that has an unwind jump.
 # There was a bug where an unwind jump would trash the globals dict upon return
 # from a function, because it used the Python-stack incorrectly.
+
+
 def f():
     for i in [1]:
         try:
             break
         finally:
             pass
+
+
 def g():
     global global_var
     f()
     print(global_var)
+
+
 global_var = 'global'
 g()

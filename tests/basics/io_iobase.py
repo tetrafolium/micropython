@@ -16,4 +16,5 @@ class MyIO(io.IOBase):
         print('write', len(buf))
         return len(buf)
 
+
 print('test', file=MyIO())

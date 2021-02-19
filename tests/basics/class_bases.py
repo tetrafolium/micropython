@@ -4,17 +4,22 @@ if not hasattr(object, '__bases__'):
     print("SKIP")
     raise SystemExit
 
+
 class A:
     pass
+
 
 class B(object):
     pass
 
+
 class C(B):
     pass
 
+
 class D(C, A):
     pass
+
 
 # Check the attribute exists
 print(hasattr(A, '__bases__'))

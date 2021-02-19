@@ -12,6 +12,7 @@ class A:
     def __repr__(self):
         return "A({})".format(self.v)
 
+
 a = A(5)
 b = a
 a += A(3)
@@ -21,6 +22,7 @@ print(b)
 
 # Case 2: Mutable object (e.g. list-like)
 # __iadd__ should be defined
+
 
 class L:
 
@@ -38,6 +40,7 @@ class L:
 
     def __repr__(self):
         return "L({})".format(self.v)
+
 
 c = L([1, 2])
 d = c

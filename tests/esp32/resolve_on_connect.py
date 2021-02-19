@@ -6,9 +6,11 @@ if sys.implementation.name == "micropython" and sys.platform != "esp32":
     raise SystemExit
 
 try:
-    import usocket as socket, sys
+    import usocket as socket
+    import sys
 except:
-    import socket, sys
+    import socket
+    import sys
 
 
 def test_bind_resolves_0_0_0_0():

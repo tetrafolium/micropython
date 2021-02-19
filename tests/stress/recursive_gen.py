@@ -11,6 +11,8 @@ except RuntimeError:
     print("RuntimeError")
 
 # recursion via an iterator over a generator
+
+
 def gen2():
     for x in gen2():
         yield x

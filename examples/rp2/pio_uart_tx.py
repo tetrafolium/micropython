@@ -14,13 +14,13 @@ def uart_tx():
     # Block with TX deasserted until data available
     pull()
     # Initialise bit counter, assert start bit for 8 cycles
-    set(x, 7)  .side(0)       [7]
+    set(x, 7)  .side(0)[7]
     # Shift out 8 data bits, 8 execution cycles per bit
     label("bitloop")
-    out(pins, 1)              [6]
+    out(pins, 1)[6]
     jmp(x_dec, "bitloop")
     # Assert stop bit for 8 cycles total (incl 1 for pull())
-    nop()      .side(1)       [6]
+    nop()      .side(1)[6]
     # fmt: on
 
 
@@ -34,6 +34,8 @@ for i in range(NUM_UARTS):
     uarts.append(sm)
 
 # We can print characters from each UART by pushing them to the TX FIFO
+
+
 def pio_uart_print(sm, s):
     for c in s:
         sm.put(ord(c))

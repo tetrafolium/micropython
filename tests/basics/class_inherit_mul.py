@@ -11,6 +11,7 @@ class A:
     def f2(self):
         print(self.x)
 
+
 class B:
     def __init__(self, x):
         print('B init', x)
@@ -31,6 +32,7 @@ class Sub(A, B):
 
     def g(self):
         print(self.x)
+
 
 print(issubclass(Sub, A))
 print(issubclass(Sub, B))

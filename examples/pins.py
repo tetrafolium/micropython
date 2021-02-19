@@ -16,7 +16,8 @@ def af():
         pin_name = pin_entry[0]
         print("%-*s " % (max_name_width, pin_name), end="")
         for af_entry in pin_entry[1:]:
-            print("%2d: %-*s " % (af_entry[0], max_af_width, af_entry[1]), end="")
+            print("%2d: %-*s " %
+                  (af_entry[0], max_af_width, af_entry[1]), end="")
         print("")
 
 
@@ -29,7 +30,8 @@ def pins():
         pyb.Pin.AF_OD: "AF_OD",
         pyb.Pin.ANALOG: "ANALOG",
     }
-    pull_str = {pyb.Pin.PULL_NONE: "", pyb.Pin.PULL_UP: "PULL_UP", pyb.Pin.PULL_DOWN: "PULL_DOWN"}
+    pull_str = {pyb.Pin.PULL_NONE: "", pyb.Pin.PULL_UP: "PULL_UP",
+                pyb.Pin.PULL_DOWN: "PULL_DOWN"}
     width = [0, 0, 0, 0]
     rows = []
     for pin_entry in pins_af.PINS_AF:

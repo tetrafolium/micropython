@@ -28,11 +28,14 @@
 Link .o files to .mpy
 """
 
-import sys, os, struct, re
+import makeqstrdata as qstrutil
+import sys
+import os
+import struct
+import re
 from elftools.elf import elffile
 
 sys.path.append(os.path.dirname(__file__) + "/../py")
-import makeqstrdata as qstrutil
 
 # MicroPython constants
 MPY_VERSION = 5
@@ -201,7 +204,7 @@ def xxd(text):
         for j in range(4):
             off = i + j * 4
             if off < len(text):
-                d = int.from_bytes(text[off : off + 4], "little")
+                d = int.from_bytes(text[off: off + 4], "little")
                 print(" {:08x}".format(d), end="")
         print()
 
@@ -229,7 +232,8 @@ def extract_qstrs(source_files):
             objs = set()
             for line in f:
                 while line:
-                    m = re.search(r"MP_OBJ_NEW_QSTR\((MP_QSTR_[A-Za-z0-9_]*)\)", line)
+                    m = re.search(
+                        r"MP_OBJ_NEW_QSTR\((MP_QSTR_[A-Za-z0-9_]*)\)", line)
                     if m:
                         objs.add(m.group(1))
                     else:
@@ -238,12 +242,13 @@ def extract_qstrs(source_files):
                             vals.add(m.group())
                     if m:
                         s = m.span()
-                        line = line[: s[0]] + line[s[1] :]
+                        line = line[: s[0]] + line[s[1]:]
                     else:
                         line = ""
             return vals, objs
 
-    static_qstrs = ["MP_QSTR_" + qstrutil.qstr_escape(q) for q in qstrutil.static_qstr_list]
+    static_qstrs = ["MP_QSTR_" +
+                    qstrutil.qstr_escape(q) for q in qstrutil.static_qstr_list]
 
     qstr_vals = set()
     qstr_objs = set()
@@ -321,7 +326,8 @@ class LinkEnv:
     def print_sections(self):
         log(LOG_LEVEL_2, "sections:")
         for sec in self.sections:
-            log(LOG_LEVEL_2, "  {:08x} {} size={}".format(sec.addr, sec.name, len(sec.data)))
+            log(LOG_LEVEL_2, "  {:08x} {} size={}".format(
+                sec.addr, sec.name, len(sec.data)))
 
     def find_addr(self, name):
         if name in self.known_syms:
@@ -361,7 +367,8 @@ def build_got_xtensa(env):
         for r in sec.reloc:
             s = r.sym
             s_type = s.entry["st_info"]["type"]
-            assert s_type in ("STT_NOTYPE", "STT_FUNC", "STT_OBJECT", "STT_SECTION"), s_type
+            assert s_type in ("STT_NOTYPE", "STT_FUNC",
+                              "STT_OBJECT", "STT_SECTION"), s_type
             assert r["r_info_type"] in env.arch.arch_got
             assert r["r_offset"] % env.arch.word_size == 0
             # This entry is a global pointer
@@ -410,7 +417,8 @@ def populate_got(env):
     # Get sorted GOT, sorted by external, text, rodata, bss so relocations can be combined
     got_list = sorted(
         env.got_entries.values(),
-        key=lambda g: g.isexternal() + 2 * g.istext() + 3 * g.isrodata() + 4 * g.isbss(),
+        key=lambda g: g.isexternal() + 2 * g.istext() + 3 *
+        g.isrodata() + 4 * g.isbss(),
     )
 
     # Layout and populate the GOT
@@ -419,7 +427,7 @@ def populate_got(env):
         got_entry.offset = offset
         offset += env.arch.word_size
         o = env.got_section.addr + got_entry.offset
-        env.full_text[o : o + env.arch.word_size] = got_entry.link_addr.to_bytes(
+        env.full_text[o: o + env.arch.word_size] = got_entry.link_addr.to_bytes(
             env.arch.word_size, "little"
         )
 
@@ -439,14 +447,16 @@ def populate_got(env):
             dest = ".bss"
         else:
             assert 0, (got_entry.name, got_entry.sec_name)
-        env.mpy_relocs.append((".text", env.got_section.addr + got_entry.offset, dest))
+        env.mpy_relocs.append(
+            (".text", env.got_section.addr + got_entry.offset, dest))
 
     # Print out the final GOT
     log(LOG_LEVEL_2, "GOT: {:08x}".format(env.got_section.addr))
     for g in got_list:
         log(
             LOG_LEVEL_2,
-            "  {:08x} {} -> {}+{:08x}".format(g.offset, g.name, g.sec_name, g.link_addr),
+            "  {:08x} {} -> {}+{:08x}".format(g.offset,
+                                              g.name, g.sec_name, g.link_addr),
         )
 
 
@@ -456,7 +466,8 @@ def populate_lit(env):
         value = lit_entry.value
         log(LOG_LEVEL_2, "  {:08x} = {:08x}".format(lit_entry.offset, value))
         o = env.lit_section.addr + lit_entry.offset
-        env.full_text[o : o + env.arch.word_size] = value.to_bytes(env.arch.word_size, "little")
+        env.full_text[o: o +
+                      env.arch.word_size] = value.to_bytes(env.arch.word_size, "little")
 
 
 def do_relocation_text(env, text_addr, r):
@@ -495,16 +506,19 @@ def do_relocation_text(env, text_addr, r):
         sec = s.section
 
         if env.arch.separate_rodata and sec.name.startswith(".rodata"):
-            raise LinkError("fixed relocation to rodata with rodata referenced via GOT")
+            raise LinkError(
+                "fixed relocation to rodata with rodata referenced via GOT")
 
         if sec.name.startswith(".bss"):
             raise LinkError(
-                "{}: fixed relocation to bss (bss variables can't be static)".format(s.filename)
+                "{}: fixed relocation to bss (bss variables can't be static)".format(
+                    s.filename)
             )
 
         if sec.name.startswith(".external"):
             raise LinkError(
-                "{}: fixed relocation to external symbol: {}".format(s.filename, s.name)
+                "{}: fixed relocation to external symbol: {}".format(
+                    s.filename, s.name)
             )
 
         addr = sec.addr + s["st_value"]
@@ -578,7 +592,8 @@ def do_relocation_text(env, text_addr, r):
     # Write relocation
     if reloc_type == "le32":
         (existing,) = struct.unpack_from("<I", env.full_text, r_offset)
-        struct.pack_into("<I", env.full_text, r_offset, (existing + reloc) & 0xFFFFFFFF)
+        struct.pack_into("<I", env.full_text, r_offset,
+                         (existing + reloc) & 0xFFFFFFFF)
     elif reloc_type == "thumb_b":
         b_h, b_l = struct.unpack_from("<HH", env.full_text, r_offset)
         existing = (b_h & 0x7FF) << 12 | (b_l & 0x7FF) << 1
@@ -640,7 +655,8 @@ def do_relocation_data(env, text_addr, r):
             log_name = sec.name
         else:
             log_name = s.name
-        log(LOG_LEVEL_3, "  {:08x} -> {} {:08x}".format(r_offset, log_name, addr))
+        log(LOG_LEVEL_3,
+            "  {:08x} -> {} {:08x}".format(r_offset, log_name, addr))
         if env.arch.separate_rodata:
             data = env.full_rodata
         else:
@@ -713,7 +729,8 @@ def load_object_file(env, felf):
                     if sym.name in env.known_syms and not sym.name.startswith(
                         "__x86.get_pc_thunk."
                     ):
-                        raise LinkError("duplicate symbol: {}".format(sym.name))
+                        raise LinkError(
+                            "duplicate symbol: {}".format(sym.name))
                     env.known_syms[sym.name] = sym
             elif sym.entry["st_shndx"] == "SHN_UNDEF" and sym["st_info"]["bind"] == "STB_GLOBAL":
                 # Undefined global symbol, needs resolving
@@ -738,7 +755,8 @@ def link_objects(env, native_qstr_vals_len, native_qstr_objs_len):
     # Create optional literal section
     if env.arch.name == "EM_XTENSA":
         lit_size = len(env.lit_entries) * env.arch.word_size
-        env.lit_section = Section("LIT", bytearray(lit_size), env.arch.word_size)
+        env.lit_section = Section(
+            "LIT", bytearray(lit_size), env.arch.word_size)
         env.sections.insert(1, env.lit_section)
 
     # Create section to contain mp_native_qstr_val_table
@@ -751,7 +769,8 @@ def link_objects(env, native_qstr_vals_len, native_qstr_objs_len):
 
     # Create section to contain mp_native_qstr_obj_table
     env.qstr_obj_section = Section(
-        ".text.QSTR_OBJ", bytearray(native_qstr_objs_len * env.arch.word_size), env.arch.word_size
+        ".text.QSTR_OBJ", bytearray(
+            native_qstr_objs_len * env.arch.word_size), env.arch.word_size
     )
     env.sections.append(env.qstr_obj_section)
 
@@ -794,10 +813,12 @@ def link_objects(env, native_qstr_vals_len, native_qstr_objs_len):
                 sym.section = mp_fun_table_sec
                 sym.mp_fun_table_offset = fun_table[sym.name]
             else:
-                raise LinkError("{}: undefined symbol: {}".format(sym.filename, sym.name))
+                raise LinkError("{}: undefined symbol: {}".format(
+                    sym.filename, sym.name))
 
     # Align sections, assign their addresses, and create full_text
-    env.full_text = bytearray(env.arch.asm_jump(8))  # dummy, to be filled in later
+    # dummy, to be filled in later
+    env.full_text = bytearray(env.arch.asm_jump(8))
     env.full_rodata = bytearray(0)
     env.full_bss = bytearray(0)
     for sec in env.sections:
@@ -823,7 +844,8 @@ def link_objects(env, native_qstr_vals_len, native_qstr_objs_len):
             continue
         log(
             LOG_LEVEL_3,
-            "{}: {} relocations via {}:".format(sec.filename, sec.name, sec.reloc_name),
+            "{}: {} relocations via {}:".format(
+                sec.filename, sec.name, sec.reloc_name),
         )
         for r in sec.reloc:
             if sec.name.startswith((".text", ".rodata")):
@@ -861,14 +883,16 @@ class MPYOutput:
 
     def write_qstr(self, s):
         if s in qstrutil.static_qstr_list:
-            self.write_bytes(bytes([0, qstrutil.static_qstr_list.index(s) + 1]))
+            self.write_bytes(
+                bytes([0, qstrutil.static_qstr_list.index(s) + 1]))
         else:
             s = bytes(s, "ascii")
             self.write_uint(len(s) << 1)
             self.write_bytes(s)
 
     def write_reloc(self, base, offset, dest, n):
-        need_offset = not (base == self.prev_base and offset == self.prev_offset + 1)
+        need_offset = not (
+            base == self.prev_base and offset == self.prev_offset + 1)
         self.prev_offset = offset + n - 1
         if dest <= 2:
             dest = (dest << 1) | (n > 1)
@@ -908,12 +932,14 @@ def build_mpy(env, entry_offset, fmpy, native_qstr_vals, native_qstr_objs):
     # MPY: header
     out.write_bytes(
         bytearray(
-            [ord("M"), MPY_VERSION, env.arch.mpy_feature, MP_SMALL_INT_BITS, QSTR_WINDOW_SIZE]
+            [ord("M"), MPY_VERSION, env.arch.mpy_feature,
+             MP_SMALL_INT_BITS, QSTR_WINDOW_SIZE]
         )
     )
 
     # MPY: kind/len
-    out.write_uint(len(env.full_text) << 2 | (MP_CODE_NATIVE_VIPER - MP_CODE_BYTECODE))
+    out.write_uint(len(env.full_text) << 2 | (
+        MP_CODE_NATIVE_VIPER - MP_CODE_BYTECODE))
 
     # MPY: machine code
     out.write_bytes(env.full_text)
@@ -975,7 +1001,8 @@ def build_mpy(env, entry_offset, fmpy, native_qstr_vals, native_qstr_objs):
             prev_offset += 1
         else:
             if prev_kind is not None:
-                out.write_reloc(prev_base, prev_offset - prev_n + 1, prev_kind, prev_n)
+                out.write_reloc(prev_base, prev_offset -
+                                prev_n + 1, prev_kind, prev_n)
             prev_kind = kind
             prev_base = base
             prev_offset = offset
@@ -1012,7 +1039,8 @@ def do_preprocess(args):
             print("#define %s (mp_native_qstr_val_table[%d])" % (q, i), file=f)
         for i, q in enumerate(sorted(qstr_objs)):
             print(
-                "#define MP_OBJ_NEW_QSTR_%s ((mp_obj_t)mp_native_qstr_obj_table[%d])" % (q, i),
+                "#define MP_OBJ_NEW_QSTR_%s ((mp_obj_t)mp_native_qstr_obj_table[%d])" % (
+                    q, i),
                 file=f,
             )
         if args.arch == "xtensawin":
@@ -1032,11 +1060,13 @@ def do_link(args):
     if args.qstrs is not None:
         with open(args.qstrs) as f:
             for l in f:
-                m = re.match(r"#define MP_QSTR_([A-Za-z0-9_]*) \(mp_native_", l)
+                m = re.match(
+                    r"#define MP_QSTR_([A-Za-z0-9_]*) \(mp_native_", l)
                 if m:
                     native_qstr_vals.append(m.group(1))
                 else:
-                    m = re.match(r"#define MP_OBJ_NEW_QSTR_MP_QSTR_([A-Za-z0-9_]*)", l)
+                    m = re.match(
+                        r"#define MP_OBJ_NEW_QSTR_MP_QSTR_([A-Za-z0-9_]*)", l)
                     if m:
                         native_qstr_objs.append(m.group(1))
     log(LOG_LEVEL_2, "qstr vals: " + ", ".join(native_qstr_vals))
@@ -1046,7 +1076,8 @@ def do_link(args):
         for file in args.files:
             load_object_file(env, file)
         link_objects(env, len(native_qstr_vals), len(native_qstr_objs))
-        build_mpy(env, env.find_addr("mpy_init"), args.output, native_qstr_vals, native_qstr_objs)
+        build_mpy(env, env.find_addr("mpy_init"), args.output,
+                  native_qstr_vals, native_qstr_objs)
     except LinkError as er:
         print("LinkError:", er.args[0])
         sys.exit(1)
@@ -1055,13 +1086,16 @@ def do_link(args):
 def main():
     import argparse
 
-    cmd_parser = argparse.ArgumentParser(description="Run scripts on the pyboard.")
+    cmd_parser = argparse.ArgumentParser(
+        description="Run scripts on the pyboard.")
     cmd_parser.add_argument(
         "--verbose", "-v", action="count", default=1, help="increase verbosity"
     )
     cmd_parser.add_argument("--arch", default="x64", help="architecture")
-    cmd_parser.add_argument("--preprocess", action="store_true", help="preprocess source files")
-    cmd_parser.add_argument("--qstrs", default=None, help="file defining additional qstrs")
+    cmd_parser.add_argument(
+        "--preprocess", action="store_true", help="preprocess source files")
+    cmd_parser.add_argument("--qstrs", default=None,
+                            help="file defining additional qstrs")
     cmd_parser.add_argument(
         "--output", "-o", default=None, help="output .mpy file (default to input with .o->.mpy)"
     )

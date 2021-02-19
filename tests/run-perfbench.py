@@ -4,6 +4,7 @@
 # The MIT License (MIT)
 # Copyright (c) 2019 Damien P. George
 
+import pyboard
 import os
 import subprocess
 import sys
@@ -11,12 +12,12 @@ import argparse
 from glob import glob
 
 sys.path.append("../tools")
-import pyboard
 
 # Paths for host executables
 if os.name == "nt":
     CPYTHON3 = os.getenv("MICROPY_CPYTHON3", "python3.exe")
-    MICROPYTHON = os.getenv("MICROPY_MICROPYTHON", "../ports/windows/micropython.exe")
+    MICROPYTHON = os.getenv("MICROPY_MICROPYTHON",
+                            "../ports/windows/micropython.exe")
 else:
     CPYTHON3 = os.getenv("MICROPY_CPYTHON3", "python3")
     MICROPYTHON = os.getenv("MICROPY_MICROPYTHON", "../ports/unix/micropython")
@@ -133,7 +134,8 @@ def run_benchmarks(target, param_n, param_m, n_average, test_list):
 
         # Check result against truth if needed
         if error is None and result_out != "None":
-            _, _, result_exp = run_benchmark_on_target(PYTHON_TRUTH, test_script)
+            _, _, result_exp = run_benchmark_on_target(
+                PYTHON_TRUTH, test_script)
             if result_out != result_exp:
                 error = "FAIL truth"
 
@@ -216,7 +218,8 @@ def compute_diff(file1, file2, diff_score):
 
 
 def main():
-    cmd_parser = argparse.ArgumentParser(description="Run benchmarks for MicroPython")
+    cmd_parser = argparse.ArgumentParser(
+        description="Run benchmarks for MicroPython")
     cmd_parser.add_argument(
         "-t", "--diff-time", action="store_true", help="diff time outputs from a previous run"
     )
@@ -229,12 +232,15 @@ def main():
     cmd_parser.add_argument(
         "-d", "--device", default="/dev/ttyACM0", help="the device for pyboard.py"
     )
-    cmd_parser.add_argument("-a", "--average", default="8", help="averaging number")
+    cmd_parser.add_argument(
+        "-a", "--average", default="8", help="averaging number")
     cmd_parser.add_argument(
         "--emit", default="bytecode", help="MicroPython emitter to use (bytecode or native)"
     )
-    cmd_parser.add_argument("N", nargs=1, help="N parameter (approximate target CPU frequency)")
-    cmd_parser.add_argument("M", nargs=1, help="M parameter (approximate target heap in kbytes)")
+    cmd_parser.add_argument(
+        "N", nargs=1, help="N parameter (approximate target CPU frequency)")
+    cmd_parser.add_argument(
+        "M", nargs=1, help="M parameter (approximate target heap in kbytes)")
     cmd_parser.add_argument("files", nargs="*", help="input test files")
     args = cmd_parser.parse_args()
 

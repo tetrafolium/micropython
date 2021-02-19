@@ -22,6 +22,8 @@ def f():
 f()
 
 # nested with and try-except
+
+
 @micropython.native
 def f():
     try:

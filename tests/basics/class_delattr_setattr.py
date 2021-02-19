@@ -10,14 +10,20 @@ except AttributeError:
     raise SystemExit
 
 # this class just prints the calls to see if they were executed
+
+
 class A():
     def __getattr__(self, attr):
         print('get', attr)
         return 1
+
     def __setattr__(self, attr, val):
         print('set', attr, val)
+
     def __delattr__(self, attr):
         print('del', attr)
+
+
 a = A()
 
 # check basic behaviour
@@ -26,13 +32,15 @@ setattr(a, 'bar', 2)
 delattr(a, 'baz')
 
 # check meta behaviour
-getattr(a, '__getattr__') # should not call A.__getattr__
-getattr(a, '__setattr__') # should not call A.__getattr__
-getattr(a, '__delattr__') # should not call A.__getattr__
-setattr(a, '__setattr__', 1) # should call A.__setattr__
-delattr(a, '__delattr__') # should call A.__delattr__
+getattr(a, '__getattr__')  # should not call A.__getattr__
+getattr(a, '__setattr__')  # should not call A.__getattr__
+getattr(a, '__delattr__')  # should not call A.__getattr__
+setattr(a, '__setattr__', 1)  # should call A.__setattr__
+delattr(a, '__delattr__')  # should call A.__delattr__
 
 # this class acts like a dictionary
+
+
 class B:
     def __init__(self, d):
         # store the dict in the class, not instance, so
@@ -51,7 +59,8 @@ class B:
     def __delattr__(self, attr):
         del B.d[attr]
 
-a = B({"a":1, "b":2})
+
+a = B({"a": 1, "b": 2})
 print(a.a, a.b)
 a.a = 3
 print(a.a, a.b)
@@ -62,6 +71,8 @@ except AttributeError:
     print("AttributeError")
 
 # test object.__setattr__
+
+
 class C:
     def __init__(self):
         pass
@@ -71,6 +82,7 @@ class C:
 
     def __delattr__(self, attr):
         print("del", attr)
+
 
 c = C()
 c.a = 5

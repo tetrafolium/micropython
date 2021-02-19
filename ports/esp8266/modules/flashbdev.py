@@ -39,4 +39,5 @@ else:
     if start_sec < 256:
         start_sec += 1  # Reserve space for native code
     # 20K at the flash end is reserved for SDK params storage
-    bdev = FlashBdev(start_sec, (size - 20480) // FlashBdev.SEC_SIZE - start_sec)
+    bdev = FlashBdev(start_sec, (size - 20480) //
+                     FlashBdev.SEC_SIZE - start_sec)

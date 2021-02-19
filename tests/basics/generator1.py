@@ -11,15 +11,16 @@ def f(x):
     print('f')
     return None
 
+
 for val in f(3):
     print(val)
 
 #gen = f(3)
-#print(gen)
-#print(gen.__next__())
-#print(gen.__next__())
-#print(gen.__next__())
-#print(gen.__next__())
+# print(gen)
+# print(gen.__next__())
+# print(gen.__next__())
+# print(gen.__next__())
+# print(gen.__next__())
 
 # test printing, but only the first chars that match CPython
 print(repr(f(0))[0:17])

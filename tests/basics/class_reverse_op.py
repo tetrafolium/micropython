@@ -14,5 +14,6 @@ class A:
     def __repr__(self):
         return "A({})".format(self.v)
 
+
 print(A(3) + 1)
 print(2 + A(5))

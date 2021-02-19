@@ -8,7 +8,7 @@
 # forward-word, start in word
 1+2 12+f+3
 # forward-word, don't start in word
-1+    12 3f+
+1 + 12 3f+
 # forward-word on eol. if cursor is moved, this will result in a SyntaxError
 1 + 2 3f+
 
@@ -24,8 +24,8 @@
 
 # extra move/kill shortcuts
 # ctrl-left
-234[1;5D1
+234[1; 5D1
 # ctrl-right
-12[1;5C3
+12[1; 5C3
 # ctrl-w
 1231

@@ -9,7 +9,7 @@ try:
 except ImportError:
     import time
 
-    sleep_ms = lambda t: time.sleep(t / 1000)
+    def sleep_ms(t): return time.sleep(t / 1000)
 
 import _thread
 

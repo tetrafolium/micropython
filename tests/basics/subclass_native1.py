@@ -1,6 +1,7 @@
 class mylist(list):
     pass
 
+
 a = mylist([1, 2, 5])
 # Test setting instance attr
 a.attr = "something"
@@ -21,8 +22,10 @@ print(a + [20, 30, 40])
 # TODO: Faults
 #print(a + a)
 
+
 def foo():
     print("hello from foo")
+
 
 try:
     class myfunc(type(foo)):

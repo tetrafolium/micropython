@@ -1,7 +1,8 @@
 # basic functionality test for {} format string
 
 def test(fmt, *args):
-    print('{:8s}'.format(fmt) + '>' +  fmt.format(*args) + '<')
+    print('{:8s}'.format(fmt) + '>' + fmt.format(*args) + '<')
+
 
 test("}}{{")
 test("{}-{}", 1, [4, 5])

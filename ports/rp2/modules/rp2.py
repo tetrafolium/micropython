@@ -45,7 +45,8 @@ class PIOASMEmit:
             | autopull << 17
             | autopush << 16
         )
-        self.prog = [array("H"), -1, -1, execctrl, shiftctrl, out_init, set_init, sideset_init]
+        self.prog = [array("H"), -1, -1, execctrl, shiftctrl,
+                     out_init, set_init, sideset_init]
 
         self.wrap_used = False
 

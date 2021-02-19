@@ -14,8 +14,10 @@ class Descriptor:
         print('delete')
         print(type(obj) is Main)
 
+
 class Main:
     Forward = Descriptor()
+
 
 m = Main()
 try:

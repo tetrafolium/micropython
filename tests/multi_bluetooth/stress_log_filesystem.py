@@ -3,7 +3,10 @@
 # flash operations are in progress.
 
 from micropython import const
-import time, machine, bluetooth, os
+import time
+import machine
+import bluetooth
+import os
 
 TIMEOUT_MS = 10000
 
@@ -158,13 +161,16 @@ def instance1():
             # Discover services.
             print("gattc_discover_services")
             ble.gattc_discover_services(conn_handle)
-            start_handle, end_handle = wait_for_event(_IRQ_GATTC_SERVICE_RESULT, TIMEOUT_MS)
+            start_handle, end_handle = wait_for_event(
+                _IRQ_GATTC_SERVICE_RESULT, TIMEOUT_MS)
             wait_for_event(_IRQ_GATTC_SERVICE_DONE, TIMEOUT_MS)
 
             # Discover characteristics.
             print("gattc_discover_characteristics")
-            ble.gattc_discover_characteristics(conn_handle, start_handle, end_handle)
-            value_handle = wait_for_event(_IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
+            ble.gattc_discover_characteristics(
+                conn_handle, start_handle, end_handle)
+            value_handle = wait_for_event(
+                _IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
             wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
 
             for op in range(4):

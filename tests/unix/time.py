@@ -24,7 +24,8 @@ def test():
             else:
                 DAYS_PER_MONTH[2] = 28
             for day in range(1, DAYS_PER_MONTH[month] + 1):
-                secs = time.mktime((year, month, day, 14, 0, 0, 0, 0, 0)) + tzseconds
+                secs = time.mktime(
+                    (year, month, day, 14, 0, 0, 0, 0, 0)) + tzseconds
                 if secs != seconds:
                     print(
                         "mktime failed for %d-%02d-%02d got %d expected %d"

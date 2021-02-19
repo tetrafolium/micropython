@@ -3,10 +3,12 @@ class C1:
         print('call', val)
         return 'item'
 
+
 class C2:
 
     def __getattr__(self, k):
         pass
+
 
 c1 = C1()
 print(c1(1))

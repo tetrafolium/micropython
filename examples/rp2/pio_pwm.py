@@ -21,7 +21,8 @@ def pwm_prog():
 
 class PIOPWM:
     def __init__(self, sm_id, pin, max_count, count_freq):
-        self._sm = StateMachine(sm_id, pwm_prog, freq=2 * count_freq, sideset_base=Pin(pin))
+        self._sm = StateMachine(
+            sm_id, pwm_prog, freq=2 * count_freq, sideset_base=Pin(pin))
         # Use exec() to load max count into ISR
         self._sm.put(max_count)
         self._sm.exec("pull()")

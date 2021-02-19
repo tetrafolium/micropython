@@ -3,8 +3,10 @@
 x = 123
 print(locals()['x'])
 
+
 class A:
     y = 1
+
     def f(self):
         pass
 

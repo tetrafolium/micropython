@@ -21,7 +21,8 @@ assert ticks_diff(MAX, 0) == -1
 assert ticks_diff(0, MAX - 1) == 2
 
 # Maximum "positive" distance
-assert ticks_diff(MODULO_HALF, 1) == MODULO_HALF - 1, ticks_diff(MODULO_HALF, 1)
+assert ticks_diff(MODULO_HALF, 1) == MODULO_HALF - \
+    1, ticks_diff(MODULO_HALF, 1)
 # Step further, and it becomes a negative distance
 assert ticks_diff(MODULO_HALF, 0) == -MODULO_HALF
 

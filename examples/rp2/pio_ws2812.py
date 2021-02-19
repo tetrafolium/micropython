@@ -1,6 +1,7 @@
 # Example using PIO to drive a set of WS2812 LEDs.
 
-import array, time
+import array
+import time
 from machine import Pin
 import rp2
 
@@ -21,11 +22,11 @@ def ws2812():
     T3 = 3
     wrap_target()
     label("bitloop")
-    out(x, 1)               .side(0)    [T3 - 1]
-    jmp(not_x, "do_zero")   .side(1)    [T1 - 1]
-    jmp("bitloop")          .side(1)    [T2 - 1]
+    out(x, 1)               .side(0)[T3 - 1]
+    jmp(not_x, "do_zero")   .side(1)[T1 - 1]
+    jmp("bitloop")          .side(1)[T2 - 1]
     label("do_zero")
-    nop()                   .side(0)    [T2 - 1]
+    nop()                   .side(0)[T2 - 1]
     wrap()
     # fmt: on
 

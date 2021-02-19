@@ -71,7 +71,8 @@ class BLETemperature:
         ((self._handle,),) = self._ble.gatts_register_services((_ENV_SENSE_SERVICE,))
         self._connections = set()
         self._payload = advertising_payload(
-            name=name, services=[_ENV_SENSE_UUID], appearance=_ADV_APPEARANCE_GENERIC_THERMOMETER
+            name=name, services=[
+                _ENV_SENSE_UUID], appearance=_ADV_APPEARANCE_GENERIC_THERMOMETER
         )
         self._advertise()
 
@@ -88,7 +89,8 @@ class BLETemperature:
             self._advertise()
         elif event == _IRQ_ENCRYPTION_UPDATE:
             conn_handle, encrypted, authenticated, bonded, key_size = data
-            print("encryption update", conn_handle, encrypted, authenticated, bonded, key_size)
+            print("encryption update", conn_handle,
+                  encrypted, authenticated, bonded, key_size)
         elif event == _IRQ_PASSKEY_ACTION:
             conn_handle, action, passkey = data
             print("passkey action", conn_handle, action, passkey)
@@ -138,7 +140,8 @@ class BLETemperature:
     def set_temperature(self, temp_deg_c, notify=False, indicate=False):
         # Data is sint16 in degrees Celsius with a resolution of 0.01 degrees Celsius.
         # Write the local value, ready for a central to read.
-        self._ble.gatts_write(self._handle, struct.pack("<h", int(temp_deg_c * 100)))
+        self._ble.gatts_write(self._handle, struct.pack(
+            "<h", int(temp_deg_c * 100)))
         if notify or indicate:
             for conn_handle in self._connections:
                 if notify:
@@ -158,7 +161,8 @@ class BLETemperature:
             with open("secrets.json", "r") as f:
                 entries = json.load(f)
                 for sec_type, key, value in entries:
-                    self._secrets[sec_type, binascii.a2b_base64(key)] = binascii.a2b_base64(value)
+                    self._secrets[sec_type, binascii.a2b_base64(
+                        key)] = binascii.a2b_base64(value)
         except:
             print("no secrets available")
 

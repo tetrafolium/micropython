@@ -18,7 +18,8 @@ def print_stacktrace(frame, level=0):
             frame.f_globals["__name__"],
             frame.f_code.co_name,
             # Keep just the filename.
-            "sys_settrace_" + frame.f_code.co_filename.split("sys_settrace_")[-1],
+            "sys_settrace_" + \
+            frame.f_code.co_filename.split("sys_settrace_")[-1],
             frame.f_lineno,
         )
     )

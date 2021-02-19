@@ -5,7 +5,8 @@ try:
     import ujson as json
 except ImportError:
     try:
-        import io, json
+        import io
+        import json
     except ImportError:
         print("SKIP")
         raise SystemExit

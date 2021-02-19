@@ -8,7 +8,7 @@ except ImportError:
 def printbuf():
     print("--8<--")
     for y in range(h):
-        print(buf[y * w * 2 : (y + 1) * w * 2])
+        print(buf[y * w * 2: (y + 1) * w * 2])
     print("-->8--")
 
 

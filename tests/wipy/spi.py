@@ -13,7 +13,8 @@ elif "WiPy" in mch:
 else:
     raise Exception("Board not supported!")
 
-spi = SPI(0, SPI.MASTER, baudrate=2000000, polarity=0, phase=0, firstbit=SPI.MSB, pins=spi_pins)
+spi = SPI(0, SPI.MASTER, baudrate=2000000, polarity=0,
+          phase=0, firstbit=SPI.MSB, pins=spi_pins)
 print(spi)
 spi = SPI(baudrate=5000000)
 print(spi)
@@ -66,12 +67,14 @@ print(buffer_w == buffer_r)
 # test 16 and 32 bit transfers
 buffer_w = bytearray([1, 2, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2])
 buffer_r = bytearray(12)
-spi.init(SPI.MASTER, baudrate=10000000, bits=16, polarity=0, phase=0, pins=None)
+spi.init(SPI.MASTER, baudrate=10000000, bits=16,
+         polarity=0, phase=0, pins=None)
 print(spi.write_readinto(buffer_w, buffer_r) == 12)
 print(buffer_w == buffer_r)
 
 buffer_r = bytearray(12)
-spi.init(SPI.MASTER, baudrate=10000000, bits=32, polarity=0, phase=0, pins=None)
+spi.init(SPI.MASTER, baudrate=10000000, bits=32,
+         polarity=0, phase=0, pins=None)
 print(spi.write_readinto(buffer_w, buffer_r) == 12)
 print(buffer_w == buffer_r)
 
@@ -107,17 +110,20 @@ except:
     print("Exception")
 
 try:
-    spi = SPI(0, mode=SPI.MASTER, baudrate=2000000, polarity=2, phase=0, firstbit=2)
+    spi = SPI(0, mode=SPI.MASTER, baudrate=2000000,
+              polarity=2, phase=0, firstbit=2)
 except:
     print("Exception")
 
 try:
-    spi = SPI(0, mode=SPI.MASTER, baudrate=2000000, polarity=2, phase=0, pins=("GP1", "GP2"))
+    spi = SPI(0, mode=SPI.MASTER, baudrate=2000000,
+              polarity=2, phase=0, pins=("GP1", "GP2"))
 except:
     print("Exception")
 
 try:
-    spi = SPI(0, mode=SPI.MASTER, baudrate=2000000, polarity=0, phase=0, bits=9)
+    spi = SPI(0, mode=SPI.MASTER, baudrate=2000000,
+              polarity=0, phase=0, bits=9)
 except:
     print("Exception")
 

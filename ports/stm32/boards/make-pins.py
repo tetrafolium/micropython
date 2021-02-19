@@ -49,8 +49,8 @@ def split_name_num(name_num):
     num = None
     for num_idx in range(len(name_num) - 1, -1, -1):
         if not name_num[num_idx].isdigit():
-            name = name_num[0 : num_idx + 1]
-            num_str = name_num[num_idx + 1 :]
+            name = name_num[0: num_idx + 1]
+            num_str = name_num[num_idx + 1:]
             if len(num_str) > 0:
                 num = int(num_str)
             break
@@ -251,7 +251,8 @@ class Pin(object):
         hdr_file.write("extern const pin_obj_t pin_{:s}_obj;\n".format(n))
         hdr_file.write("#define pin_{:s} (&pin_{:s}_obj)\n".format(n, n))
         if self.alt_fn_count > 0:
-            hdr_file.write("extern const pin_af_obj_t pin_{:s}_af[];\n".format(n))
+            hdr_file.write(
+                "extern const pin_af_obj_t pin_{:s}_af[];\n".format(n))
 
     def qstr_list(self):
         result = []
@@ -324,7 +325,8 @@ class Pins(object):
 
     def print_named(self, label, named_pins):
         print(
-            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(label)
+            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(
+                label)
         )
         for named_pin in named_pins:
             pin = named_pin.pin()
@@ -364,7 +366,8 @@ class Pins(object):
                     and (pin.adc_num & (1 << (adc_num - 1)))
                     and (pin.adc_channel == channel)
                 ):
-                    print("  &pin_{:s}_obj, // {:d}".format(pin.cpu_pin_name(), channel))
+                    print(
+                        "  &pin_{:s}_obj, // {:d}".format(pin.cpu_pin_name(), channel))
                     adc_found = True
                     break
             if not adc_found:
@@ -430,7 +433,8 @@ class Pins(object):
                 print_conditional_if(cond_var, file=af_const_file)
                 key = "MP_ROM_QSTR(MP_QSTR_{}),".format(mux_name)
                 val = "MP_ROM_INT(GPIO_{})".format(mux_name)
-                print("    { %-*s %s }," % (mux_name_width + 26, key, val), file=af_const_file)
+                print("    { %-*s %s }," %
+                      (mux_name_width + 26, key, val), file=af_const_file)
                 print_conditional_endif(cond_var, file=af_const_file)
 
     def print_af_defs(self, af_defs_filename, cmp_strings):
@@ -439,9 +443,11 @@ class Pins(object):
             STATIC_AF_TOKENS = {}
             for named_pin in self.board_pins:
                 for af in named_pin.pin().alt_fn:
-                    func = "%s%d" % (af.func, af.fn_num) if af.fn_num else af.func
+                    func = "%s%d" % (
+                        af.func, af.fn_num) if af.fn_num else af.func
                     pin_type = (af.pin_type or "NULL").split("(")[0]
-                    tok = "#define STATIC_AF_%s_%s(pin_obj) ( \\" % (func, pin_type)
+                    tok = "#define STATIC_AF_%s_%s(pin_obj) ( \\" % (
+                        func, pin_type)
                     if tok not in STATIC_AF_TOKENS:
                         STATIC_AF_TOKENS[tok] = []
                     if cmp_strings:
@@ -472,7 +478,8 @@ class Pins(object):
                 print("  ('%s', " % named_pin.name(), end="", file=af_py_file)
                 for af in named_pin.pin().alt_fn:
                     if af.is_supported():
-                        print("(%d, '%s'), " % (af.idx, af.af_str), end="", file=af_py_file)
+                        print("(%d, '%s'), " %
+                              (af.idx, af.af_str), end="", file=af_py_file)
                 print("),", file=af_py_file)
             print(")", file=af_py_file)
 

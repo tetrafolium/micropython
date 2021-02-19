@@ -31,7 +31,8 @@ class Done(object):
 
     def __init__(self, count, empty=False):
         self.count = count
-        self.cells = None if empty else [[0, 1, 2, 3, 4, 5, 6, EMPTY] for i in range(count)]
+        self.cells = None if empty else [
+            [0, 1, 2, 3, 4, 5, 6, EMPTY] for i in range(count)]
 
     def clone(self):
         ret = Done(self.count, True)
@@ -113,7 +114,8 @@ class Done(object):
             if not self.already_done(i):
                 cells_around = pos.hex.get_by_id(i).links
                 n = sum(
-                    1 if (self.already_done(nid) and (self[nid][0] != EMPTY)) else 0
+                    1 if (self.already_done(nid) and (
+                        self[nid][0] != EMPTY)) else 0
                     for nid in cells_around
                 )
                 if n > maxn:
@@ -128,7 +130,8 @@ class Done(object):
             if not self.already_done(i):
                 cells_around = pos.hex.get_by_id(i).links
                 n = sum(
-                    1 if (self.already_done(nid) and (self[nid][0] != EMPTY)) else 0
+                    1 if (self.already_done(nid) and (
+                        self[nid][0] != EMPTY)) else 0
                     for nid in cells_around
                 )
                 if n < minn:
@@ -228,7 +231,8 @@ def constraint_pass(pos, last_move=None):
     done = pos.done
 
     # Remove impossible values from free cells
-    free_cells = range(done.count) if last_move is None else pos.hex.get_by_id(last_move).links
+    free_cells = range(done.count) if last_move is None else pos.hex.get_by_id(
+        last_move).links
     for i in free_cells:
         if not done.already_done(i):
             vmax = 0
@@ -315,7 +319,8 @@ def find_moves(pos, strategy, order):
         return [(cell_id, v) for v in done[cell_id]]
     else:
         # Try higher values first and EMPTY last
-        moves = list(reversed([(cell_id, v) for v in done[cell_id] if v != EMPTY]))
+        moves = list(reversed([(cell_id, v)
+                               for v in done[cell_id] if v != EMPTY]))
         if EMPTY in done[cell_id]:
             moves.append((cell_id, EMPTY))
         return moves
@@ -442,7 +447,8 @@ def check_valid(pos):
             tiles[i] = 0
     # check total
     if tot != hex.count:
-        raise Exception("Invalid input. Expected %d tiles, got %d." % (hex.count, tot))
+        raise Exception(
+            "Invalid input. Expected %d tiles, got %d." % (hex.count, tot))
 
 
 def solve(pos, strategy, order, output):
@@ -461,10 +467,10 @@ def read_file(file):
     tiles = 8 * [0]
     done = Done(hex.count)
     for y in range(size):
-        line = lines[linei][size - y - 1 :]
+        line = lines[linei][size - y - 1:]
         p = 0
         for x in range(size + y):
-            tile = line[p : p + 2]
+            tile = line[p: p + 2]
             p += 2
             if tile[1] == ".":
                 inctile = EMPTY
@@ -483,7 +489,7 @@ def read_file(file):
         line = lines[linei][y:]
         p = 0
         for x in range(y, size * 2 - 1):
-            tile = line[p : p + 2]
+            tile = line[p: p + 2]
             p += 2
             if tile[1] == ".":
                 inctile = EMPTY

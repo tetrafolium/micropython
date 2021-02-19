@@ -5,7 +5,10 @@
 # peripheral->central.
 
 from micropython import const
-import time, machine, bluetooth, random
+import time
+import machine
+import bluetooth
+import random
 
 TIMEOUT_MS = 1000
 
@@ -91,7 +94,8 @@ def recv_data(ble, conn_handle, cid):
     recv_bytes = 0
     recv_correct = 0
     expected_bytes = (
-        _PAYLOAD_LEN * _NUM_PAYLOADS + _PAYLOAD_LEN_STEP * _NUM_PAYLOADS * (_NUM_PAYLOADS - 1) // 2
+        _PAYLOAD_LEN * _NUM_PAYLOADS + _PAYLOAD_LEN_STEP *
+        _NUM_PAYLOADS * (_NUM_PAYLOADS - 1) // 2
     )
     print("l2cap_recvinto", expected_bytes)
     while recv_bytes < expected_bytes:
@@ -121,7 +125,8 @@ def instance0():
         ble.l2cap_listen(_L2CAP_PSM, _L2CAP_MTU)
 
         conn_handle, cid, psm = wait_for_event(_IRQ_L2CAP_ACCEPT, TIMEOUT_MS)
-        conn_handle, cid, psm, our_mtu, peer_mtu = wait_for_event(_IRQ_L2CAP_CONNECT, TIMEOUT_MS)
+        conn_handle, cid, psm, our_mtu, peer_mtu = wait_for_event(
+            _IRQ_L2CAP_CONNECT, TIMEOUT_MS)
 
         random.seed(_RANDOM_SEED)
 
@@ -149,7 +154,8 @@ def instance1():
 
         print("l2cap_connect")
         ble.l2cap_connect(conn_handle, _L2CAP_PSM, _L2CAP_MTU)
-        conn_handle, cid, psm, our_mtu, peer_mtu = wait_for_event(_IRQ_L2CAP_CONNECT, TIMEOUT_MS)
+        conn_handle, cid, psm, our_mtu, peer_mtu = wait_for_event(
+            _IRQ_L2CAP_CONNECT, TIMEOUT_MS)
 
         random.seed(_RANDOM_SEED)
 

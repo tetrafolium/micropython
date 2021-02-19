@@ -5,6 +5,7 @@ class Foo:
         self.a = 1
         self.b = "bar"
 
+
 o = Foo()
 if not hasattr(o, "__dict__"):
     print("SKIP")

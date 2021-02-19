@@ -1,7 +1,9 @@
 # Test BLE GAP connect/disconnect
 
 from micropython import const
-import time, machine, bluetooth
+import time
+import machine
+import bluetooth
 
 TIMEOUT_MS = 4000
 

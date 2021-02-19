@@ -187,7 +187,8 @@ def freeze_internal(kind, path, script, opt):
             subdir = "/" + script
         for dirpath, dirnames, filenames in os.walk(path + subdir, followlinks=True):
             for f in filenames:
-                freeze_internal(kind, path, (dirpath + "/" + f)[len(path) + 1 :], opt)
+                freeze_internal(kind, path, (dirpath + "/" + f)
+                                [len(path) + 1:], opt)
     elif not isinstance(script, str):
         # `script` is an iterable of items to freeze
         for s in script:
@@ -205,7 +206,8 @@ def freeze_internal(kind, path, script, opt):
                 return
         wanted_extension = extension_kind[kind]
         if not script.endswith(wanted_extension):
-            raise FreezeError("expecting a {} file, got {}".format(wanted_extension, script))
+            raise FreezeError("expecting a {} file, got {}".format(
+                wanted_extension, script))
         manifest_list.append((kind, path, script, opt))
 
 
@@ -221,7 +223,8 @@ def main():
     cmd_parser.add_argument(
         "-f", "--mpy-cross-flags", default="", help="flags to pass to mpy-cross"
     )
-    cmd_parser.add_argument("-v", "--var", action="append", help="variables to substitute")
+    cmd_parser.add_argument("-v", "--var", action="append",
+                            help="variables to substitute")
     cmd_parser.add_argument("files", nargs="+", help="input manifest list")
     args = cmd_parser.parse_args()
 
@@ -257,7 +260,8 @@ def main():
             else:
                 exec(input_manifest)
         except FreezeError as er:
-            print('freeze error executing "{}": {}'.format(input_manifest, er.args[0]))
+            print('freeze error executing "{}": {}'.format(
+                input_manifest, er.args[0]))
             sys.exit(1)
 
     # Process the manifest
@@ -270,7 +274,8 @@ def main():
             ts_outfile = get_timestamp_newest(path)
         elif kind == KIND_AS_MPY:
             infile = "{}/{}".format(path, script)
-            outfile = "{}/frozen_mpy/{}.mpy".format(args.build_dir, script[:-3])
+            outfile = "{}/frozen_mpy/{}.mpy".format(
+                args.build_dir, script[:-3])
             ts_infile = get_timestamp(infile)
             ts_outfile = get_timestamp(outfile, 0)
             if ts_infile >= ts_outfile:

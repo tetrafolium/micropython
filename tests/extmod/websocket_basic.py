@@ -7,6 +7,8 @@ except ImportError:
     raise SystemExit
 
 # put raw data in the stream and do a websocket read
+
+
 def ws_read(msg, sz):
     ws = uwebsocket.websocket(uio.BytesIO(msg))
     return ws.read(sz)
