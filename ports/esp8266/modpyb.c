@@ -26,9 +26,9 @@
 
 #include <stdio.h>
 
-#include "py/gc.h"
 #include "gccollect.h"
 #include "modmachine.h"
+#include "py/gc.h"
 
 // The pyb module no longer exists since all functionality now appears
 // elsewhere, in more standard places (eg time, machine modules).  The
@@ -36,44 +36,47 @@
 // esp module, pending deletion/renaming/moving elsewhere.
 
 STATIC mp_obj_t pyb_info(size_t n_args, const mp_obj_t *args) {
-    // print info about memory
-    {
-        printf("_text_start=%p\n", &_text_start);
-        printf("_text_end=%p\n", &_text_end);
-        printf("_irom0_text_start=%p\n", &_irom0_text_start);
-        printf("_irom0_text_end=%p\n", &_irom0_text_end);
-        printf("_data_start=%p\n", &_data_start);
-        printf("_data_end=%p\n", &_data_end);
-        printf("_rodata_start=%p\n", &_rodata_start);
-        printf("_rodata_end=%p\n", &_rodata_end);
-        printf("_bss_start=%p\n", &_bss_start);
-        printf("_bss_end=%p\n", &_bss_end);
-        printf("_heap_start=%p\n", &_heap_start);
-        printf("_heap_end=%p\n", &_heap_end);
-    }
+  // print info about memory
+  {
+    printf("_text_start=%p\n", &_text_start);
+    printf("_text_end=%p\n", &_text_end);
+    printf("_irom0_text_start=%p\n", &_irom0_text_start);
+    printf("_irom0_text_end=%p\n", &_irom0_text_end);
+    printf("_data_start=%p\n", &_data_start);
+    printf("_data_end=%p\n", &_data_end);
+    printf("_rodata_start=%p\n", &_rodata_start);
+    printf("_rodata_end=%p\n", &_rodata_end);
+    printf("_bss_start=%p\n", &_bss_start);
+    printf("_bss_end=%p\n", &_bss_end);
+    printf("_heap_start=%p\n", &_heap_start);
+    printf("_heap_end=%p\n", &_heap_end);
+  }
 
-    // qstr info
-    {
-        mp_uint_t n_pool, n_qstr, n_str_data_bytes, n_total_bytes;
-        qstr_pool_info(&n_pool, &n_qstr, &n_str_data_bytes, &n_total_bytes);
-        printf("qstr:\n  n_pool=" UINT_FMT "\n  n_qstr=" UINT_FMT "\n  n_str_data_bytes=" UINT_FMT "\n  n_total_bytes=" UINT_FMT "\n", n_pool, n_qstr, n_str_data_bytes, n_total_bytes);
-    }
+  // qstr info
+  {
+    mp_uint_t n_pool, n_qstr, n_str_data_bytes, n_total_bytes;
+    qstr_pool_info(&n_pool, &n_qstr, &n_str_data_bytes, &n_total_bytes);
+    printf("qstr:\n  n_pool=" UINT_FMT "\n  n_qstr=" UINT_FMT
+           "\n  n_str_data_bytes=" UINT_FMT "\n  n_total_bytes=" UINT_FMT "\n",
+           n_pool, n_qstr, n_str_data_bytes, n_total_bytes);
+  }
 
-    // GC info
-    {
-        gc_info_t info;
-        gc_info(&info);
-        printf("GC:\n");
-        printf("  " UINT_FMT " total\n", info.total);
-        printf("  " UINT_FMT " : " UINT_FMT "\n", info.used, info.free);
-        printf("  1=" UINT_FMT " 2=" UINT_FMT " m=" UINT_FMT "\n", info.num_1block, info.num_2block, info.max_block);
-    }
+  // GC info
+  {
+    gc_info_t info;
+    gc_info(&info);
+    printf("GC:\n");
+    printf("  " UINT_FMT " total\n", info.total);
+    printf("  " UINT_FMT " : " UINT_FMT "\n", info.used, info.free);
+    printf("  1=" UINT_FMT " 2=" UINT_FMT " m=" UINT_FMT "\n", info.num_1block,
+           info.num_2block, info.max_block);
+  }
 
-    if (n_args == 1) {
-        // arg given means dump gc allocation table
-        gc_dump_alloc_table();
-    }
+  if (n_args == 1) {
+    // arg given means dump gc allocation table
+    gc_dump_alloc_table();
+  }
 
-    return mp_const_none;
+  return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_info_obj, 0, 1, pyb_info);

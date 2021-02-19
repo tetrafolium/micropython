@@ -26,11 +26,12 @@
 
 #include <pthread.h>
 
-#include "py/runtime.h"
 #include "py/mperrno.h"
 #include "py/mphal.h"
+#include "py/runtime.h"
 
-#if MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_BTSTACK && MICROPY_BLUETOOTH_BTSTACK_H4
+#if MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_BTSTACK &&                       \
+    MICROPY_BLUETOOTH_BTSTACK_H4
 
 #include "lib/btstack/chipset/zephyr/btstack_chipset_zephyr.h"
 
@@ -50,31 +51,34 @@ STATIC hci_transport_config_uart_t hci_transport_config_uart = {
 };
 
 void mp_bluetooth_hci_poll_h4(void) {
-    if (mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_STARTING || mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_ACTIVE) {
-        mp_bluetooth_btstack_hci_uart_process();
-    }
+  if (mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_STARTING ||
+      mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_ACTIVE) {
+    mp_bluetooth_btstack_hci_uart_process();
+  }
 }
 
 void mp_bluetooth_btstack_port_init_h4(void) {
-    DEBUG_printf("mp_bluetooth_btstack_port_init_h4\n");
+  DEBUG_printf("mp_bluetooth_btstack_port_init_h4\n");
 
-    const hci_transport_t *transport = hci_transport_h4_instance(&mp_bluetooth_btstack_hci_uart_block);
-    hci_init(transport, &hci_transport_config_uart);
+  const hci_transport_t *transport =
+      hci_transport_h4_instance(&mp_bluetooth_btstack_hci_uart_block);
+  hci_init(transport, &hci_transport_config_uart);
 
-    hci_set_chipset(btstack_chipset_zephyr_instance());
+  hci_set_chipset(btstack_chipset_zephyr_instance());
 }
 
 void mp_bluetooth_btstack_port_deinit(void) {
-    DEBUG_printf("mp_bluetooth_btstack_port_deinit\n");
+  DEBUG_printf("mp_bluetooth_btstack_port_deinit\n");
 
-    hci_power_control(HCI_POWER_OFF);
-    hci_close();
+  hci_power_control(HCI_POWER_OFF);
+  hci_close();
 }
 
 void mp_bluetooth_btstack_port_start(void) {
-    DEBUG_printf("mp_bluetooth_btstack_port_start\n");
+  DEBUG_printf("mp_bluetooth_btstack_port_start\n");
 
-    hci_power_control(HCI_POWER_ON);
+  hci_power_control(HCI_POWER_ON);
 }
 
-#endif // MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_BTSTACK && MICROPY_BLUETOOTH_BTSTACK_H4
+#endif // MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_BTSTACK &&
+       // MICROPY_BLUETOOTH_BTSTACK_H4

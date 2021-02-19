@@ -27,15 +27,15 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "py/runtime.h"
 #include "bufhelper.h"
+#include "py/runtime.h"
 #include "uart.h"
 
 /// \moduleref pyb
 /// \class UART - duplex serial communication bus
 ///
-/// UART implements the standard UART/USART duplex serial communications protocol.  At
-/// the physical level it consists of 2 lines: RX and TX.
+/// UART implements the standard UART/USART duplex serial communications
+/// protocol.  At the physical level it consists of 2 lines: RX and TX.
 ///
 /// See usage model of I2C.  UART is very similar.  Main difference is
 /// parameters to init the UART bus:
@@ -43,19 +43,21 @@
 ///     from pyb import UART
 ///
 ///     uart = UART(1, 9600)                         # init with given baudrate
-///     uart.init(9600, bits=8, stop=1, parity=None) # init with given parameters
+///     uart.init(9600, bits=8, stop=1, parity=None) # init with given
+///     parameters
 ///
-/// Bits can be 8 or 9, stop can be 1 or 2, parity can be None, 0 (even), 1 (odd).
+/// Bits can be 8 or 9, stop can be 1 or 2, parity can be None, 0 (even), 1
+/// (odd).
 ///
 /// Extra method:
 ///
 ///     uart.any()               # returns True if any characters waiting
 
 struct _pyb_uart_obj_t {
-    mp_obj_base_t base;
-    pyb_uart_t uart_id;
-    bool is_enabled;
-//    UART_HandleTypeDef uart;
+  mp_obj_base_t base;
+  pyb_uart_t uart_id;
+  bool is_enabled;
+  //    UART_HandleTypeDef uart;
 };
 
 pyb_uart_obj_t *pyb_uart_global_debug = NULL;
@@ -153,7 +155,7 @@ bool uart_init2(pyb_uart_obj_t *uart_obj) {
 
     uart_obj->is_enabled = true;
 #endif
-    return true;
+  return true;
 }
 
 bool uart_init(pyb_uart_obj_t *uart_obj, uint32_t baudrate) {
@@ -168,27 +170,27 @@ bool uart_init(pyb_uart_obj_t *uart_obj, uint32_t baudrate) {
     uh->Init.HwFlowCtl = UART_HWCONTROL_NONE;
     uh->Init.OverSampling = UART_OVERSAMPLING_16;
 #endif
-    return uart_init2(uart_obj);
+  return uart_init2(uart_obj);
 }
 
 mp_uint_t uart_rx_any(pyb_uart_obj_t *uart_obj) {
 #if 0
     return __HAL_UART_GET_FLAG(&uart_obj->uart, UART_FLAG_RXNE);
 #else
-    return 0;
+  return 0;
 #endif
 }
 
 int uart_rx_char(pyb_uart_obj_t *uart_obj) {
-    uint8_t ch;
+  uint8_t ch;
 #if 0
     if (HAL_UART_Receive(&uart_obj->uart, &ch, 1, 0) != HAL_OK) {
         ch = 0;
     }
 #else
-    ch = 'A';
+  ch = 'A';
 #endif
-    return ch;
+  return ch;
 }
 
 void uart_tx_char(pyb_uart_obj_t *uart_obj, int c) {
@@ -211,22 +213,23 @@ void uart_tx_strn(pyb_uart_obj_t *uart_obj, const char *str, uint len) {
 }
 
 void uart_tx_strn_cooked(pyb_uart_obj_t *uart_obj, const char *str, uint len) {
-    for (const char *top = str + len; str < top; str++) {
-        if (*str == '\n') {
-            uart_tx_char(uart_obj, '\r');
-        }
-        uart_tx_char(uart_obj, *str);
+  for (const char *top = str + len; str < top; str++) {
+    if (*str == '\n') {
+      uart_tx_char(uart_obj, '\r');
     }
+    uart_tx_char(uart_obj, *str);
+  }
 }
 
 /******************************************************************************/
 /* MicroPython bindings                                                      */
 
-STATIC void pyb_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
-    pyb_uart_obj_t *self = self_in;
-    if (!self->is_enabled) {
-        mp_printf(print, "UART(%lu)", self->uart_id);
-    } else {
+STATIC void pyb_uart_print(const mp_print_t *print, mp_obj_t self_in,
+                           mp_print_kind_t kind) {
+  pyb_uart_obj_t *self = self_in;
+  if (!self->is_enabled) {
+    mp_printf(print, "UART(%lu)", self->uart_id);
+  } else {
 #if 0
         mp_printf(print, "UART(%lu, baudrate=%u, bits=%u, stop=%u",
                   self->uart_id, self->uart.Init.BaudRate,
@@ -238,7 +241,7 @@ STATIC void pyb_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_print_k
             mp_printf(print, ", parity=%u)", self->uart.Init.Parity == UART_PARITY_EVEN ? 0 : 1);
         }
 #endif
-    }
+  }
 }
 
 /// \method init(baudrate, *, bits=8, stop=1, parity=None)
@@ -250,17 +253,19 @@ STATIC void pyb_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_print_k
 ///   - `stop` is the number of stop bits, 1 or 2.
 ///   - `parity` is the parity, `None`, 0 (even) or 1 (odd).
 STATIC const mp_arg_t pyb_uart_init_args[] = {
-    { MP_QSTR_baudrate, MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 9600} },
-    { MP_QSTR_bits,     MP_ARG_KW_ONLY | MP_ARG_INT,  {.u_int = 8} },
-    { MP_QSTR_stop,     MP_ARG_KW_ONLY | MP_ARG_INT,  {.u_int = 1} },
-    { MP_QSTR_parity,   MP_ARG_KW_ONLY | MP_ARG_OBJ,  {.u_obj = mp_const_none} },
+    {MP_QSTR_baudrate, MP_ARG_REQUIRED | MP_ARG_INT, {.u_int = 9600}},
+    {MP_QSTR_bits, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 8}},
+    {MP_QSTR_stop, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 1}},
+    {MP_QSTR_parity, MP_ARG_KW_ONLY | MP_ARG_OBJ, {.u_obj = mp_const_none}},
 };
 #define PYB_UART_INIT_NUM_ARGS MP_ARRAY_SIZE(pyb_uart_init_args)
 
-STATIC mp_obj_t pyb_uart_init_helper(pyb_uart_obj_t *self, uint n_args, const mp_obj_t *args, mp_map_t *kw_args) {
-    // parse args
-    mp_arg_val_t vals[PYB_UART_INIT_NUM_ARGS];
-    mp_arg_parse_all(n_args, args, kw_args, PYB_UART_INIT_NUM_ARGS, pyb_uart_init_args, vals);
+STATIC mp_obj_t pyb_uart_init_helper(pyb_uart_obj_t *self, uint n_args,
+                                     const mp_obj_t *args, mp_map_t *kw_args) {
+  // parse args
+  mp_arg_val_t vals[PYB_UART_INIT_NUM_ARGS];
+  mp_arg_parse_all(n_args, args, kw_args, PYB_UART_INIT_NUM_ARGS,
+                   pyb_uart_init_args, vals);
 #if 0
     // set the UART configuration values
     memset(&self->uart, 0, sizeof(self->uart));
@@ -291,16 +296,16 @@ STATIC mp_obj_t pyb_uart_init_helper(pyb_uart_obj_t *self, uint n_args, const mp
     }
 #endif
 
-    return mp_const_none;
+  return mp_const_none;
 }
 
 /// \classmethod \constructor(bus, ...)
 ///
-/// Construct a UART object on the given bus.  `bus` can be 1-6, or 'XA', 'XB', 'YA', or 'YB'.
-/// With no additional parameters, the UART object is created but not
-/// initialised (it has the settings from the last initialisation of
-/// the bus, if any).  If extra arguments are given, the bus is initialised.
-/// See `init` for parameters of initialisation.
+/// Construct a UART object on the given bus.  `bus` can be 1-6, or 'XA', 'XB',
+/// 'YA', or 'YB'. With no additional parameters, the UART object is created but
+/// not initialised (it has the settings from the last initialisation of the
+/// bus, if any).  If extra arguments are given, the bus is initialised. See
+/// `init` for parameters of initialisation.
 ///
 /// The physical pins of the UART busses are:
 ///
@@ -309,16 +314,17 @@ STATIC mp_obj_t pyb_uart_init_helper(pyb_uart_obj_t *self, uint n_args, const mp
 ///   - `UART(6)` is on `YA`: `(TX, RX) = (Y1, Y2) = (PC6, PC7)`
 ///   - `UART(3)` is on `YB`: `(TX, RX) = (Y9, Y10) = (PB10, PB11)`
 ///   - `UART(2)` is on: `(TX, RX) = (X3, X4) = (PA2, PA3)`
-STATIC mp_obj_t pyb_uart_make_new(const mp_obj_type_t *type, uint n_args, uint n_kw, const mp_obj_t *args) {
-    // check arguments
-    mp_arg_check_num(n_args, n_kw, 1, MP_OBJ_FUN_ARGS_MAX, true);
+STATIC mp_obj_t pyb_uart_make_new(const mp_obj_type_t *type, uint n_args,
+                                  uint n_kw, const mp_obj_t *args) {
+  // check arguments
+  mp_arg_check_num(n_args, n_kw, 1, MP_OBJ_FUN_ARGS_MAX, true);
 
-    // create object
-    pyb_uart_obj_t *o = m_new_obj(pyb_uart_obj_t);
-    o->base.type = &pyb_uart_type;
+  // create object
+  pyb_uart_obj_t *o = m_new_obj(pyb_uart_obj_t);
+  o->base.type = &pyb_uart_type;
 
-    // work out port
-    o->uart_id = 0;
+  // work out port
+  o->uart_id = 0;
 #if 0
     if (mp_obj_is_str(args[0])) {
         const char *port = mp_obj_str_get_str(args[0]);
@@ -341,39 +347,40 @@ STATIC mp_obj_t pyb_uart_make_new(const mp_obj_type_t *type, uint n_args, uint n
     }
 #endif
 
-    if (n_args > 1 || n_kw > 0) {
-        // start the peripheral
-        mp_map_t kw_args;
-        mp_map_init_fixed_table(&kw_args, n_kw, args + n_args);
-        pyb_uart_init_helper(o, n_args - 1, args + 1, &kw_args);
-    }
+  if (n_args > 1 || n_kw > 0) {
+    // start the peripheral
+    mp_map_t kw_args;
+    mp_map_init_fixed_table(&kw_args, n_kw, args + n_args);
+    pyb_uart_init_helper(o, n_args - 1, args + 1, &kw_args);
+  }
 
-    return o;
+  return o;
 }
 
-STATIC mp_obj_t pyb_uart_init(uint n_args, const mp_obj_t *args, mp_map_t *kw_args) {
-    return pyb_uart_init_helper(args[0], n_args - 1, args + 1, kw_args);
+STATIC mp_obj_t pyb_uart_init(uint n_args, const mp_obj_t *args,
+                              mp_map_t *kw_args) {
+  return pyb_uart_init_helper(args[0], n_args - 1, args + 1, kw_args);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(pyb_uart_init_obj, 1, pyb_uart_init);
 
 /// \method deinit()
 /// Turn off the UART bus.
 STATIC mp_obj_t pyb_uart_deinit(mp_obj_t self_in) {
-    // pyb_uart_obj_t *self = self_in;
-    // TODO
-    return mp_const_none;
+  // pyb_uart_obj_t *self = self_in;
+  // TODO
+  return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(pyb_uart_deinit_obj, pyb_uart_deinit);
 
 /// \method any()
 /// Return `True` if any characters waiting, else `False`.
 STATIC mp_obj_t pyb_uart_any(mp_obj_t self_in) {
-    pyb_uart_obj_t *self = self_in;
-    if (uart_rx_any(self)) {
-        return mp_const_true;
-    } else {
-        return mp_const_false;
-    }
+  pyb_uart_obj_t *self = self_in;
+  if (uart_rx_any(self)) {
+    return mp_const_true;
+  } else {
+    return mp_const_false;
+  }
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(pyb_uart_any_obj, pyb_uart_any);
 
@@ -385,19 +392,21 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(pyb_uart_any_obj, pyb_uart_any);
 ///
 /// Return value: `None`.
 STATIC const mp_arg_t pyb_uart_send_args[] = {
-    { MP_QSTR_send,    MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_obj = MP_OBJ_NULL} },
-    { MP_QSTR_timeout, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 5000} },
+    {MP_QSTR_send, MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_obj = MP_OBJ_NULL}},
+    {MP_QSTR_timeout, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 5000}},
 };
 #define PYB_UART_SEND_NUM_ARGS MP_ARRAY_SIZE(pyb_uart_send_args)
 
-STATIC mp_obj_t pyb_uart_send(uint n_args, const mp_obj_t *args, mp_map_t *kw_args) {
-    // TODO assumes transmission size is 8-bits wide
+STATIC mp_obj_t pyb_uart_send(uint n_args, const mp_obj_t *args,
+                              mp_map_t *kw_args) {
+  // TODO assumes transmission size is 8-bits wide
 
-    pyb_uart_obj_t *self = args[0];
+  pyb_uart_obj_t *self = args[0];
 
-    // parse args
-    mp_arg_val_t vals[PYB_UART_SEND_NUM_ARGS];
-    mp_arg_parse_all(n_args - 1, args + 1, kw_args, PYB_UART_SEND_NUM_ARGS, pyb_uart_send_args, vals);
+  // parse args
+  mp_arg_val_t vals[PYB_UART_SEND_NUM_ARGS];
+  mp_arg_parse_all(n_args - 1, args + 1, kw_args, PYB_UART_SEND_NUM_ARGS,
+                   pyb_uart_send_args, vals);
 
 #if 0
     // get the buffer to send from
@@ -413,10 +422,10 @@ STATIC mp_obj_t pyb_uart_send(uint n_args, const mp_obj_t *args, mp_map_t *kw_ar
         mp_raise_msg_varg(&mp_type_Exception, MP_ERROR_TEXT("HAL_UART_Transmit failed with code %d"), status);
     }
 #else
-    (void)self;
+  (void)self;
 #endif
 
-    return mp_const_none;
+  return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(pyb_uart_send_obj, 1, pyb_uart_send);
 
@@ -428,8 +437,8 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_KW(pyb_uart_send_obj, 1, pyb_uart_send);
 ///     or a mutable buffer, which will be filled with received bytes.
 ///   - `timeout` is the timeout in milliseconds to wait for the receive.
 ///
-/// Return value: if `recv` is an integer then a new buffer of the bytes received,
-/// otherwise the same buffer that was passed in to `recv`.
+/// Return value: if `recv` is an integer then a new buffer of the bytes
+/// received, otherwise the same buffer that was passed in to `recv`.
 #if 0
 STATIC const mp_arg_t pyb_uart_recv_args[] = {
     { MP_QSTR_recv,    MP_ARG_REQUIRED | MP_ARG_OBJ, {.u_obj = MP_OBJ_NULL} },
@@ -438,10 +447,11 @@ STATIC const mp_arg_t pyb_uart_recv_args[] = {
 #define PYB_UART_RECV_NUM_ARGS MP_ARRAY_SIZE(pyb_uart_recv_args)
 #endif
 
-STATIC mp_obj_t pyb_uart_recv(uint n_args, const mp_obj_t *args, mp_map_t *kw_args) {
-    // TODO assumes transmission size is 8-bits wide
+STATIC mp_obj_t pyb_uart_recv(uint n_args, const mp_obj_t *args,
+                              mp_map_t *kw_args) {
+  // TODO assumes transmission size is 8-bits wide
 
-    pyb_uart_obj_t *self = args[0];
+  pyb_uart_obj_t *self = args[0];
 
 #if 0
     // parse args
@@ -467,25 +477,25 @@ STATIC mp_obj_t pyb_uart_recv(uint n_args, const mp_obj_t *args, mp_map_t *kw_ar
         return mp_obj_str_builder_end(o_ret);
     }
 #else
-    (void)self;
-    return mp_const_none;
+  (void)self;
+  return mp_const_none;
 #endif
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(pyb_uart_recv_obj, 1, pyb_uart_recv);
 
 STATIC const mp_rom_map_elem_t pyb_uart_locals_dict_table[] = {
     // instance methods
-    { MP_ROM_QSTR(MP_QSTR_init), MP_ROM_PTR(&pyb_uart_init_obj) },
-    { MP_ROM_QSTR(MP_QSTR_deinit), MP_ROM_PTR(&pyb_uart_deinit_obj) },
-    { MP_ROM_QSTR(MP_QSTR_any), MP_ROM_PTR(&pyb_uart_any_obj) },
-    { MP_ROM_QSTR(MP_QSTR_send), MP_ROM_PTR(&pyb_uart_send_obj) },
-    { MP_ROM_QSTR(MP_QSTR_recv), MP_ROM_PTR(&pyb_uart_recv_obj) },
+    {MP_ROM_QSTR(MP_QSTR_init), MP_ROM_PTR(&pyb_uart_init_obj)},
+    {MP_ROM_QSTR(MP_QSTR_deinit), MP_ROM_PTR(&pyb_uart_deinit_obj)},
+    {MP_ROM_QSTR(MP_QSTR_any), MP_ROM_PTR(&pyb_uart_any_obj)},
+    {MP_ROM_QSTR(MP_QSTR_send), MP_ROM_PTR(&pyb_uart_send_obj)},
+    {MP_ROM_QSTR(MP_QSTR_recv), MP_ROM_PTR(&pyb_uart_recv_obj)},
 };
 
 STATIC MP_DEFINE_CONST_DICT(pyb_uart_locals_dict, pyb_uart_locals_dict_table);
 
 const mp_obj_type_t pyb_uart_type = {
-    { &mp_type_type },
+    {&mp_type_type},
     .name = MP_QSTR_UART,
     .print = pyb_uart_print,
     .make_new = pyb_uart_make_new,

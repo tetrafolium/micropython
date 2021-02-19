@@ -27,76 +27,75 @@
 #include "fsl_gpio.h"
 #include "fsl_iomuxc.h"
 
-#include "py/runtime.h"
-#include "py/mphal.h"
 #include "led.h"
+#include "py/mphal.h"
+#include "py/runtime.h"
 
 #if NUM_LEDS
 
-const machine_led_obj_t machine_led_obj[NUM_LEDS] = {
-    {
-        .base = {&machine_led_type},
-        .led_id = 1U,
-        .led_pin = &MICROPY_HW_LED1_PIN,
-    }
-};
+const machine_led_obj_t machine_led_obj[NUM_LEDS] = {{
+    .base = {&machine_led_type},
+    .led_id = 1U,
+    .led_pin = &MICROPY_HW_LED1_PIN,
+}};
 
 void led_init(void) {
-    // Turn off LEDs and initialize
-    for (mp_int_t led = 0; led < NUM_LEDS; led++) {
-        const pin_obj_t *led_pin = machine_led_obj[led].led_pin;
+  // Turn off LEDs and initialize
+  for (mp_int_t led = 0; led < NUM_LEDS; led++) {
+    const pin_obj_t *led_pin = machine_led_obj[led].led_pin;
 
-        gpio_pin_config_t pin_config = {
-            .outputLogic = 1U,
-            .direction = kGPIO_DigitalOutput,
-            .interruptMode = kGPIO_NoIntmode,
-        };
+    gpio_pin_config_t pin_config = {
+        .outputLogic = 1U,
+        .direction = kGPIO_DigitalOutput,
+        .interruptMode = kGPIO_NoIntmode,
+    };
 
-        GPIO_PinInit(led_pin->gpio, led_pin->pin, &pin_config);
+    GPIO_PinInit(led_pin->gpio, led_pin->pin, &pin_config);
 
-        // ALT mode for GPIO is always 5
-        IOMUXC_SetPinMux(led_pin->muxRegister, 5U, 0, 0, led_pin->configRegister,
-                         1U);                 // Software Input On Field: Input Path is determined by functionality
-        IOMUXC_SetPinConfig(led_pin->muxRegister, 5U, 0, 0, led_pin->configRegister, 0x10B0U);
-        MICROPY_HW_LED_OFF(led_pin);
-    }
+    // ALT mode for GPIO is always 5
+    IOMUXC_SetPinMux(led_pin->muxRegister, 5U, 0, 0, led_pin->configRegister,
+                     1U); // Software Input On Field: Input Path is determined
+                          // by functionality
+    IOMUXC_SetPinConfig(led_pin->muxRegister, 5U, 0, 0, led_pin->configRegister,
+                        0x10B0U);
+    MICROPY_HW_LED_OFF(led_pin);
+  }
 }
 
 void led_state(machine_led_t led, int state) {
-    if (led < 1 || led > NUM_LEDS) {
-        return;
-    }
+  if (led < 1 || led > NUM_LEDS) {
+    return;
+  }
 
-    const pin_obj_t *led_pin = machine_led_obj[led - 1].led_pin;
+  const pin_obj_t *led_pin = machine_led_obj[led - 1].led_pin;
 
-    if (state == 0) {
-        // turn LED off
-        MICROPY_HW_LED_OFF(led_pin);
-    } else {
-        // turn LED on
-        MICROPY_HW_LED_ON(led_pin);
-    }
+  if (state == 0) {
+    // turn LED off
+    MICROPY_HW_LED_OFF(led_pin);
+  } else {
+    // turn LED on
+    MICROPY_HW_LED_ON(led_pin);
+  }
 }
 
 void led_toggle(machine_led_t led) {
-    if (led < 1 || led > NUM_LEDS) {
-        return;
-    }
+  if (led < 1 || led > NUM_LEDS) {
+    return;
+  }
 
-    const pin_obj_t *led_pin = machine_led_obj[led - 1].led_pin;
-    mp_hal_pin_toggle(led_pin);
+  const pin_obj_t *led_pin = machine_led_obj[led - 1].led_pin;
+  mp_hal_pin_toggle(led_pin);
 }
 
 void led_debug(int value, int delay) {
-    for (mp_int_t i = 0; i < NUM_LEDS; i++) {
-        led_state(i + 1, (value & (1 << i)));
-    }
-    mp_hal_delay_ms(delay);
+  for (mp_int_t i = 0; i < NUM_LEDS; i++) {
+    led_state(i + 1, (value & (1 << i)));
+  }
+  mp_hal_delay_ms(delay);
 }
 
 #else
 
-void led_init(void) {
-}
+void led_init(void) {}
 
 #endif

@@ -2,7 +2,7 @@
 #define MICROPY_INCLUDED_TEENSY_UART_H
 
 typedef enum {
-    PYB_UART_NONE = 0,
+  PYB_UART_NONE = 0,
 } pyb_uart_t;
 
 typedef struct _pyb_uart_obj_t pyb_uart_obj_t;

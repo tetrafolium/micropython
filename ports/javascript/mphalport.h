@@ -24,8 +24,8 @@
  * THE SOFTWARE.
  */
 
-#include "py/obj.h"
 #include "lib/utils/interrupt_char.h"
+#include "py/obj.h"
 
 #define mp_hal_stdin_rx_chr() (0)
 void mp_hal_stdout_tx_strn(const char *str, size_t len);

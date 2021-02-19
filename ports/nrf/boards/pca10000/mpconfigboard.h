@@ -24,31 +24,31 @@
  * THE SOFTWARE.
  */
 
-#define MICROPY_HW_BOARD_NAME       "PCA10000"
-#define MICROPY_HW_MCU_NAME         "NRF51822"
-#define MICROPY_PY_SYS_PLATFORM     "nrf51-dongle"
+#define MICROPY_HW_BOARD_NAME "PCA10000"
+#define MICROPY_HW_MCU_NAME "NRF51822"
+#define MICROPY_PY_SYS_PLATFORM "nrf51-dongle"
 
-#define MICROPY_PY_MACHINE_UART     (1)
-#define MICROPY_PY_MACHINE_HW_SPI   (0)
-#define MICROPY_PY_MACHINE_TIMER    (1)
+#define MICROPY_PY_MACHINE_UART (1)
+#define MICROPY_PY_MACHINE_HW_SPI (0)
+#define MICROPY_PY_MACHINE_TIMER (1)
 #define MICROPY_PY_MACHINE_RTCOUNTER (1)
-#define MICROPY_PY_MACHINE_I2C      (0)
-#define MICROPY_PY_MACHINE_ADC      (0)
-#define MICROPY_PY_MACHINE_TEMP     (1)
+#define MICROPY_PY_MACHINE_I2C (0)
+#define MICROPY_PY_MACHINE_ADC (0)
+#define MICROPY_PY_MACHINE_TEMP (1)
 
-#define MICROPY_HW_ENABLE_RNG       (1)
+#define MICROPY_HW_ENABLE_RNG (1)
 
-#define MICROPY_HW_HAS_LED          (1)
-#define MICROPY_HW_LED_TRICOLOR     (1)
-#define MICROPY_HW_LED_PULLUP       (1)
+#define MICROPY_HW_HAS_LED (1)
+#define MICROPY_HW_LED_TRICOLOR (1)
+#define MICROPY_HW_LED_PULLUP (1)
 
-#define MICROPY_HW_LED_RED          (21) // RED
-#define MICROPY_HW_LED_GREEN        (22) // GREEN
-#define MICROPY_HW_LED_BLUE         (23) // BLUE
+#define MICROPY_HW_LED_RED (21)   // RED
+#define MICROPY_HW_LED_GREEN (22) // GREEN
+#define MICROPY_HW_LED_BLUE (23)  // BLUE
 
 // UART config
-#define MICROPY_HW_UART1_RX         (11)
-#define MICROPY_HW_UART1_TX         (9)
-#define MICROPY_HW_UART1_HWFC       (0)
+#define MICROPY_HW_UART1_RX (11)
+#define MICROPY_HW_UART1_TX (9)
+#define MICROPY_HW_UART1_HWFC (0)
 
-#define HELP_TEXT_BOARD_LED         "1,2,3"
+#define HELP_TEXT_BOARD_LED "1,2,3"

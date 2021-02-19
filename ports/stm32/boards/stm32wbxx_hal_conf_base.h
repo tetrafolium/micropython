@@ -27,9 +27,9 @@
 #define MICROPY_INCLUDED_STM32WBXX_HAL_CONF_BASE_H
 
 // Include various HAL modules for convenience
-#include "stm32wbxx_hal_dma.h"
 #include "stm32wbxx_hal_adc.h"
 #include "stm32wbxx_hal_cortex.h"
+#include "stm32wbxx_hal_dma.h"
 #include "stm32wbxx_hal_flash.h"
 #include "stm32wbxx_hal_gpio.h"
 #include "stm32wbxx_hal_i2c.h"
@@ -62,17 +62,17 @@
 #define HAL_USART_MODULE_ENABLED
 
 // Oscillator values in Hz
-#define MSI_VALUE   (4000000)
+#define MSI_VALUE (4000000)
 
 // SysTick has the highest priority
 #define TICK_INT_PRIORITY (0x00)
 
 // Miscellaneous HAL settings
-#define DATA_CACHE_ENABLE           1
-#define INSTRUCTION_CACHE_ENABLE    1
-#define PREFETCH_ENABLE             0
-#define USE_SPI_CRC                 0
-#define USE_RTOS                    0
+#define DATA_CACHE_ENABLE 1
+#define INSTRUCTION_CACHE_ENABLE 1
+#define PREFETCH_ENABLE 0
+#define USE_SPI_CRC 0
+#define USE_RTOS 0
 
 // HAL parameter assertions are disabled
 #define assert_param(expr) ((void)0)

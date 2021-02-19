@@ -25,84 +25,87 @@
  * THE SOFTWARE.
  */
 
-#include "py/compile.h"
-#include "py/runtime.h"
-#include "py/gc.h"
-#include "py/mperrno.h"
-#include "py/stackctrl.h"
+#include "led.h"
 #include "lib/utils/gchelper.h"
 #include "lib/utils/pyexec.h"
+#include "py/compile.h"
+#include "py/gc.h"
+#include "py/mperrno.h"
+#include "py/runtime.h"
+#include "py/stackctrl.h"
 #include "tusb.h"
-#include "led.h"
 
 extern uint8_t _sstack, _estack, _gc_heap_start, _gc_heap_end;
 
 void board_init(void);
 
 int main(void) {
-    board_init();
-    tusb_init();
-    led_init();
+  board_init();
+  tusb_init();
+  led_init();
 
-    mp_stack_set_top(&_estack);
-    mp_stack_set_limit(&_estack - &_sstack - 1024);
+  mp_stack_set_top(&_estack);
+  mp_stack_set_limit(&_estack - &_sstack - 1024);
+
+  for (;;) {
+    gc_init(&_gc_heap_start, &_gc_heap_end);
+    mp_init();
+
+    mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_path), 0);
+    mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR_));
+    mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_argv), 0);
 
     for (;;) {
-        gc_init(&_gc_heap_start, &_gc_heap_end);
-        mp_init();
-
-        mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_path), 0);
-        mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR_));
-        mp_obj_list_init(MP_OBJ_TO_PTR(mp_sys_argv), 0);
-
-        for (;;) {
-            if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {
-                if (pyexec_raw_repl() != 0) {
-                    break;
-                }
-            } else {
-                if (pyexec_friendly_repl() != 0) {
-                    break;
-                }
-            }
+      if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {
+        if (pyexec_raw_repl() != 0) {
+          break;
         }
-
-        mp_printf(MP_PYTHON_PRINTER, "MPY: soft reboot\n");
-        gc_sweep_all();
-        mp_deinit();
+      } else {
+        if (pyexec_friendly_repl() != 0) {
+          break;
+        }
+      }
     }
 
-    return 0;
+    mp_printf(MP_PYTHON_PRINTER, "MPY: soft reboot\n");
+    gc_sweep_all();
+    mp_deinit();
+  }
+
+  return 0;
 }
 
 void gc_collect(void) {
-    gc_collect_start();
-    gc_helper_collect_regs_and_stack();
-    gc_collect_end();
+  gc_collect_start();
+  gc_helper_collect_regs_and_stack();
+  gc_collect_end();
 }
 
 mp_lexer_t *mp_lexer_new_from_file(const char *filename) {
-    mp_raise_OSError(MP_ENOENT);
+  mp_raise_OSError(MP_ENOENT);
 }
 
 mp_import_stat_t mp_import_stat(const char *path) {
-    return MP_IMPORT_STAT_NO_EXIST;
+  return MP_IMPORT_STAT_NO_EXIST;
 }
 
-mp_obj_t mp_builtin_open(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs) {
-    return mp_const_none;
+mp_obj_t mp_builtin_open(size_t n_args, const mp_obj_t *args,
+                         mp_map_t *kwargs) {
+  return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(mp_builtin_open_obj, 1, mp_builtin_open);
 
 void nlr_jump_fail(void *val) {
-    for (;;) {
-    }
+  for (;;) {
+  }
 }
 
 #ifndef NDEBUG
-void MP_WEAK __assert_func(const char *file, int line, const char *func, const char *expr) {
-    mp_printf(MP_PYTHON_PRINTER, "Assertion '%s' failed, at file %s:%d\n", expr, file, line);
-    for (;;) {
-    }
+void MP_WEAK __assert_func(const char *file, int line, const char *func,
+                           const char *expr) {
+  mp_printf(MP_PYTHON_PRINTER, "Assertion '%s' failed, at file %s:%d\n", expr,
+            file, line);
+  for (;;) {
+  }
 }
 #endif

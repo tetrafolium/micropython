@@ -36,5 +36,4 @@ const char zephyr_help_text[] =
     "  CTRL-D        -- on a blank line, do a soft reset of the board\n"
     "  CTRL-E        -- on a blank line, enter paste mode\n"
     "\n"
-    "For further help on a specific object, type help(obj)\n"
-    ;
+    "For further help on a specific object, type help(obj)\n";

@@ -1,7 +1,8 @@
-#include "storage.h"
 #include "qspi.h"
+#include "storage.h"
 
-// This configuration is needed for mboot to be able to write to the external QSPI flash
+// This configuration is needed for mboot to be able to write to the external
+// QSPI flash
 
 STATIC mp_spiflash_cache_t spi_bdev_cache;
 
@@ -14,9 +15,10 @@ const mp_spiflash_config_t spiflash_config = {
 
 spi_bdev_t spi_bdev;
 
-// This init function is needed to memory map the QSPI flash early in the boot process
+// This init function is needed to memory map the QSPI flash early in the boot
+// process
 
 void board_early_init(void) {
-    qspi_init();
-    qspi_memory_map();
+  qspi_init();
+  qspi_memory_map();
 }

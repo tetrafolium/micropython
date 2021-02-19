@@ -24,29 +24,30 @@
  * THE SOFTWARE.
  */
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
-#include "py/obj.h"
-#include "py/gc.h"
 #include "gccollect.h"
+#include "py/gc.h"
+#include "py/obj.h"
 
 static inline uintptr_t get_sp(void) {
-    uintptr_t result;
-    __asm__ ("mov %0, sp\n" : "=r" (result));
-    return result;
+  uintptr_t result;
+  __asm__("mov %0, sp\n" : "=r"(result));
+  return result;
 }
 
 void gc_collect(void) {
-    // start the GC
-    gc_collect_start();
+  // start the GC
+  gc_collect_start();
 
-    // Get stack pointer
-    uintptr_t sp = get_sp();
+  // Get stack pointer
+  uintptr_t sp = get_sp();
 
-    // trace the stack, including the registers (since they live on the stack in this function)
-    gc_collect_root((void **)sp, ((uint32_t)&_ram_end - sp) / sizeof(uint32_t));
+  // trace the stack, including the registers (since they live on the stack in
+  // this function)
+  gc_collect_root((void **)sp, ((uint32_t)&_ram_end - sp) / sizeof(uint32_t));
 
-    // end the GC
-    gc_collect_end();
+  // end the GC
+  gc_collect_end();
 }

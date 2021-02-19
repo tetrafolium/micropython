@@ -1,91 +1,92 @@
 #include <stdint.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
+#include "gccollect.h"
+#include "lexermemzip.h"
+#include "lib/mp-readline/readline.h"
+#include "lib/utils/pyexec.h"
+#include "py/gc.h"
 #include "py/lexer.h"
+#include "py/mphal.h"
 #include "py/runtime.h"
 #include "py/stackctrl.h"
-#include "py/gc.h"
-#include "py/mphal.h"
-#include "gccollect.h"
-#include "lib/utils/pyexec.h"
-#include "lib/mp-readline/readline.h"
-#include "lexermemzip.h"
 
 #include "Arduino.h"
 
-#include "servo.h"
 #include "led.h"
-#include "uart.h"
 #include "pin.h"
+#include "servo.h"
+#include "uart.h"
 
 extern uint32_t _heap_start;
 
 void flash_error(int n) {
-    for (int i = 0; i < n; i++) {
-        led_state(PYB_LED_BUILTIN, 1);
-        delay(250);
-        led_state(PYB_LED_BUILTIN, 0);
-        delay(250);
-    }
+  for (int i = 0; i < n; i++) {
+    led_state(PYB_LED_BUILTIN, 1);
+    delay(250);
+    led_state(PYB_LED_BUILTIN, 0);
+    delay(250);
+  }
 }
 
 void NORETURN __fatal_error(const char *msg) {
+  for (volatile uint delay = 0; delay < 10000000; delay++) {
+  }
+  led_state(1, 1);
+  led_state(2, 1);
+  led_state(3, 1);
+  led_state(4, 1);
+  mp_hal_stdout_tx_strn("\nFATAL ERROR:\n", 14);
+  mp_hal_stdout_tx_strn(msg, strlen(msg));
+  for (uint i = 0;;) {
+    led_toggle(((i++) & 3) + 1);
     for (volatile uint delay = 0; delay < 10000000; delay++) {
     }
-    led_state(1, 1);
-    led_state(2, 1);
-    led_state(3, 1);
-    led_state(4, 1);
-    mp_hal_stdout_tx_strn("\nFATAL ERROR:\n", 14);
-    mp_hal_stdout_tx_strn(msg, strlen(msg));
-    for (uint i = 0;;) {
-        led_toggle(((i++) & 3) + 1);
-        for (volatile uint delay = 0; delay < 10000000; delay++) {
-        }
-        if (i >= 16) {
-            // to conserve power
-            __WFI();
-        }
+    if (i >= 16) {
+      // to conserve power
+      __WFI();
     }
+  }
 }
 
 void nlr_jump_fail(void *val) {
-    printf("FATAL: uncaught exception %p\n", val);
-    __fatal_error("");
+  printf("FATAL: uncaught exception %p\n", val);
+  __fatal_error("");
 }
 
-void __assert_func(const char *file, int line, const char *func, const char *expr) {
+void __assert_func(const char *file, int line, const char *func,
+                   const char *expr) {
 
-    printf("Assertion failed: %s, file %s, line %d\n", expr, file, line);
-    __fatal_error("");
+  printf("Assertion failed: %s, file %s, line %d\n", expr, file, line);
+  __fatal_error("");
 }
 
 mp_obj_t pyb_analog_read(mp_obj_t pin_obj) {
-    uint pin = mp_obj_get_int(pin_obj);
-    int val = analogRead(pin);
-    return MP_OBJ_NEW_SMALL_INT(val);
+  uint pin = mp_obj_get_int(pin_obj);
+  int val = analogRead(pin);
+  return MP_OBJ_NEW_SMALL_INT(val);
 }
 
 mp_obj_t pyb_analog_write(mp_obj_t pin_obj, mp_obj_t val_obj) {
-    uint pin = mp_obj_get_int(pin_obj);
-    int val = mp_obj_get_int(val_obj);
-    analogWrite(pin, val);
-    return mp_const_none;
+  uint pin = mp_obj_get_int(pin_obj);
+  int val = mp_obj_get_int(val_obj);
+  analogWrite(pin, val);
+  return mp_const_none;
 }
 
 mp_obj_t pyb_analog_write_resolution(mp_obj_t res_obj) {
-    int res = mp_obj_get_int(res_obj);
-    analogWriteResolution(res);
-    return mp_const_none;
+  int res = mp_obj_get_int(res_obj);
+  analogWriteResolution(res);
+  return mp_const_none;
 }
 
 mp_obj_t pyb_analog_write_frequency(mp_obj_t pin_obj, mp_obj_t freq_obj) {
-    uint pin = mp_obj_get_int(pin_obj);
-    int freq = mp_obj_get_int(freq_obj);
-    analogWriteFrequency(pin, freq);
-    return mp_const_none;
+  uint pin = mp_obj_get_int(pin_obj);
+  int freq = mp_obj_get_int(freq_obj);
+  analogWriteFrequency(pin, freq);
+  return mp_const_none;
 }
 
 #if 0
@@ -137,8 +138,8 @@ static mp_obj_t pyb_info(void) {
 #endif
 
 #define RAM_START (0x1FFF8000) // fixed for chip
-#define HEAP_END  (0x20006000) // tunable
-#define RAM_END   (0x20008000) // fixed for chip
+#define HEAP_END (0x20006000)  // tunable
+#define RAM_END (0x20008000)   // fixed for chip
 
 #if 0
 
@@ -194,28 +195,28 @@ STATIC mp_obj_t pyb_config_main = MP_OBJ_NULL;
 STATIC mp_obj_t pyb_config_usb_mode = MP_OBJ_NULL;
 
 mp_obj_t pyb_source_dir(mp_obj_t source_dir) {
-    if (mp_obj_is_str(source_dir)) {
-        pyb_config_source_dir = source_dir;
-    }
-    return mp_const_none;
+  if (mp_obj_is_str(source_dir)) {
+    pyb_config_source_dir = source_dir;
+  }
+  return mp_const_none;
 }
 
 MP_DEFINE_CONST_FUN_OBJ_1(pyb_source_dir_obj, pyb_source_dir);
 
 mp_obj_t pyb_main(mp_obj_t main) {
-    if (mp_obj_is_str(main)) {
-        pyb_config_main = main;
-    }
-    return mp_const_none;
+  if (mp_obj_is_str(main)) {
+    pyb_config_main = main;
+  }
+  return mp_const_none;
 }
 
 MP_DEFINE_CONST_FUN_OBJ_1(pyb_main_obj, pyb_main);
 
 STATIC mp_obj_t pyb_usb_mode(mp_obj_t usb_mode) {
-    if (mp_obj_is_str(usb_mode)) {
-        pyb_config_usb_mode = usb_mode;
-    }
-    return mp_const_none;
+  if (mp_obj_is_str(usb_mode)) {
+    pyb_config_usb_mode = usb_mode;
+  }
+  return mp_const_none;
 }
 
 MP_DEFINE_CONST_FUN_OBJ_1(pyb_usb_mode_obj, pyb_usb_mode);
@@ -232,7 +233,7 @@ mp_obj_t pyb_led(mp_obj_t state) {
     return state;
 }
 
-#endif  // 0
+#endif // 0
 
 #if 0
 char *strdup(const char *str) {
@@ -245,36 +246,38 @@ char *strdup(const char *str) {
 #endif
 
 int main(void) {
-    // TODO: Put this in a more common initialization function.
-    // Turn on STKALIGN which keeps the stack 8-byte aligned for interrupts
-    // (per EABI)
+  // TODO: Put this in a more common initialization function.
+  // Turn on STKALIGN which keeps the stack 8-byte aligned for interrupts
+  // (per EABI)
 #define SCB_CCR_STKALIGN (1 << 9)
-    SCB_CCR |= SCB_CCR_STKALIGN;
+  SCB_CCR |= SCB_CCR_STKALIGN;
 
-    mp_stack_ctrl_init();
-    mp_stack_set_limit(10240);
+  mp_stack_ctrl_init();
+  mp_stack_set_limit(10240);
 
-    pinMode(LED_BUILTIN, OUTPUT);
-    led_init();
+  pinMode(LED_BUILTIN, OUTPUT);
+  led_init();
 
-//    int first_soft_reset = true;
+  //    int first_soft_reset = true;
 
 soft_reset:
 
-    led_state(PYB_LED_BUILTIN, 1);
+  led_state(PYB_LED_BUILTIN, 1);
 
-    // GC init
-    gc_init(&_heap_start, (void *)HEAP_END);
+  // GC init
+  gc_init(&_heap_start, (void *)HEAP_END);
 
-    // MicroPython init
-    mp_init();
-    mp_obj_list_init(mp_sys_path, 0);
-    mp_obj_list_append(mp_sys_path, MP_OBJ_NEW_QSTR(MP_QSTR_)); // current dir (or base dir of the script)
-    mp_obj_list_init(mp_sys_argv, 0);
+  // MicroPython init
+  mp_init();
+  mp_obj_list_init(mp_sys_path, 0);
+  mp_obj_list_append(
+      mp_sys_path,
+      MP_OBJ_NEW_QSTR(MP_QSTR_)); // current dir (or base dir of the script)
+  mp_obj_list_init(mp_sys_argv, 0);
 
-    readline_init0();
+  readline_init0();
 
-    pin_init0();
+  pin_init0();
 
 #if 0
     // add some functions to the python namespace
@@ -300,83 +303,82 @@ soft_reset:
 #endif
 
 #if MICROPY_MODULE_FROZEN
-    pyexec_frozen_module("boot.py");
+  pyexec_frozen_module("boot.py");
 #else
-    if (!pyexec_file_if_exists("/boot.py")) {
-        flash_error(4);
-    }
+  if (!pyexec_file_if_exists("/boot.py")) {
+    flash_error(4);
+  }
 #endif
 
-    // Turn bootup LED off
-    led_state(PYB_LED_BUILTIN, 0);
+  // Turn bootup LED off
+  led_state(PYB_LED_BUILTIN, 0);
 
-    // run main script
+  // run main script
 #if MICROPY_MODULE_FROZEN
-    pyexec_frozen_module("main.py");
+  pyexec_frozen_module("main.py");
 #else
-    {
-        vstr_t *vstr = vstr_new(16);
-        vstr_add_str(vstr, "/");
-        if (pyb_config_main == MP_OBJ_NULL) {
-            vstr_add_str(vstr, "main.py");
-        } else {
-            vstr_add_str(vstr, mp_obj_str_get_str(pyb_config_main));
-        }
-        if (!pyexec_file_if_exists(vstr_null_terminated_str(vstr))) {
-            flash_error(3);
-        }
-        vstr_free(vstr);
+  {
+    vstr_t *vstr = vstr_new(16);
+    vstr_add_str(vstr, "/");
+    if (pyb_config_main == MP_OBJ_NULL) {
+      vstr_add_str(vstr, "main.py");
+    } else {
+      vstr_add_str(vstr, mp_obj_str_get_str(pyb_config_main));
     }
+    if (!pyexec_file_if_exists(vstr_null_terminated_str(vstr))) {
+      flash_error(3);
+    }
+    vstr_free(vstr);
+  }
 #endif
 
-    // enter REPL
-    // REPL mode can change, or it can request a soft reset
-    for (;;) {
-        if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {
-            if (pyexec_raw_repl() != 0) {
-                break;
-            }
-        } else {
-            if (pyexec_friendly_repl() != 0) {
-                break;
-            }
-        }
+  // enter REPL
+  // REPL mode can change, or it can request a soft reset
+  for (;;) {
+    if (pyexec_mode_kind == PYEXEC_MODE_RAW_REPL) {
+      if (pyexec_raw_repl() != 0) {
+        break;
+      }
+    } else {
+      if (pyexec_friendly_repl() != 0) {
+        break;
+      }
     }
+  }
 
-    printf("MPY: soft reboot\n");
+  printf("MPY: soft reboot\n");
 
-//    first_soft_reset = false;
-    goto soft_reset;
+  //    first_soft_reset = false;
+  goto soft_reset;
 }
 
 // stub out __libc_init_array. It's called by mk20dx128.c and is used to call
 // global C++ constructors. Since this is a C-only projects, we don't need to
 // call constructors.
-void __libc_init_array(void) {
-}
+void __libc_init_array(void) {}
 
 // ultoa is used by usb_init_serialnumber. Normally ultoa would be provided
 // by nonstd.c from the teensy core, but it conflicts with some of the
 // MicroPython functions in string0.c, so we provide ultoa here.
 char *ultoa(unsigned long val, char *buf, int radix) {
-    unsigned digit;
-    int i = 0, j;
-    char t;
+  unsigned digit;
+  int i = 0, j;
+  char t;
 
-    while (1) {
-        digit = val % radix;
-        buf[i] = ((digit < 10) ? '0' + digit : 'A' + digit - 10);
-        val /= radix;
-        if (val == 0) {
-            break;
-        }
-        i++;
+  while (1) {
+    digit = val % radix;
+    buf[i] = ((digit < 10) ? '0' + digit : 'A' + digit - 10);
+    val /= radix;
+    if (val == 0) {
+      break;
     }
-    buf[i + 1] = 0;
-    for (j = 0; j < i; j++, i--) {
-        t = buf[j];
-        buf[j] = buf[i];
-        buf[i] = t;
-    }
-    return buf;
+    i++;
+  }
+  buf[i + 1] = 0;
+  for (j = 0; j < i; j++, i--) {
+    t = buf[j];
+    buf[j] = buf[i];
+    buf[i] = t;
+  }
+  return buf;
 }

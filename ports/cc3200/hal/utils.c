@@ -45,7 +45,6 @@
 //*****************************************************************************
 #include "utils.h"
 
-
 //*****************************************************************************
 //
 //! Provides a small delay.
@@ -62,21 +61,17 @@
 //
 //*****************************************************************************
 #if defined(ewarm) || defined(DOXYGEN)
-void
-UtilsDelay(unsigned long ulCount)
-{
-    __asm("    subs    r0, #1\n"
-          "    bne.n   UtilsDelay\n");
+void UtilsDelay(unsigned long ulCount) {
+  __asm("    subs    r0, #1\n"
+        "    bne.n   UtilsDelay\n");
 }
 #endif
 
 #if defined(gcc)
-void __attribute__((naked))
-UtilsDelay(unsigned long ulCount)
-{
-    __asm("    subs    r0, #1\n"
-          "    bne     UtilsDelay\n"
-          "    bx      lr");
+void __attribute__((naked)) UtilsDelay(unsigned long ulCount) {
+  __asm("    subs    r0, #1\n"
+        "    bne     UtilsDelay\n"
+        "    bx      lr");
 }
 #endif
 

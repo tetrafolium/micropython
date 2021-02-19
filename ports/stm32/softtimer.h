@@ -32,11 +32,11 @@
 #define SOFT_TIMER_MODE_PERIODIC (2)
 
 typedef struct _soft_timer_entry_t {
-    mp_pairheap_t pairheap;
-    uint32_t mode;
-    uint32_t expiry_ms;
-    uint32_t delta_ms; // for periodic mode
-    mp_obj_t callback;
+  mp_pairheap_t pairheap;
+  uint32_t mode;
+  uint32_t expiry_ms;
+  uint32_t delta_ms; // for periodic mode
+  mp_obj_t callback;
 } soft_timer_entry_t;
 
 extern volatile uint32_t soft_timer_next;

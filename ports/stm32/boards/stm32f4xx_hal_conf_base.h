@@ -27,13 +27,13 @@
 #define MICROPY_INCLUDED_STM32F4XX_HAL_CONF_BASE_H
 
 // Include various HAL modules for convenience
-#include "stm32f4xx_hal_dma.h"
 #include "stm32f4xx_hal_adc.h"
 #include "stm32f4xx_hal_can.h"
 #include "stm32f4xx_hal_cortex.h"
 #include "stm32f4xx_hal_crc.h"
 #include "stm32f4xx_hal_dac.h"
 #include "stm32f4xx_hal_dcmi.h"
+#include "stm32f4xx_hal_dma.h"
 #include "stm32f4xx_hal_eth.h"
 #include "stm32f4xx_hal_flash.h"
 #include "stm32f4xx_hal_gpio.h"
@@ -93,10 +93,10 @@
 #define TICK_INT_PRIORITY (0x00)
 
 // Miscellaneous HAL settings
-#define DATA_CACHE_ENABLE           1
-#define INSTRUCTION_CACHE_ENABLE    1
-#define PREFETCH_ENABLE             1
-#define USE_RTOS                    0
+#define DATA_CACHE_ENABLE 1
+#define INSTRUCTION_CACHE_ENABLE 1
+#define PREFETCH_ENABLE 1
+#define USE_RTOS 0
 
 // HAL parameter assertions are disabled
 #define assert_param(expr) ((void)0)

@@ -25,47 +25,47 @@
  */
 
 mergeInto(LibraryManager.library, {
-    mp_js_write: function(ptr, len) {
-        for (var i = 0; i < len; ++i) {
-            if (typeof window === 'undefined') {
-                var b = Buffer.alloc(1);
-                b.writeInt8(getValue(ptr + i, 'i8'));
-                process.stdout.write(b);
-            } else {
-                var c = String.fromCharCode(getValue(ptr + i, 'i8'));
-                var mp_js_stdout = document.getElementById('mp_js_stdout');
-                var print = new Event('print');
-                print.data = c;
-                mp_js_stdout.dispatchEvent(print);
-            }
+  mp_js_write : function(ptr, len) {
+    for (var i = 0; i < len; ++i) {
+      if (typeof window === 'undefined') {
+        var b = Buffer.alloc(1);
+        b.writeInt8(getValue(ptr + i, 'i8'));
+        process.stdout.write(b);
+      } else {
+        var c = String.fromCharCode(getValue(ptr + i, 'i8'));
+        var mp_js_stdout = document.getElementById('mp_js_stdout');
+        var print = new Event('print');
+        print.data = c;
+        mp_js_stdout.dispatchEvent(print);
+      }
+    }
+  },
+
+  mp_js_ticks_ms : function() { return (new Date()).getTime() - MP_JS_EPOCH; },
+
+  mp_js_hook : function() {
+    if (typeof window === 'undefined') {
+      var mp_interrupt_char = Module.ccall('mp_hal_get_interrupt_char',
+                                           'number', [ 'number' ], [ 'null' ]);
+      var fs = require('fs');
+
+      var buf = Buffer.alloc(1);
+      try {
+        var n = fs.readSync(process.stdin.fd, buf, 0, 1);
+        if (n > 0) {
+          if (buf[0] == mp_interrupt_char) {
+            Module.ccall('mp_keyboard_interrupt', 'null', [ 'null' ],
+                         [ 'null' ]);
+          } else {
+            process.stdout.write(String.fromCharCode(buf[0]));
+          }
         }
-    },
-
-    mp_js_ticks_ms: function() {
-        return (new Date()).getTime() - MP_JS_EPOCH;
-    },
-
-    mp_js_hook: function() {
-        if (typeof window === 'undefined') {
-            var mp_interrupt_char = Module.ccall('mp_hal_get_interrupt_char', 'number', ['number'], ['null']);
-            var fs = require('fs');
-
-            var buf = Buffer.alloc(1);
-            try {
-                var n = fs.readSync(process.stdin.fd, buf, 0, 1);
-                if (n > 0) {
-                    if (buf[0] == mp_interrupt_char) {
-                        Module.ccall('mp_keyboard_interrupt', 'null', ['null'], ['null']);
-                    } else {
-                        process.stdout.write(String.fromCharCode(buf[0]));
-                    }
-                }
-            } catch (e) {
-                if (e.code === 'EAGAIN') {
-                } else {
-                    throw e;
-                }
-            }
+      } catch (e) {
+        if (e.code === 'EAGAIN') {
+        } else {
+          throw e;
         }
-    },
+      }
+    }
+  },
 });

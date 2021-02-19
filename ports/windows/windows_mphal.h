@@ -24,8 +24,8 @@
  * THE SOFTWARE.
  */
 
-#include "sleep.h"
 #include "ports/unix/mphalport.h"
+#include "sleep.h"
 
 #define MICROPY_HAL_HAS_VT100 (0)
 

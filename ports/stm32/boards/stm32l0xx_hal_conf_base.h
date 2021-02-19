@@ -27,11 +27,11 @@
 #define MICROPY_INCLUDED_STM32L0XX_HAL_CONF_BASE_H
 
 // Include various HAL modules for convenience
-#include "stm32l0xx_hal_dma.h"
 #include "stm32l0xx_hal_adc.h"
 #include "stm32l0xx_hal_cortex.h"
 #include "stm32l0xx_hal_crc.h"
 #include "stm32l0xx_hal_dac.h"
+#include "stm32l0xx_hal_dma.h"
 #include "stm32l0xx_hal_flash.h"
 #include "stm32l0xx_hal_gpio.h"
 #include "stm32l0xx_hal_i2c.h"
@@ -72,20 +72,20 @@
 #define HAL_WWDG_MODULE_ENABLED
 
 // Oscillator values in Hz
-#define HSI_VALUE   (16000000)
+#define HSI_VALUE (16000000)
 #define HSI48_VALUE (48000000)
-#define LSI_VALUE   (37000)
-#define MSI_VALUE   (2097152)
+#define LSI_VALUE (37000)
+#define MSI_VALUE (2097152)
 
 // SysTick has the highest priority
 #define TICK_INT_PRIORITY (0x00)
 
 // Miscellaneous HAL settings
-#define PREFETCH_ENABLE         1
-#define PREREAD_ENABLE          0
-#define BUFFER_CACHE_DISABLE    0
-#define USE_RTOS                0
-#define USE_SPI_CRC             0
+#define PREFETCH_ENABLE 1
+#define PREREAD_ENABLE 0
+#define BUFFER_CACHE_DISABLE 0
+#define USE_RTOS 0
+#define USE_SPI_CRC 0
 
 // HAL parameter assertions are disabled
 #define assert_param(expr) ((void)0)

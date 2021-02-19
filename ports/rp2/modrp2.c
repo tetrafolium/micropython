@@ -24,18 +24,18 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
 #include "modrp2.h"
+#include "py/runtime.h"
 
 STATIC const mp_rom_map_elem_t rp2_module_globals_table[] = {
-    { MP_ROM_QSTR(MP_QSTR___name__),            MP_ROM_QSTR(MP_QSTR_rp2) },
-    { MP_ROM_QSTR(MP_QSTR_Flash),               MP_ROM_PTR(&rp2_flash_type) },
-    { MP_ROM_QSTR(MP_QSTR_PIO),                 MP_ROM_PTR(&rp2_pio_type) },
-    { MP_ROM_QSTR(MP_QSTR_StateMachine),        MP_ROM_PTR(&rp2_state_machine_type) },
+    {MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_rp2)},
+    {MP_ROM_QSTR(MP_QSTR_Flash), MP_ROM_PTR(&rp2_flash_type)},
+    {MP_ROM_QSTR(MP_QSTR_PIO), MP_ROM_PTR(&rp2_pio_type)},
+    {MP_ROM_QSTR(MP_QSTR_StateMachine), MP_ROM_PTR(&rp2_state_machine_type)},
 };
 STATIC MP_DEFINE_CONST_DICT(rp2_module_globals, rp2_module_globals_table);
 
 const mp_obj_module_t mp_module_rp2 = {
-    .base = { &mp_type_module },
+    .base = {&mp_type_module},
     .globals = (mp_obj_dict_t *)&rp2_module_globals,
 };

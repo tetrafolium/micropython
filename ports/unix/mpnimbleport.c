@@ -24,51 +24,54 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
 #include "py/mperrno.h"
 #include "py/mphal.h"
+#include "py/runtime.h"
 
 #if MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_NIMBLE
 
 #include "nimble/nimble_npl.h"
 
-#include "extmod/nimble/modbluetooth_nimble.h"
 #include "extmod/nimble/hal/hal_uart.h"
+#include "extmod/nimble/modbluetooth_nimble.h"
 
 #define DEBUG_printf(...) // printf(__VA_ARGS__)
 
 // Called by the UART polling thread in mpbthciport.c.
 bool mp_bluetooth_hci_poll(void) {
-    // DEBUG_printf("mp_bluetooth_hci_poll (unix nimble) %d\n", mp_bluetooth_nimble_ble_state);
+  // DEBUG_printf("mp_bluetooth_hci_poll (unix nimble) %d\n",
+  // mp_bluetooth_nimble_ble_state);
 
-    if (mp_bluetooth_nimble_ble_state == MP_BLUETOOTH_NIMBLE_BLE_STATE_OFF) {
-        DEBUG_printf("mp_bluetooth_hci_poll (unix nimble) -- shutdown\n");
-        return false;
-    }
+  if (mp_bluetooth_nimble_ble_state == MP_BLUETOOTH_NIMBLE_BLE_STATE_OFF) {
+    DEBUG_printf("mp_bluetooth_hci_poll (unix nimble) -- shutdown\n");
+    return false;
+  }
 
-    if (mp_bluetooth_nimble_ble_state >= MP_BLUETOOTH_NIMBLE_BLE_STATE_WAITING_FOR_SYNC) {
-        // Run any timers.
-        mp_bluetooth_nimble_os_callout_process();
+  if (mp_bluetooth_nimble_ble_state >=
+      MP_BLUETOOTH_NIMBLE_BLE_STATE_WAITING_FOR_SYNC) {
+    // Run any timers.
+    mp_bluetooth_nimble_os_callout_process();
 
-        // Process incoming UART data, and run events as they are generated.
-        mp_bluetooth_nimble_hci_uart_process(true);
+    // Process incoming UART data, and run events as they are generated.
+    mp_bluetooth_nimble_hci_uart_process(true);
 
-        // Run any remaining events (e.g. if there was no UART data).
-        mp_bluetooth_nimble_os_eventq_run_all();
-    }
+    // Run any remaining events (e.g. if there was no UART data).
+    mp_bluetooth_nimble_os_eventq_run_all();
+  }
 
-    return true;
+  return true;
 }
 
 bool mp_bluetooth_hci_active(void) {
-    return mp_bluetooth_nimble_ble_state != MP_BLUETOOTH_NIMBLE_BLE_STATE_OFF;
+  return mp_bluetooth_nimble_ble_state != MP_BLUETOOTH_NIMBLE_BLE_STATE_OFF;
 }
 
 // Extra port-specific helpers.
 void mp_bluetooth_nimble_hci_uart_wfi(void) {
-    // This is called while NimBLE is waiting in ble_npl_sem_pend, i.e. waiting for an HCI ACK.
-    // Do not need to run events here, only processing incoming HCI data.
-    mp_bluetooth_nimble_hci_uart_process(false);
+  // This is called while NimBLE is waiting in ble_npl_sem_pend, i.e. waiting
+  // for an HCI ACK. Do not need to run events here, only processing incoming
+  // HCI data.
+  mp_bluetooth_nimble_hci_uart_process(false);
 }
 
 #endif // MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_NIMBLE

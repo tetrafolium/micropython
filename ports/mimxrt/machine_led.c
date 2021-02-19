@@ -24,51 +24,54 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
-#include "py/mphal.h"
 #include "led.h"
+#include "py/mphal.h"
+#include "py/runtime.h"
 
 #if NUM_LEDS
 
-STATIC void led_obj_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
-    (void)kind;
-    machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    mp_printf(print, "LED(%u)", self->led_id);
+STATIC void led_obj_print(const mp_print_t *print, mp_obj_t self_in,
+                          mp_print_kind_t kind) {
+  (void)kind;
+  machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
+  mp_printf(print, "LED(%u)", self->led_id);
 }
 
-STATIC mp_obj_t led_obj_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args) {
-    mp_arg_check_num(n_args, n_kw, 1, 1, false);
+STATIC mp_obj_t led_obj_make_new(const mp_obj_type_t *type, size_t n_args,
+                                 size_t n_kw, const mp_obj_t *args) {
+  mp_arg_check_num(n_args, n_kw, 1, 1, false);
 
-    // Extract arguments
-    mp_int_t led_id = mp_obj_get_int(args[0]);
+  // Extract arguments
+  mp_int_t led_id = mp_obj_get_int(args[0]);
 
-    // Check led id is in range
-    if (!(1 <= led_id && led_id <= NUM_LEDS)) {
-        nlr_raise(mp_obj_new_exception_msg_varg(&mp_type_ValueError, "LED(%d) doesn't exist", led_id));
-    }
+  // Check led id is in range
+  if (!(1 <= led_id && led_id <= NUM_LEDS)) {
+    nlr_raise(mp_obj_new_exception_msg_varg(&mp_type_ValueError,
+                                            "LED(%d) doesn't exist", led_id));
+  }
 
-    // Return reference to static object
-    return MP_OBJ_FROM_PTR(&machine_led_obj[led_id - 1]);
+  // Return reference to static object
+  return MP_OBJ_FROM_PTR(&machine_led_obj[led_id - 1]);
 }
 
 STATIC mp_obj_t led_obj_on(mp_obj_t self_in) {
-    machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    MICROPY_HW_LED_ON(self->led_pin);
-    return mp_const_none;
+  machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
+  MICROPY_HW_LED_ON(self->led_pin);
+  return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(led_obj_on_obj, led_obj_on);
 
 STATIC mp_obj_t led_obj_off(mp_obj_t self_in) {
-    machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    MICROPY_HW_LED_OFF(self->led_pin);
-    return mp_const_none;
+  machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
+  MICROPY_HW_LED_OFF(self->led_pin);
+  return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(led_obj_off_obj, led_obj_off);
 
 STATIC mp_obj_t led_obj_toggle(mp_obj_t self_in) {
-    machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
-    mp_hal_pin_toggle(self->led_pin);
-    return mp_const_none;
+  machine_led_obj_t *self = MP_OBJ_TO_PTR(self_in);
+  mp_hal_pin_toggle(self->led_pin);
+  return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(led_obj_toggle_obj, led_obj_toggle);
 

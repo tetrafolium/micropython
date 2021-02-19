@@ -56,7 +56,7 @@
 
 // Use a smaller output buffer to reduce size of SSL context
 #define MBEDTLS_SSL_MAX_CONTENT_LEN (16384)
-#define MBEDTLS_SSL_IN_CONTENT_LEN  (MBEDTLS_SSL_MAX_CONTENT_LEN)
+#define MBEDTLS_SSL_IN_CONTENT_LEN (MBEDTLS_SSL_MAX_CONTENT_LEN)
 #define MBEDTLS_SSL_OUT_CONTENT_LEN (4096)
 
 // Enable mbedtls modules
@@ -86,8 +86,8 @@
 #define MBEDTLS_X509_USE_C
 
 // Memory allocation hooks
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 void *m_calloc_mbedtls(size_t nmemb, size_t size);
 void m_free_mbedtls(void *ptr);
 #define MBEDTLS_PLATFORM_STD_CALLOC m_calloc_mbedtls

@@ -26,10 +26,10 @@
 
 #include <stdio.h>
 
-#include "py/runtime.h"
+#include "gccollect.h"
 #include "py/gc.h"
 #include "py/mpthread.h"
-#include "gccollect.h"
+#include "py/runtime.h"
 
 #if MICROPY_PY_THREAD
 
@@ -37,57 +37,56 @@
 STATIC mp_thread_mutex_t thread_mutex;
 
 void mp_thread_init(void) {
-    mp_thread_mutex_init(&thread_mutex);
-    mp_thread_set_state(&mp_state_ctx.thread);
+  mp_thread_mutex_init(&thread_mutex);
+  mp_thread_set_state(&mp_state_ctx.thread);
 }
 
 void mp_thread_gc_others(void) {
-    mp_thread_mutex_lock(&thread_mutex, 1);
-    for (pyb_thread_t *th = pyb_thread_all; th != NULL; th = th->all_next) {
-        gc_collect_root((void **)&th, 1);
-        gc_collect_root(&th->arg, 1);
-        gc_collect_root(&th->stack, 1);
-        if (th != pyb_thread_cur) {
-            gc_collect_root(th->stack, th->stack_len);
-        }
+  mp_thread_mutex_lock(&thread_mutex, 1);
+  for (pyb_thread_t *th = pyb_thread_all; th != NULL; th = th->all_next) {
+    gc_collect_root((void **)&th, 1);
+    gc_collect_root(&th->arg, 1);
+    gc_collect_root(&th->stack, 1);
+    if (th != pyb_thread_cur) {
+      gc_collect_root(th->stack, th->stack_len);
     }
-    mp_thread_mutex_unlock(&thread_mutex);
+  }
+  mp_thread_mutex_unlock(&thread_mutex);
 }
 
 void mp_thread_create(void *(*entry)(void *), void *arg, size_t *stack_size) {
-    if (*stack_size == 0) {
-        *stack_size = 4096; // default stack size
-    } else if (*stack_size < 2048) {
-        *stack_size = 2048; // minimum stack size
-    }
+  if (*stack_size == 0) {
+    *stack_size = 4096; // default stack size
+  } else if (*stack_size < 2048) {
+    *stack_size = 2048; // minimum stack size
+  }
 
-    // round stack size to a multiple of the word size
-    size_t stack_len = *stack_size / sizeof(uint32_t);
-    *stack_size = stack_len * sizeof(uint32_t);
+  // round stack size to a multiple of the word size
+  size_t stack_len = *stack_size / sizeof(uint32_t);
+  *stack_size = stack_len * sizeof(uint32_t);
 
-    // allocate stack and linked-list node (must be done outside thread_mutex lock)
-    uint32_t *stack = m_new(uint32_t, stack_len);
-    pyb_thread_t *th = m_new_obj(pyb_thread_t);
+  // allocate stack and linked-list node (must be done outside thread_mutex
+  // lock)
+  uint32_t *stack = m_new(uint32_t, stack_len);
+  pyb_thread_t *th = m_new_obj(pyb_thread_t);
 
-    mp_thread_mutex_lock(&thread_mutex, 1);
+  mp_thread_mutex_lock(&thread_mutex, 1);
 
-    // create thread
-    uint32_t id = pyb_thread_new(th, stack, stack_len, entry, arg);
-    if (id == 0) {
-        mp_thread_mutex_unlock(&thread_mutex);
-        mp_raise_msg(&mp_type_OSError, MP_ERROR_TEXT("can't create thread"));
-    }
-
+  // create thread
+  uint32_t id = pyb_thread_new(th, stack, stack_len, entry, arg);
+  if (id == 0) {
     mp_thread_mutex_unlock(&thread_mutex);
+    mp_raise_msg(&mp_type_OSError, MP_ERROR_TEXT("can't create thread"));
+  }
 
-    // adjust stack_size to provide room to recover from hitting the limit
-    *stack_size -= 1024;
+  mp_thread_mutex_unlock(&thread_mutex);
+
+  // adjust stack_size to provide room to recover from hitting the limit
+  *stack_size -= 1024;
 }
 
-void mp_thread_start(void) {
-}
+void mp_thread_start(void) {}
 
-void mp_thread_finish(void) {
-}
+void mp_thread_finish(void) {}
 
 #endif // MICROPY_PY_THREAD

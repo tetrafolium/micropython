@@ -30,30 +30,31 @@
 
 #include "driver/uart.h"
 
-#include "py/runtime.h"
 #include "py/mphal.h"
+#include "py/runtime.h"
 
 STATIC void uart_irq_handler(void *arg);
 
 void uart_init(void) {
-    uart_isr_handle_t handle;
-    uart_isr_register(UART_NUM_0, uart_irq_handler, NULL, ESP_INTR_FLAG_LOWMED | ESP_INTR_FLAG_IRAM, &handle);
-    uart_enable_rx_intr(UART_NUM_0);
+  uart_isr_handle_t handle;
+  uart_isr_register(UART_NUM_0, uart_irq_handler, NULL,
+                    ESP_INTR_FLAG_LOWMED | ESP_INTR_FLAG_IRAM, &handle);
+  uart_enable_rx_intr(UART_NUM_0);
 }
 
 // all code executed in ISR must be in IRAM, and any const data must be in DRAM
 STATIC void IRAM_ATTR uart_irq_handler(void *arg) {
-    volatile uart_dev_t *uart = &UART0;
-    uart->int_clr.rxfifo_full = 1;
-    uart->int_clr.frm_err = 1;
-    uart->int_clr.rxfifo_tout = 1;
-    while (uart->status.rxfifo_cnt) {
-        uint8_t c = uart->fifo.rw_byte;
-        if (c == mp_interrupt_char) {
-            mp_keyboard_interrupt();
-        } else {
-            // this is an inline function so will be in IRAM
-            ringbuf_put(&stdin_ringbuf, c);
-        }
+  volatile uart_dev_t *uart = &UART0;
+  uart->int_clr.rxfifo_full = 1;
+  uart->int_clr.frm_err = 1;
+  uart->int_clr.rxfifo_tout = 1;
+  while (uart->status.rxfifo_cnt) {
+    uint8_t c = uart->fifo.rw_byte;
+    if (c == mp_interrupt_char) {
+      mp_keyboard_interrupt();
+    } else {
+      // this is an inline function so will be in IRAM
+      ringbuf_put(&stdin_ringbuf, c);
     }
+  }
 }

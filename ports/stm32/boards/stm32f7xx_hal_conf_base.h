@@ -27,13 +27,13 @@
 #define MICROPY_INCLUDED_STM32F7XX_HAL_CONF_BASE_H
 
 // Include various HAL modules for convenience
-#include "stm32f7xx_hal_dma.h"
 #include "stm32f7xx_hal_adc.h"
 #include "stm32f7xx_hal_can.h"
 #include "stm32f7xx_hal_cortex.h"
 #include "stm32f7xx_hal_crc.h"
 #include "stm32f7xx_hal_dac.h"
 #include "stm32f7xx_hal_dcmi.h"
+#include "stm32f7xx_hal_dma.h"
 #include "stm32f7xx_hal_flash.h"
 #include "stm32f7xx_hal_gpio.h"
 #include "stm32f7xx_hal_hash.h"
@@ -93,8 +93,8 @@
 #define TICK_INT_PRIORITY (0x00)
 
 // Miscellaneous HAL settings
-#define ART_ACCLERATOR_ENABLE   1
-#define USE_RTOS                0
+#define ART_ACCLERATOR_ENABLE 1
+#define USE_RTOS 0
 
 // HAL parameter assertions are disabled
 #define assert_param(expr) ((void)0)

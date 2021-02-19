@@ -14,10 +14,10 @@ extern const mp_obj_type_t machine_hspi_type;
 MP_DECLARE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_info_obj);
 
 typedef struct _pyb_pin_obj_t {
-    mp_obj_base_t base;
-    uint16_t phys_port;
-    uint16_t func;
-    uint32_t periph;
+  mp_obj_base_t base;
+  uint16_t phys_port;
+  uint16_t func;
+  uint32_t periph;
 } pyb_pin_obj_t;
 
 const pyb_pin_obj_t pyb_pin_obj[16 + 1];

@@ -29,51 +29,52 @@
 
 #if MICROPY_HW_ENABLE_RNG
 
-#include "nrf_rng.h"
 #include "drivers/rng.h"
+#include "nrf_rng.h"
 
 #if BLUETOOTH_SD
-#include "nrf_soc.h"
 #include "ble_drv.h"
+#include "nrf_soc.h"
 #define BLUETOOTH_STACK_ENABLED() (ble_drv_stack_enabled())
 #endif
 
 static inline uint32_t generate_hw_random(void) {
-    uint32_t retval = 0;
-    uint8_t * p_retval = (uint8_t *)&retval;
+  uint32_t retval = 0;
+  uint8_t *p_retval = (uint8_t *)&retval;
 
-    nrf_rng_event_clear(NRF_RNG, NRF_RNG_EVENT_VALRDY);
-    nrf_rng_task_trigger(NRF_RNG, NRF_RNG_TASK_START);
+  nrf_rng_event_clear(NRF_RNG, NRF_RNG_EVENT_VALRDY);
+  nrf_rng_task_trigger(NRF_RNG, NRF_RNG_TASK_START);
 
-    for (uint16_t i = 0; i < 4; i++) {
-        while (!nrf_rng_event_check(NRF_RNG, NRF_RNG_EVENT_VALRDY)) {
-            ;
-        }
-
-        nrf_rng_event_clear(NRF_RNG, NRF_RNG_EVENT_VALRDY);
-        p_retval[i] = nrf_rng_random_value_get(NRF_RNG);
+  for (uint16_t i = 0; i < 4; i++) {
+    while (!nrf_rng_event_check(NRF_RNG, NRF_RNG_EVENT_VALRDY)) {
+      ;
     }
 
-    nrf_rng_task_trigger(NRF_RNG, NRF_RNG_TASK_STOP);
+    nrf_rng_event_clear(NRF_RNG, NRF_RNG_EVENT_VALRDY);
+    p_retval[i] = nrf_rng_random_value_get(NRF_RNG);
+  }
 
-    return retval;
+  nrf_rng_task_trigger(NRF_RNG, NRF_RNG_TASK_STOP);
+
+  return retval;
 }
 
 uint32_t rng_generate_random_word(void) {
 
 #if BLUETOOTH_SD
-    if (BLUETOOTH_STACK_ENABLED() == 1) {
-        uint32_t retval = 0;
-        uint32_t status;
-        do {
-            status = sd_rand_application_vector_get((uint8_t *)&retval, 4); // Extract 4 bytes
-        } while (status != 0);
+  if (BLUETOOTH_STACK_ENABLED() == 1) {
+    uint32_t retval = 0;
+    uint32_t status;
+    do {
+      status = sd_rand_application_vector_get((uint8_t *)&retval,
+                                              4); // Extract 4 bytes
+    } while (status != 0);
 
-        return retval;
-    }
+    return retval;
+  }
 #endif
 
-    return generate_hw_random();
+  return generate_hw_random();
 }
 
 #endif // MICROPY_HW_ENABLE_RNG

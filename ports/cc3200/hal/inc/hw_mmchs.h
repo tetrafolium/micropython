@@ -41,26 +41,26 @@
 // The following are defines for the MMCHS register offsets.
 //
 //*****************************************************************************
-#define MMCHS_O_HL_REV          0x00000000  // IP Revision Identifier (X.Y.R)
+#define MMCHS_O_HL_REV 0x00000000 // IP Revision Identifier (X.Y.R)
 // Used by software to track
 // features bugs and compatibility
-#define MMCHS_O_HL_HWINFO       0x00000004  // Information about the IP
+#define MMCHS_O_HL_HWINFO 0x00000004 // Information about the IP
 // module's hardware configuration
 // i.e. typically the module's HDL
 // generics (if any). Actual field
 // format and encoding is up to the
 // module's designer to decide.
-#define MMCHS_O_HL_SYSCONFIG    0x00000010  // Clock management configuration
-#define MMCHS_O_SYSCONFIG       0x00000110  // System Configuration Register
+#define MMCHS_O_HL_SYSCONFIG 0x00000010 // Clock management configuration
+#define MMCHS_O_SYSCONFIG 0x00000110    // System Configuration Register
 // This register allows controlling
 // various parameters of the OCP
 // interface.
-#define MMCHS_O_SYSSTATUS       0x00000114  // System Status Register This
+#define MMCHS_O_SYSSTATUS 0x00000114 // System Status Register This
 // register provides status
 // information about the module
 // excluding the interrupt status
 // information
-#define MMCHS_O_CSRE            0x00000124  // Card status response error This
+#define MMCHS_O_CSRE 0x00000124 // Card status response error This
 // register enables the host
 // controller to detect card status
 // errors of response type R1 R1b
@@ -81,7 +81,7 @@
 // autoCMD12 response register
 // (MMCHS_RESP76) for possible card
 // errors.
-#define MMCHS_O_SYSTEST         0x00000128  // System Test register This
+#define MMCHS_O_SYSTEST 0x00000128 // System Test register This
 // register is used to control the
 // signals that connect to I/O pins
 // when the module is configured in
@@ -103,7 +103,7 @@
 // Buffer read ready interrupt
 // (MMCHS_STAT[BRR]) and DMA
 // requests if enabled.
-#define MMCHS_O_CON             0x0000012C  // Configuration register This
+#define MMCHS_O_CON 0x0000012C // Configuration register This
 // register is used: - to select the
 // functional mode or the SYSTEST
 // mode for any card. - to send an
@@ -116,19 +116,19 @@
 // only. - the parameters related to
 // the card detect and write protect
 // input signals.
-#define MMCHS_O_PWCNT           0x00000130  // Power counter register This
+#define MMCHS_O_PWCNT 0x00000130 // Power counter register This
 // register is used to program a mmc
 // counter to delay command
 // transfers after activating the
 // PAD power this value depends on
 // PAD characteristics and voltage.
-#define MMCHS_O_BLK             0x00000204  // Transfer Length Configuration
+#define MMCHS_O_BLK 0x00000204 // Transfer Length Configuration
 // register MMCHS_BLK[BLEN] is the
 // block size register.
 // MMCHS_BLK[NBLK] is the block
 // count register. This register
 // shall be used for any card.
-#define MMCHS_O_ARG             0x00000208  // Command argument Register This
+#define MMCHS_O_ARG 0x00000208 // Command argument Register This
 // register contains command
 // argument specified as bit 39-8 of
 // Command-Format These registers
@@ -140,7 +140,7 @@
 // index specifying stuff bits in
 // arguments making a write
 // unnecessary.
-#define MMCHS_O_CMD             0x0000020C  // Command and transfer mode
+#define MMCHS_O_CMD 0x0000020C // Command and transfer mode
 // register MMCHS_CMD[31:16] = the
 // command register MMCHS_CMD[15:0]
 // = the transfer mode. This
@@ -154,24 +154,24 @@
 // card. Note: In SYSTEST mode a
 // write into MMCHS_CMD register
 // will not start a transfer.
-#define MMCHS_O_RSP10           0x00000210  // Command response[31:0] Register
+#define MMCHS_O_RSP10 0x00000210 // Command response[31:0] Register
 // This 32-bit register holds bits
 // positions [31:0] of command
 // response type
 // R1/R1b/R2/R3/R4/R5/R5b/R6
-#define MMCHS_O_RSP32           0x00000214  // Command response[63:32] Register
+#define MMCHS_O_RSP32 0x00000214 // Command response[63:32] Register
 // This 32-bit register holds bits
 // positions [63:32] of command
 // response type R2
-#define MMCHS_O_RSP54           0x00000218  // Command response[95:64] Register
+#define MMCHS_O_RSP54 0x00000218 // Command response[95:64] Register
 // This 32-bit register holds bits
 // positions [95:64] of command
 // response type R2
-#define MMCHS_O_RSP76           0x0000021C  // Command response[127:96]
+#define MMCHS_O_RSP76 0x0000021C // Command response[127:96]
 // Register This 32-bit register
 // holds bits positions [127:96] of
 // command response type R2
-#define MMCHS_O_DATA            0x00000220  // Data Register This register is
+#define MMCHS_O_DATA 0x00000220 // Data Register This register is
 // the 32-bit entry point of the
 // buffer for read or write data
 // transfers. The buffer size is
@@ -206,11 +206,11 @@
 // Mbyteen[3:0]=0001 (1-byte) =>
 // Mbyteen[3:0]=0010 (1-byte) =>
 // Mbyteen[3:0]=1000 (1-byte) Bad
-#define MMCHS_O_PSTATE          0x00000224  // Present state register The Host
+#define MMCHS_O_PSTATE 0x00000224 // Present state register The Host
 // can get status of the Host
 // Controller from this 32-bit read
 // only register.
-#define MMCHS_O_HCTL            0x00000228  // Control register This register
+#define MMCHS_O_HCTL 0x00000228 // Control register This register
 // defines the host controls to set
 // power wakeup and transfer
 // parameters. MMCHS_HCTL[31:24] =
@@ -218,7 +218,7 @@
 // = Block gap control
 // MMCHS_HCTL[15:8] = Power control
 // MMCHS_HCTL[7:0] = Host control
-#define MMCHS_O_SYSCTL          0x0000022C  // SD system control register This
+#define MMCHS_O_SYSCTL 0x0000022C // SD system control register This
 // register defines the system
 // controls to set software resets
 // clock frequency management and
@@ -227,7 +227,7 @@
 // MMCHS_SYSCTL[23:16] = Timeout
 // control MMCHS_SYSCTL[15:0] =
 // Clock control
-#define MMCHS_O_STAT            0x00000230  // Interrupt status register The
+#define MMCHS_O_STAT 0x00000230 // Interrupt status register The
 // interrupt status regroups all the
 // status of the module internal
 // events that can generate an
@@ -235,7 +235,7 @@
 // Error Interrupt Status
 // MMCHS_STAT[15:0] = Normal
 // Interrupt Status
-#define MMCHS_O_IE              0x00000234  // Interrupt SD enable register
+#define MMCHS_O_IE 0x00000234 // Interrupt SD enable register
 // This register allows to
 // enable/disable the module to set
 // status bits on an event-by-event
@@ -243,7 +243,7 @@
 // Interrupt Status Enable
 // MMCHS_IE[15:0] = Normal Interrupt
 // Status Enable
-#define MMCHS_O_ISE             0x00000238  // Interrupt signal enable register
+#define MMCHS_O_ISE 0x00000238 // Interrupt signal enable register
 // This register allows to
 // enable/disable the module
 // internal sources of status on an
@@ -252,7 +252,7 @@
 // Interrupt Signal Enable
 // MMCHS_ISE[15:0] = Normal
 // Interrupt Signal Enable
-#define MMCHS_O_AC12            0x0000023C  // Auto CMD12 Error Status Register
+#define MMCHS_O_AC12 0x0000023C // Auto CMD12 Error Status Register
 // The host driver may determine
 // which of the errors cases related
 // to Auto CMD12 has occurred by
@@ -265,11 +265,11 @@
 // is set to 1. Note: These bits are
 // automatically reset when starting
 // a new adtc command with data.
-#define MMCHS_O_CAPA            0x00000240  // Capabilities register This
+#define MMCHS_O_CAPA 0x00000240 // Capabilities register This
 // register lists the capabilities
 // of the MMC/SD/SDIO host
 // controller.
-#define MMCHS_O_CUR_CAPA        0x00000248  // Maximum current capabilities
+#define MMCHS_O_CUR_CAPA 0x00000248 // Maximum current capabilities
 // Register This register indicates
 // the maximum current capability
 // for each voltage. The value is
@@ -284,7 +284,7 @@
 // after the initilaization. This
 // register is only reinitialized by
 // a hard reset (via RESETN signal)
-#define MMCHS_O_FE              0x00000250  // Force Event Register for Error
+#define MMCHS_O_FE 0x00000250 // Force Event Register for Error
 // Interrupt status The force Event
 // Register is not a physically
 // implemented register. Rather it
@@ -296,7 +296,7 @@
 // Register if corresponding bit of
 // the Error Interrupt Status Enable
 // Register is set.
-#define MMCHS_O_ADMAES          0x00000254  // ADMA Error Status Register When
+#define MMCHS_O_ADMAES 0x00000254 // ADMA Error Status Register When
 // ADMA Error Interrupt is occurred
 // the ADMA Error States field in
 // this register holds the ADMA
@@ -334,8 +334,8 @@
 // Host Driver may find that the
 // Valid bit is not set in the error
 // descriptor.
-#define MMCHS_O_ADMASAL         0x00000258  // ADMA System address Low bits
-#define MMCHS_O_REV             0x000002FC  // Versions Register This register
+#define MMCHS_O_ADMASAL 0x00000258 // ADMA System address Low bits
+#define MMCHS_O_REV 0x000002FC     // Versions Register This register
 // contains the hard coded RTL
 // vendor revision number the
 // version number of SD
@@ -345,23 +345,21 @@
 // MMCHS_REV[15:0] = Slot Interrupt
 // Status
 
-
-
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_HL_REV register.
 //
 //******************************************************************************
-#define MMCHS_HL_REV_SCHEME_M   0xC0000000
-#define MMCHS_HL_REV_SCHEME_S   30
-#define MMCHS_HL_REV_FUNC_M     0x0FFF0000  // Function indicates a software
+#define MMCHS_HL_REV_SCHEME_M 0xC0000000
+#define MMCHS_HL_REV_SCHEME_S 30
+#define MMCHS_HL_REV_FUNC_M 0x0FFF0000 // Function indicates a software
 // compatible module family. If
 // there is no level of software
 // compatibility a new Func number
 // (and hence REVISION) should be
 // assigned.
-#define MMCHS_HL_REV_FUNC_S     16
-#define MMCHS_HL_REV_R_RTL_M    0x0000F800  // RTL Version (R) maintained by IP
+#define MMCHS_HL_REV_FUNC_S 16
+#define MMCHS_HL_REV_R_RTL_M 0x0000F800 // RTL Version (R) maintained by IP
 // design owner. RTL follows a
 // numbering such as X.Y.R.Z which
 // are explained in this table. R
@@ -375,8 +373,8 @@
 // drop that happens due to DV and
 // RTL updates. Z resets to 0 when R
 // increments.
-#define MMCHS_HL_REV_R_RTL_S    11
-#define MMCHS_HL_REV_X_MAJOR_M  0x00000700  // Major Revision (X) maintained by
+#define MMCHS_HL_REV_R_RTL_S 11
+#define MMCHS_HL_REV_X_MAJOR_M 0x00000700 // Major Revision (X) maintained by
 // IP specification owner. X changes
 // ONLY when: (1) There is a major
 // feature addition. An example
@@ -386,10 +384,10 @@
 // will remain the same. X does NOT
 // change due to: (1) Bug fixes (2)
 // Change in feature parameters.
-#define MMCHS_HL_REV_X_MAJOR_S  8
-#define MMCHS_HL_REV_CUSTOM_M   0x000000C0
-#define MMCHS_HL_REV_CUSTOM_S   6
-#define MMCHS_HL_REV_Y_MINOR_M  0x0000003F  // Minor Revision (Y) maintained by
+#define MMCHS_HL_REV_X_MAJOR_S 8
+#define MMCHS_HL_REV_CUSTOM_M 0x000000C0
+#define MMCHS_HL_REV_CUSTOM_S 6
+#define MMCHS_HL_REV_Y_MINOR_M 0x0000003F // Minor Revision (Y) maintained by
 // IP specification owner. Y changes
 // ONLY when: (1) Features are
 // scaled (up or down). Flexibility
@@ -422,22 +420,20 @@
 // bug fix should document the
 // corresponding spec number (X.Y.S)
 // in its release notes.
-#define MMCHS_HL_REV_Y_MINOR_S  0
+#define MMCHS_HL_REV_Y_MINOR_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MMCHS_O_HL_HWINFO register.
+// The following are defines for the bit fields in the MMCHS_O_HL_HWINFO
+// register.
 //
 //******************************************************************************
 #define MMCHS_HL_HWINFO_RETMODE 0x00000040
-#define MMCHS_HL_HWINFO_MEM_SIZE_M \
-                                0x0000003C
+#define MMCHS_HL_HWINFO_MEM_SIZE_M 0x0000003C
 
 #define MMCHS_HL_HWINFO_MEM_SIZE_S 2
-#define MMCHS_HL_HWINFO_MERGE_MEM \
-                                0x00000002
+#define MMCHS_HL_HWINFO_MERGE_MEM 0x00000002
 
-#define MMCHS_HL_HWINFO_MADMA_EN \
-                                0x00000001
+#define MMCHS_HL_HWINFO_MADMA_EN 0x00000001
 
 //******************************************************************************
 //
@@ -445,8 +441,8 @@
 // MMCHS_O_HL_SYSCONFIG register.
 //
 //******************************************************************************
-#define MMCHS_HL_SYSCONFIG_STANDBYMODE_M \
-                                0x00000030  // Configuration of the local
+#define MMCHS_HL_SYSCONFIG_STANDBYMODE_M                                       \
+  0x00000030 // Configuration of the local
 // initiator state management mode.
 // By definition initiator may
 // generate read/write transaction
@@ -479,8 +475,7 @@
 // output is implemented."
 
 #define MMCHS_HL_SYSCONFIG_STANDBYMODE_S 4
-#define MMCHS_HL_SYSCONFIG_IDLEMODE_M \
-                                0x0000000C  // Configuration of the local
+#define MMCHS_HL_SYSCONFIG_IDLEMODE_M 0x0000000C // Configuration of the local
 // target state management mode. By
 // definition target can handle
 // read/write transaction as long as
@@ -517,8 +512,8 @@
 // is (are) implemented."
 
 #define MMCHS_HL_SYSCONFIG_IDLEMODE_S 2
-#define MMCHS_HL_SYSCONFIG_FREEEMU \
-                                0x00000002  // Sensitivity to emulation (debug)
+#define MMCHS_HL_SYSCONFIG_FREEEMU                                             \
+  0x00000002 // Sensitivity to emulation (debug)
 // suspend input signal.
 // Functionality NOT implemented in
 // MMCHS. 0 IP module is sensitive
@@ -526,16 +521,15 @@
 // is not sensitive to emulation
 // suspend
 
-#define MMCHS_HL_SYSCONFIG_SOFTRESET \
-                                0x00000001
+#define MMCHS_HL_SYSCONFIG_SOFTRESET 0x00000001
 
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MMCHS_O_SYSCONFIG register.
+// The following are defines for the bit fields in the MMCHS_O_SYSCONFIG
+// register.
 //
 //******************************************************************************
-#define MMCHS_SYSCONFIG_STANDBYMODE_M \
-                                0x00003000  // Master interface power
+#define MMCHS_SYSCONFIG_STANDBYMODE_M 0x00003000 // Master interface power
 // Management standby/wait control.
 // The bit field is only useful when
 // generic parameter MADMA_EN
@@ -565,8 +559,8 @@
 // output is implemented."
 
 #define MMCHS_SYSCONFIG_STANDBYMODE_S 12
-#define MMCHS_SYSCONFIG_CLOCKACTIVITY_M \
-                                0x00000300  // Clocks activity during wake up
+#define MMCHS_SYSCONFIG_CLOCKACTIVITY_M                                        \
+  0x00000300 // Clocks activity during wake up
 // mode period. Bit8: OCP interface
 // clock Bit9: Functional clock 0x0
 // OCP and Functional clock may be
@@ -578,8 +572,8 @@
 // Functional clocks are maintained.
 
 #define MMCHS_SYSCONFIG_CLOCKACTIVITY_S 8
-#define MMCHS_SYSCONFIG_SIDLEMODE_M \
-                                0x00000018  // Power management 0x0 If an idle
+#define MMCHS_SYSCONFIG_SIDLEMODE_M                                            \
+  0x00000018 // Power management 0x0 If an idle
 // request is detected the MMCHS
 // acknowledges it unconditionally
 // and goes in Inactive mode.
@@ -611,16 +605,13 @@
 // is (are) implemented."
 
 #define MMCHS_SYSCONFIG_SIDLEMODE_S 3
-#define MMCHS_SYSCONFIG_ENAWAKEUP \
-                                0x00000004  // Wakeup feature control 0 Wakeup
+#define MMCHS_SYSCONFIG_ENAWAKEUP 0x00000004 // Wakeup feature control 0 Wakeup
 // capability is disabled 1 Wakeup
 // capability is enabled
 
-#define MMCHS_SYSCONFIG_SOFTRESET \
-                                0x00000002
+#define MMCHS_SYSCONFIG_SOFTRESET 0x00000002
 
-#define MMCHS_SYSCONFIG_AUTOIDLE \
-                                0x00000001  // Internal Clock gating strategy 0
+#define MMCHS_SYSCONFIG_AUTOIDLE 0x00000001 // Internal Clock gating strategy 0
 // Clocks are free-running 1
 // Automatic clock gating strategy
 // is applied based on the OCP and
@@ -628,47 +619,47 @@
 
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MMCHS_O_SYSSTATUS register.
+// The following are defines for the bit fields in the MMCHS_O_SYSSTATUS
+// register.
 //
 //******************************************************************************
-#define MMCHS_SYSSTATUS_RESETDONE \
-                                0x00000001
+#define MMCHS_SYSSTATUS_RESETDONE 0x00000001
 
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_CSRE register.
 //
 //******************************************************************************
-#define MMCHS_CSRE_CSRE_M       0xFFFFFFFF  // Card status response error
-#define MMCHS_CSRE_CSRE_S       0
+#define MMCHS_CSRE_CSRE_M 0xFFFFFFFF // Card status response error
+#define MMCHS_CSRE_CSRE_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_SYSTEST register.
 //
 //******************************************************************************
-#define MMCHS_SYSTEST_OBI       0x00010000
-#define MMCHS_SYSTEST_SDCD      0x00008000
-#define MMCHS_SYSTEST_SDWP      0x00004000
-#define MMCHS_SYSTEST_WAKD      0x00002000
-#define MMCHS_SYSTEST_SSB       0x00001000
-#define MMCHS_SYSTEST_D7D       0x00000800
-#define MMCHS_SYSTEST_D6D       0x00000400
-#define MMCHS_SYSTEST_D5D       0x00000200
-#define MMCHS_SYSTEST_D4D       0x00000100
-#define MMCHS_SYSTEST_D3D       0x00000080
-#define MMCHS_SYSTEST_D2D       0x00000040
-#define MMCHS_SYSTEST_D1D       0x00000020
-#define MMCHS_SYSTEST_D0D       0x00000010
-#define MMCHS_SYSTEST_DDIR      0x00000008
-#define MMCHS_SYSTEST_CDAT      0x00000004
-#define MMCHS_SYSTEST_CDIR      0x00000002
-#define MMCHS_SYSTEST_MCKD      0x00000001
+#define MMCHS_SYSTEST_OBI 0x00010000
+#define MMCHS_SYSTEST_SDCD 0x00008000
+#define MMCHS_SYSTEST_SDWP 0x00004000
+#define MMCHS_SYSTEST_WAKD 0x00002000
+#define MMCHS_SYSTEST_SSB 0x00001000
+#define MMCHS_SYSTEST_D7D 0x00000800
+#define MMCHS_SYSTEST_D6D 0x00000400
+#define MMCHS_SYSTEST_D5D 0x00000200
+#define MMCHS_SYSTEST_D4D 0x00000100
+#define MMCHS_SYSTEST_D3D 0x00000080
+#define MMCHS_SYSTEST_D2D 0x00000040
+#define MMCHS_SYSTEST_D1D 0x00000020
+#define MMCHS_SYSTEST_D0D 0x00000010
+#define MMCHS_SYSTEST_DDIR 0x00000008
+#define MMCHS_SYSTEST_CDAT 0x00000004
+#define MMCHS_SYSTEST_CDIR 0x00000002
+#define MMCHS_SYSTEST_MCKD 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_CON register.
 //
 //******************************************************************************
-#define MMCHS_CON_SDMA_LNE      0x00200000  // Slave DMA Level/Edge Request:
+#define MMCHS_CON_SDMA_LNE 0x00200000 // Slave DMA Level/Edge Request:
 // The waveform of the DMA request
 // can be configured either edge
 // sensitive with early de-assertion
@@ -680,7 +671,7 @@
 // sensitive Early DMA de-assertion
 // 1 Slave DMA level sensitive Late
 // DMA de-assertion
-#define MMCHS_CON_DMA_MNS       0x00100000  // DMA Master or Slave selection:
+#define MMCHS_CON_DMA_MNS 0x00100000 // DMA Master or Slave selection:
 // When this bit is set and the
 // controller is configured to use
 // the DMA Ocp master interface is
@@ -694,7 +685,7 @@
 // controller is master on data
 // exchange with system controller
 // must be configured as using DMA.
-#define MMCHS_CON_DDR           0x00080000  // Dual Data Rate mode: When this
+#define MMCHS_CON_DDR 0x00080000 // Dual Data Rate mode: When this
 // register is set the controller
 // uses both clock edge to emit or
 // receive data. Odd bytes are
@@ -713,8 +704,8 @@
 // depending on MMCHS_HCTRL[HSPE]. 1
 // Data Bytes and CRC are
 // transmitted on both edge.
-#define MMCHS_CON_BOOT_CF0      0x00040000
-#define MMCHS_CON_BOOT_ACK      0x00020000  // Book acknowledge received: When
+#define MMCHS_CON_BOOT_CF0 0x00040000
+#define MMCHS_CON_BOOT_ACK 0x00020000 // Book acknowledge received: When
 // this bit is set the controller
 // should receive a boot status on
 // DAT0 line after next command
@@ -724,7 +715,7 @@
 // A boot status will be received on
 // DAT0 line after issuing a
 // command.
-#define MMCHS_CON_CLKEXTFREE    0x00010000  // External clock free running:
+#define MMCHS_CON_CLKEXTFREE 0x00010000 // External clock free running:
 // This register is used to maintain
 // card clock out of transfer
 // transaction to enable slave
@@ -738,7 +729,7 @@
 // maintain even out of active
 // transaction period only if
 // MMCHS_SYSCTL[CEN] is set.
-#define MMCHS_CON_PADEN         0x00008000  // Control Power for MMC Lines:
+#define MMCHS_CON_PADEN 0x00008000 // Control Power for MMC Lines:
 // This register is only useful when
 // MMC PADs contain power saving
 // mechanism to minimize its leakage
@@ -753,7 +744,7 @@
 // generated by the MMC fsms. 1
 // ADPIDLE module pin is forced to
 // active state.
-#define MMCHS_CON_OBIE          0x00004000  // Out-of-Band Interrupt Enable MMC
+#define MMCHS_CON_OBIE 0x00004000 // Out-of-Band Interrupt Enable MMC
 // cards only: This bit enables the
 // detection of Out-of-Band
 // Interrupt on MMCOBI input pin.
@@ -764,7 +755,7 @@
 // interrupt detection disabled 1
 // Out-of-Band interrupt detection
 // enabled
-#define MMCHS_CON_OBIP          0x00002000  // Out-of-Band Interrupt Polarity
+#define MMCHS_CON_OBIP 0x00002000 // Out-of-Band Interrupt Polarity
 // MMC cards only: This bit selects
 // the active level of the
 // out-of-band interrupt coming from
@@ -773,7 +764,7 @@
 // optional and depends on the
 // system integration. 0 active high
 // level 1 active low level
-#define MMCHS_CON_CEATA         0x00001000  // CE-ATA control mode MMC cards
+#define MMCHS_CON_CEATA 0x00001000 // CE-ATA control mode MMC cards
 // compliant with CE-ATA:By default
 // this bit is set to 0. It is use
 // to indicate that next commands
@@ -783,7 +774,7 @@
 // Standard MMC/SD/SDIO mode. 1
 // CE-ATA mode next commands are
 // considered as CE-ATA commands.
-#define MMCHS_CON_CTPL          0x00000800  // Control Power for DAT[1] line
+#define MMCHS_CON_CTPL 0x00000800 // Control Power for DAT[1] line
 // MMC and SD cards: By default this
 // bit is set to 0 and the host
 // controller automatically disables
@@ -803,7 +794,7 @@
 // Disable all the input buffers
 // except the buffer of DAT[1]
 // outside of a transaction.
-#define MMCHS_CON_DVAL_M        0x00000600  // Debounce filter value All cards
+#define MMCHS_CON_DVAL_M 0x00000600 // Debounce filter value All cards
 // This register is used to define a
 // debounce period to filter the
 // card detect input signal (SDCD).
@@ -816,8 +807,8 @@
 // debounce period 0x1 231 us
 // debounce period 0x2 1 ms debounce
 // period 0x3 84 ms debounce period
-#define MMCHS_CON_DVAL_S        9
-#define MMCHS_CON_WPP           0x00000100  // Write protect polarity For SD
+#define MMCHS_CON_DVAL_S 9
+#define MMCHS_CON_WPP 0x00000100 // Write protect polarity For SD
 // and SDIO cards only This bit
 // selects the active level of the
 // write protect input signal
@@ -828,7 +819,7 @@
 // of the connector housing that
 // accommodates the card. 0 active
 // high level 1 active low level
-#define MMCHS_CON_CDP           0x00000080  // Card detect polarity All cards
+#define MMCHS_CON_CDP 0x00000080 // Card detect polarity All cards
 // This bit selects the active level
 // of the card detect input signal
 // (SDCD). The usage of the card
@@ -838,7 +829,7 @@
 // of the connector housing that
 // accommodates the card. 0 active
 // high level 1 active low level
-#define MMCHS_CON_MIT           0x00000040  // MMC interrupt command Only for
+#define MMCHS_CON_MIT 0x00000040 // MMC interrupt command Only for
 // MMC cards. This bit must be set
 // to 1 when the next write access
 // to the command register
@@ -849,7 +840,7 @@
 // command response. 0 Command
 // timeout enabled 1 Command timeout
 // disabled
-#define MMCHS_CON_DW8           0x00000020  // 8-bit mode MMC select For
+#define MMCHS_CON_DW8 0x00000020 // 8-bit mode MMC select For
 // SD/SDIO cards this bit must be
 // set to 0. For MMC card this bit
 // must be set following a valid
@@ -865,7 +856,7 @@
 // (DAT[0] used MMC SD cards) 1
 // 8-bit Data width (DAT[7:0] used
 // MMC cards)
-#define MMCHS_CON_MODE          0x00000010  // Mode select All cards These bits
+#define MMCHS_CON_MODE 0x00000010 // Mode select All cards These bits
 // select between Functional mode
 // and SYSTEST mode. 0 Functional
 // mode. Transfers to the
@@ -884,7 +875,7 @@
 // or in-out). SYSTEST mode is
 // operated under the control of the
 // SYSTEST register.
-#define MMCHS_CON_STR           0x00000008  // Stream command Only for MMC
+#define MMCHS_CON_STR 0x00000008 // Stream command Only for MMC
 // cards. This bit must be set to 1
 // only for the stream data
 // transfers (read or write) of the
@@ -895,7 +886,7 @@
 // (CMD20: WRITE_DAT_UNTIL_STOP). 0
 // Block oriented data transfer 1
 // Stream oriented data transfer
-#define MMCHS_CON_HR            0x00000004  // Broadcast host response Only for
+#define MMCHS_CON_HR 0x00000004 // Broadcast host response Only for
 // MMC cards. This register is used
 // to force the host to generate a
 // 48-bit response for bc command
@@ -922,7 +913,7 @@
 // response instead of a command or
 // a command completion signal
 // disable token.
-#define MMCHS_CON_INIT          0x00000002  // Send initialization stream All
+#define MMCHS_CON_INIT 0x00000002 // Send initialization stream All
 // cards. When this bit is set to 1
 // and the card is idle an
 // initialization sequence is sent
@@ -947,7 +938,7 @@
 // send an initialization sequence.
 // 1 The host sends an
 // initialization sequence.
-#define MMCHS_CON_OD            0x00000001  // Card open drain mode. Only for
+#define MMCHS_CON_OD 0x00000001 // Card open drain mode. Only for
 // MMC cards. This bit must be set
 // to 1 for MMC card commands 1 2 3
 // and 40 and if the MMC card bus is
@@ -968,7 +959,7 @@
 // The following are defines for the bit fields in the MMCHS_O_PWCNT register.
 //
 //******************************************************************************
-#define MMCHS_PWCNT_PWRCNT_M    0x0000FFFF  // Power counter register. This
+#define MMCHS_PWCNT_PWRCNT_M 0x0000FFFF // Power counter register. This
 // register is used to introduce a
 // delay between the PAD ACTIVE pin
 // assertion and the command issued.
@@ -979,13 +970,13 @@
 // 65534 delay (card clock period)
 // 0xFFFF TCF x 65535 delay (card
 // clock period)
-#define MMCHS_PWCNT_PWRCNT_S    0
+#define MMCHS_PWCNT_PWRCNT_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_BLK register.
 //
 //******************************************************************************
-#define MMCHS_BLK_NBLK_M        0xFFFF0000  // Blocks count for current
+#define MMCHS_BLK_NBLK_M 0xFFFF0000 // Blocks count for current
 // transfer This register is enabled
 // when Block count Enable
 // (MMCHS_CMD[BCE]) is set to 1 and
@@ -1013,8 +1004,8 @@
 // block count. 0x0000 Stop count
 // 0x0001 1 block 0x0002 2 blocks
 // 0xFFFF 65535 blocks
-#define MMCHS_BLK_NBLK_S        16
-#define MMCHS_BLK_BLEN_M        0x00000FFF  // Transfer Block Size. This
+#define MMCHS_BLK_NBLK_S 16
+#define MMCHS_BLK_BLEN_M 0x00000FFF // Transfer Block Size. This
 // register specifies the block size
 // for block data transfers. Read
 // operations during transfers may
@@ -1036,20 +1027,20 @@
 // block length 0x7FF 2047 bytes
 // block length 0x800 2048 bytes
 // block length
-#define MMCHS_BLK_BLEN_S        0
+#define MMCHS_BLK_BLEN_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_ARG register.
 //
 //******************************************************************************
-#define MMCHS_ARG_ARG_M         0xFFFFFFFF  // Command argument bits [31:0]
-#define MMCHS_ARG_ARG_S         0
+#define MMCHS_ARG_ARG_M 0xFFFFFFFF // Command argument bits [31:0]
+#define MMCHS_ARG_ARG_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_CMD register.
 //
 //******************************************************************************
-#define MMCHS_CMD_INDX_M        0x3F000000  // Command index Binary encoded
+#define MMCHS_CMD_INDX_M 0x3F000000 // Command index Binary encoded
 // value from 0 to 63 specifying the
 // command number send to card 0x00
 // CMD0 or ACMD0 0x01 CMD1 or ACMD1
@@ -1094,8 +1085,8 @@
 // ACMD59 0x3C CMD60 or ACMD60 0x3D
 // CMD61 or ACMD61 0x3E CMD62 or
 // ACMD62 0x3F CMD63 or ACMD63
-#define MMCHS_CMD_INDX_S        24
-#define MMCHS_CMD_CMD_TYPE_M    0x00C00000  // Command type This register
+#define MMCHS_CMD_INDX_S 24
+#define MMCHS_CMD_CMD_TYPE_M 0x00C00000 // Command type This register
 // specifies three types of special
 // command: Suspend Resume and
 // Abort. These bits shall be set to
@@ -1106,8 +1097,8 @@
 // Select"" in CCCR" 0x3 "Abort
 // command CMD12 CMD52 for writing
 // "" I/O Abort"" in CCCR"
-#define MMCHS_CMD_CMD_TYPE_S    22
-#define MMCHS_CMD_DP            0x00200000  // Data present select This
+#define MMCHS_CMD_CMD_TYPE_S 22
+#define MMCHS_CMD_DP 0x00200000 // Data present select This
 // register indicates that data is
 // present and DAT line shall be
 // used. It must be set to 0 in the
@@ -1118,7 +1109,7 @@
 // command 0 Command with no data
 // transfer 1 Command with data
 // transfer
-#define MMCHS_CMD_CICE          0x00100000  // Command Index check enable This
+#define MMCHS_CMD_CICE 0x00100000 // Command Index check enable This
 // bit must be set to 1 to enable
 // index check on command response
 // to compare the index field in the
@@ -1134,7 +1125,7 @@
 // checked when this command is
 // issued. 0 Index check disable 1
 // Index check enable
-#define MMCHS_CMD_CCCE          0x00080000  // Command CRC check enable This
+#define MMCHS_CMD_CCCE 0x00080000 // Command CRC check enable This
 // bit must be set to 1 to enable
 // CRC7 check on command response to
 // protect the response against
@@ -1148,15 +1139,15 @@
 // checked when this command is
 // issued. 0 CRC7 check disable 1
 // CRC7 check enable
-#define MMCHS_CMD_RSP_TYPE_M    0x00030000  // Response type This bits defines
+#define MMCHS_CMD_RSP_TYPE_M 0x00030000 // Response type This bits defines
 // the response type of the command
 // 0x0 No response 0x1 Response
 // Length 136 bits 0x2 Response
 // Length 48 bits 0x3 Response
 // Length 48 bits with busy after
 // response
-#define MMCHS_CMD_RSP_TYPE_S    16
-#define MMCHS_CMD_MSBS          0x00000020  // Multi/Single block select This
+#define MMCHS_CMD_RSP_TYPE_S 16
+#define MMCHS_CMD_MSBS 0x00000020 // Multi/Single block select This
 // bit must be set to 1 for data
 // transfer in case of multi block
 // command. For any others command
@@ -1170,12 +1161,12 @@
 // (MMCHS_CMD[MSBS] is set to 1) the
 // module can perform infinite
 // transfer.
-#define MMCHS_CMD_DDIR          0x00000010  // Data transfer Direction Select
+#define MMCHS_CMD_DDIR 0x00000010 // Data transfer Direction Select
 // This bit defines either data
 // transfer will be a read or a
 // write. 0 Data Write (host to
 // card) 1 Data Read (card to host)
-#define MMCHS_CMD_ACEN          0x00000004  // Auto CMD12 Enable SD card only.
+#define MMCHS_CMD_ACEN 0x00000004 // Auto CMD12 Enable SD card only.
 // When this bit is set to 1 the
 // host controller issues a CMD12
 // automatically after the transfer
@@ -1187,7 +1178,7 @@
 // commands do not require CMD12. 0
 // Auto CMD12 disable 1 Auto CMD12
 // enable or CCS detection enabled.
-#define MMCHS_CMD_BCE           0x00000002  // Block Count Enable Multiple
+#define MMCHS_CMD_BCE 0x00000002 // Block Count Enable Multiple
 // block transfers only. This bit is
 // used to enable the block count
 // register (MMCHS_BLK[NBLK]). When
@@ -1201,7 +1192,7 @@
 // count enabled for multiple block
 // transfer with known number of
 // blocks
-#define MMCHS_CMD_DE            0x00000001  // DMA Enable This bit is used to
+#define MMCHS_CMD_DE 0x00000001 // DMA Enable This bit is used to
 // enable DMA mode for host data
 // access. 0 DMA mode disable 1 DMA
 // mode enable
@@ -1210,43 +1201,43 @@
 // The following are defines for the bit fields in the MMCHS_O_RSP10 register.
 //
 //******************************************************************************
-#define MMCHS_RSP10_RSP1_M      0xFFFF0000  // Command Response [31:16]
-#define MMCHS_RSP10_RSP1_S      16
-#define MMCHS_RSP10_RSP0_M      0x0000FFFF  // Command Response [15:0]
-#define MMCHS_RSP10_RSP0_S      0
+#define MMCHS_RSP10_RSP1_M 0xFFFF0000 // Command Response [31:16]
+#define MMCHS_RSP10_RSP1_S 16
+#define MMCHS_RSP10_RSP0_M 0x0000FFFF // Command Response [15:0]
+#define MMCHS_RSP10_RSP0_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_RSP32 register.
 //
 //******************************************************************************
-#define MMCHS_RSP32_RSP3_M      0xFFFF0000  // Command Response [63:48]
-#define MMCHS_RSP32_RSP3_S      16
-#define MMCHS_RSP32_RSP2_M      0x0000FFFF  // Command Response [47:32]
-#define MMCHS_RSP32_RSP2_S      0
+#define MMCHS_RSP32_RSP3_M 0xFFFF0000 // Command Response [63:48]
+#define MMCHS_RSP32_RSP3_S 16
+#define MMCHS_RSP32_RSP2_M 0x0000FFFF // Command Response [47:32]
+#define MMCHS_RSP32_RSP2_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_RSP54 register.
 //
 //******************************************************************************
-#define MMCHS_RSP54_RSP5_M      0xFFFF0000  // Command Response [95:80]
-#define MMCHS_RSP54_RSP5_S      16
-#define MMCHS_RSP54_RSP4_M      0x0000FFFF  // Command Response [79:64]
-#define MMCHS_RSP54_RSP4_S      0
+#define MMCHS_RSP54_RSP5_M 0xFFFF0000 // Command Response [95:80]
+#define MMCHS_RSP54_RSP5_S 16
+#define MMCHS_RSP54_RSP4_M 0x0000FFFF // Command Response [79:64]
+#define MMCHS_RSP54_RSP4_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_RSP76 register.
 //
 //******************************************************************************
-#define MMCHS_RSP76_RSP7_M      0xFFFF0000  // Command Response [127:112]
-#define MMCHS_RSP76_RSP7_S      16
-#define MMCHS_RSP76_RSP6_M      0x0000FFFF  // Command Response [111:96]
-#define MMCHS_RSP76_RSP6_S      0
+#define MMCHS_RSP76_RSP7_M 0xFFFF0000 // Command Response [127:112]
+#define MMCHS_RSP76_RSP7_S 16
+#define MMCHS_RSP76_RSP6_M 0x0000FFFF // Command Response [111:96]
+#define MMCHS_RSP76_RSP6_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_DATA register.
 //
 //******************************************************************************
-#define MMCHS_DATA_DATA_M       0xFFFFFFFF  // Data Register [31:0] In
+#define MMCHS_DATA_DATA_M 0xFFFFFFFF // Data Register [31:0] In
 // functional mode (MMCHS_CON[MODE]
 // set to the default value 0) A
 // read access to this register is
@@ -1261,14 +1252,14 @@
 // a bad access (MMCHS_STAT[BADA])
 // is signaled and the data is not
 // written.
-#define MMCHS_DATA_DATA_S       0
+#define MMCHS_DATA_DATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_PSTATE register.
 //
 //******************************************************************************
-#define MMCHS_PSTATE_CLEV       0x01000000
-#define MMCHS_PSTATE_DLEV_M     0x00F00000  // DAT[3:0] line signal level
+#define MMCHS_PSTATE_CLEV 0x01000000
+#define MMCHS_PSTATE_DLEV_M 0x00F00000 // DAT[3:0] line signal level
 // DAT[3] => bit 23 DAT[2] => bit 22
 // DAT[1] => bit 21 DAT[0] => bit 20
 // This status is used to check DAT
@@ -1279,24 +1270,24 @@
 // DAT[0]. The value of these
 // registers after reset depends on
 // the DAT lines level at that time.
-#define MMCHS_PSTATE_DLEV_S     20
-#define MMCHS_PSTATE_WP         0x00080000
-#define MMCHS_PSTATE_CDPL       0x00040000
-#define MMCHS_PSTATE_CSS        0x00020000
-#define MMCHS_PSTATE_CINS       0x00010000
-#define MMCHS_PSTATE_BRE        0x00000800
-#define MMCHS_PSTATE_BWE        0x00000400
-#define MMCHS_PSTATE_RTA        0x00000200
-#define MMCHS_PSTATE_WTA        0x00000100
-#define MMCHS_PSTATE_DLA        0x00000004
-#define MMCHS_PSTATE_DATI       0x00000002
-#define MMCHS_PSTATE_CMDI       0x00000001
+#define MMCHS_PSTATE_DLEV_S 20
+#define MMCHS_PSTATE_WP 0x00080000
+#define MMCHS_PSTATE_CDPL 0x00040000
+#define MMCHS_PSTATE_CSS 0x00020000
+#define MMCHS_PSTATE_CINS 0x00010000
+#define MMCHS_PSTATE_BRE 0x00000800
+#define MMCHS_PSTATE_BWE 0x00000400
+#define MMCHS_PSTATE_RTA 0x00000200
+#define MMCHS_PSTATE_WTA 0x00000100
+#define MMCHS_PSTATE_DLA 0x00000004
+#define MMCHS_PSTATE_DATI 0x00000002
+#define MMCHS_PSTATE_CMDI 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_HCTL register.
 //
 //******************************************************************************
-#define MMCHS_HCTL_OBWE         0x08000000  // Wakeup event enable for
+#define MMCHS_HCTL_OBWE 0x08000000 // Wakeup event enable for
 // 'Out-of-Band' Interrupt. This bit
 // enables wakeup events for
 // 'Out-of-Band' assertion. Wakeup
@@ -1308,7 +1299,7 @@
 // 0 Disable wakeup on 'Out-of-Band'
 // Interrupt 1 Enable wakeup on
 // 'Out-of-Band' Interrupt
-#define MMCHS_HCTL_REM          0x04000000  // Wakeup event enable on SD card
+#define MMCHS_HCTL_REM 0x04000000 // Wakeup event enable on SD card
 // removal This bit enables wakeup
 // events for card removal
 // assertion. Wakeup is generated if
@@ -1316,7 +1307,7 @@
 // (MMCHS_SYSCONFIG[ENAWAKEUP]). 0
 // Disable wakeup on card removal 1
 // Enable wakeup on card removal
-#define MMCHS_HCTL_INS          0x02000000  // Wakeup event enable on SD card
+#define MMCHS_HCTL_INS 0x02000000 // Wakeup event enable on SD card
 // insertion This bit enables wakeup
 // events for card insertion
 // assertion. Wakeup is generated if
@@ -1324,7 +1315,7 @@
 // (MMCHS_SYSCONFIG[ENAWAKEUP]). 0
 // Disable wakeup on card insertion
 // 1 Enable wakeup on card insertion
-#define MMCHS_HCTL_IWE          0x01000000  // Wakeup event enable on SD card
+#define MMCHS_HCTL_IWE 0x01000000 // Wakeup event enable on SD card
 // interrupt This bit enables wakeup
 // events for card interrupt
 // assertion. Wakeup is generated if
@@ -1332,7 +1323,7 @@
 // (MMCHS_SYSCONFIG[ENAWAKEUP]). 0
 // Disable wakeup on card interrupt
 // 1 Enable wakeup on card interrupt
-#define MMCHS_HCTL_IBG          0x00080000  // Interrupt block at gap This bit
+#define MMCHS_HCTL_IBG 0x00080000 // Interrupt block at gap This bit
 // is valid only in 4-bit mode of
 // SDIO card to enable interrupt
 // detection in the interrupt cycle
@@ -1343,7 +1334,7 @@
 // at the block gap in 4-bit mode 1
 // Enable interrupt detection at the
 // block gap in 4-bit mode
-#define MMCHS_HCTL_RWC          0x00040000  // Read wait control The read wait
+#define MMCHS_HCTL_RWC 0x00040000 // Read wait control The read wait
 // function is optional only for
 // SDIO cards. If the card supports
 // read wait this bit must be
@@ -1357,7 +1348,7 @@
 // Control. Suspend/Resume cannot be
 // supported. 1 Enable Read Wait
 // Control
-#define MMCHS_HCTL_CR           0x00020000  // Continue request This bit is
+#define MMCHS_HCTL_CR 0x00020000 // Continue request This bit is
 // used to restart a transaction
 // that was stopped by requesting a
 // stop at block gap
@@ -1373,7 +1364,7 @@
 // disabled (MMCHS_HCTL[SBGR]=0)
 // before setting this bit. 0 No
 // affect 1 transfer restart
-#define MMCHS_HCTL_SBGR         0x00010000  // Stop at block gap request This
+#define MMCHS_HCTL_SBGR 0x00010000 // Stop at block gap request This
 // bit is used to stop executing a
 // transaction at the next block
 // gap. The transfer can restart
@@ -1392,7 +1383,7 @@
 // local host shall not write to the
 // data register (MMCHS_DATA). 0
 // Transfer mode 1 Stop at block gap
-#define MMCHS_HCTL_SDVS_M       0x00000E00  // SD bus voltage select All cards.
+#define MMCHS_HCTL_SDVS_M 0x00000E00 // SD bus voltage select All cards.
 // The host driver should set to
 // these bits to select the voltage
 // level for the card according to
@@ -1401,8 +1392,8 @@
 // before starting a transfer. 0x5
 // 1.8V (Typical) 0x6 3.0V (Typical)
 // 0x7 3.3V (Typical)
-#define MMCHS_HCTL_SDVS_S       9
-#define MMCHS_HCTL_SDBP         0x00000100  // SD bus power Before setting this
+#define MMCHS_HCTL_SDVS_S 9
+#define MMCHS_HCTL_SDBP 0x00000100 // SD bus power Before setting this
 // bit the host driver shall select
 // the SD bus voltage
 // (MMCHS_HCTL[SDVS]). If the host
@@ -1418,7 +1409,7 @@
 // according to capability register
 // (MMCHS_CAPA[VS*]). 0 Power off 1
 // Power on
-#define MMCHS_HCTL_CDSS         0x00000080  // Card Detect Signal Selection
+#define MMCHS_HCTL_CDSS 0x00000080 // Card Detect Signal Selection
 // This bit selects source for the
 // card detection.When the source
 // for the card detection is
@@ -1435,12 +1426,12 @@
 // selected (for normal use) 1 The
 // Card Detect Test Level is
 // selected (for test purpose)
-#define MMCHS_HCTL_CDTL         0x00000040  // Card Detect Test Level: This bit
+#define MMCHS_HCTL_CDTL 0x00000040 // Card Detect Test Level: This bit
 // is enabled while the Card Detect
 // Signal Selection is set to 1 and
 // it indicates card inserted or
 // not. 0 No Card 1 Card Inserted
-#define MMCHS_HCTL_DMAS_M       0x00000018  // DMA Select Mode: One of
+#define MMCHS_HCTL_DMAS_M 0x00000018 // DMA Select Mode: One of
 // supported DMA modes can be
 // selected. The host driver shall
 // check support of DMA modes by
@@ -1455,8 +1446,8 @@
 // value is 0. 0x0 Reserved 0x1
 // Reserved 0x2 32-bit Address ADMA2
 // is selected 0x3 Reserved
-#define MMCHS_HCTL_DMAS_S       3
-#define MMCHS_HCTL_HSPE         0x00000004  // High Speed Enable: Before
+#define MMCHS_HCTL_DMAS_S 3
+#define MMCHS_HCTL_HSPE 0x00000004 // High Speed Enable: Before
 // setting this bit the Host Driver
 // shall check the High Speed
 // Support in the Capabilities
@@ -1472,7 +1463,7 @@
 // is activated in MMCHS_CON[DDR]. 0
 // Normal speed mode 1 High speed
 // mode
-#define MMCHS_HCTL_DTW          0x00000002  // Data transfer width For MMC card
+#define MMCHS_HCTL_DTW 0x00000002 // Data transfer width For MMC card
 // this bit must be set following a
 // valid SWITCH command (CMD6) with
 // the correct value and extend CSD
@@ -1501,7 +1492,7 @@
 // The following are defines for the bit fields in the MMCHS_O_SYSCTL register.
 //
 //******************************************************************************
-#define MMCHS_SYSCTL_SRD        0x04000000  // Software reset for DAT line This
+#define MMCHS_SYSCTL_SRD 0x04000000 // Software reset for DAT line This
 // bit is set to 1 for reset and
 // released to 0 when completed. DAT
 // finite state machine in both
@@ -1515,7 +1506,7 @@
 // management is reinitialized. 0
 // Reset completed 1 Software reset
 // for DAT line
-#define MMCHS_SYSCTL_SRC        0x02000000  // Software reset for CMD line This
+#define MMCHS_SYSCTL_SRC 0x02000000 // Software reset for CMD line This
 // bit is set to 1 for reset and
 // released to 0 when completed. CMD
 // finite state machine in both
@@ -1527,7 +1518,7 @@
 // management is reinitialized. 0
 // Reset completed 1 Software reset
 // for CMD line
-#define MMCHS_SYSCTL_SRA        0x01000000  // Software reset for all This bit
+#define MMCHS_SYSCTL_SRA 0x01000000 // Software reset for all This bit
 // is set to 1 for reset and
 // released to 0 when completed.
 // This reset affects the entire
@@ -1536,7 +1527,7 @@
 // capabilities registers. 0 Reset
 // completed 1 Software reset for
 // all the design
-#define MMCHS_SYSCTL_DTO_M      0x000F0000  // Data timeout counter value and
+#define MMCHS_SYSCTL_DTO_M 0x000F0000 // Data timeout counter value and
 // busy timeout. This value
 // determines the interval by which
 // DAT lines timeouts are detected.
@@ -1564,8 +1555,8 @@
 // token is present after a block
 // write. 0x0 TCF x 2^13 0x1 TCF x
 // 2^14 0xE TCF x 2^27 0xF Reserved
-#define MMCHS_SYSCTL_DTO_S      16
-#define MMCHS_SYSCTL_CLKD_M     0x0000FFC0  // Clock frequency select These
+#define MMCHS_SYSCTL_DTO_S 16
+#define MMCHS_SYSCTL_CLKD_M 0x0000FFC0 // Clock frequency select These
 // bits define the ratio between a
 // reference clock frequency (system
 // dependant) and the output clock
@@ -1575,8 +1566,8 @@
 // 0x001 Clock Ref bypass 0x002
 // Clock Ref / 2 0x003 Clock Ref / 3
 // 0x3FF Clock Ref / 1023
-#define MMCHS_SYSCTL_CLKD_S     6
-#define MMCHS_SYSCTL_CEN        0x00000004  // Clock enable This bit controls
+#define MMCHS_SYSCTL_CLKD_S 6
+#define MMCHS_SYSCTL_CEN 0x00000004 // Clock enable This bit controls
 // if the clock is provided to the
 // card or not. 0 The clock is not
 // provided to the card . Clock
@@ -1588,8 +1579,8 @@
 // driver shall wait to set this bit
 // to 1 until the Internal clock is
 // stable (MMCHS_SYSCTL[ICS]).
-#define MMCHS_SYSCTL_ICS        0x00000002
-#define MMCHS_SYSCTL_ICE        0x00000001  // Internal clock enable This
+#define MMCHS_SYSCTL_ICS 0x00000002
+#define MMCHS_SYSCTL_ICE 0x00000001 // Internal clock enable This
 // register controls the internal
 // clock activity. In very low power
 // state the internal clock is
@@ -1610,48 +1601,48 @@
 // The following are defines for the bit fields in the MMCHS_O_STAT register.
 //
 //******************************************************************************
-#define MMCHS_STAT_BADA         0x20000000
-#define MMCHS_STAT_CERR         0x10000000
-#define MMCHS_STAT_ADMAE        0x02000000
-#define MMCHS_STAT_ACE          0x01000000
-#define MMCHS_STAT_DEB          0x00400000
-#define MMCHS_STAT_DCRC         0x00200000
-#define MMCHS_STAT_DTO          0x00100000
-#define MMCHS_STAT_CIE          0x00080000
-#define MMCHS_STAT_CEB          0x00040000
-#define MMCHS_STAT_CCRC         0x00020000
-#define MMCHS_STAT_CTO          0x00010000
-#define MMCHS_STAT_ERRI         0x00008000
-#define MMCHS_STAT_BSR          0x00000400
-#define MMCHS_STAT_OBI          0x00000200
-#define MMCHS_STAT_CIRQ         0x00000100
-#define MMCHS_STAT_CREM         0x00000080
-#define MMCHS_STAT_CINS         0x00000040
-#define MMCHS_STAT_BRR          0x00000020
-#define MMCHS_STAT_BWR          0x00000010
-#define MMCHS_STAT_DMA          0x00000008
-#define MMCHS_STAT_BGE          0x00000004
-#define MMCHS_STAT_TC           0x00000002
-#define MMCHS_STAT_CC           0x00000001
+#define MMCHS_STAT_BADA 0x20000000
+#define MMCHS_STAT_CERR 0x10000000
+#define MMCHS_STAT_ADMAE 0x02000000
+#define MMCHS_STAT_ACE 0x01000000
+#define MMCHS_STAT_DEB 0x00400000
+#define MMCHS_STAT_DCRC 0x00200000
+#define MMCHS_STAT_DTO 0x00100000
+#define MMCHS_STAT_CIE 0x00080000
+#define MMCHS_STAT_CEB 0x00040000
+#define MMCHS_STAT_CCRC 0x00020000
+#define MMCHS_STAT_CTO 0x00010000
+#define MMCHS_STAT_ERRI 0x00008000
+#define MMCHS_STAT_BSR 0x00000400
+#define MMCHS_STAT_OBI 0x00000200
+#define MMCHS_STAT_CIRQ 0x00000100
+#define MMCHS_STAT_CREM 0x00000080
+#define MMCHS_STAT_CINS 0x00000040
+#define MMCHS_STAT_BRR 0x00000020
+#define MMCHS_STAT_BWR 0x00000010
+#define MMCHS_STAT_DMA 0x00000008
+#define MMCHS_STAT_BGE 0x00000004
+#define MMCHS_STAT_TC 0x00000002
+#define MMCHS_STAT_CC 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_IE register.
 //
 //******************************************************************************
-#define MMCHS_IE_BADA_ENABLE    0x20000000  // Bad access to data space
+#define MMCHS_IE_BADA_ENABLE 0x20000000 // Bad access to data space
 // Interrupt Enable 0 Masked 1
 // Enabled
-#define MMCHS_IE_CERR_ENABLE    0x10000000  // Card error interrupt Enable 0
+#define MMCHS_IE_CERR_ENABLE 0x10000000 // Card error interrupt Enable 0
 // Masked 1 Enabled
-#define MMCHS_IE_ADMAE_ENABLE   0x02000000  // ADMA error Interrupt Enable 0
+#define MMCHS_IE_ADMAE_ENABLE 0x02000000 // ADMA error Interrupt Enable 0
 // Masked 1 Enabled
-#define MMCHS_IE_ACE_ENABLE     0x01000000  // Auto CMD12 error Interrupt
+#define MMCHS_IE_ACE_ENABLE 0x01000000 // Auto CMD12 error Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_DEB_ENABLE     0x00400000  // Data end bit error Interrupt
+#define MMCHS_IE_DEB_ENABLE 0x00400000 // Data end bit error Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_DCRC_ENABLE    0x00200000  // Data CRC error Interrupt Enable
+#define MMCHS_IE_DCRC_ENABLE 0x00200000 // Data CRC error Interrupt Enable
 // 0 Masked 1 Enabled
-#define MMCHS_IE_DTO_ENABLE     0x00100000  // Data timeout error Interrupt
+#define MMCHS_IE_DTO_ENABLE 0x00100000 // Data timeout error Interrupt
 // Enable 0 The data timeout
 // detection is deactivated. The
 // host controller provides the
@@ -1659,28 +1650,28 @@
 // sends the data or the transfer is
 // aborted. 1 The data timeout
 // detection is enabled.
-#define MMCHS_IE_CIE_ENABLE     0x00080000  // Command index error Interrupt
+#define MMCHS_IE_CIE_ENABLE 0x00080000 // Command index error Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_CEB_ENABLE     0x00040000  // Command end bit error Interrupt
+#define MMCHS_IE_CEB_ENABLE 0x00040000 // Command end bit error Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_CCRC_ENABLE    0x00020000  // Command CRC error Interrupt
+#define MMCHS_IE_CCRC_ENABLE 0x00020000 // Command CRC error Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_CTO_ENABLE     0x00010000  // Command timeout error Interrupt
+#define MMCHS_IE_CTO_ENABLE 0x00010000 // Command timeout error Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_NULL           0x00008000  // Fixed to 0 The host driver shall
+#define MMCHS_IE_NULL 0x00008000 // Fixed to 0 The host driver shall
 // control error interrupts using
 // the Error Interrupt Signal Enable
 // register. Writes to this bit are
 // ignored
-#define MMCHS_IE_BSR_ENABLE     0x00000400  // Boot status interrupt Enable A
+#define MMCHS_IE_BSR_ENABLE 0x00000400 // Boot status interrupt Enable A
 // write to this register when
 // MMCHS_CON[BOOT_ACK] is set to 0x0
 // is ignored. 0 Masked 1 Enabled
-#define MMCHS_IE_OBI_ENABLE     0x00000200  // Out-of-Band interrupt Enable A
+#define MMCHS_IE_OBI_ENABLE 0x00000200 // Out-of-Band interrupt Enable A
 // write to this register when
 // MMCHS_CON[OBIE] is set to '0' is
 // ignored. 0 Masked 1 Enabled
-#define MMCHS_IE_CIRQ_ENABLE    0x00000100  // Card interrupt Enable A clear of
+#define MMCHS_IE_CIRQ_ENABLE 0x00000100 // Card interrupt Enable A clear of
 // this bit also clears the
 // corresponding status bit. During
 // 1-bit mode if the interrupt
@@ -1689,128 +1680,126 @@
 // card the status bit is reasserted
 // when this bit is set to 1. 0
 // Masked 1 Enabled
-#define MMCHS_IE_CREM_ENABLE    0x00000080  // Card removal Interrupt Enable 0
+#define MMCHS_IE_CREM_ENABLE 0x00000080 // Card removal Interrupt Enable 0
 // Masked 1 Enabled
-#define MMCHS_IE_CINS_ENABLE    0x00000040  // Card insertion Interrupt Enable
+#define MMCHS_IE_CINS_ENABLE 0x00000040 // Card insertion Interrupt Enable
 // 0 Masked 1 Enabled
-#define MMCHS_IE_BRR_ENABLE     0x00000020  // Buffer Read Ready Interrupt
+#define MMCHS_IE_BRR_ENABLE 0x00000020 // Buffer Read Ready Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_BWR_ENABLE     0x00000010  // Buffer Write Ready Interrupt
+#define MMCHS_IE_BWR_ENABLE 0x00000010 // Buffer Write Ready Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_DMA_ENABLE     0x00000008  // DMA interrupt Enable 0 Masked 1
+#define MMCHS_IE_DMA_ENABLE 0x00000008 // DMA interrupt Enable 0 Masked 1
 // Enabled
-#define MMCHS_IE_BGE_ENABLE     0x00000004  // Block Gap Event Interrupt Enable
+#define MMCHS_IE_BGE_ENABLE 0x00000004 // Block Gap Event Interrupt Enable
 // 0 Masked 1 Enabled
-#define MMCHS_IE_TC_ENABLE      0x00000002  // Transfer completed Interrupt
+#define MMCHS_IE_TC_ENABLE 0x00000002 // Transfer completed Interrupt
 // Enable 0 Masked 1 Enabled
-#define MMCHS_IE_CC_ENABLE      0x00000001  // Command completed Interrupt
+#define MMCHS_IE_CC_ENABLE 0x00000001 // Command completed Interrupt
 // Enable 0 Masked 1 Enabled
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_ISE register.
 //
 //******************************************************************************
-#define MMCHS_ISE_BADA_SIGEN    0x20000000  // Bad access to data space signal
+#define MMCHS_ISE_BADA_SIGEN 0x20000000 // Bad access to data space signal
 // status Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CERR_SIGEN    0x10000000  // Card error interrupt signal
+#define MMCHS_ISE_CERR_SIGEN 0x10000000 // Card error interrupt signal
 // status Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_ADMAE_SIGEN   0x02000000  // ADMA error signal status Enable
+#define MMCHS_ISE_ADMAE_SIGEN 0x02000000 // ADMA error signal status Enable
 // 0 Masked 1 Enabled
-#define MMCHS_ISE_ACE_SIGEN     0x01000000  // Auto CMD12 error signal status
+#define MMCHS_ISE_ACE_SIGEN 0x01000000 // Auto CMD12 error signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_DEB_SIGEN     0x00400000  // Data end bit error signal status
+#define MMCHS_ISE_DEB_SIGEN 0x00400000 // Data end bit error signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_DCRC_SIGEN    0x00200000  // Data CRC error signal status
+#define MMCHS_ISE_DCRC_SIGEN 0x00200000 // Data CRC error signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_DTO_SIGEN     0x00100000  // Data timeout error signal status
+#define MMCHS_ISE_DTO_SIGEN 0x00100000 // Data timeout error signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CIE_SIGEN     0x00080000  // Command index error signal
+#define MMCHS_ISE_CIE_SIGEN 0x00080000 // Command index error signal
 // status Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CEB_SIGEN     0x00040000  // Command end bit error signal
+#define MMCHS_ISE_CEB_SIGEN 0x00040000 // Command end bit error signal
 // status Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CCRC_SIGEN    0x00020000  // Command CRC error signal status
+#define MMCHS_ISE_CCRC_SIGEN 0x00020000 // Command CRC error signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CTO_SIGEN     0x00010000  // Command timeout error signal
+#define MMCHS_ISE_CTO_SIGEN 0x00010000 // Command timeout error signal
 // status Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_NULL          0x00008000  // Fixed to 0 The host driver shall
+#define MMCHS_ISE_NULL 0x00008000 // Fixed to 0 The host driver shall
 // control error interrupts using
 // the Error Interrupt Signal Enable
 // register. Writes to this bit are
 // ignored
-#define MMCHS_ISE_BSR_SIGEN     0x00000400  // Boot status signal status
+#define MMCHS_ISE_BSR_SIGEN 0x00000400 // Boot status signal status
 // EnableA write to this register
 // when MMCHS_CON[BOOT_ACK] is set
 // to 0x0 is ignored. 0 Masked 1
 // Enabled
-#define MMCHS_ISE_OBI_SIGEN     0x00000200  // Out-Of-Band Interrupt signal
+#define MMCHS_ISE_OBI_SIGEN 0x00000200 // Out-Of-Band Interrupt signal
 // status Enable A write to this
 // register when MMCHS_CON[OBIE] is
 // set to '0' is ignored. 0 Masked 1
 // Enabled
-#define MMCHS_ISE_CIRQ_SIGEN    0x00000100  // Card interrupt signal status
+#define MMCHS_ISE_CIRQ_SIGEN 0x00000100 // Card interrupt signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CREM_SIGEN    0x00000080  // Card removal signal status
+#define MMCHS_ISE_CREM_SIGEN 0x00000080 // Card removal signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CINS_SIGEN    0x00000040  // Card insertion signal status
+#define MMCHS_ISE_CINS_SIGEN 0x00000040 // Card insertion signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_BRR_SIGEN     0x00000020  // Buffer Read Ready signal status
+#define MMCHS_ISE_BRR_SIGEN 0x00000020 // Buffer Read Ready signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_BWR_SIGEN     0x00000010  // Buffer Write Ready signal status
+#define MMCHS_ISE_BWR_SIGEN 0x00000010 // Buffer Write Ready signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_DMA_SIGEN     0x00000008  // DMA interrupt Signal status
+#define MMCHS_ISE_DMA_SIGEN 0x00000008 // DMA interrupt Signal status
 // enable 0 Masked 1 Enabled
-#define MMCHS_ISE_BGE_SIGEN     0x00000004  // Black Gap Event signal status
+#define MMCHS_ISE_BGE_SIGEN 0x00000004 // Black Gap Event signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_TC_SIGEN      0x00000002  // Transfer completed signal status
+#define MMCHS_ISE_TC_SIGEN 0x00000002 // Transfer completed signal status
 // Enable 0 Masked 1 Enabled
-#define MMCHS_ISE_CC_SIGEN      0x00000001  // Command completed signal status
+#define MMCHS_ISE_CC_SIGEN 0x00000001 // Command completed signal status
 // Enable 0 Masked 1 Enabled
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_AC12 register.
 //
 //******************************************************************************
-#define MMCHS_AC12_CNI          0x00000080
-#define MMCHS_AC12_ACIE         0x00000010
-#define MMCHS_AC12_ACEB         0x00000008
-#define MMCHS_AC12_ACCE         0x00000004
-#define MMCHS_AC12_ACTO         0x00000002
-#define MMCHS_AC12_ACNE         0x00000001
+#define MMCHS_AC12_CNI 0x00000080
+#define MMCHS_AC12_ACIE 0x00000010
+#define MMCHS_AC12_ACEB 0x00000008
+#define MMCHS_AC12_ACCE 0x00000004
+#define MMCHS_AC12_ACTO 0x00000002
+#define MMCHS_AC12_ACNE 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_CAPA register.
 //
 //******************************************************************************
-#define MMCHS_CAPA_BIT64        0x10000000
-#define MMCHS_CAPA_VS18         0x04000000
-#define MMCHS_CAPA_VS30         0x02000000
-#define MMCHS_CAPA_VS33         0x01000000
-#define MMCHS_CAPA_SRS          0x00800000
-#define MMCHS_CAPA_DS           0x00400000
-#define MMCHS_CAPA_HSS          0x00200000
-#define MMCHS_CAPA_AD2S         0x00080000
-#define MMCHS_CAPA_MBL_M        0x00030000
-#define MMCHS_CAPA_MBL_S        16
-#define MMCHS_CAPA_BCF_M        0x00003F00
-#define MMCHS_CAPA_BCF_S        8
-#define MMCHS_CAPA_TCU          0x00000080
-#define MMCHS_CAPA_TCF_M        0x0000003F
-#define MMCHS_CAPA_TCF_S        0
+#define MMCHS_CAPA_BIT64 0x10000000
+#define MMCHS_CAPA_VS18 0x04000000
+#define MMCHS_CAPA_VS30 0x02000000
+#define MMCHS_CAPA_VS33 0x01000000
+#define MMCHS_CAPA_SRS 0x00800000
+#define MMCHS_CAPA_DS 0x00400000
+#define MMCHS_CAPA_HSS 0x00200000
+#define MMCHS_CAPA_AD2S 0x00080000
+#define MMCHS_CAPA_MBL_M 0x00030000
+#define MMCHS_CAPA_MBL_S 16
+#define MMCHS_CAPA_BCF_M 0x00003F00
+#define MMCHS_CAPA_BCF_S 8
+#define MMCHS_CAPA_TCU 0x00000080
+#define MMCHS_CAPA_TCF_M 0x0000003F
+#define MMCHS_CAPA_TCF_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MMCHS_O_CUR_CAPA register.
+// The following are defines for the bit fields in the MMCHS_O_CUR_CAPA
+// register.
 //
 //******************************************************************************
-#define MMCHS_CUR_CAPA_CUR_1V8_M \
-                                0x00FF0000
+#define MMCHS_CUR_CAPA_CUR_1V8_M 0x00FF0000
 
 #define MMCHS_CUR_CAPA_CUR_1V8_S 16
-#define MMCHS_CUR_CAPA_CUR_3V0_M \
-                                0x0000FF00
+#define MMCHS_CUR_CAPA_CUR_3V0_M 0x0000FF00
 
 #define MMCHS_CUR_CAPA_CUR_3V0_S 8
-#define MMCHS_CUR_CAPA_CUR_3V3_M \
-                                0x000000FF
+#define MMCHS_CUR_CAPA_CUR_3V3_M 0x000000FF
 
 #define MMCHS_CUR_CAPA_CUR_3V3_S 0
 //******************************************************************************
@@ -1818,29 +1807,29 @@
 // The following are defines for the bit fields in the MMCHS_O_FE register.
 //
 //******************************************************************************
-#define MMCHS_FE_FE_BADA        0x20000000
-#define MMCHS_FE_FE_CERR        0x10000000
-#define MMCHS_FE_FE_ADMAE       0x02000000
-#define MMCHS_FE_FE_ACE         0x01000000
-#define MMCHS_FE_FE_DEB         0x00400000
-#define MMCHS_FE_FE_DCRC        0x00200000
-#define MMCHS_FE_FE_DTO         0x00100000
-#define MMCHS_FE_FE_CIE         0x00080000
-#define MMCHS_FE_FE_CEB         0x00040000
-#define MMCHS_FE_FE_CCRC        0x00020000
-#define MMCHS_FE_FE_CTO         0x00010000
-#define MMCHS_FE_FE_CNI         0x00000080
-#define MMCHS_FE_FE_ACIE        0x00000010
-#define MMCHS_FE_FE_ACEB        0x00000008
-#define MMCHS_FE_FE_ACCE        0x00000004
-#define MMCHS_FE_FE_ACTO        0x00000002
-#define MMCHS_FE_FE_ACNE        0x00000001
+#define MMCHS_FE_FE_BADA 0x20000000
+#define MMCHS_FE_FE_CERR 0x10000000
+#define MMCHS_FE_FE_ADMAE 0x02000000
+#define MMCHS_FE_FE_ACE 0x01000000
+#define MMCHS_FE_FE_DEB 0x00400000
+#define MMCHS_FE_FE_DCRC 0x00200000
+#define MMCHS_FE_FE_DTO 0x00100000
+#define MMCHS_FE_FE_CIE 0x00080000
+#define MMCHS_FE_FE_CEB 0x00040000
+#define MMCHS_FE_FE_CCRC 0x00020000
+#define MMCHS_FE_FE_CTO 0x00010000
+#define MMCHS_FE_FE_CNI 0x00000080
+#define MMCHS_FE_FE_ACIE 0x00000010
+#define MMCHS_FE_FE_ACEB 0x00000008
+#define MMCHS_FE_FE_ACCE 0x00000004
+#define MMCHS_FE_FE_ACTO 0x00000002
+#define MMCHS_FE_FE_ACNE 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_ADMAES register.
 //
 //******************************************************************************
-#define MMCHS_ADMAES_LME        0x00000004  // ADMA Length Mismatch Error: (1)
+#define MMCHS_ADMAES_LME 0x00000004 // ADMA Length Mismatch Error: (1)
 // While Block Count Enable being
 // set the total data length
 // specified by the Descriptor table
@@ -1849,7 +1838,7 @@
 // Length. (2) Total data length can
 // not be divided by the block
 // length. 0 No Error 1 Error
-#define MMCHS_ADMAES_AES_M      0x00000003  // ADMA Error State his field
+#define MMCHS_ADMAES_AES_M 0x00000003 // ADMA Error State his field
 // indicates the state of ADMA when
 // error is occurred during ADMA
 // data transfer. "This field never
@@ -1862,14 +1851,13 @@
 // state(Not used) 0x3 ST_TFR
 // (Transfer Data)Points the next of
 // the error descriptor
-#define MMCHS_ADMAES_AES_S      0
+#define MMCHS_ADMAES_AES_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MMCHS_O_ADMASAL register.
 //
 //******************************************************************************
-#define MMCHS_ADMASAL_ADMA_A32B_M \
-                                0xFFFFFFFF  // ADMA System address 32 bits.This
+#define MMCHS_ADMASAL_ADMA_A32B_M 0xFFFFFFFF // ADMA System address 32 bits.This
 // register holds byte address of
 // executing command of the
 // Descriptor table. 32-bit Address
@@ -1898,14 +1886,14 @@
 // The following are defines for the bit fields in the MMCHS_O_REV register.
 //
 //******************************************************************************
-#define MMCHS_REV_VREV_M        0xFF000000  // Vendor Version Number: IP
+#define MMCHS_REV_VREV_M 0xFF000000 // Vendor Version Number: IP
 // revision [7:4] Major revision
 // [3:0] Minor revision Examples:
 // 0x10 for 1.0 0x21 for 2.1
-#define MMCHS_REV_VREV_S        24
-#define MMCHS_REV_SREV_M        0x00FF0000
-#define MMCHS_REV_SREV_S        16
-#define MMCHS_REV_SIS           0x00000001  // Slot Interrupt Status This
+#define MMCHS_REV_VREV_S 24
+#define MMCHS_REV_SREV_M 0x00FF0000
+#define MMCHS_REV_SREV_S 16
+#define MMCHS_REV_SIS 0x00000001 // Slot Interrupt Status This
 // status bit indicates the inverted
 // state of interrupt signal for the
 // module. By a power on reset or by
@@ -1913,7 +1901,5 @@
 // (MMCHS_HCTL[SRA]) the interrupt
 // signal shall be de-asserted and
 // this status shall read 0.
-
-
 
 #endif // __HW_MMCHS_H__

@@ -24,10 +24,10 @@
  * THE SOFTWARE.
  */
 
-#include "py/mphal.h"
-#include "lib/oofatfs/ff.h"
 #include "lib/oofatfs/diskio.h"
+#include "lib/oofatfs/ff.h"
 #include "mboot.h"
+#include "py/mphal.h"
 #include "vfs.h"
 
 #if MBOOT_FSLOAD && MBOOT_VFS_FAT
@@ -39,78 +39,79 @@
 #endif
 
 DRESULT disk_read(void *pdrv, BYTE *buf, DWORD sector, UINT count) {
-    vfs_fat_context_t *ctx = pdrv;
+  vfs_fat_context_t *ctx = pdrv;
 
-    if (0 <= sector && sector < ctx->bdev_byte_len / 512) {
-        hw_read(ctx->bdev_base_addr + sector * SECSIZE, count * SECSIZE, buf);
-        return RES_OK;
-    }
+  if (0 <= sector && sector < ctx->bdev_byte_len / 512) {
+    hw_read(ctx->bdev_base_addr + sector * SECSIZE, count * SECSIZE, buf);
+    return RES_OK;
+  }
 
-    return RES_PARERR;
+  return RES_PARERR;
 }
 
 DRESULT disk_ioctl(void *pdrv, BYTE cmd, void *buf) {
-    vfs_fat_context_t *ctx = pdrv;
+  vfs_fat_context_t *ctx = pdrv;
 
-    switch (cmd) {
-    case CTRL_SYNC:
-        return RES_OK;
+  switch (cmd) {
+  case CTRL_SYNC:
+    return RES_OK;
 
-    case GET_SECTOR_COUNT:
-        *((DWORD*)buf) = ctx->bdev_byte_len / SECSIZE;
-        return RES_OK;
+  case GET_SECTOR_COUNT:
+    *((DWORD *)buf) = ctx->bdev_byte_len / SECSIZE;
+    return RES_OK;
 
-    case GET_SECTOR_SIZE:
-        *((WORD*)buf) = SECSIZE;
-        return RES_OK;
+  case GET_SECTOR_SIZE:
+    *((WORD *)buf) = SECSIZE;
+    return RES_OK;
 
-    case GET_BLOCK_SIZE:
-        *((DWORD*)buf) = 1; // erase block size in units of sector size
-        return RES_OK;
+  case GET_BLOCK_SIZE:
+    *((DWORD *)buf) = 1; // erase block size in units of sector size
+    return RES_OK;
 
-    case IOCTL_INIT:
-    case IOCTL_STATUS:
-        *((DSTATUS*)buf) = STA_PROTECT;
-        return RES_OK;
+  case IOCTL_INIT:
+  case IOCTL_STATUS:
+    *((DSTATUS *)buf) = STA_PROTECT;
+    return RES_OK;
 
-    default:
-        return RES_PARERR;
-    }
+  default:
+    return RES_PARERR;
+  }
 }
 
-int vfs_fat_mount(vfs_fat_context_t *ctx, uint32_t base_addr, uint32_t byte_len) {
-    ctx->bdev_base_addr = base_addr;
-    ctx->bdev_byte_len = byte_len;
-    ctx->fatfs.drv = ctx;
-    FRESULT res = f_mount(&ctx->fatfs);
-    if (res != FR_OK) {
-        return -MBOOT_ERRNO_VFS_FAT_MOUNT_FAILED;
-    }
-    return 0;
+int vfs_fat_mount(vfs_fat_context_t *ctx, uint32_t base_addr,
+                  uint32_t byte_len) {
+  ctx->bdev_base_addr = base_addr;
+  ctx->bdev_byte_len = byte_len;
+  ctx->fatfs.drv = ctx;
+  FRESULT res = f_mount(&ctx->fatfs);
+  if (res != FR_OK) {
+    return -MBOOT_ERRNO_VFS_FAT_MOUNT_FAILED;
+  }
+  return 0;
 }
 
 static int vfs_fat_stream_open(void *stream_in, const char *fname) {
-    vfs_fat_context_t *stream = stream_in;
-    FRESULT res = f_open(&stream->fatfs, &stream->fp, fname, FA_READ);
-    if (res != FR_OK) {
-        return -MBOOT_ERRNO_VFS_FAT_OPEN_FAILED;
-    }
-    return 0;
+  vfs_fat_context_t *stream = stream_in;
+  FRESULT res = f_open(&stream->fatfs, &stream->fp, fname, FA_READ);
+  if (res != FR_OK) {
+    return -MBOOT_ERRNO_VFS_FAT_OPEN_FAILED;
+  }
+  return 0;
 }
 
 static void vfs_fat_stream_close(void *stream_in) {
-    vfs_fat_context_t *stream = stream_in;
-    f_close(&stream->fp);
+  vfs_fat_context_t *stream = stream_in;
+  f_close(&stream->fp);
 }
 
 static int vfs_fat_stream_read(void *stream_in, uint8_t *buf, size_t len) {
-    vfs_fat_context_t *stream = stream_in;
-    UINT n;
-    FRESULT res = f_read(&stream->fp, buf, len, &n);
-    if (res != FR_OK) {
-        return -1;
-    }
-    return n;
+  vfs_fat_context_t *stream = stream_in;
+  UINT n;
+  FRESULT res = f_read(&stream->fp, buf, len, &n);
+  if (res != FR_OK) {
+    return -1;
+  }
+  return n;
 }
 
 const stream_methods_t vfs_fat_stream_methods = {

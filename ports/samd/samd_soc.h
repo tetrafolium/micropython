@@ -26,8 +26,8 @@
 #ifndef MICROPY_INCLUDED_SAMD_SAMD_SOC_H
 #define MICROPY_INCLUDED_SAMD_SAMD_SOC_H
 
-#include <stdint.h>
 #include "sam.h"
+#include <stdint.h>
 
 #if defined(MCU_SAMD21)
 

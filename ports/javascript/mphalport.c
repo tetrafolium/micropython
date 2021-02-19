@@ -24,39 +24,31 @@
  * THE SOFTWARE.
  */
 
-#include "library.h"
 #include "mphalport.h"
+#include "library.h"
 
 void mp_hal_stdout_tx_strn(const char *str, size_t len) {
-    mp_js_write(str, len);
+  mp_js_write(str, len);
 }
 
 void mp_hal_delay_ms(mp_uint_t ms) {
-    uint32_t start = mp_hal_ticks_ms();
-    while (mp_hal_ticks_ms() - start < ms) {
-    }
+  uint32_t start = mp_hal_ticks_ms();
+  while (mp_hal_ticks_ms() - start < ms) {
+  }
 }
 
 void mp_hal_delay_us(mp_uint_t us) {
-    uint32_t start = mp_hal_ticks_us();
-    while (mp_hal_ticks_us() - start < us) {
-    }
+  uint32_t start = mp_hal_ticks_us();
+  while (mp_hal_ticks_us() - start < us) {
+  }
 }
 
-mp_uint_t mp_hal_ticks_us(void) {
-    return mp_js_ticks_ms() * 1000;
-}
+mp_uint_t mp_hal_ticks_us(void) { return mp_js_ticks_ms() * 1000; }
 
-mp_uint_t mp_hal_ticks_ms(void) {
-    return mp_js_ticks_ms();
-}
+mp_uint_t mp_hal_ticks_ms(void) { return mp_js_ticks_ms(); }
 
-mp_uint_t mp_hal_ticks_cpu(void) {
-    return 0;
-}
+mp_uint_t mp_hal_ticks_cpu(void) { return 0; }
 
 extern int mp_interrupt_char;
 
-int mp_hal_get_interrupt_char(void) {
-    return mp_interrupt_char;
-}
+int mp_hal_get_interrupt_char(void) { return mp_interrupt_char; }

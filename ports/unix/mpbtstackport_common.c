@@ -24,9 +24,9 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
 #include "py/mperrno.h"
 #include "py/mphal.h"
+#include "py/runtime.h"
 
 #if MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_BTSTACK
 
@@ -40,56 +40,55 @@
 
 #include "mpbtstackport.h"
 
-// Called by the UART polling thread in mpbthciport.c, or by the USB polling thread in mpbtstackport_usb.c.
+// Called by the UART polling thread in mpbthciport.c, or by the USB polling
+// thread in mpbtstackport_usb.c.
 bool mp_bluetooth_hci_poll(void) {
-    if (mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_STARTING || mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_ACTIVE || mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_HALTING) {
-        // Pretend like we're running in IRQ context (i.e. other things can't be running at the same time).
-        mp_uint_t atomic_state = MICROPY_BEGIN_ATOMIC_SECTION();
+  if (mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_STARTING ||
+      mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_ACTIVE ||
+      mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_HALTING) {
+    // Pretend like we're running in IRQ context (i.e. other things can't be
+    // running at the same time).
+    mp_uint_t atomic_state = MICROPY_BEGIN_ATOMIC_SECTION();
 #if MICROPY_BLUETOOTH_BTSTACK_H4
-        mp_bluetooth_hci_poll_h4();
+    mp_bluetooth_hci_poll_h4();
 #endif
-        btstack_run_loop_embedded_execute_once();
-        MICROPY_END_ATOMIC_SECTION(atomic_state);
+    btstack_run_loop_embedded_execute_once();
+    MICROPY_END_ATOMIC_SECTION(atomic_state);
 
-        return true;
-    }
+    return true;
+  }
 
-    return false;
+  return false;
 }
 
 // The IRQ functionality in btstack_run_loop_embedded.c is not used, so the
 // following three functions are empty.
 
-void hal_cpu_disable_irqs(void) {
-}
+void hal_cpu_disable_irqs(void) {}
 
-void hal_cpu_enable_irqs(void) {
-}
+void hal_cpu_enable_irqs(void) {}
 
-void hal_cpu_enable_irqs_and_sleep(void) {
-}
+void hal_cpu_enable_irqs_and_sleep(void) {}
 
-uint32_t hal_time_ms(void) {
-    return mp_hal_ticks_ms();
-}
+uint32_t hal_time_ms(void) { return mp_hal_ticks_ms(); }
 
 void mp_bluetooth_btstack_port_init(void) {
-    static bool run_loop_init = false;
-    if (!run_loop_init) {
-        run_loop_init = true;
-        btstack_run_loop_init(btstack_run_loop_embedded_get_instance());
-    } else {
-        btstack_run_loop_embedded_get_instance()->init();
-    }
+  static bool run_loop_init = false;
+  if (!run_loop_init) {
+    run_loop_init = true;
+    btstack_run_loop_init(btstack_run_loop_embedded_get_instance());
+  } else {
+    btstack_run_loop_embedded_get_instance()->init();
+  }
 
-    // hci_dump_open(NULL, HCI_DUMP_STDOUT);
+  // hci_dump_open(NULL, HCI_DUMP_STDOUT);
 
 #if MICROPY_BLUETOOTH_BTSTACK_H4
-    mp_bluetooth_btstack_port_init_h4();
+  mp_bluetooth_btstack_port_init_h4();
 #endif
 
 #if MICROPY_BLUETOOTH_BTSTACK_USB
-    mp_bluetooth_btstack_port_init_usb();
+  mp_bluetooth_btstack_port_init_usb();
 #endif
 }
 

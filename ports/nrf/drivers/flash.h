@@ -42,19 +42,21 @@
 #error Unknown chip
 #endif
 
-#define FLASH_IS_PAGE_ALIGNED(addr) (((uint32_t)(addr) & (FLASH_PAGESIZE - 1)) == 0)
+#define FLASH_IS_PAGE_ALIGNED(addr)                                            \
+  (((uint32_t)(addr) & (FLASH_PAGESIZE - 1)) == 0)
 
 #if BLUETOOTH_SD
 
 typedef enum {
-    FLASH_STATE_BUSY,
-    FLASH_STATE_SUCCESS,
-    FLASH_STATE_ERROR,
+  FLASH_STATE_BUSY,
+  FLASH_STATE_SUCCESS,
+  FLASH_STATE_ERROR,
 } flash_state_t;
 
 void flash_page_erase(uint32_t address);
 void flash_write_byte(uint32_t address, uint8_t value);
-void flash_write_bytes(uint32_t address, const uint8_t *src, uint32_t num_bytes);
+void flash_write_bytes(uint32_t address, const uint8_t *src,
+                       uint32_t num_bytes);
 void flash_operation_finished(flash_state_t result);
 
 #else

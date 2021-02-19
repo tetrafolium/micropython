@@ -37,40 +37,46 @@
 //*****************************************************************************
 #include <stdbool.h>
 
+#include "hw_ints.h"
+#include "hw_memmap.h"
+#include "hw_types.h"
+#include "lib/oofatfs/diskio.h"
+#include "lib/oofatfs/ff.h"
+#include "pin.h"
+#include "prcm.h"
 #include "py/mpconfig.h"
 #include "py/mphal.h"
-#include "lib/oofatfs/ff.h"
-#include "lib/oofatfs/diskio.h"
-#include "hw_types.h"
-#include "hw_memmap.h"
-#include "hw_ints.h"
 #include "rom_map.h"
 #include "sd_diskio.h"
 #include "sdhost.h"
-#include "pin.h"
-#include "prcm.h"
 #include "stdcmd.h"
 #include "utils.h"
 
 //*****************************************************************************
 // Macros
 //*****************************************************************************
-#define DISKIO_RETRY_TIMEOUT        0xFFFFFFFF
+#define DISKIO_RETRY_TIMEOUT 0xFFFFFFFF
 
-#define CARD_TYPE_UNKNOWN           0
-#define CARD_TYPE_MMC               1
-#define CARD_TYPE_SDCARD            2
+#define CARD_TYPE_UNKNOWN 0
+#define CARD_TYPE_MMC 1
+#define CARD_TYPE_SDCARD 2
 
-#define CARD_CAP_CLASS_SDSC         0
-#define CARD_CAP_CLASS_SDHC         1
+#define CARD_CAP_CLASS_SDSC 0
+#define CARD_CAP_CLASS_SDHC 1
 
-#define CARD_VERSION_1              0
-#define CARD_VERSION_2              1
+#define CARD_VERSION_1 0
+#define CARD_VERSION_2 1
 
 //*****************************************************************************
 // Disk Info for attached disk
 //*****************************************************************************
-DiskInfo_t sd_disk_info =  {CARD_TYPE_UNKNOWN, CARD_VERSION_1, CARD_CAP_CLASS_SDSC, 0, 0, STA_NOINIT, 0};
+DiskInfo_t sd_disk_info = {CARD_TYPE_UNKNOWN,
+                           CARD_VERSION_1,
+                           CARD_CAP_CLASS_SDSC,
+                           0,
+                           0,
+                           STA_NOINIT,
+                           0};
 
 //*****************************************************************************
 //
@@ -85,30 +91,29 @@ DiskInfo_t sd_disk_info =  {CARD_TYPE_UNKNOWN, CARD_VERSION_1, CARD_CAP_CLASS_SD
 //! \return Returns 0 on success, 1 otherwise
 //
 //*****************************************************************************
-static unsigned int CardSendCmd (unsigned int ulCmd, unsigned int ulArg) {
-    unsigned long ulStatus;
+static unsigned int CardSendCmd(unsigned int ulCmd, unsigned int ulArg) {
+  unsigned long ulStatus;
 
-    // Clear the interrupt status
-    MAP_SDHostIntClear(SDHOST_BASE,0xFFFFFFFF);
+  // Clear the interrupt status
+  MAP_SDHostIntClear(SDHOST_BASE, 0xFFFFFFFF);
 
-    // Send command
-    MAP_SDHostCmdSend(SDHOST_BASE,ulCmd,ulArg);
+  // Send command
+  MAP_SDHostCmdSend(SDHOST_BASE, ulCmd, ulArg);
 
-    // Wait for command complete or error
-    do {
-        ulStatus = MAP_SDHostIntStatus(SDHOST_BASE);
-        ulStatus = (ulStatus & (SDHOST_INT_CC | SDHOST_INT_ERRI));
-    } while (!ulStatus);
+  // Wait for command complete or error
+  do {
+    ulStatus = MAP_SDHostIntStatus(SDHOST_BASE);
+    ulStatus = (ulStatus & (SDHOST_INT_CC | SDHOST_INT_ERRI));
+  } while (!ulStatus);
 
-    // Check error status
-    if (ulStatus & SDHOST_INT_ERRI) {
-        // Reset the command line
-        MAP_SDHostCmdReset(SDHOST_BASE);
-        return 1;
-    }
-    else {
-        return 0;
-    }
+  // Check error status
+  if (ulStatus & SDHOST_INT_ERRI) {
+    // Reset the command line
+    MAP_SDHostCmdReset(SDHOST_BASE);
+    return 1;
+  } else {
+    return 0;
+  }
 }
 
 //*****************************************************************************
@@ -123,42 +128,41 @@ static unsigned int CardSendCmd (unsigned int ulCmd, unsigned int ulArg) {
 //
 //*****************************************************************************
 static unsigned int CardCapacityGet(DiskInfo_t *psDiskInfo) {
-    unsigned long ulRet;
-    unsigned long ulResp[4];
-    unsigned long ulBlockSize;
-    unsigned long ulBlockCount;
-    unsigned long ulCSizeMult;
-    unsigned long ulCSize;
+  unsigned long ulRet;
+  unsigned long ulResp[4];
+  unsigned long ulBlockSize;
+  unsigned long ulBlockCount;
+  unsigned long ulCSizeMult;
+  unsigned long ulCSize;
 
-    // Read the CSD register
-    ulRet = CardSendCmd(CMD_SEND_CSD, (psDiskInfo->usRCA << 16));
+  // Read the CSD register
+  ulRet = CardSendCmd(CMD_SEND_CSD, (psDiskInfo->usRCA << 16));
 
-    if(ulRet == 0) {
-        // Read the response
-        MAP_SDHostRespGet(SDHOST_BASE,ulResp);
+  if (ulRet == 0) {
+    // Read the response
+    MAP_SDHostRespGet(SDHOST_BASE, ulResp);
 
-        // 136 bit CSD register is read into an array of 4 words.
-        // ulResp[0] = CSD[31:0]
-        // ulResp[1] = CSD[63:32]
-        // ulResp[2] = CSD[95:64]
-        // ulResp[3] = CSD[127:96]
-        if(ulResp[3] >> 30) {
-            ulBlockSize = SD_SECTOR_SIZE * 1024;
-            ulBlockCount = (ulResp[1] >> 16 | ((ulResp[2] & 0x3F) << 16)) + 1;
-        }
-        else {
-            ulBlockSize  = 1 << ((ulResp[2] >> 16) & 0xF);
-            ulCSizeMult  = ((ulResp[1] >> 15) & 0x7);
-            ulCSize      = ((ulResp[1] >> 30) | (ulResp[2] & 0x3FF) << 2);
-            ulBlockCount = (ulCSize + 1) * (1 << (ulCSizeMult + 2));
-        }
-
-        // Calculate the card capacity in bytes
-        psDiskInfo->ulBlockSize = ulBlockSize;
-        psDiskInfo->ulNofBlock  = ulBlockCount;
+    // 136 bit CSD register is read into an array of 4 words.
+    // ulResp[0] = CSD[31:0]
+    // ulResp[1] = CSD[63:32]
+    // ulResp[2] = CSD[95:64]
+    // ulResp[3] = CSD[127:96]
+    if (ulResp[3] >> 30) {
+      ulBlockSize = SD_SECTOR_SIZE * 1024;
+      ulBlockCount = (ulResp[1] >> 16 | ((ulResp[2] & 0x3F) << 16)) + 1;
+    } else {
+      ulBlockSize = 1 << ((ulResp[2] >> 16) & 0xF);
+      ulCSizeMult = ((ulResp[1] >> 15) & 0x7);
+      ulCSize = ((ulResp[1] >> 30) | (ulResp[2] & 0x3FF) << 2);
+      ulBlockCount = (ulCSize + 1) * (1 << (ulCSizeMult + 2));
     }
 
-    return ulRet;
+    // Calculate the card capacity in bytes
+    psDiskInfo->ulBlockSize = ulBlockSize;
+    psDiskInfo->ulNofBlock = ulBlockCount;
+  }
+
+  return ulRet;
 }
 
 //*****************************************************************************
@@ -173,23 +177,24 @@ static unsigned int CardCapacityGet(DiskInfo_t *psDiskInfo) {
 //! \return Returns 0 success, 1 otherwise.
 //
 //*****************************************************************************
-static unsigned int CardSelect (DiskInfo_t *sDiskInfo) {
-    unsigned long ulRCA;
-    unsigned long ulRet;
+static unsigned int CardSelect(DiskInfo_t *sDiskInfo) {
+  unsigned long ulRCA;
+  unsigned long ulRet;
 
-    ulRCA = sDiskInfo->usRCA;
+  ulRCA = sDiskInfo->usRCA;
 
-    // Send select command with card's RCA.
-    ulRet = CardSendCmd(CMD_SELECT_CARD, (ulRCA << 16));
+  // Send select command with card's RCA.
+  ulRet = CardSendCmd(CMD_SELECT_CARD, (ulRCA << 16));
 
-    if (ulRet == 0) {
-        while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC));
-    }
+  if (ulRet == 0) {
+    while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC))
+      ;
+  }
 
-    // Delay 250ms for the card to become ready
-    mp_hal_delay_ms(250);
+  // Delay 250ms for the card to become ready
+  mp_hal_delay_ms(250);
 
-    return ulRet;
+  return ulRet;
 }
 
 //*****************************************************************************
@@ -200,88 +205,87 @@ static unsigned int CardSelect (DiskInfo_t *sDiskInfo) {
 //!
 //! \return Returns 0 on succeeded.
 //*****************************************************************************
-DSTATUS sd_disk_init (void) {
-    unsigned long ulRet;
-    unsigned long ulResp[4];
+DSTATUS sd_disk_init(void) {
+  unsigned long ulRet;
+  unsigned long ulResp[4];
 
-    if (sd_disk_info.bStatus != 0) {
-        sd_disk_info.bStatus = STA_NODISK;
-        // Send std GO IDLE command
-        if (CardSendCmd(CMD_GO_IDLE_STATE, 0) == 0) {
-            // Get interface operating condition for the card
-            ulRet = CardSendCmd(CMD_SEND_IF_COND,0x000001A5);
-            MAP_SDHostRespGet(SDHOST_BASE,ulResp);
+  if (sd_disk_info.bStatus != 0) {
+    sd_disk_info.bStatus = STA_NODISK;
+    // Send std GO IDLE command
+    if (CardSendCmd(CMD_GO_IDLE_STATE, 0) == 0) {
+      // Get interface operating condition for the card
+      ulRet = CardSendCmd(CMD_SEND_IF_COND, 0x000001A5);
+      MAP_SDHostRespGet(SDHOST_BASE, ulResp);
 
-            // It's a SD ver 2.0 or higher card
-            if (ulRet == 0 && ((ulResp[0] & 0xFF) == 0xA5)) {
-                // Version 1 card do not respond to this command
-                sd_disk_info.ulVersion = CARD_VERSION_2;
-                sd_disk_info.ucCardType = CARD_TYPE_SDCARD;
+      // It's a SD ver 2.0 or higher card
+      if (ulRet == 0 && ((ulResp[0] & 0xFF) == 0xA5)) {
+        // Version 1 card do not respond to this command
+        sd_disk_info.ulVersion = CARD_VERSION_2;
+        sd_disk_info.ucCardType = CARD_TYPE_SDCARD;
 
-                // Wait for card to become ready.
-                do {
-                    // Send ACMD41
-                    CardSendCmd(CMD_APP_CMD, 0);
-                    ulRet = CardSendCmd(CMD_SD_SEND_OP_COND, 0x40E00000);
+        // Wait for card to become ready.
+        do {
+          // Send ACMD41
+          CardSendCmd(CMD_APP_CMD, 0);
+          ulRet = CardSendCmd(CMD_SD_SEND_OP_COND, 0x40E00000);
 
-                    // Response contains 32-bit OCR register
-                    MAP_SDHostRespGet(SDHOST_BASE, ulResp);
+          // Response contains 32-bit OCR register
+          MAP_SDHostRespGet(SDHOST_BASE, ulResp);
 
-                } while (((ulResp[0] >> 31) == 0));
+        } while (((ulResp[0] >> 31) == 0));
 
-                if (ulResp[0] & (1UL<<30)) {
-                    sd_disk_info.ulCapClass = CARD_CAP_CLASS_SDHC;
-                }
-                sd_disk_info.bStatus = 0;
-            }
-            //It's a MMC or SD 1.x card
-            else {
-                // Wait for card to become ready.
-                do {
-                    CardSendCmd(CMD_APP_CMD, 0);
-                    ulRet = CardSendCmd(CMD_SD_SEND_OP_COND,0x00E00000);
-                    if (ulRet == 0) {
-                        // Response contains 32-bit OCR register
-                        MAP_SDHostRespGet(SDHOST_BASE, ulResp);
-                    }
-                } while (((ulRet == 0) && (ulResp[0] >> 31) == 0));
-
-                if (ulRet == 0) {
-                    sd_disk_info.ucCardType = CARD_TYPE_SDCARD;
-                    sd_disk_info.bStatus = 0;
-                }
-                else {
-                    if (CardSendCmd(CMD_SEND_OP_COND, 0) == 0) {
-                        // MMC not supported by the controller
-                        sd_disk_info.ucCardType = CARD_TYPE_MMC;
-                    }
-                }
-            }
+        if (ulResp[0] & (1UL << 30)) {
+          sd_disk_info.ulCapClass = CARD_CAP_CLASS_SDHC;
         }
+        sd_disk_info.bStatus = 0;
+      }
+      // It's a MMC or SD 1.x card
+      else {
+        // Wait for card to become ready.
+        do {
+          CardSendCmd(CMD_APP_CMD, 0);
+          ulRet = CardSendCmd(CMD_SD_SEND_OP_COND, 0x00E00000);
+          if (ulRet == 0) {
+            // Response contains 32-bit OCR register
+            MAP_SDHostRespGet(SDHOST_BASE, ulResp);
+          }
+        } while (((ulRet == 0) && (ulResp[0] >> 31) == 0));
 
-        // Get the RCA of the attached card
-        if (sd_disk_info.bStatus == 0) {
-            ulRet = CardSendCmd(CMD_ALL_SEND_CID, 0);
-            if (ulRet == 0) {
-                CardSendCmd(CMD_SEND_REL_ADDR,0);
-                MAP_SDHostRespGet(SDHOST_BASE, ulResp);
-
-                //  Fill in the RCA
-                sd_disk_info.usRCA = (ulResp[0] >> 16);
-
-                // Get tha card capacity
-                CardCapacityGet(&sd_disk_info);
-            }
-
-            // Select the card.
-            ulRet = CardSelect(&sd_disk_info);
-            if (ulRet == 0) {
-                sd_disk_info.bStatus = 0;
-            }
+        if (ulRet == 0) {
+          sd_disk_info.ucCardType = CARD_TYPE_SDCARD;
+          sd_disk_info.bStatus = 0;
+        } else {
+          if (CardSendCmd(CMD_SEND_OP_COND, 0) == 0) {
+            // MMC not supported by the controller
+            sd_disk_info.ucCardType = CARD_TYPE_MMC;
+          }
         }
+      }
     }
 
-    return sd_disk_info.bStatus;
+    // Get the RCA of the attached card
+    if (sd_disk_info.bStatus == 0) {
+      ulRet = CardSendCmd(CMD_ALL_SEND_CID, 0);
+      if (ulRet == 0) {
+        CardSendCmd(CMD_SEND_REL_ADDR, 0);
+        MAP_SDHostRespGet(SDHOST_BASE, ulResp);
+
+        //  Fill in the RCA
+        sd_disk_info.usRCA = (ulResp[0] >> 16);
+
+        // Get tha card capacity
+        CardCapacityGet(&sd_disk_info);
+      }
+
+      // Select the card.
+      ulRet = CardSelect(&sd_disk_info);
+      if (ulRet == 0) {
+        sd_disk_info.bStatus = 0;
+      }
+    }
+  }
+
+  return sd_disk_info.bStatus;
 }
 
 //*****************************************************************************
@@ -290,14 +294,14 @@ DSTATUS sd_disk_init (void) {
 //!
 //! This function de-initializes the physical drive
 //*****************************************************************************
-void sd_disk_deinit (void) {
-    sd_disk_info.ucCardType = CARD_TYPE_UNKNOWN;
-    sd_disk_info.ulVersion = CARD_VERSION_1;
-    sd_disk_info.ulCapClass = CARD_CAP_CLASS_SDSC;
-    sd_disk_info.ulNofBlock = 0;
-    sd_disk_info.ulBlockSize = 0;
-    sd_disk_info.bStatus = STA_NOINIT;
-    sd_disk_info.usRCA = 0;
+void sd_disk_deinit(void) {
+  sd_disk_info.ucCardType = CARD_TYPE_UNKNOWN;
+  sd_disk_info.ulVersion = CARD_VERSION_1;
+  sd_disk_info.ulCapClass = CARD_CAP_CLASS_SDSC;
+  sd_disk_info.ulNofBlock = 0;
+  sd_disk_info.ulBlockSize = 0;
+  sd_disk_info.bStatus = STA_NOINIT;
+  sd_disk_info.usRCA = 0;
 }
 
 //*****************************************************************************
@@ -310,55 +314,55 @@ void sd_disk_deinit (void) {
 //! \return Returns RES_OK on success.
 //
 //*****************************************************************************
-DRESULT sd_disk_read (BYTE* pBuffer, DWORD ulSectorNumber, UINT SectorCount) {
-    DRESULT Res = RES_ERROR;
-    unsigned long ulSize;
+DRESULT sd_disk_read(BYTE *pBuffer, DWORD ulSectorNumber, UINT SectorCount) {
+  DRESULT Res = RES_ERROR;
+  unsigned long ulSize;
 
-    if (SectorCount > 0) {
-        // Return if disk not initialized
-        if (sd_disk_info.bStatus & STA_NOINIT) {
-            return RES_NOTRDY;
-        }
-
-        // SDSC uses linear address, SDHC uses block address
-        if (sd_disk_info.ulCapClass == CARD_CAP_CLASS_SDSC) {
-            ulSectorNumber = ulSectorNumber * SD_SECTOR_SIZE;
-        }
-
-        // Set the block count
-        MAP_SDHostBlockCountSet(SDHOST_BASE, SectorCount);
-
-        // Compute the number of words
-        ulSize = (SD_SECTOR_SIZE * SectorCount) / 4;
-
-        // Check if 1 block or multi block transfer
-        if (SectorCount == 1) {
-            // Send single block read command
-            if (CardSendCmd(CMD_READ_SINGLE_BLK, ulSectorNumber) == 0) {
-                // Read the block of data
-                while (ulSize--) {
-                    MAP_SDHostDataRead(SDHOST_BASE, (unsigned long *)pBuffer);
-                    pBuffer += 4;
-                }
-                Res = RES_OK;
-            }
-        }
-        else {
-            // Send multi block read command
-            if (CardSendCmd(CMD_READ_MULTI_BLK, ulSectorNumber) == 0) {
-                // Read the data
-                while (ulSize--) {
-                    MAP_SDHostDataRead(SDHOST_BASE, (unsigned long *)pBuffer);
-                    pBuffer += 4;
-                }
-                CardSendCmd(CMD_STOP_TRANS, 0);
-                while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC));
-                Res = RES_OK;
-            }
-        }
+  if (SectorCount > 0) {
+    // Return if disk not initialized
+    if (sd_disk_info.bStatus & STA_NOINIT) {
+      return RES_NOTRDY;
     }
 
-    return Res;
+    // SDSC uses linear address, SDHC uses block address
+    if (sd_disk_info.ulCapClass == CARD_CAP_CLASS_SDSC) {
+      ulSectorNumber = ulSectorNumber * SD_SECTOR_SIZE;
+    }
+
+    // Set the block count
+    MAP_SDHostBlockCountSet(SDHOST_BASE, SectorCount);
+
+    // Compute the number of words
+    ulSize = (SD_SECTOR_SIZE * SectorCount) / 4;
+
+    // Check if 1 block or multi block transfer
+    if (SectorCount == 1) {
+      // Send single block read command
+      if (CardSendCmd(CMD_READ_SINGLE_BLK, ulSectorNumber) == 0) {
+        // Read the block of data
+        while (ulSize--) {
+          MAP_SDHostDataRead(SDHOST_BASE, (unsigned long *)pBuffer);
+          pBuffer += 4;
+        }
+        Res = RES_OK;
+      }
+    } else {
+      // Send multi block read command
+      if (CardSendCmd(CMD_READ_MULTI_BLK, ulSectorNumber) == 0) {
+        // Read the data
+        while (ulSize--) {
+          MAP_SDHostDataRead(SDHOST_BASE, (unsigned long *)pBuffer);
+          pBuffer += 4;
+        }
+        CardSendCmd(CMD_STOP_TRANS, 0);
+        while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC))
+          ;
+        Res = RES_OK;
+      }
+    }
+  }
+
+  return Res;
 }
 
 //*****************************************************************************
@@ -371,63 +375,66 @@ DRESULT sd_disk_read (BYTE* pBuffer, DWORD ulSectorNumber, UINT SectorCount) {
 //! \return Returns RES_OK on success.
 //
 //*****************************************************************************
-DRESULT sd_disk_write (const BYTE* pBuffer, DWORD ulSectorNumber, UINT SectorCount) {
-    DRESULT Res = RES_ERROR;
-    unsigned long ulSize;
+DRESULT sd_disk_write(const BYTE *pBuffer, DWORD ulSectorNumber,
+                      UINT SectorCount) {
+  DRESULT Res = RES_ERROR;
+  unsigned long ulSize;
 
-    if (SectorCount > 0) {
-        // Return if disk not initialized
-        if (sd_disk_info.bStatus & STA_NOINIT) {
-            return RES_NOTRDY;
-        }
-
-        // SDSC uses linear address, SDHC uses block address
-        if (sd_disk_info.ulCapClass == CARD_CAP_CLASS_SDSC) {
-            ulSectorNumber = ulSectorNumber * SD_SECTOR_SIZE;
-        }
-
-        // Set the block count
-        MAP_SDHostBlockCountSet(SDHOST_BASE, SectorCount);
-
-        // Compute the number of words
-        ulSize = (SD_SECTOR_SIZE * SectorCount) / 4;
-
-        // Check if 1 block or multi block transfer
-        if (SectorCount == 1) {
-            // Send single block write command
-            if (CardSendCmd(CMD_WRITE_SINGLE_BLK, ulSectorNumber) == 0) {
-                // Write the data
-                while (ulSize--) {
-                    MAP_SDHostDataWrite (SDHOST_BASE, (*(unsigned long *)pBuffer));
-                    pBuffer += 4;
-                }
-                // Wait for data transfer complete
-                while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC));
-                Res = RES_OK;
-            }
-        }
-        else {
-            // Set the card write block count
-            if (sd_disk_info.ucCardType == CARD_TYPE_SDCARD) {
-                CardSendCmd(CMD_APP_CMD,sd_disk_info.usRCA << 16);
-                CardSendCmd(CMD_SET_BLK_CNT, SectorCount);
-            }
-
-            // Send multi block write command
-            if (CardSendCmd(CMD_WRITE_MULTI_BLK, ulSectorNumber) == 0) {
-                // Write the data buffer
-                while (ulSize--) {
-                    MAP_SDHostDataWrite(SDHOST_BASE, (*(unsigned long *)pBuffer));
-                    pBuffer += 4;
-                }
-                // Wait for transfer complete
-                while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC));
-                CardSendCmd(CMD_STOP_TRANS, 0);
-                while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC));
-                Res = RES_OK;
-            }
-        }
+  if (SectorCount > 0) {
+    // Return if disk not initialized
+    if (sd_disk_info.bStatus & STA_NOINIT) {
+      return RES_NOTRDY;
     }
 
-    return Res;
+    // SDSC uses linear address, SDHC uses block address
+    if (sd_disk_info.ulCapClass == CARD_CAP_CLASS_SDSC) {
+      ulSectorNumber = ulSectorNumber * SD_SECTOR_SIZE;
+    }
+
+    // Set the block count
+    MAP_SDHostBlockCountSet(SDHOST_BASE, SectorCount);
+
+    // Compute the number of words
+    ulSize = (SD_SECTOR_SIZE * SectorCount) / 4;
+
+    // Check if 1 block or multi block transfer
+    if (SectorCount == 1) {
+      // Send single block write command
+      if (CardSendCmd(CMD_WRITE_SINGLE_BLK, ulSectorNumber) == 0) {
+        // Write the data
+        while (ulSize--) {
+          MAP_SDHostDataWrite(SDHOST_BASE, (*(unsigned long *)pBuffer));
+          pBuffer += 4;
+        }
+        // Wait for data transfer complete
+        while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC))
+          ;
+        Res = RES_OK;
+      }
+    } else {
+      // Set the card write block count
+      if (sd_disk_info.ucCardType == CARD_TYPE_SDCARD) {
+        CardSendCmd(CMD_APP_CMD, sd_disk_info.usRCA << 16);
+        CardSendCmd(CMD_SET_BLK_CNT, SectorCount);
+      }
+
+      // Send multi block write command
+      if (CardSendCmd(CMD_WRITE_MULTI_BLK, ulSectorNumber) == 0) {
+        // Write the data buffer
+        while (ulSize--) {
+          MAP_SDHostDataWrite(SDHOST_BASE, (*(unsigned long *)pBuffer));
+          pBuffer += 4;
+        }
+        // Wait for transfer complete
+        while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC))
+          ;
+        CardSendCmd(CMD_STOP_TRANS, 0);
+        while (!(MAP_SDHostIntStatus(SDHOST_BASE) & SDHOST_INT_TC))
+          ;
+        Res = RES_OK;
+      }
+    }
+  }
+
+  return Res;
 }

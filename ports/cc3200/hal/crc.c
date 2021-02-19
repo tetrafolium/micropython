@@ -44,13 +44,13 @@
 //
 //*****************************************************************************
 
-#include <stdbool.h>
-#include <stdint.h>
+#include "crc.h"
+#include "debug.h"
 #include "inc/hw_dthe.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
-#include "crc.h"
-#include "debug.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 //*****************************************************************************
 //
@@ -93,33 +93,28 @@
 //! \return None.
 //
 //*****************************************************************************
-void
-CRCConfigSet(uint32_t ui32Base, uint32_t ui32CRCConfig)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == DTHE_BASE);
-    ASSERT((ui32CRCConfig & CRC_CFG_INIT_SEED) ||
-           (ui32CRCConfig & CRC_CFG_INIT_0) ||
-           (ui32CRCConfig & CRC_CFG_INIT_1) ||
-           (ui32CRCConfig & CRC_CFG_SIZE_8BIT) ||
-           (ui32CRCConfig & CRC_CFG_SIZE_32BIT) ||
-           (ui32CRCConfig & CRC_CFG_RESINV) ||
-           (ui32CRCConfig & CRC_CFG_OBR) ||
-           (ui32CRCConfig & CRC_CFG_IBR) ||
-           (ui32CRCConfig & CRC_CFG_ENDIAN_SBHW) ||
-           (ui32CRCConfig & CRC_CFG_ENDIAN_SHW) ||
-           (ui32CRCConfig & CRC_CFG_TYPE_P8005) ||
-           (ui32CRCConfig & CRC_CFG_TYPE_P1021) ||
-           (ui32CRCConfig & CRC_CFG_TYPE_P4C11DB7) ||
-           (ui32CRCConfig & CRC_CFG_TYPE_P1EDC6F41) ||
-           (ui32CRCConfig & CRC_CFG_TYPE_TCPCHKSUM));
+void CRCConfigSet(uint32_t ui32Base, uint32_t ui32CRCConfig) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == DTHE_BASE);
+  ASSERT(
+      (ui32CRCConfig & CRC_CFG_INIT_SEED) || (ui32CRCConfig & CRC_CFG_INIT_0) ||
+      (ui32CRCConfig & CRC_CFG_INIT_1) || (ui32CRCConfig & CRC_CFG_SIZE_8BIT) ||
+      (ui32CRCConfig & CRC_CFG_SIZE_32BIT) ||
+      (ui32CRCConfig & CRC_CFG_RESINV) || (ui32CRCConfig & CRC_CFG_OBR) ||
+      (ui32CRCConfig & CRC_CFG_IBR) || (ui32CRCConfig & CRC_CFG_ENDIAN_SBHW) ||
+      (ui32CRCConfig & CRC_CFG_ENDIAN_SHW) ||
+      (ui32CRCConfig & CRC_CFG_TYPE_P8005) ||
+      (ui32CRCConfig & CRC_CFG_TYPE_P1021) ||
+      (ui32CRCConfig & CRC_CFG_TYPE_P4C11DB7) ||
+      (ui32CRCConfig & CRC_CFG_TYPE_P1EDC6F41) ||
+      (ui32CRCConfig & CRC_CFG_TYPE_TCPCHKSUM));
 
-    //
-    // Write the control register with the configuration.
-    //
-    HWREG(ui32Base + DTHE_O_CRC_CTRL) = ui32CRCConfig;
+  //
+  // Write the control register with the configuration.
+  //
+  HWREG(ui32Base + DTHE_O_CRC_CTRL) = ui32CRCConfig;
 }
 
 //*****************************************************************************
@@ -138,18 +133,16 @@ CRCConfigSet(uint32_t ui32Base, uint32_t ui32CRCConfig)
 //! set with the CRCConfigSet() function.
 //
 //*****************************************************************************
-void
-CRCSeedSet(uint32_t ui32Base, uint32_t ui32Seed)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == DTHE_BASE);
+void CRCSeedSet(uint32_t ui32Base, uint32_t ui32Seed) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == DTHE_BASE);
 
-    //
-    // Write the seed value to the seed register.
-    //
-    HWREG(ui32Base + DTHE_O_CRC_SEED) = ui32Seed;
+  //
+  // Write the seed value to the seed register.
+  //
+  HWREG(ui32Base + DTHE_O_CRC_SEED) = ui32Seed;
 }
 
 //*****************************************************************************
@@ -171,18 +164,16 @@ CRCSeedSet(uint32_t ui32Base, uint32_t ui32Seed)
 //! \return None
 //
 //*****************************************************************************
-void
-CRCDataWrite(uint32_t ui32Base, uint32_t ui32Data)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == DTHE_BASE);
+void CRCDataWrite(uint32_t ui32Base, uint32_t ui32Data) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == DTHE_BASE);
 
-    //
-    // Write the data
-    //
-    HWREG(DTHE_BASE + DTHE_O_CRC_DIN) = ui32Data;
+  //
+  // Write the data
+  //
+  HWREG(DTHE_BASE + DTHE_O_CRC_DIN) = ui32Data;
 }
 
 //*****************************************************************************
@@ -199,19 +190,16 @@ CRCDataWrite(uint32_t ui32Base, uint32_t ui32Data)
 //! \return The CRC result.
 //
 //*****************************************************************************
-uint32_t
-CRCResultRead(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == DTHE_BASE);
+uint32_t CRCResultRead(uint32_t ui32Base) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == DTHE_BASE);
 
-    //
-    // return value.
-    //
-    return(HWREG(DTHE_BASE + DTHE_O_CRC_RSLT_PP));
-
+  //
+  // return value.
+  //
+  return (HWREG(DTHE_BASE + DTHE_O_CRC_RSLT_PP));
 }
 
 //*****************************************************************************
@@ -240,62 +228,53 @@ CRCResultRead(uint32_t ui32Base)
 //! \return The CRC result.
 //
 //*****************************************************************************
-uint32_t
-CRCDataProcess(uint32_t ui32Base, void *puiDataIn,
-               uint32_t ui32DataLength, uint32_t ui32Config)
-{
-    uint8_t *pui8DataIn;
-    uint32_t *pui32DataIn;
+uint32_t CRCDataProcess(uint32_t ui32Base, void *puiDataIn,
+                        uint32_t ui32DataLength, uint32_t ui32Config) {
+  uint8_t *pui8DataIn;
+  uint32_t *pui32DataIn;
+
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == DTHE_BASE);
+
+  //
+  // See if the CRC is operating in 8-bit or 32-bit mode.
+  //
+  if (ui32Config & DTHE_CRC_CTRL_SIZE) {
+    //
+    // The CRC is operating in 8-bit mode, so create an 8-bit pointer to
+    // the data.
+    //
+    pui8DataIn = (uint8_t *)puiDataIn;
 
     //
-    // Check the arguments.
+    // Loop through the input data.
     //
-    ASSERT(ui32Base == DTHE_BASE);
-
-    //
-    // See if the CRC is operating in 8-bit or 32-bit mode.
-    //
-    if(ui32Config & DTHE_CRC_CTRL_SIZE)
-    {
-        //
-        // The CRC is operating in 8-bit mode, so create an 8-bit pointer to
-        // the data.
-        //
-        pui8DataIn = (uint8_t *)puiDataIn;
-
-        //
-        // Loop through the input data.
-        //
-        while(ui32DataLength--)
-        {
-            //
-            // Write the next data byte.
-            //
-            HWREG(ui32Base + DTHE_O_CRC_DIN) = *pui8DataIn++;
-        }
+    while (ui32DataLength--) {
+      //
+      // Write the next data byte.
+      //
+      HWREG(ui32Base + DTHE_O_CRC_DIN) = *pui8DataIn++;
     }
-    else
-    {
-        //
-        // The CRC is operating in 32-bit mode, so loop through the input data.
-        //
-        pui32DataIn = (uint32_t *)puiDataIn;
-        while(ui32DataLength--)
-        {
-            //
-            // Write the next data word.
-            //
-            HWREG(ui32Base + DTHE_O_CRC_DIN) = *pui32DataIn++;
-        }
+  } else {
+    //
+    // The CRC is operating in 32-bit mode, so loop through the input data.
+    //
+    pui32DataIn = (uint32_t *)puiDataIn;
+    while (ui32DataLength--) {
+      //
+      // Write the next data word.
+      //
+      HWREG(ui32Base + DTHE_O_CRC_DIN) = *pui32DataIn++;
     }
+  }
 
-    //
-    // Return the result.
-    //
-    return(CRCResultRead(ui32Base));
+  //
+  // Return the result.
+  //
+  return (CRCResultRead(ui32Base));
 }
-
-
 
 //*****************************************************************************
 //

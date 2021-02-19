@@ -32,20 +32,14 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
-*/
-
-
+ */
 
 #ifndef __USER_H__
 #define __USER_H__
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
-
-
-
-
 
 /*!
  ******************************************************************************
@@ -64,42 +58,39 @@ extern "C" {
  ******************************************************************************
  */
 
-#include <string.h>
 #include "cc_pal.h"
 #include "debug.h"
+#include <string.h>
 
 /*!
-	\def		MAX_CONCURRENT_ACTIONS
+        \def		MAX_CONCURRENT_ACTIONS
 
     \brief      Defines the maximum number of concurrent action in the system
-				Min:1 , Max: 32
+                                Min:1 , Max: 32
 
                 Actions which has async events as return, can be
 
     \sa
 
-    \note       In case there are not enough resources for the actions needed in the system,
-	        	error is received: POOL_IS_EMPTY
-			    one option is to increase MAX_CONCURRENT_ACTIONS
-				(improves performance but results in memory consumption)
-		     	Other option is to call the API later (decrease performance)
+    \note       In case there are not enough resources for the actions needed in
+   the system, error is received: POOL_IS_EMPTY one option is to increase
+   MAX_CONCURRENT_ACTIONS (improves performance but results in memory
+   consumption) Other option is to call the API later (decrease performance)
 
-    \warning    In case of setting to one, recommend to use non-blocking recv\recvfrom to allow
-				multiple socket recv
+    \warning    In case of setting to one, recommend to use non-blocking
+   recv\recvfrom to allow multiple socket recv
 */
 #define MAX_CONCURRENT_ACTIONS 10
 /*!
-	\def		CPU_FREQ_IN_MHZ
-    \brief      Defines CPU frequency for Host side, for better accuracy of busy loops, if any
-    \sa
-    \note
+        \def		CPU_FREQ_IN_MHZ
+    \brief      Defines CPU frequency for Host side, for better accuracy of busy
+   loops, if any \sa \note
 
     \warning    If not set the default CPU frequency is set to 200MHz
                 This option will be deprecated in future release
 */
 
-#define CPU_FREQ_IN_MHZ        80
-
+#define CPU_FREQ_IN_MHZ 80
 
 /*!
  ******************************************************************************
@@ -122,7 +113,7 @@ extern "C" {
 */
 
 /*!
-	\def		SL_INC_ARG_CHECK
+        \def		SL_INC_ARG_CHECK
 
     \brief      Defines whether the SimpleLink driver perform argument check
                 or not
@@ -143,19 +134,18 @@ extern "C" {
 */
 #define SL_INC_ARG_CHECK
 
-
 /*!
     \def		SL_INC_STD_BSD_API_NAMING
 
     \brief      Defines whether SimpleLink driver should expose standard BSD
                 APIs or not
 
-                When defined, the SimpleLink driver in addtion to its alternative
-                BSD APIs expose also standard BSD APIs.
-    Stadrad BSD API includs the following functions:
+                When defined, the SimpleLink driver in addtion to its
+   alternative BSD APIs expose also standard BSD APIs. Stadrad BSD API includs
+   the following functions:
                 socket , close , accept , bind , listen	, connect , select ,
-                setsockopt	, getsockopt , recv , recvfrom , write , send , sendto ,
-                gethostbyname
+                setsockopt	, getsockopt , recv , recvfrom , write , send ,
+   sendto , gethostbyname
 
     \sa
 
@@ -164,7 +154,6 @@ extern "C" {
     \warning
 */
 /* #define SL_INC_STD_BSD_API_NAMING */
-
 
 /*!
     \brief      Defines whether to include extended API in SimpleLink driver
@@ -323,13 +312,14 @@ extern "C" {
 
  */
 
-
 /*!
  ******************************************************************************
 
-    \defgroup   ported_enable_device       Ported on CC32XX - Device Enable/Disable
+    \defgroup   ported_enable_device       Ported on CC32XX - Device
+ Enable/Disable
 
-    The enable/disable API provide mechanism to enable/disable the network processor
+    The enable/disable API provide mechanism to enable/disable the network
+ processor
 
 
     PORTING ACTION:
@@ -350,7 +340,7 @@ extern "C" {
 
 */
 #ifdef DEBUG
-#define sl_DeviceEnablePreamble()		NwpPowerOnPreamble()
+#define sl_DeviceEnablePreamble() NwpPowerOnPreamble()
 #else
 #define sl_DeviceEnablePreamble()
 #endif
@@ -363,7 +353,7 @@ extern "C" {
     \note       belongs to \ref ported_sec
 
 */
-#define sl_DeviceEnable()			NwpPowerOn()
+#define sl_DeviceEnable() NwpPowerOn()
 
 /*!
     \brief		Disable the Network Processor
@@ -372,7 +362,7 @@ extern "C" {
 
     \note       belongs to \ref ported_sec
 */
-#define sl_DeviceDisable() 			NwpPowerOff()
+#define sl_DeviceDisable() NwpPowerOff()
 
 /*!
 
@@ -384,7 +374,8 @@ extern "C" {
 /*!
  ******************************************************************************
 
-    \defgroup   ported_interface         Ported on CC32XX - Communication Interface
+    \defgroup   ported_interface         Ported on CC32XX - Communication
+ Interface
 
     The simple link device can work with different communication
     channels (e.g. spi/uart). Texas Instruments provides single driver
@@ -404,108 +395,112 @@ extern "C" {
  ******************************************************************************
 */
 
-#define _SlFd_t					Fd_t
+#define _SlFd_t Fd_t
 
 /*!
-    \brief      Opens an interface communication port to be used for communicating
-                with a SimpleLink device
+    \brief      Opens an interface communication port to be used for
+   communicating with a SimpleLink device
 
-	            Given an interface name and option flags, this function opens
-                the communication port and creates a file descriptor.
-                This file descriptor is used afterwards to read and write
-                data from and to this specific communication channel.
-	            The speed, clock polarity, clock phase, chip select and all other
-                specific attributes of the channel are all should be set to hardcoded
-                in this function.
+                    Given an interface name and option flags, this function
+   opens the communication port and creates a file descriptor. This file
+   descriptor is used afterwards to read and write data from and to this
+   specific communication channel. The speed, clock polarity, clock phase, chip
+   select and all other specific attributes of the channel are all should be set
+   to hardcoded in this function.
 
-	\param	 	ifName  -   points to the interface name/path. The interface name is an
-                            optional attributes that the simple link driver receives
+        \param	 	ifName  -   points to the interface name/path. The
+   interface name is an optional attributes that the simple link driver receives
                             on opening the driver (sl_Start).
-                            In systems that the spi channel is not implemented as
-                            part of the os device drivers, this parameter could be NULL.
+                            In systems that the spi channel is not implemented
+   as part of the os device drivers, this parameter could be NULL.
 
-	\param      flags   -   optional flags parameters for future use
+        \param      flags   -   optional flags parameters for future use
 
-	\return     upon successful completion, the function shall open the channel
-                and return a non-negative integer representing the file descriptor.
+        \return     upon successful completion, the function shall open the
+   channel and return a non-negative integer representing the file descriptor.
                 Otherwise, -1 shall be returned
 
     \sa         sl_IfClose , sl_IfRead , sl_IfWrite
 
-	\note       The prototype of the function is as follow:
+        \note       The prototype of the function is as follow:
                     Fd_t xxx_IfOpen(char* pIfName , unsigned long flags);
 
     \note       belongs to \ref ported_sec
 
     \warning
 */
-#define sl_IfOpen                           spi_Open
+#define sl_IfOpen spi_Open
 
 /*!
     \brief      Closes an opened interface communication port
 
-	\param	 	fd  -   file descriptor of opened communication channel
+        \param	 	fd  -   file descriptor of opened communication channel
 
-	\return		upon successful completion, the function shall return 0.
-			    Otherwise, -1 shall be returned
+        \return		upon successful completion, the function shall return 0.
+                            Otherwise, -1 shall be returned
 
     \sa         sl_IfOpen , sl_IfRead , sl_IfWrite
 
-	\note       The prototype of the function is as follow:
+        \note       The prototype of the function is as follow:
                     int xxx_IfClose(Fd_t Fd);
 
     \note       belongs to \ref ported_sec
 
     \warning
 */
-#define sl_IfClose                          spi_Close
+#define sl_IfClose spi_Close
 
 /*!
-    \brief      Attempts to read up to len bytes from an opened communication channel
-                into a buffer starting at pBuff.
+    \brief      Attempts to read up to len bytes from an opened communication
+   channel into a buffer starting at pBuff.
 
-	\param	 	fd      -   file descriptor of an opened communication channel
+        \param	 	fd      -   file descriptor of an opened communication
+   channel
 
-	\param		pBuff   -   pointer to the first location of a buffer that contains enough
-                            space for all expected data
+        \param		pBuff   -   pointer to the first location of a buffer
+   that contains enough space for all expected data
 
-	\param      len     -   number of bytes to read from the communication channel
+        \param      len     -   number of bytes to read from the communication
+   channel
 
-	\return     upon successful completion, the function shall return the number of read bytes.
-                Otherwise, 0 shall be returned
+        \return     upon successful completion, the function shall return the
+   number of read bytes. Otherwise, 0 shall be returned
 
     \sa         sl_IfClose , sl_IfOpen , sl_IfWrite
 
 
-	\note       The prototype of the function is as follow:
+        \note       The prototype of the function is as follow:
                     int xxx_IfRead(Fd_t Fd , char* pBuff , int Len);
 
     \note       belongs to \ref ported_sec
 
     \warning
 */
-#define sl_IfRead                           spi_Read
+#define sl_IfRead spi_Read
 
 /*!
     \brief attempts to write up to len bytes to the SPI channel
 
-	\param	 	fd      -   file descriptor of an opened communication channel
+        \param	 	fd      -   file descriptor of an opened communication
+   channel
 
-	\param		pBuff   -   pointer to the first location of a buffer that contains
-                            the data to send over the communication channel
+        \param		pBuff   -   pointer to the first location of a buffer
+   that contains the data to send over the communication channel
 
-	\param      len     -   number of bytes to write to the communication channel
+        \param      len     -   number of bytes to write to the communication
+   channel
 
-	\return     upon successful completion, the function shall return the number of sent bytes.
-				therwise, 0 shall be returned
+        \return     upon successful completion, the function shall return the
+   number of sent bytes. therwise, 0 shall be returned
 
     \sa         sl_IfClose , sl_IfOpen , sl_IfRead
 
-	\note       This function could be implemented as zero copy and return only upon successful completion
-                of writing the whole buffer, but in cases that memory allocation is not too tight, the
-                function could copy the data to internal buffer, return back and complete the write in
-                parallel to other activities as long as the other SPI activities would be blocked until
-                the entire buffer write would be completed
+        \note       This function could be implemented as zero copy and return
+   only upon successful completion of writing the whole buffer, but in cases
+   that memory allocation is not too tight, the function could copy the data to
+   internal buffer, return back and complete the write in parallel to other
+   activities as long as the other SPI activities would be blocked until the
+   entire buffer write would be completed
 
                The prototype of the function is as follow:
                     int xxx_IfWrite(Fd_t Fd , char* pBuff , int Len);
@@ -514,32 +509,34 @@ extern "C" {
 
     \warning
 */
-#define sl_IfWrite                          spi_Write
+#define sl_IfWrite spi_Write
 
 /*!
     \brief 		register an interrupt handler routine for the host IRQ
 
-	\param	 	InterruptHdl	-	pointer to interrupt handler routine
+        \param	 	InterruptHdl	-	pointer to interrupt handler
+   routine
 
-	\param 		pValue			-	pointer to a memory structure that is passed
-									to the interrupt handler.
+        \param 		pValue			-	pointer to a memory
+   structure that is passed to the interrupt handler.
 
-	\return		upon successful registration, the function shall return 0.
-				Otherwise, -1 shall be returned
+        \return		upon successful registration, the function shall return
+   0. Otherwise, -1 shall be returned
 
     \sa
 
-	\note		If there is already registered interrupt handler, the function
-				should overwrite the old handler with the new one
+        \note		If there is already registered interrupt handler, the
+   function should overwrite the old handler with the new one
 
-	\note       If the handler is a null pointer, the function should un-register the
-	            interrupt handler, and the interrupts can be disabled.
+        \note       If the handler is a null pointer, the function should
+   un-register the interrupt handler, and the interrupts can be disabled.
 
     \note       belongs to \ref ported_sec
 
     \warning
 */
-#define sl_IfRegIntHdlr(InterruptHdl , pValue)          NwpRegisterInterruptHandler(InterruptHdl , pValue)
+#define sl_IfRegIntHdlr(InterruptHdl, pValue)                                  \
+  NwpRegisterInterruptHandler(InterruptHdl, pValue)
 
 /*!
     \brief 		Masks the Host IRQ
@@ -553,8 +550,7 @@ extern "C" {
     \warning
 */
 
-
-#define sl_IfMaskIntHdlr()								NwpMaskInterrupt()
+#define sl_IfMaskIntHdlr() NwpMaskInterrupt()
 
 /*!
     \brief 		Unmasks the Host IRQ
@@ -568,26 +564,27 @@ extern "C" {
     \warning
 */
 
-#define sl_IfUnMaskIntHdlr()								NwpUnMaskInterrupt()
+#define sl_IfUnMaskIntHdlr() NwpUnMaskInterrupt()
 
 /*!
     \brief 		Write Handers for statistics debug on write
 
-	\param	 	interface handler	-	pointer to interrupt handler routine
+        \param	 	interface handler	-	pointer to interrupt
+   handler routine
 
 
-	\return		no return value
+        \return		no return value
 
     \sa
 
-	\note		An optional hooks for monitoring before and after write info
+        \note		An optional hooks for monitoring before and after write
+   info
 
     \note       belongs to \ref ported_sec
 
     \warning
 */
 /* #define SL_START_WRITE_STAT */
-
 
 /*!
 
@@ -606,10 +603,10 @@ extern "C" {
 
     This section IS NOT REQUIRED in case you are working on non-os environment.
 
-    If you choose to work in multi-threaded environment under any operating system
-    you will have to provide some basic adaptation routines to allow the driver
-    to protect access to resources from different threads (locking object) and
-    to allow synchronization between threads (sync objects).
+    If you choose to work in multi-threaded environment under any operating
+ system you will have to provide some basic adaptation routines to allow the
+ driver to protect access to resources from different threads (locking object)
+ and to allow synchronization between threads (sync objects).
 
     PORTING ACTION:
         -# Uncomment SL_PLATFORM_MULTI_THREADED define
@@ -624,10 +621,16 @@ extern "C" {
 
 #define SL_PLATFORM_MULTI_THREADED
 
-
 #ifdef SL_PLATFORM_MULTI_THREADED
 #include "osi.h"
 
+/*!
+    \brief
+    \sa
+    \note           belongs to \ref ported_sec
+    \warning
+*/
+#define SL_OS_RET_CODE_OK ((int)OSI_OK)
 
 /*!
     \brief
@@ -635,7 +638,7 @@ extern "C" {
     \note           belongs to \ref ported_sec
     \warning
 */
-#define SL_OS_RET_CODE_OK                       ((int)OSI_OK)
+#define SL_OS_WAIT_FOREVER ((OsiTime_t)OSI_WAIT_FOREVER)
 
 /*!
     \brief
@@ -643,210 +646,206 @@ extern "C" {
     \note           belongs to \ref ported_sec
     \warning
 */
-#define SL_OS_WAIT_FOREVER                      ((OsiTime_t)OSI_WAIT_FOREVER)
+#define SL_OS_NO_WAIT ((OsiTime_t)OSI_NO_WAIT)
 
 /*!
-    \brief
-    \sa
-    \note           belongs to \ref ported_sec
-    \warning
-*/
-#define SL_OS_NO_WAIT	                        ((OsiTime_t)OSI_NO_WAIT)
+        \brief type definition for a time value
 
-/*!
-	\brief type definition for a time value
-
-	\note	On each porting or platform the type could be whatever is needed - integer, pointer to structure etc.
+        \note	On each porting or platform the type could be whatever is needed
+   - integer, pointer to structure etc.
 
     \note       belongs to \ref ported_sec
 */
-#define _SlTime_t				OsiTime_t
+#define _SlTime_t OsiTime_t
 
 /*!
-	\brief 	type definition for a sync object container
+        \brief 	type definition for a sync object container
 
-	Sync object is object used to synchronize between two threads or thread and interrupt handler.
-	One thread is waiting on the object and the other thread send a signal, which then
-	release the waiting thread.
-	The signal must be able to be sent from interrupt context.
-	This object is generally implemented by binary semaphore or events.
+        Sync object is object used to synchronize between two threads or thread
+   and interrupt handler. One thread is waiting on the object and the other
+   thread send a signal, which then release the waiting thread. The signal must
+   be able to be sent from interrupt context. This object is generally
+   implemented by binary semaphore or events.
 
-	\note	On each porting or platform the type could be whatever is needed - integer, structure etc.
+        \note	On each porting or platform the type could be whatever is needed
+   - integer, structure etc.
 
     \note       belongs to \ref ported_sec
 */
-typedef OsiSyncObj_t                            _SlSyncObj_t;
-
+typedef OsiSyncObj_t _SlSyncObj_t;
 
 /*!
-	\brief 	This function creates a sync object
+        \brief 	This function creates a sync object
 
-	The sync object is used for synchronization between diffrent thread or ISR and
-	a thread.
+        The sync object is used for synchronization between diffrent thread or
+   ISR and a thread.
 
-	\param	pSyncObj	-	pointer to the sync object control block
+        \param	pSyncObj	-	pointer to the sync object control block
 
-	\return upon successful creation the function should return 0
-			Otherwise, a negative value indicating the error code shall be returned
+        \return upon successful creation the function should return 0
+                        Otherwise, a negative value indicating the error code
+   shall be returned
 
     \note       belongs to \ref ported_sec
     \warning
 */
-#define sl_SyncObjCreate(pSyncObj,pName)            osi_SyncObjCreate(pSyncObj)
-
-
-/*!
-	\brief 	This function deletes a sync object
-
-	\param	pSyncObj	-	pointer to the sync object control block
-
-	\return upon successful deletion the function should return 0
-			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
-    \warning
-*/
-#define sl_SyncObjDelete(pSyncObj)                  osi_SyncObjDelete(pSyncObj)
-
+#define sl_SyncObjCreate(pSyncObj, pName) osi_SyncObjCreate(pSyncObj)
 
 /*!
-	\brief 		This function generates a sync signal for the object.
+        \brief 	This function deletes a sync object
 
-	All suspended threads waiting on this sync object are resumed
+        \param	pSyncObj	-	pointer to the sync object control block
 
-	\param		pSyncObj	-	pointer to the sync object control block
-
-	\return 	upon successful signaling the function should return 0
-				Otherwise, a negative value indicating the error code shall be returned
-	\note		the function could be called from ISR context
-    \warning
+        \return upon successful deletion the function should return 0
+                        Otherwise, a negative value indicating the error code
+   shall be returned \note       belongs to \ref ported_sec \warning
 */
-#define sl_SyncObjSignal(pSyncObj)                osi_SyncObjSignal(pSyncObj)
+#define sl_SyncObjDelete(pSyncObj) osi_SyncObjDelete(pSyncObj)
 
 /*!
-	\brief 		This function generates a sync signal for the object from Interrupt
+        \brief 		This function generates a sync signal for the object.
 
-	This is for RTOS that should signal from IRQ using a dedicated API
+        All suspended threads waiting on this sync object are resumed
 
-	\param		pSyncObj	-	pointer to the sync object control block
+        \param		pSyncObj	-	pointer to the sync object
+   control block
 
-	\return 	upon successful signaling the function should return 0
-				Otherwise, a negative value indicating the error code shall be returned
-	\note		the function could be called from ISR context
-	\warning
+        \return 	upon successful signaling the function should return 0
+                                Otherwise, a negative value indicating the error
+   code shall be returned \note		the function could be called from ISR
+   context \warning
 */
-#define sl_SyncObjSignalFromIRQ(pSyncObj)           osi_SyncObjSignalFromISR(pSyncObj)
+#define sl_SyncObjSignal(pSyncObj) osi_SyncObjSignal(pSyncObj)
 
 /*!
-	\brief 	This function waits for a sync signal of the specific sync object
+        \brief 		This function generates a sync signal for the object
+   from Interrupt
 
-	\param	pSyncObj	-	pointer to the sync object control block
-	\param	Timeout		-	numeric value specifies the maximum number of mSec to
-							stay suspended while waiting for the sync signal
-							Currently, the simple link driver uses only two values:
-								- OSI_WAIT_FOREVER
-								- OSI_NO_WAIT
+        This is for RTOS that should signal from IRQ using a dedicated API
 
-	\return upon successful reception of the signal within the timeout window return 0
-			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
-    \warning
+        \param		pSyncObj	-	pointer to the sync object
+   control block
+
+        \return 	upon successful signaling the function should return 0
+                                Otherwise, a negative value indicating the error
+   code shall be returned \note		the function could be called from ISR
+   context \warning
 */
-#define sl_SyncObjWait(pSyncObj,Timeout)            osi_SyncObjWait(pSyncObj,Timeout)
+#define sl_SyncObjSignalFromIRQ(pSyncObj) osi_SyncObjSignalFromISR(pSyncObj)
 
 /*!
-	\brief 	type definition for a locking object container
+        \brief 	This function waits for a sync signal of the specific sync
+   object
 
-	Locking object are used to protect a resource from mutual accesses of two or more threads.
-	The locking object should suppurt reentrant locks by a signal thread.
-	This object is generally implemented by mutex semaphore
+        \param	pSyncObj	-	pointer to the sync object control block
+        \param	Timeout		-	numeric value specifies the maximum
+   number of mSec to stay suspended while waiting for the sync signal Currently,
+   the simple link driver uses only two values:
+                                                                -
+   OSI_WAIT_FOREVER
+                                                                - OSI_NO_WAIT
 
-	\note	On each porting or platform the type could be whatever is needed - integer, structure etc.
-    \note       belongs to \ref ported_sec
+        \return upon successful reception of the signal within the timeout
+   window return 0 Otherwise, a negative value indicating the error code shall
+   be returned \note       belongs to \ref ported_sec \warning
 */
-typedef OsiLockObj_t                            _SlLockObj_t;
+#define sl_SyncObjWait(pSyncObj, Timeout) osi_SyncObjWait(pSyncObj, Timeout)
 
 /*!
-	\brief 	This function creates a locking object.
+        \brief 	type definition for a locking object container
 
-	The locking object is used for protecting a shared resources between different
-	threads.
+        Locking object are used to protect a resource from mutual accesses of
+   two or more threads. The locking object should suppurt reentrant locks by a
+   signal thread. This object is generally implemented by mutex semaphore
 
-	\param	pLockObj	-	pointer to the locking object control block
-
-	\return upon successful creation the function should return 0
-			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
-    \warning
+        \note	On each porting or platform the type could be whatever is needed
+   - integer, structure etc. \note       belongs to \ref ported_sec
 */
-#define sl_LockObjCreate(pLockObj,pName)            osi_LockObjCreate(pLockObj)
+typedef OsiLockObj_t _SlLockObj_t;
 
 /*!
-	\brief 	This function deletes a locking object.
+        \brief 	This function creates a locking object.
 
-	\param	pLockObj	-	pointer to the locking object control block
+        The locking object is used for protecting a shared resources between
+   different threads.
 
-	\return upon successful deletion the function should return 0
-			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
-    \warning
+        \param	pLockObj	-	pointer to the locking object control
+   block
+
+        \return upon successful creation the function should return 0
+                        Otherwise, a negative value indicating the error code
+   shall be returned \note       belongs to \ref ported_sec \warning
 */
-#define sl_LockObjDelete(pLockObj)                  osi_LockObjDelete(pLockObj)
+#define sl_LockObjCreate(pLockObj, pName) osi_LockObjCreate(pLockObj)
 
 /*!
-	\brief 	This function locks a locking object.
+        \brief 	This function deletes a locking object.
 
-	All other threads that call this function before this thread calls
-	the osi_LockObjUnlock would be suspended
+        \param	pLockObj	-	pointer to the locking object control
+   block
 
-	\param	pLockObj	-	pointer to the locking object control block
-	\param	Timeout		-	numeric value specifies the maximum number of mSec to
-							stay suspended while waiting for the locking object
-							Currently, the simple link driver uses only two values:
-								- OSI_WAIT_FOREVER
-								- OSI_NO_WAIT
-
-
-	\return upon successful reception of the locking object the function should return 0
-			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
-    \warning
+        \return upon successful deletion the function should return 0
+                        Otherwise, a negative value indicating the error code
+   shall be returned \note       belongs to \ref ported_sec \warning
 */
-#define sl_LockObjLock(pLockObj,Timeout)           osi_LockObjLock(pLockObj,Timeout)
+#define sl_LockObjDelete(pLockObj) osi_LockObjDelete(pLockObj)
 
 /*!
-	\brief 	This function unlock a locking object.
+        \brief 	This function locks a locking object.
 
-	\param	pLockObj	-	pointer to the locking object control block
+        All other threads that call this function before this thread calls
+        the osi_LockObjUnlock would be suspended
 
-	\return upon successful unlocking the function should return 0
-			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
-    \warning
+        \param	pLockObj	-	pointer to the locking object control
+   block \param	Timeout		-	numeric value specifies the maximum
+   number of mSec to stay suspended while waiting for the locking object
+                                                        Currently, the simple
+   link driver uses only two values:
+                                                                -
+   OSI_WAIT_FOREVER
+                                                                - OSI_NO_WAIT
+
+
+        \return upon successful reception of the locking object the function
+   should return 0 Otherwise, a negative value indicating the error code shall
+   be returned \note       belongs to \ref ported_sec \warning
 */
-#define sl_LockObjUnlock(pLockObj)                   osi_LockObjUnlock(pLockObj)
+#define sl_LockObjLock(pLockObj, Timeout) osi_LockObjLock(pLockObj, Timeout)
+
+/*!
+        \brief 	This function unlock a locking object.
+
+        \param	pLockObj	-	pointer to the locking object control
+   block
+
+        \return upon successful unlocking the function should return 0
+                        Otherwise, a negative value indicating the error code
+   shall be returned \note       belongs to \ref ported_sec \warning
+*/
+#define sl_LockObjUnlock(pLockObj) osi_LockObjUnlock(pLockObj)
 
 #endif
 /*!
-	\brief 	This function call the pEntry callback from a different context
+        \brief 	This function call the pEntry callback from a different context
 
-	\param	pEntry		-	pointer to the entry callback function
+        \param	pEntry		-	pointer to the entry callback function
 
-	\param	pValue		- 	pointer to any type of memory structure that would be
-							passed to pEntry callback from the execution thread.
+        \param	pValue		- 	pointer to any type of memory structure
+   that would be passed to pEntry callback from the execution thread.
 
-	\param	flags		- 	execution flags - reserved for future usage
+        \param	flags		- 	execution flags - reserved for future
+   usage
 
-	\return upon successful registration of the spawn the function should return 0
-			(the function is not blocked till the end of the execution of the function
-			and could be returned before the execution is actually completed)
-			Otherwise, a negative value indicating the error code shall be returned
-    \note       belongs to \ref ported_sec
-    \warning
+        \return upon successful registration of the spawn the function should
+   return 0 (the function is not blocked till the end of the execution of the
+   function and could be returned before the execution is actually completed)
+                        Otherwise, a negative value indicating the error code
+   shall be returned \note       belongs to \ref ported_sec \warning
 */
 #define SL_PLATFORM_EXTERNAL_SPAWN
 
 #ifdef SL_PLATFORM_EXTERNAL_SPAWN
-#define sl_Spawn(pEntry,pValue,flags)       osi_Spawn(pEntry,pValue,flags)
+#define sl_Spawn(pEntry, pValue, flags) osi_Spawn(pEntry, pValue, flags)
 #endif
 
 /*!
@@ -892,10 +891,10 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \warning
 */
 
-#define SL_MEMORY_MGMT_DYNAMIC 	        1
-#define SL_MEMORY_MGMT_STATIC           0
+#define SL_MEMORY_MGMT_DYNAMIC 1
+#define SL_MEMORY_MGMT_STATIC 0
 
-#define SL_MEMORY_MGMT                  SL_MEMORY_MGMT_DYNAMIC
+#define SL_MEMORY_MGMT SL_MEMORY_MGMT_DYNAMIC
 
 #ifdef SL_MEMORY_MGMT_DYNAMIC
 #ifdef SL_PLATFORM_MULTI_THREADED
@@ -906,7 +905,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \note           belongs to \ref ported_sec
     \warning
 */
-#define sl_Malloc(Size)                                 mem_Malloc(Size)
+#define sl_Malloc(Size) mem_Malloc(Size)
 
 /*!
     \brief
@@ -914,7 +913,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \note           belongs to \ref ported_sec
     \warning
 */
-#define sl_Free(pMem)                                   mem_Free(pMem)
+#define sl_Free(pMem) mem_Free(pMem)
 #else
 #include <stdlib.h>
 /*!
@@ -923,7 +922,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \note           belongs to \ref ported_sec
     \warning
 */
-#define sl_Malloc(Size)                                 malloc(Size)
+#define sl_Malloc(Size) malloc(Size)
 
 /*!
     \brief
@@ -931,7 +930,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \note           belongs to \ref ported_sec
     \warning
 */
-#define sl_Free(pMem)                                   free(pMem)
+#define sl_Free(pMem) free(pMem)
 #endif
 #endif
 /*!
@@ -940,7 +939,6 @@ typedef OsiLockObj_t                            _SlLockObj_t;
  @}
 
  */
-
 
 /*!
  ******************************************************************************
@@ -968,13 +966,11 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \warning
 */
 
-#define sl_GeneralEvtHdlr                   SimpleLinkGeneralEventHandler
-
+#define sl_GeneralEvtHdlr SimpleLinkGeneralEventHandler
 
 /*!
-    \brief          An event handler for WLAN connection or disconnection indication
-                    This event handles async WLAN events.
-                    Possible events are:
+    \brief          An event handler for WLAN connection or disconnection
+   indication This event handles async WLAN events. Possible events are:
                     SL_WLAN_CONNECT_EVENT - indicates WLAN is connected
                     SL_WLAN_DISCONNECT_EVENT - indicates WLAN is disconnected
     \sa
@@ -984,14 +980,14 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \warning
 */
 
-#define sl_WlanEvtHdlr                     SimpleLinkWlanEventHandler
-
+#define sl_WlanEvtHdlr SimpleLinkWlanEventHandler
 
 /*!
-    \brief          An event handler for IP address asynchronous event. Usually accepted after new WLAN connection.
-                    This event handles networking events.
+    \brief          An event handler for IP address asynchronous event. Usually
+   accepted after new WLAN connection. This event handles networking events.
                     Possible events are:
-                    SL_NETAPP_IPV4_ACQUIRED - IP address was acquired (DHCP or Static)
+                    SL_NETAPP_IPV4_ACQUIRED - IP address was acquired (DHCP or
+   Static)
 
     \sa
 
@@ -1000,17 +996,21 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \warning
 */
 
-#define sl_NetAppEvtHdlr              		SimpleLinkNetAppEventHandler
+#define sl_NetAppEvtHdlr SimpleLinkNetAppEventHandler
 
 /*!
     \brief          A callback for HTTP server events.
                     Possible events are:
-                    SL_NETAPP_HTTPGETTOKENVALUE - NWP requests to get the value of a specific token
-					SL_NETAPP_HTTPPOSTTOKENVALUE - NWP post to the host a new value for a specific token
+                    SL_NETAPP_HTTPGETTOKENVALUE - NWP requests to get the value
+   of a specific token SL_NETAPP_HTTPPOSTTOKENVALUE - NWP post to the host a new
+   value for a specific token
 
-	\param			pServerEvent - Contains the relevant event information (SL_NETAPP_HTTPGETTOKENVALUE or SL_NETAPP_HTTPPOSTTOKENVALUE)
+        \param			pServerEvent - Contains the relevant event
+   information (SL_NETAPP_HTTPGETTOKENVALUE or SL_NETAPP_HTTPPOSTTOKENVALUE)
 
-	\param			pServerResponse - Should be filled by the user with the relevant response information (i.e SL_NETAPP_HTTPSETTOKENVALUE as a response to SL_NETAPP_HTTPGETTOKENVALUE event)
+        \param			pServerResponse - Should be filled by the user
+   with the relevant response information (i.e SL_NETAPP_HTTPSETTOKENVALUE as a
+   response to SL_NETAPP_HTTPGETTOKENVALUE event)
 
     \sa
 
@@ -1019,7 +1019,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \warning
 */
 
-#define sl_HttpServerCallback   SimpleLinkHttpServerCallback
+#define sl_HttpServerCallback SimpleLinkHttpServerCallback
 /*!
     \brief
 
@@ -1030,23 +1030,19 @@ typedef OsiLockObj_t                            _SlLockObj_t;
     \warning
 */
 
-#define sl_SockEvtHdlr         SimpleLinkSockEventHandler
-
-
+#define sl_SockEvtHdlr SimpleLinkSockEventHandler
 
 #define _SL_USER_TYPES
-#define _u8         unsigned char
-#define _i8         signed char
+#define _u8 unsigned char
+#define _i8 signed char
 
-#define _u16        unsigned short
-#define _i16        signed short
+#define _u16 unsigned short
+#define _i16 signed short
 
-#define _u32        unsigned int
-#define _i32        signed int
-#define _volatile   volatile
-#define _const      const
-
-
+#define _u32 unsigned int
+#define _i32 signed int
+#define _volatile volatile
+#define _const const
 
 /*!
 
@@ -1055,8 +1051,7 @@ typedef OsiLockObj_t                            _SlLockObj_t;
 
  */
 
-
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif // __cplusplus
 

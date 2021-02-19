@@ -65,11 +65,11 @@
 #endif
 
 typedef struct _boardctrl_state_t {
-    uint8_t reset_mode;
-    bool run_boot_py;
-    bool run_main_py;
-    bool log_soft_reset;
-    int last_ret;
+  uint8_t reset_mode;
+  bool run_boot_py;
+  bool run_main_py;
+  bool log_soft_reset;
+  int last_ret;
 } boardctrl_state_t;
 
 void boardctrl_before_soft_reset_loop(boardctrl_state_t *state);

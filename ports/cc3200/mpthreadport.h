@@ -30,8 +30,8 @@
 
 typedef struct _mp_thread_mutex_t {
 #ifndef BOOTLOADER
-    SemaphoreHandle_t handle;
-    StaticSemaphore_t buffer;
+  SemaphoreHandle_t handle;
+  StaticSemaphore_t buffer;
 #endif
 } mp_thread_mutex_t;
 

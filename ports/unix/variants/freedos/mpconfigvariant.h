@@ -35,4 +35,4 @@
 // djgpp dirent struct does not have d_ino field
 #undef _DIRENT_HAVE_D_INO
 
-#define MICROPY_USE_INTERNAL_ERRNO  (1)
+#define MICROPY_USE_INTERNAL_ERRNO (1)

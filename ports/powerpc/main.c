@@ -26,33 +26,34 @@
 
 #include <stdio.h>
 
+#include "lib/utils/pyexec.h"
 #include "py/compile.h"
-#include "py/runtime.h"
-#include "py/repl.h"
 #include "py/gc.h"
 #include "py/mperrno.h"
+#include "py/repl.h"
+#include "py/runtime.h"
 #include "py/stackctrl.h"
-#include "lib/utils/pyexec.h"
 
 void __stack_chk_fail(void);
 void __stack_chk_fail(void) {
-    static bool failed_once;
+  static bool failed_once;
 
-    if (failed_once) {
-        return;
-    }
-    failed_once = true;
-    printf("Stack corruption detected !\n");
-    assert(0);
+  if (failed_once) {
+    return;
+  }
+  failed_once = true;
+  printf("Stack corruption detected !\n");
+  assert(0);
 }
 
 /* fill in __assert_fail for libc */
 void __assert_fail(const char *__assertion, const char *__file,
                    unsigned int __line, const char *__function) {
-    printf("Assert at %s:%d:%s() \"%s\" failed\n", __file, __line, __function, __assertion);
-    for (;;) {
-        ;
-    }
+  printf("Assert at %s:%d:%s() \"%s\" failed\n", __file, __line, __function,
+         __assertion);
+  for (;;) {
+    ;
+  }
 }
 
 static char *stack_top;
@@ -63,82 +64,85 @@ static char heap[32 * 1024];
 extern void uart_init_ppc(int qemu);
 
 int main(int argc, char **argv) {
-    int stack_dummy;
-    stack_top = (char *)&stack_dummy;
+  int stack_dummy;
+  stack_top = (char *)&stack_dummy;
 
-    uart_init_ppc(argc);
+  uart_init_ppc(argc);
 
 #if MICROPY_ENABLE_PYSTACK
-    static mp_obj_t pystack[1024];
-    mp_pystack_init(pystack, &pystack[1024]);
+  static mp_obj_t pystack[1024];
+  mp_pystack_init(pystack, &pystack[1024]);
 #endif
 
 #if MICROPY_STACK_CHECK
-    mp_stack_ctrl_init();
-    mp_stack_set_limit(48 * 1024);
+  mp_stack_ctrl_init();
+  mp_stack_set_limit(48 * 1024);
 #endif
 
 #if MICROPY_ENABLE_GC
-    gc_init(heap, heap + sizeof(heap));
+  gc_init(heap, heap + sizeof(heap));
 #endif
-    mp_init();
+  mp_init();
 #if MICROPY_ENABLE_COMPILER
 #if MICROPY_REPL_EVENT_DRIVEN
-    pyexec_event_repl_init();
-    for (;;) {
-        int c = mp_hal_stdin_rx_chr();
-        if (pyexec_event_repl_process_char(c)) {
-            break;
-        }
+  pyexec_event_repl_init();
+  for (;;) {
+    int c = mp_hal_stdin_rx_chr();
+    if (pyexec_event_repl_process_char(c)) {
+      break;
     }
+  }
 #else
-    pyexec_friendly_repl();
+  pyexec_friendly_repl();
 #endif
 #else
-    pyexec_frozen_module("frozentest.py");
+  pyexec_frozen_module("frozentest.py");
 #endif
-    mp_deinit();
-    return 0;
+  mp_deinit();
+  return 0;
 }
 
 void gc_collect(void) {
-    // WARNING: This gc_collect implementation doesn't try to get root
-    // pointers from CPU registers, and thus may function incorrectly.
-    void *dummy;
-    gc_collect_start();
-    gc_collect_root(&dummy, ((mp_uint_t)stack_top - (mp_uint_t)&dummy) / sizeof(mp_uint_t));
-    gc_collect_end();
-    gc_dump_info();
+  // WARNING: This gc_collect implementation doesn't try to get root
+  // pointers from CPU registers, and thus may function incorrectly.
+  void *dummy;
+  gc_collect_start();
+  gc_collect_root(&dummy, ((mp_uint_t)stack_top - (mp_uint_t)&dummy) /
+                              sizeof(mp_uint_t));
+  gc_collect_end();
+  gc_dump_info();
 }
 
 mp_lexer_t *mp_lexer_new_from_file(const char *filename) {
-    mp_raise_OSError(MP_ENOENT);
+  mp_raise_OSError(MP_ENOENT);
 }
 
 mp_import_stat_t mp_import_stat(const char *path) {
-    return MP_IMPORT_STAT_NO_EXIST;
+  return MP_IMPORT_STAT_NO_EXIST;
 }
 
-mp_obj_t mp_builtin_open(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs) {
-    return mp_const_none;
+mp_obj_t mp_builtin_open(size_t n_args, const mp_obj_t *args,
+                         mp_map_t *kwargs) {
+  return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_KW(mp_builtin_open_obj, 1, mp_builtin_open);
 
 void nlr_jump_fail(void *val) {
-    while (1) {
-        ;
-    }
+  while (1) {
+    ;
+  }
 }
 
 void NORETURN __fatal_error(const char *msg) {
-    while (1) {
-        ;
-    }
+  while (1) {
+    ;
+  }
 }
 
 #ifndef NDEBUG
-void MP_WEAK __assert_func(const char *file, int line, const char *func, const char *expr) {
-    printf("Assertion '%s' failed, at file %s:%d\n", expr, file, line);
-    __fatal_error("Assertion failed");
+void MP_WEAK __assert_func(const char *file, int line, const char *func,
+                           const char *expr) {
+  printf("Assertion '%s' failed, at file %s:%d\n", expr, file, line);
+  __fatal_error("Assertion failed");
 }
 #endif

@@ -44,14 +44,13 @@
 //
 //*****************************************************************************
 
+#include "timer.h"
+#include "debug.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_timer.h"
 #include "inc/hw_types.h"
-#include "debug.h"
 #include "interrupt.h"
-#include "timer.h"
-
 
 //*****************************************************************************
 //
@@ -67,14 +66,12 @@
 //
 //*****************************************************************************
 #ifdef DEBUG
-static tBoolean
-TimerBaseValid(unsigned long ulBase)
-{
-    return((ulBase == TIMERA0_BASE) || (ulBase == TIMERA1_BASE) ||
-           (ulBase == TIMERA2_BASE) || (ulBase == TIMERA3_BASE));
+static tBoolean TimerBaseValid(unsigned long ulBase) {
+  return ((ulBase == TIMERA0_BASE) || (ulBase == TIMERA1_BASE) ||
+          (ulBase == TIMERA2_BASE) || (ulBase == TIMERA3_BASE));
 }
 #else
-#define TimerBaseValid(ulBase)      (ulBase)
+#define TimerBaseValid(ulBase) (ulBase)
 #endif
 
 //*****************************************************************************
@@ -91,20 +88,18 @@ TimerBaseValid(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerEnable(unsigned long ulBase, unsigned long ulTimer)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerEnable(unsigned long ulBase, unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Enable the timer(s) module.
-    //
-    HWREG(ulBase + TIMER_O_CTL) |= ulTimer & (TIMER_CTL_TAEN | TIMER_CTL_TBEN);
+  //
+  // Enable the timer(s) module.
+  //
+  HWREG(ulBase + TIMER_O_CTL) |= ulTimer & (TIMER_CTL_TAEN | TIMER_CTL_TBEN);
 }
 
 //*****************************************************************************
@@ -120,21 +115,18 @@ TimerEnable(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerDisable(unsigned long ulBase, unsigned long ulTimer)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerDisable(unsigned long ulBase, unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Disable the timer module.
-    //
-    HWREG(ulBase + TIMER_O_CTL) &= ~(ulTimer &
-                                     (TIMER_CTL_TAEN | TIMER_CTL_TBEN));
+  //
+  // Disable the timer module.
+  //
+  HWREG(ulBase + TIMER_O_CTL) &= ~(ulTimer & (TIMER_CTL_TAEN | TIMER_CTL_TBEN));
 }
 
 //*****************************************************************************
@@ -182,52 +174,49 @@ TimerDisable(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerConfigure(unsigned long ulBase, unsigned long ulConfig)
-{
+void TimerConfigure(unsigned long ulBase, unsigned long ulConfig) {
 
-    ASSERT((ulConfig == TIMER_CFG_ONE_SHOT) ||
-           (ulConfig == TIMER_CFG_ONE_SHOT_UP) ||
-           (ulConfig == TIMER_CFG_PERIODIC) ||
-           (ulConfig == TIMER_CFG_PERIODIC_UP) ||
-           ((ulConfig & 0xff000000) == TIMER_CFG_SPLIT_PAIR));
-    ASSERT(((ulConfig & 0xff000000) != TIMER_CFG_SPLIT_PAIR) ||
-           ((((ulConfig & 0x000000ff) == TIMER_CFG_A_ONE_SHOT) ||
-             ((ulConfig & 0x000000ff) == TIMER_CFG_A_ONE_SHOT_UP) ||
-             ((ulConfig & 0x000000ff) == TIMER_CFG_A_PERIODIC) ||
-             ((ulConfig & 0x000000ff) == TIMER_CFG_A_PERIODIC_UP) ||
-             ((ulConfig & 0x000000ff) == TIMER_CFG_A_CAP_COUNT) ||
-             ((ulConfig & 0x000000ff) == TIMER_CFG_A_CAP_TIME) ||
-             ((ulConfig & 0x000000ff) == TIMER_CFG_A_PWM)) &&
-            (((ulConfig & 0x0000ff00) == TIMER_CFG_B_ONE_SHOT) ||
-             ((ulConfig & 0x0000ff00) == TIMER_CFG_B_ONE_SHOT_UP) ||
-             ((ulConfig & 0x0000ff00) == TIMER_CFG_B_PERIODIC) ||
-             ((ulConfig & 0x0000ff00) == TIMER_CFG_B_PERIODIC_UP) ||
-             ((ulConfig & 0x0000ff00) == TIMER_CFG_B_CAP_COUNT) ||
-             ((ulConfig & 0x0000ff00) == TIMER_CFG_B_CAP_TIME) ||
-             ((ulConfig & 0x0000ff00) == TIMER_CFG_B_PWM))));
+  ASSERT(
+      (ulConfig == TIMER_CFG_ONE_SHOT) || (ulConfig == TIMER_CFG_ONE_SHOT_UP) ||
+      (ulConfig == TIMER_CFG_PERIODIC) || (ulConfig == TIMER_CFG_PERIODIC_UP) ||
+      ((ulConfig & 0xff000000) == TIMER_CFG_SPLIT_PAIR));
+  ASSERT(((ulConfig & 0xff000000) != TIMER_CFG_SPLIT_PAIR) ||
+         ((((ulConfig & 0x000000ff) == TIMER_CFG_A_ONE_SHOT) ||
+           ((ulConfig & 0x000000ff) == TIMER_CFG_A_ONE_SHOT_UP) ||
+           ((ulConfig & 0x000000ff) == TIMER_CFG_A_PERIODIC) ||
+           ((ulConfig & 0x000000ff) == TIMER_CFG_A_PERIODIC_UP) ||
+           ((ulConfig & 0x000000ff) == TIMER_CFG_A_CAP_COUNT) ||
+           ((ulConfig & 0x000000ff) == TIMER_CFG_A_CAP_TIME) ||
+           ((ulConfig & 0x000000ff) == TIMER_CFG_A_PWM)) &&
+          (((ulConfig & 0x0000ff00) == TIMER_CFG_B_ONE_SHOT) ||
+           ((ulConfig & 0x0000ff00) == TIMER_CFG_B_ONE_SHOT_UP) ||
+           ((ulConfig & 0x0000ff00) == TIMER_CFG_B_PERIODIC) ||
+           ((ulConfig & 0x0000ff00) == TIMER_CFG_B_PERIODIC_UP) ||
+           ((ulConfig & 0x0000ff00) == TIMER_CFG_B_CAP_COUNT) ||
+           ((ulConfig & 0x0000ff00) == TIMER_CFG_B_CAP_TIME) ||
+           ((ulConfig & 0x0000ff00) == TIMER_CFG_B_PWM))));
 
-    //
-    // Enable CCP to IO path
-    //
-    HWREG(0x440260B0) = 0xFF;
+  //
+  // Enable CCP to IO path
+  //
+  HWREG(0x440260B0) = 0xFF;
 
-    //
-    // Disable the timers.
-    //
-    HWREG(ulBase + TIMER_O_CTL) &= ~(TIMER_CTL_TAEN | TIMER_CTL_TBEN);
+  //
+  // Disable the timers.
+  //
+  HWREG(ulBase + TIMER_O_CTL) &= ~(TIMER_CTL_TAEN | TIMER_CTL_TBEN);
 
-    //
-    // Set the global timer configuration.
-    //
-    HWREG(ulBase + TIMER_O_CFG) = ulConfig >> 24;
+  //
+  // Set the global timer configuration.
+  //
+  HWREG(ulBase + TIMER_O_CFG) = ulConfig >> 24;
 
-    //
-    // Set the configuration of the A and B timers.  Note that the B timer
-    // configuration is ignored by the hardware in 32-bit modes.
-    //
-    HWREG(ulBase + TIMER_O_TAMR) = ulConfig & 255;
-    HWREG(ulBase + TIMER_O_TBMR) = (ulConfig >> 8) & 255;
+  //
+  // Set the configuration of the A and B timers.  Note that the B timer
+  // configuration is ignored by the hardware in 32-bit modes.
+  //
+  HWREG(ulBase + TIMER_O_TAMR) = ulConfig & 255;
+  HWREG(ulBase + TIMER_O_TBMR) = (ulConfig >> 8) & 255;
 }
 
 //*****************************************************************************
@@ -246,24 +235,22 @@ TimerConfigure(unsigned long ulBase, unsigned long ulConfig)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerControlLevel(unsigned long ulBase, unsigned long ulTimer,
-                  tBoolean bInvert)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerControlLevel(unsigned long ulBase, unsigned long ulTimer,
+                       tBoolean bInvert) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Set the output levels as requested.
-    //
-    ulTimer &= TIMER_CTL_TAPWML | TIMER_CTL_TBPWML;
-    HWREG(ulBase + TIMER_O_CTL) = (bInvert ?
-                                   (HWREG(ulBase + TIMER_O_CTL) | ulTimer) :
-                                   (HWREG(ulBase + TIMER_O_CTL) & ~(ulTimer)));
+  //
+  // Set the output levels as requested.
+  //
+  ulTimer &= TIMER_CTL_TAPWML | TIMER_CTL_TBPWML;
+  HWREG(ulBase + TIMER_O_CTL) =
+      (bInvert ? (HWREG(ulBase + TIMER_O_CTL) | ulTimer)
+               : (HWREG(ulBase + TIMER_O_CTL) & ~(ulTimer)));
 }
 
 //*****************************************************************************
@@ -283,24 +270,23 @@ TimerControlLevel(unsigned long ulBase, unsigned long ulTimer,
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerControlEvent(unsigned long ulBase, unsigned long ulTimer,
-                  unsigned long ulEvent)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerControlEvent(unsigned long ulBase, unsigned long ulTimer,
+                       unsigned long ulEvent) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Set the event type.
-    //
-    ulEvent &= ulTimer & (TIMER_CTL_TAEVENT_M | TIMER_CTL_TBEVENT_M);
-    HWREG(ulBase + TIMER_O_CTL) = ((HWREG(ulBase + TIMER_O_CTL) &
-                                    ~(TIMER_CTL_TAEVENT_M |
-                                      TIMER_CTL_TBEVENT_M)) | ulEvent);
+  //
+  // Set the event type.
+  //
+  ulEvent &= ulTimer & (TIMER_CTL_TAEVENT_M | TIMER_CTL_TBEVENT_M);
+  HWREG(ulBase + TIMER_O_CTL) =
+      ((HWREG(ulBase + TIMER_O_CTL) &
+        ~(TIMER_CTL_TAEVENT_M | TIMER_CTL_TBEVENT_M)) |
+       ulEvent);
 }
 
 //*****************************************************************************
@@ -320,24 +306,22 @@ TimerControlEvent(unsigned long ulBase, unsigned long ulTimer,
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerControlStall(unsigned long ulBase, unsigned long ulTimer,
-                  tBoolean  bStall)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerControlStall(unsigned long ulBase, unsigned long ulTimer,
+                       tBoolean bStall) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Set the stall mode.
-    //
-    ulTimer &= TIMER_CTL_TASTALL | TIMER_CTL_TBSTALL;
-    HWREG(ulBase + TIMER_O_CTL) = (bStall ?
-                                   (HWREG(ulBase + TIMER_O_CTL) | ulTimer) :
-                                   (HWREG(ulBase + TIMER_O_CTL) & ~(ulTimer)));
+  //
+  // Set the stall mode.
+  //
+  ulTimer &= TIMER_CTL_TASTALL | TIMER_CTL_TBSTALL;
+  HWREG(ulBase + TIMER_O_CTL) =
+      (bStall ? (HWREG(ulBase + TIMER_O_CTL) | ulTimer)
+              : (HWREG(ulBase + TIMER_O_CTL) & ~(ulTimer)));
 }
 
 //*****************************************************************************
@@ -357,35 +341,30 @@ TimerControlStall(unsigned long ulBase, unsigned long ulTimer,
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerPrescaleSet(unsigned long ulBase, unsigned long ulTimer,
-                 unsigned long ulValue)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
-    ASSERT(ulValue < 256);
+void TimerPrescaleSet(unsigned long ulBase, unsigned long ulTimer,
+                      unsigned long ulValue) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
+  ASSERT(ulValue < 256);
 
-    //
-    // Set the timer A prescaler if requested.
-    //
-    if(ulTimer & TIMER_A)
-    {
-        HWREG(ulBase + TIMER_O_TAPR) = ulValue;
-    }
+  //
+  // Set the timer A prescaler if requested.
+  //
+  if (ulTimer & TIMER_A) {
+    HWREG(ulBase + TIMER_O_TAPR) = ulValue;
+  }
 
-    //
-    // Set the timer B prescaler if requested.
-    //
-    if(ulTimer & TIMER_B)
-    {
-        HWREG(ulBase + TIMER_O_TBPR) = ulValue;
-    }
+  //
+  // Set the timer B prescaler if requested.
+  //
+  if (ulTimer & TIMER_B) {
+    HWREG(ulBase + TIMER_O_TBPR) = ulValue;
+  }
 }
-
 
 //*****************************************************************************
 //
@@ -403,21 +382,19 @@ TimerPrescaleSet(unsigned long ulBase, unsigned long ulTimer,
 //
 //*****************************************************************************
 
-unsigned long
-TimerPrescaleGet(unsigned long ulBase, unsigned long ulTimer)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+unsigned long TimerPrescaleGet(unsigned long ulBase, unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Return the appropriate prescale value.
-    //
-    return((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAPR) :
-           HWREG(ulBase + TIMER_O_TBPR));
+  //
+  // Return the appropriate prescale value.
+  //
+  return ((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAPR)
+                               : HWREG(ulBase + TIMER_O_TBPR));
 }
 
 //*****************************************************************************
@@ -441,33 +418,29 @@ TimerPrescaleGet(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerPrescaleMatchSet(unsigned long ulBase, unsigned long ulTimer,
-                      unsigned long ulValue)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
-    ASSERT(ulValue < 256);
+void TimerPrescaleMatchSet(unsigned long ulBase, unsigned long ulTimer,
+                           unsigned long ulValue) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
+  ASSERT(ulValue < 256);
 
-    //
-    // Set the timer A prescale match if requested.
-    //
-    if(ulTimer & TIMER_A)
-    {
-        HWREG(ulBase + TIMER_O_TAPMR) = ulValue;
-    }
+  //
+  // Set the timer A prescale match if requested.
+  //
+  if (ulTimer & TIMER_A) {
+    HWREG(ulBase + TIMER_O_TAPMR) = ulValue;
+  }
 
-    //
-    // Set the timer B prescale match if requested.
-    //
-    if(ulTimer & TIMER_B)
-    {
-        HWREG(ulBase + TIMER_O_TBPMR) = ulValue;
-    }
+  //
+  // Set the timer B prescale match if requested.
+  //
+  if (ulTimer & TIMER_B) {
+    HWREG(ulBase + TIMER_O_TBPMR) = ulValue;
+  }
 }
 
 //*****************************************************************************
@@ -489,21 +462,20 @@ TimerPrescaleMatchSet(unsigned long ulBase, unsigned long ulTimer,
 //! \return The value of the timer prescale match.
 //
 //*****************************************************************************
-unsigned long
-TimerPrescaleMatchGet(unsigned long ulBase, unsigned long ulTimer)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+unsigned long TimerPrescaleMatchGet(unsigned long ulBase,
+                                    unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Return the appropriate prescale match value.
-    //
-    return((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAPMR) :
-           HWREG(ulBase + TIMER_O_TBPMR));
+  //
+  // Return the appropriate prescale match value.
+  //
+  return ((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAPMR)
+                               : HWREG(ulBase + TIMER_O_TBPMR));
 }
 
 //*****************************************************************************
@@ -525,32 +497,28 @@ TimerPrescaleMatchGet(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerLoadSet(unsigned long ulBase, unsigned long ulTimer,
-             unsigned long ulValue)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerLoadSet(unsigned long ulBase, unsigned long ulTimer,
+                  unsigned long ulValue) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Set the timer A load value if requested.
-    //
-    if(ulTimer & TIMER_A)
-    {
-        HWREG(ulBase + TIMER_O_TAILR) = ulValue;
-    }
+  //
+  // Set the timer A load value if requested.
+  //
+  if (ulTimer & TIMER_A) {
+    HWREG(ulBase + TIMER_O_TAILR) = ulValue;
+  }
 
-    //
-    // Set the timer B load value if requested.
-    //
-    if(ulTimer & TIMER_B)
-    {
-        HWREG(ulBase + TIMER_O_TBILR) = ulValue;
-    }
+  //
+  // Set the timer B load value if requested.
+  //
+  if (ulTimer & TIMER_B) {
+    HWREG(ulBase + TIMER_O_TBILR) = ulValue;
+  }
 }
 
 //*****************************************************************************
@@ -571,20 +539,18 @@ TimerLoadSet(unsigned long ulBase, unsigned long ulTimer,
 //! \return Returns the load value for the timer.
 //
 //*****************************************************************************
-unsigned long
-TimerLoadGet(unsigned long ulBase, unsigned long ulTimer)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
+unsigned long TimerLoadGet(unsigned long ulBase, unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
 
-    //
-    // Return the appropriate load value.
-    //
-    return((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAILR) :
-           HWREG(ulBase + TIMER_O_TBILR));
+  //
+  // Return the appropriate load value.
+  //
+  return ((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAILR)
+                               : HWREG(ulBase + TIMER_O_TBILR));
 }
 
 //*****************************************************************************
@@ -601,20 +567,18 @@ TimerLoadGet(unsigned long ulBase, unsigned long ulTimer)
 //! \return Returns the current value of the timer.
 //
 //*****************************************************************************
-unsigned long
-TimerValueGet(unsigned long ulBase, unsigned long ulTimer)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
+unsigned long TimerValueGet(unsigned long ulBase, unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
 
-    //
-    // Return the appropriate timer value.
-    //
-    return((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAR) :
-           HWREG(ulBase + TIMER_O_TBR));
+  //
+  // Return the appropriate timer value.
+  //
+  return ((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAR)
+                               : HWREG(ulBase + TIMER_O_TBR));
 }
 
 //*****************************************************************************
@@ -632,29 +596,23 @@ TimerValueGet(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerValueSet(unsigned long ulBase, unsigned long ulTimer,
-              unsigned long ulValue)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
+void TimerValueSet(unsigned long ulBase, unsigned long ulTimer,
+                   unsigned long ulValue) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
 
-    //
-    // Set the appropriate timer value.
-    //
-    if( (ulTimer == TIMER_A) )
-    {
-        HWREG(ulBase + TIMER_O_TAV) = ulValue;
-    }
-    else
-    {
-        HWREG(ulBase + TIMER_O_TBV) = ulValue;
-    }
+  //
+  // Set the appropriate timer value.
+  //
+  if ((ulTimer == TIMER_A)) {
+    HWREG(ulBase + TIMER_O_TAV) = ulValue;
+  } else {
+    HWREG(ulBase + TIMER_O_TBV) = ulValue;
+  }
 }
-
 
 //*****************************************************************************
 //
@@ -673,32 +631,28 @@ TimerValueSet(unsigned long ulBase, unsigned long ulTimer,
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerMatchSet(unsigned long ulBase, unsigned long ulTimer,
-              unsigned long ulValue)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerMatchSet(unsigned long ulBase, unsigned long ulTimer,
+                   unsigned long ulValue) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    //
-    // Set the timer A match value if requested.
-    //
-    if(ulTimer & TIMER_A)
-    {
-        HWREG(ulBase + TIMER_O_TAMATCHR) = ulValue;
-    }
+  //
+  // Set the timer A match value if requested.
+  //
+  if (ulTimer & TIMER_A) {
+    HWREG(ulBase + TIMER_O_TAMATCHR) = ulValue;
+  }
 
-    //
-    // Set the timer B match value if requested.
-    //
-    if(ulTimer & TIMER_B)
-    {
-        HWREG(ulBase + TIMER_O_TBMATCHR) = ulValue;
-    }
+  //
+  // Set the timer B match value if requested.
+  //
+  if (ulTimer & TIMER_B) {
+    HWREG(ulBase + TIMER_O_TBMATCHR) = ulValue;
+  }
 }
 
 //*****************************************************************************
@@ -715,22 +669,19 @@ TimerMatchSet(unsigned long ulBase, unsigned long ulTimer,
 //! \return Returns the match value for the timer.
 //
 //********************************************************************************
-unsigned long
-TimerMatchGet(unsigned long ulBase, unsigned long ulTimer)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
+unsigned long TimerMatchGet(unsigned long ulBase, unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B));
 
-    //
-    // Return the appropriate match value.
-    //
-    return((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAMATCHR) :
-           HWREG(ulBase + TIMER_O_TBMATCHR));
+  //
+  // Return the appropriate match value.
+  //
+  return ((ulTimer == TIMER_A) ? HWREG(ulBase + TIMER_O_TAMATCHR)
+                               : HWREG(ulBase + TIMER_O_TBMATCHR));
 }
-
 
 //*****************************************************************************
 //
@@ -754,52 +705,51 @@ TimerMatchGet(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerIntRegister(unsigned long ulBase, unsigned long ulTimer,
-                 void (*pfnHandler)(void))
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+void TimerIntRegister(unsigned long ulBase, unsigned long ulTimer,
+                      void (*pfnHandler)(void)) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
 
-    ulBase = ((ulBase == TIMERA0_BASE) ? INT_TIMERA0A :
-              ((ulBase == TIMERA1_BASE) ? INT_TIMERA1A :
-               ((ulBase == TIMERA2_BASE) ? INT_TIMERA2A : INT_TIMERA3A)));
+  ulBase =
+      ((ulBase == TIMERA0_BASE)
+           ? INT_TIMERA0A
+           : ((ulBase == TIMERA1_BASE)
+                  ? INT_TIMERA1A
+                  : ((ulBase == TIMERA2_BASE) ? INT_TIMERA2A : INT_TIMERA3A)));
 
+  //
+  // Register an interrupt handler for timer A if requested.
+  //
+  if (ulTimer & TIMER_A) {
     //
-    // Register an interrupt handler for timer A if requested.
+    // Register the interrupt handler.
     //
-    if(ulTimer & TIMER_A)
-    {
-        //
-        // Register the interrupt handler.
-        //
-        IntRegister(ulBase, pfnHandler);
-
-        //
-        // Enable the interrupt.
-        //
-        IntEnable(ulBase);
-    }
+    IntRegister(ulBase, pfnHandler);
 
     //
-    // Register an interrupt handler for timer B if requested.
+    // Enable the interrupt.
     //
-    if(ulTimer & TIMER_B)
-    {
-        //
-        // Register the interrupt handler.
-        //
-        IntRegister(ulBase + 1, pfnHandler);
+    IntEnable(ulBase);
+  }
 
-        //
-        // Enable the interrupt.
-        //
-        IntEnable(ulBase + 1);
-    }
+  //
+  // Register an interrupt handler for timer B if requested.
+  //
+  if (ulTimer & TIMER_B) {
+    //
+    // Register the interrupt handler.
+    //
+    IntRegister(ulBase + 1, pfnHandler);
+
+    //
+    // Enable the interrupt.
+    //
+    IntEnable(ulBase + 1);
+  }
 }
 
 //*****************************************************************************
@@ -820,57 +770,54 @@ TimerIntRegister(unsigned long ulBase, unsigned long ulTimer,
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerIntUnregister(unsigned long ulBase, unsigned long ulTimer)
-{
+void TimerIntUnregister(unsigned long ulBase, unsigned long ulTimer) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
+  ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
+         (ulTimer == TIMER_BOTH));
+
+  //
+  // Get the interrupt number for this timer module.
+  //
+
+  ulBase =
+      ((ulBase == TIMERA0_BASE)
+           ? INT_TIMERA0A
+           : ((ulBase == TIMERA1_BASE)
+                  ? INT_TIMERA1A
+                  : ((ulBase == TIMERA2_BASE) ? INT_TIMERA2A : INT_TIMERA3A)));
+
+  //
+  // Unregister the interrupt handler for timer A if requested.
+  //
+  if (ulTimer & TIMER_A) {
     //
-    // Check the arguments.
+    // Disable the interrupt.
     //
-    ASSERT(TimerBaseValid(ulBase));
-    ASSERT((ulTimer == TIMER_A) || (ulTimer == TIMER_B) ||
-           (ulTimer == TIMER_BOTH));
+    IntDisable(ulBase);
 
     //
-    // Get the interrupt number for this timer module.
+    // Unregister the interrupt handler.
     //
+    IntUnregister(ulBase);
+  }
 
-    ulBase = ((ulBase == TIMERA0_BASE) ? INT_TIMERA0A :
-              ((ulBase == TIMERA1_BASE) ? INT_TIMERA1A :
-               ((ulBase == TIMERA2_BASE) ? INT_TIMERA2A : INT_TIMERA3A)));
-
-
-
+  //
+  // Unregister the interrupt handler for timer B if requested.
+  //
+  if (ulTimer & TIMER_B) {
     //
-    // Unregister the interrupt handler for timer A if requested.
+    // Disable the interrupt.
     //
-    if(ulTimer & TIMER_A)
-    {
-        //
-        // Disable the interrupt.
-        //
-        IntDisable(ulBase);
-
-        //
-        // Unregister the interrupt handler.
-        //
-        IntUnregister(ulBase);
-    }
+    IntDisable(ulBase + 1);
 
     //
-    // Unregister the interrupt handler for timer B if requested.
+    // Unregister the interrupt handler.
     //
-    if(ulTimer & TIMER_B)
-    {
-        //
-        // Disable the interrupt.
-        //
-        IntDisable(ulBase + 1);
-
-        //
-        // Unregister the interrupt handler.
-        //
-        IntUnregister(ulBase + 1);
-    }
+    IntUnregister(ulBase + 1);
+  }
 }
 
 //*****************************************************************************
@@ -897,18 +844,16 @@ TimerIntUnregister(unsigned long ulBase, unsigned long ulTimer)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
+void TimerIntEnable(unsigned long ulBase, unsigned long ulIntFlags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
 
-    //
-    // Enable the specified interrupts.
-    //
-    HWREG(ulBase + TIMER_O_IMR) |= ulIntFlags;
+  //
+  // Enable the specified interrupts.
+  //
+  HWREG(ulBase + TIMER_O_IMR) |= ulIntFlags;
 }
 
 //*****************************************************************************
@@ -928,18 +873,16 @@ TimerIntEnable(unsigned long ulBase, unsigned long ulIntFlags)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
+void TimerIntDisable(unsigned long ulBase, unsigned long ulIntFlags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
 
-    //
-    // Disable the specified interrupts.
-    //
-    HWREG(ulBase + TIMER_O_IMR) &= ~(ulIntFlags);
+  //
+  // Disable the specified interrupts.
+  //
+  HWREG(ulBase + TIMER_O_IMR) &= ~(ulIntFlags);
 }
 
 //*****************************************************************************
@@ -958,20 +901,17 @@ TimerIntDisable(unsigned long ulBase, unsigned long ulIntFlags)
 //! values described in TimerIntEnable().
 //
 //*****************************************************************************
-unsigned long
-TimerIntStatus(unsigned long ulBase, tBoolean bMasked)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
+unsigned long TimerIntStatus(unsigned long ulBase, tBoolean bMasked) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
 
-    //
-    // Return either the interrupt status or the raw interrupt status as
-    // requested.
-    //
-    return(bMasked ? HWREG(ulBase + TIMER_O_MIS) :
-           HWREG(ulBase + TIMER_O_RIS));
+  //
+  // Return either the interrupt status or the raw interrupt status as
+  // requested.
+  //
+  return (bMasked ? HWREG(ulBase + TIMER_O_MIS) : HWREG(ulBase + TIMER_O_RIS));
 }
 
 //*****************************************************************************
@@ -1000,18 +940,16 @@ TimerIntStatus(unsigned long ulBase, tBoolean bMasked)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerIntClear(unsigned long ulBase, unsigned long ulIntFlags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
+void TimerIntClear(unsigned long ulBase, unsigned long ulIntFlags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
 
-    //
-    // Clear the requested interrupt sources.
-    //
-    HWREG(ulBase + TIMER_O_ICR) = ulIntFlags;
+  //
+  // Clear the requested interrupt sources.
+  //
+  HWREG(ulBase + TIMER_O_ICR) = ulIntFlags;
 }
 
 //*****************************************************************************
@@ -1043,18 +981,16 @@ TimerIntClear(unsigned long ulBase, unsigned long ulIntFlags)
 //! \return None.
 //
 //*****************************************************************************
-void
-TimerDMAEventSet(unsigned long ulBase, unsigned long ulDMAEvent)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
+void TimerDMAEventSet(unsigned long ulBase, unsigned long ulDMAEvent) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
 
-    //
-    // Set the DMA triggers.
-    //
-    HWREG(ulBase + TIMER_O_DMAEV) = ulDMAEvent;
+  //
+  // Set the DMA triggers.
+  //
+  HWREG(ulBase + TIMER_O_DMAEV) = ulDMAEvent;
 }
 
 //*****************************************************************************
@@ -1085,18 +1021,16 @@ TimerDMAEventSet(unsigned long ulBase, unsigned long ulDMAEvent)
 //! \return The timer events that trigger the uDMA.
 //
 //*****************************************************************************
-unsigned long
-TimerDMAEventGet(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(TimerBaseValid(ulBase));
+unsigned long TimerDMAEventGet(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(TimerBaseValid(ulBase));
 
-    //
-    // Return the current DMA triggers.
-    //
-    return(HWREG(ulBase + TIMER_O_DMAEV));
+  //
+  // Return the current DMA triggers.
+  //
+  return (HWREG(ulBase + TIMER_O_DMAEV));
 }
 //*****************************************************************************
 //

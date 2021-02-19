@@ -38,8 +38,8 @@
 // provided by usb_dev.c are meant to be called only by
 // code which provides higher-level interfaces to the user.
 
-#include "usb_mem.h"
 #include "usb_desc.h"
+#include "usb_mem.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,12 +57,13 @@ void usb_tx_isr(uint32_t endpoint, usb_packet_t *packet);
 extern volatile uint8_t usb_configuration;
 
 extern uint16_t usb_rx_byte_count_data[NUM_ENDPOINTS];
-static inline uint32_t usb_rx_byte_count(uint32_t endpoint) __attribute__((always_inline));
 static inline uint32_t usb_rx_byte_count(uint32_t endpoint)
-{
-    endpoint--;
-    if (endpoint >= NUM_ENDPOINTS) return 0;
-    return usb_rx_byte_count_data[endpoint];
+    __attribute__((always_inline));
+static inline uint32_t usb_rx_byte_count(uint32_t endpoint) {
+  endpoint--;
+  if (endpoint >= NUM_ENDPOINTS)
+    return 0;
+  return usb_rx_byte_count_data[endpoint];
 }
 
 #ifdef CDC_DATA_INTERFACE
@@ -94,14 +95,9 @@ extern void usb_midi_flush_output(void);
 extern void usb_flightsim_flush_callback(void);
 #endif
 
-
-
-
-
 #ifdef __cplusplus
 }
 #endif
-
 
 #endif // F_CPU >= 20 MHz
 

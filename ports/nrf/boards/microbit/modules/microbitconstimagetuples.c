@@ -22,39 +22,33 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
 #include "microbitconstimage.h"
+#include "py/runtime.h"
 
 const image_tuple_12_t microbit_const_image_all_clocks_tuple_obj = {
     {&mp_type_tuple},
     .len = 12,
-    .items = {
-        (mp_obj_t)&microbit_const_image_clock12_obj,
-        (mp_obj_t)&microbit_const_image_clock1_obj,
-        (mp_obj_t)&microbit_const_image_clock2_obj,
-        (mp_obj_t)&microbit_const_image_clock3_obj,
-        (mp_obj_t)&microbit_const_image_clock4_obj,
-        (mp_obj_t)&microbit_const_image_clock5_obj,
-        (mp_obj_t)&microbit_const_image_clock6_obj,
-        (mp_obj_t)&microbit_const_image_clock7_obj,
-        (mp_obj_t)&microbit_const_image_clock8_obj,
-        (mp_obj_t)&microbit_const_image_clock9_obj,
-        (mp_obj_t)&microbit_const_image_clock10_obj,
-        (mp_obj_t)&microbit_const_image_clock11_obj
-    }
-};
+    .items = {(mp_obj_t)&microbit_const_image_clock12_obj,
+              (mp_obj_t)&microbit_const_image_clock1_obj,
+              (mp_obj_t)&microbit_const_image_clock2_obj,
+              (mp_obj_t)&microbit_const_image_clock3_obj,
+              (mp_obj_t)&microbit_const_image_clock4_obj,
+              (mp_obj_t)&microbit_const_image_clock5_obj,
+              (mp_obj_t)&microbit_const_image_clock6_obj,
+              (mp_obj_t)&microbit_const_image_clock7_obj,
+              (mp_obj_t)&microbit_const_image_clock8_obj,
+              (mp_obj_t)&microbit_const_image_clock9_obj,
+              (mp_obj_t)&microbit_const_image_clock10_obj,
+              (mp_obj_t)&microbit_const_image_clock11_obj}};
 
 const image_tuple_8_t microbit_const_image_all_arrows_tuple_obj = {
     {&mp_type_tuple},
     .len = 8,
-    .items = {
-        (mp_obj_t)&microbit_const_image_arrow_n_obj,
-        (mp_obj_t)&microbit_const_image_arrow_ne_obj,
-        (mp_obj_t)&microbit_const_image_arrow_e_obj,
-        (mp_obj_t)&microbit_const_image_arrow_se_obj,
-        (mp_obj_t)&microbit_const_image_arrow_s_obj,
-        (mp_obj_t)&microbit_const_image_arrow_sw_obj,
-        (mp_obj_t)&microbit_const_image_arrow_w_obj,
-        (mp_obj_t)&microbit_const_image_arrow_nw_obj
-    }
-};
+    .items = {(mp_obj_t)&microbit_const_image_arrow_n_obj,
+              (mp_obj_t)&microbit_const_image_arrow_ne_obj,
+              (mp_obj_t)&microbit_const_image_arrow_e_obj,
+              (mp_obj_t)&microbit_const_image_arrow_se_obj,
+              (mp_obj_t)&microbit_const_image_arrow_s_obj,
+              (mp_obj_t)&microbit_const_image_arrow_sw_obj,
+              (mp_obj_t)&microbit_const_image_arrow_w_obj,
+              (mp_obj_t)&microbit_const_image_arrow_nw_obj}};

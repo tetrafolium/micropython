@@ -34,14 +34,14 @@
  ******************************************************************************/
 
 typedef struct _os_term_dup_obj_t {
-    mp_obj_t stream_o;
-    mp_obj_t read[3];
-    mp_obj_t write[3];
+  mp_obj_t stream_o;
+  mp_obj_t read[3];
+  mp_obj_t write[3];
 } os_term_dup_obj_t;
 
 /******************************************************************************
  DECLARE PUBLIC FUNCTIONS
  ******************************************************************************/
-void osmount_unmount_all (void);
+void osmount_unmount_all(void);
 
 #endif // MICROPY_INCLUDED_CC3200_MODS_MODUOS_H

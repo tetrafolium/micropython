@@ -41,7 +41,7 @@
 // The following are defines for the GPIO register offsets.
 //
 //*****************************************************************************
-#define GPIO_O_GPIO_DATA        0x00000000  // 0x4000 5000 0x4000 6000 0x4000
+#define GPIO_O_GPIO_DATA 0x00000000 // 0x4000 5000 0x4000 6000 0x4000
 // 7000 0x4002 4000 GPIO Data
 // (GPIODATA)@@ offset 0x000 The
 // GPIODATA register is the data
@@ -79,7 +79,7 @@
 // when these are configured as
 // inputs. All bits are cleared by a
 // reset.
-#define GPIO_O_GPIO_DIR         0x00000400  // 0x4000 5400 0x4000 6400 0x4000
+#define GPIO_O_GPIO_DIR 0x00000400 // 0x4000 5400 0x4000 6400 0x4000
 // 7400 0x4002 4400 GPIO Direction
 // (GPIODIR)@@ offset 0x400 The
 // GPIODIR register is the data
@@ -92,7 +92,7 @@
 // All bits are cleared by a reset@@
 // meaning all GPIO pins are inputs
 // by default.
-#define GPIO_O_GPIO_IS          0x00000404  // 0x4000 5404 0x4000 6404 0x4000
+#define GPIO_O_GPIO_IS 0x00000404 // 0x4000 5404 0x4000 6404 0x4000
 // 7404 0x4002 4404 GPIO Interrupt
 // Sense (GPIOIS)@@ offset 0x404 The
 // GPIOIS register is the interrupt
@@ -103,7 +103,7 @@
 // configures the corresponding pin
 // to detect edges. All bits are
 // cleared by a reset.
-#define GPIO_O_GPIO_IBE         0x00000408  // 0x4000 5408 0x4000 6408 0x4000
+#define GPIO_O_GPIO_IBE 0x00000408 // 0x4000 5408 0x4000 6408 0x4000
 // 7408 0x4002 4408 GPIO Interrupt
 // Both Edges (GPIOIBE)@@ offset
 // 0x408 The GPIOIBE register allows
@@ -122,7 +122,7 @@
 // controlled by the GPIOIEV
 // register. All bits are cleared by
 // a reset.
-#define GPIO_O_GPIO_IEV         0x0000040C  // 0x4000 540C 0x4000 640C 0x4000
+#define GPIO_O_GPIO_IEV 0x0000040C // 0x4000 540C 0x4000 640C 0x4000
 // 740C 0x4002 440C GPIO Interrupt
 // Event (GPIOIEV)@@ offset 0x40C
 // The GPIOIEV register is the
@@ -139,7 +139,7 @@
 // depending on the corresponding
 // bit value in the GPIOIS register.
 // All bits are cleared by a reset.
-#define GPIO_O_GPIO_IM          0x00000410  // 0x4000 5410 0x4000 6410 0x4000
+#define GPIO_O_GPIO_IM 0x00000410 // 0x4000 5410 0x4000 6410 0x4000
 // 7410 0x4002 4410 GPIO Interrupt
 // Mask (GPIOIM)@@ offset 0x410 The
 // GPIOIM register is the interrupt
@@ -154,7 +154,7 @@
 // pin from being sent to the
 // interrupt controller. All bits
 // are cleared by a reset.
-#define GPIO_O_GPIO_RIS         0x00000414  // 0x4000 5414 0x4000 6414 0x4000
+#define GPIO_O_GPIO_RIS 0x00000414 // 0x4000 5414 0x4000 6414 0x4000
 // 7414 0x4002 4414 GPIO Raw
 // Interrupt Status (GPIORIS)@@
 // offset 0x414 The GPIORIS register
@@ -174,7 +174,7 @@
 // writing a 1 to the corresponding
 // bit in the GPIO Interrupt Clear
 // (GPIOICR) register.
-#define GPIO_O_GPIO_MIS         0x00000418  // 0x4000 5418 0x4000 6418 0x4000
+#define GPIO_O_GPIO_MIS 0x00000418 // 0x4000 5418 0x4000 6418 0x4000
 // 7418 0x4002 4418 GPIO Masked
 // Interrupt Status (GPIOMIS)@@
 // offset 0x418 The GPIOMIS register
@@ -232,7 +232,7 @@
 // microcontroller. GPIOMIS is the
 // state of the interrupt after
 // masking.
-#define GPIO_O_GPIO_ICR         0x0000041C  // 0x4000 541C 0x4000 641C 0x4000
+#define GPIO_O_GPIO_ICR 0x0000041C // 0x4000 541C 0x4000 641C 0x4000
 // 741C 0x4002 441C GPIO Interrupt
 // Clear (GPIOICR)@@ offset 0x41C
 // The GPIOICR register is the
@@ -242,7 +242,7 @@
 // interrupt bit in the GPIORIS and
 // GPIOMIS registers. Writing a 0
 // has no effect.
-#define GPIO_O_GPIO_AFSEL       0x00000420  // 0x4000 5420 0x4000 6420 0x4000
+#define GPIO_O_GPIO_AFSEL 0x00000420 // 0x4000 5420 0x4000 6420 0x4000
 // 7420 0x4002 4420 GPIO Alternate
 // Function Select (GPIOAFSEL)@@
 // offset 0x420 The GPIOAFSEL
@@ -260,7 +260,7 @@
 // GPIO Port Control (GPIOPCTL)
 // register is used to select one of
 // the possible functions.
-#define GPIO_O_GPIO_DR2R        0x00000500  // 0x4000 5500 0x4000 6500 0x4000
+#define GPIO_O_GPIO_DR2R 0x00000500 // 0x4000 5500 0x4000 6500 0x4000
 // 7500 0x4002 4500 GPIO 2-mA Drive
 // Select (GPIODR2R)@@ offset 0x500
 // The GPIODR2R register is the 2-mA
@@ -275,7 +275,7 @@
 // are automatically cleared by
 // hardware. By default@@ all GPIO
 // pins have 2-mA drive.
-#define GPIO_O_GPIO_DR4R        0x00000504  // 0x4000 5504 0x4000 6504 0x4000
+#define GPIO_O_GPIO_DR4R 0x00000504 // 0x4000 5504 0x4000 6504 0x4000
 // 7504 0x4002 4504 GPIO 4-mA Drive
 // Select (GPIODR4R)@@ offset 0x504
 // The GPIODR4R register is the 4-mA
@@ -289,7 +289,7 @@
 // DRV8 bit in the GPIODR8R register
 // are automatically cleared by
 // hardware.
-#define GPIO_O_GPIO_DR8R        0x00000508  // 0x4000 5508 0x4000 6508 0x4000
+#define GPIO_O_GPIO_DR8R 0x00000508 // 0x4000 5508 0x4000 6508 0x4000
 // 7508 0x4002 4508 GPIO 8-mA Drive
 // Select (GPIODR8R)@@ offset 0x508
 // The GPIODR8R register is the 8-mA
@@ -310,7 +310,7 @@
 // The additional current capacity
 // results from a shift in the
 // VOH/VOL levels.
-#define GPIO_O_GPIO_ODR         0x0000050C  // 0x4000 550C 0x4000 650C 0x4000
+#define GPIO_O_GPIO_ODR 0x0000050C // 0x4000 550C 0x4000 650C 0x4000
 // 750C 0x4002 450C GPIO Open Drain
 // Select (GPIOODR)@@ offset 0x50C
 // The GPIOODR register is the open
@@ -343,7 +343,7 @@
 // Function Select (GPIOAFSEL)
 // register bits for the I2C clock
 // and data pins should be set
-#define GPIO_O_GPIO_PUR         0x00000510  // 0x4000 5510 0x4000 6510 0x4000
+#define GPIO_O_GPIO_PUR 0x00000510 // 0x4000 5510 0x4000 6510 0x4000
 // 7510 0x4002 4510 GPIO Pull-Up
 // Select (GPIOPUR)@@ offset 0x510
 // The GPIOPUR register is the
@@ -360,7 +360,7 @@
 // GPIOCR that are cleared prevent
 // writes to the equivalent bit in
 // this register.
-#define GPIO_O_GPIO_PDR         0x00000514  // 0x4000 5514 0x4000 6514 0x4000
+#define GPIO_O_GPIO_PDR 0x00000514 // 0x4000 5514 0x4000 6514 0x4000
 // 7514 0x4002 4514 GPIO Pull-Down
 // Select (GPIOPDR)@@ offset 0x514
 // The GPIOPDR register is the
@@ -372,7 +372,7 @@
 // clears the corresponding bit in
 // the GPIO Pull-Up Select (GPIOPUR)
 // register
-#define GPIO_O_GPIO_SLR         0x00000518  // 0x4000 5518 0x4000 6518 0x4000
+#define GPIO_O_GPIO_SLR 0x00000518 // 0x4000 5518 0x4000 6518 0x4000
 // 7518 0x4002 4518 The GPIOSLR
 // register is the slew rate control
 // register. Slew rate control is
@@ -380,7 +380,7 @@
 // 8-mA drive strength option via
 // the GPIO 8-mA Drive Select
 // (GPIODR8R) register
-#define GPIO_O_GPIO_DEN         0x0000051C  // 0x4000 551C 0x4000 651C 0x4000
+#define GPIO_O_GPIO_DEN 0x0000051C // 0x4000 551C 0x4000 651C 0x4000
 // 751C 0x4002 451C GPIO Digital
 // Enable (GPIODEN)@@ offset 0x51C
 // Note: Pins configured as digital
@@ -399,7 +399,7 @@
 // GPIO or alternate function)@@ the
 // corresponding GPIODEN bit must be
 // set.
-#define GPIO_O_GPIO_LOCK        0x00000520  // 0x4000 5520 0x4000 6520 0x4000
+#define GPIO_O_GPIO_LOCK 0x00000520 // 0x4000 5520 0x4000 6520 0x4000
 // 7520 0x4002 4520 GPIO Lock
 // (GPIOLOCK)@@ offset 0x520 The
 // GPIOLOCK register enables write
@@ -420,7 +420,7 @@
 // accesses are enabled@@ or
 // unlocked@@ reading the GPIOLOCK
 // register returns 0x0000.0000.
-#define GPIO_O_GPIO_CR          0x00000524  // 0x4000 5524 0x4000 6524 0x4000
+#define GPIO_O_GPIO_CR 0x00000524 // 0x4000 5524 0x4000 6524 0x4000
 // 7524 0x4002 4524 GPIO Commit
 // (GPIOCR)@@ offset 0x524 The
 // GPIOCR register is the commit
@@ -450,7 +450,7 @@
 // Writes to the GPIOCR register are
 // ignored if the status in the
 // GPIOLOCK register is locked.
-#define GPIO_O_GPIO_AMSEL       0x00000528  // 0x4000 5528 0x4000 6528 0x4000
+#define GPIO_O_GPIO_AMSEL 0x00000528 // 0x4000 5528 0x4000 6528 0x4000
 // 7528 0x4002 4528 The GPIOAMSEL
 // register controls isolation
 // circuits to the analog side of a
@@ -464,7 +464,7 @@
 // register controls the isolation
 // circuitry for the corresponding
 // GPIO signal.
-#define GPIO_O_GPIO_PCTL        0x0000052C  // This register is not used in
+#define GPIO_O_GPIO_PCTL 0x0000052C // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -490,7 +490,7 @@
 // peripheral functions for each
 // GPIO@@ providing additional
 // flexibility in signal definition.
-#define GPIO_O_GPIO_ADCCTL      0x00000530  // This register is not used in
+#define GPIO_O_GPIO_ADCCTL 0x00000530 // This register is not used in
 // cc3xx. ADC trigger via GPIO is
 // not supported. 0x4000 5530 0x4000
 // 6530 0x4000 7530 0x4002 4530 GPIO
@@ -505,20 +505,20 @@
 // allows code written for previous
 // Stellaris devices to operate on
 // this microcontroller.
-#define GPIO_O_GPIO_DMACTL      0x00000534  // 0x4000 5534 0x4000 6534 0x4000
+#define GPIO_O_GPIO_DMACTL 0x00000534 // 0x4000 5534 0x4000 6534 0x4000
 // 7534 0x4002 4534 GPIO DMA Control
 // (GPIODMACTL)@@ offset 0x534 This
 // register is used to configure a
 // GPIO pin as a source for the ?DMA
 // trigger.
-#define GPIO_O_GPIO_SI          0x00000538  // 0x4000 5538 0x4000 6538 0x4000
+#define GPIO_O_GPIO_SI 0x00000538 // 0x4000 5538 0x4000 6538 0x4000
 // 7538 0x4002 4538 GPIO Select
 // Interrupt (GPIOSI)@@ offset 0x538
 // This register is used to enable
 // individual interrupts for each
 // pin. Note: This register is only
 // available on Port P and Port Q.
-#define GPIO_O_GPIO_PERIPHID4   0x00000FD0  // 0x4000 5FD0 0x4000 6FD0 0x4000
+#define GPIO_O_GPIO_PERIPHID4 0x00000FD0 // 0x4000 5FD0 0x4000 6FD0 0x4000
 // 7FD0 0x4002 4FD0 GPIO Peripheral
 // Identification 4
 // (GPIOPeriphID4)@@ offset 0xFD0
@@ -530,7 +530,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PERIPHID5   0x00000FD4  // 0x4000 5FD4 0x4000 6FD4 0x4000
+#define GPIO_O_GPIO_PERIPHID5 0x00000FD4 // 0x4000 5FD4 0x4000 6FD4 0x4000
 // 7FD4 0x4002 4FD4 GPIO Peripheral
 // Identification 5
 // (GPIOPeriphID5)@@ offset 0xFD4
@@ -542,7 +542,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PERIPHID6   0x00000FD8  // 0x4000 5FD8 0x4000 6FD8 0x4000
+#define GPIO_O_GPIO_PERIPHID6 0x00000FD8 // 0x4000 5FD8 0x4000 6FD8 0x4000
 // 7FD8 0x4002 4FD8 GPIO Peripheral
 // Identification 6
 // (GPIOPeriphID6)@@ offset 0xFD8
@@ -554,7 +554,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PERIPHID7   0x00000FDC  // 0x4000 5FDC 0x4000 6FDC 0x4000
+#define GPIO_O_GPIO_PERIPHID7 0x00000FDC // 0x4000 5FDC 0x4000 6FDC 0x4000
 // 7FDC 0x4002 4FDC GPIO Peripheral
 // Identification 7
 // (GPIOPeriphID7)@@ offset 0xFDC
@@ -566,7 +566,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PERIPHID0   0x00000FE0  // 0x4000 5FE0 0x4000 6FE0 0x4000
+#define GPIO_O_GPIO_PERIPHID0 0x00000FE0 // 0x4000 5FE0 0x4000 6FE0 0x4000
 // 7FE0 0x4002 4FE0 GPIO Peripheral
 // Identification 0
 // (GPIOPeriphID0)@@ offset 0xFE0
@@ -578,7 +578,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PERIPHID1   0x00000FE4  // 0x4000 5FE4 0x4000 6FE4 0x4000
+#define GPIO_O_GPIO_PERIPHID1 0x00000FE4 // 0x4000 5FE4 0x4000 6FE4 0x4000
 // 7FE4 0x4002 4FE4 GPIO Peripheral
 // Identification 1
 // (GPIOPeriphID1)@@ offset 0xFE4
@@ -590,7 +590,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PERIPHID2   0x00000FE8  // 0x4000 5FE8 0x4000 6FE8 0x4000
+#define GPIO_O_GPIO_PERIPHID2 0x00000FE8 // 0x4000 5FE8 0x4000 6FE8 0x4000
 // 7FE8 0x4002 4FE8 GPIO Peripheral
 // Identification 2
 // (GPIOPeriphID2)@@ offset 0xFE8
@@ -602,7 +602,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PERIPHID3   0x00000FEC  // 0x4000 5FEC 0x4000 6FEC 0x4000
+#define GPIO_O_GPIO_PERIPHID3 0x00000FEC // 0x4000 5FEC 0x4000 6FEC 0x4000
 // 7FEC 0x4002 4FEC GPIO Peripheral
 // Identification 3
 // (GPIOPeriphID3)@@ offset 0xFEC
@@ -614,7 +614,7 @@
 // contains eight bits of the 32-bit
 // register@@ used by software to
 // identify the peripheral.
-#define GPIO_O_GPIO_PCELLID0    0x00000FF0  // 0x4000 5FF0 0x4000 6FF0 0x4000
+#define GPIO_O_GPIO_PCELLID0 0x00000FF0 // 0x4000 5FF0 0x4000 6FF0 0x4000
 // 7FF0 0x4002 4FF0 GPIO PrimeCell
 // Identification 0 (GPIOPCellID0)@@
 // offset 0xFF0 The GPIOPCellID0@@
@@ -626,7 +626,7 @@
 // used as a standard
 // cross-peripheral identification
 // system.
-#define GPIO_O_GPIO_PCELLID1    0x00000FF4  // 0x4000 5FF4 0x4000 6FF4 0x4000
+#define GPIO_O_GPIO_PCELLID1 0x00000FF4 // 0x4000 5FF4 0x4000 6FF4 0x4000
 // 7FF4 0x4002 4FF4 GPIO PrimeCell
 // Identification 1 (GPIOPCellID1)@@
 // offset 0xFF4 The GPIOPCellID0@@
@@ -638,7 +638,7 @@
 // used as a standard
 // cross-peripheral identification
 // system.
-#define GPIO_O_GPIO_PCELLID2    0x00000FF8  // 0x4000 5FF8 0x4000 6FF8 0x4000
+#define GPIO_O_GPIO_PCELLID2 0x00000FF8 // 0x4000 5FF8 0x4000 6FF8 0x4000
 // 7FF8 0x4002 4FF8 GPIO PrimeCell
 // Identification 2 (GPIOPCellID2)@@
 // offset 0xFF8 The GPIOPCellID0@@
@@ -650,7 +650,7 @@
 // used as a standard
 // cross-peripheral identification
 // system.
-#define GPIO_O_GPIO_PCELLID3    0x00000FFC  // 0x4000 5FFC 0x4000 6FFC 0x4000
+#define GPIO_O_GPIO_PCELLID3 0x00000FFC // 0x4000 5FFC 0x4000 6FFC 0x4000
 // 7FFC 0x4002 4FFC GPIO PrimeCell
 // Identification 3 (GPIOPCellID3)@@
 // offset 0xFFC The GPIOPCellID0@@
@@ -663,14 +663,13 @@
 // cross-peripheral identification
 // system.0xb1
 
-
-
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_DATA register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_DATA
+// register.
 //
 //******************************************************************************
-#define GPIO_GPIO_DATA_DATA_M   0x000000FF  // GPIO Data This register is
+#define GPIO_GPIO_DATA_DATA_M 0x000000FF // GPIO Data This register is
 // virtually mapped to 256 locations
 // in the address space. To
 // facilitate the reading and
@@ -684,73 +683,73 @@
 // to this register only affect bits
 // that are not masked by ADDR[9:2]
 // and are configured as outputs.
-#define GPIO_GPIO_DATA_DATA_S   0
+#define GPIO_GPIO_DATA_DATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_DIR register.
 //
 //******************************************************************************
-#define GPIO_GPIO_DIR_DIR_M     0x000000FF  // GPIO Data Direction Value
+#define GPIO_GPIO_DIR_DIR_M 0x000000FF // GPIO Data Direction Value
 // Description 0 Corresponding pin
 // is an input. 1 Corresponding pins
 // is an output.
-#define GPIO_GPIO_DIR_DIR_S     0
+#define GPIO_GPIO_DIR_DIR_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_IS register.
 //
 //******************************************************************************
-#define GPIO_GPIO_IS_IS_M       0x000000FF  // GPIO Interrupt Sense Value
+#define GPIO_GPIO_IS_IS_M 0x000000FF // GPIO Interrupt Sense Value
 // Description 0 The edge on the
 // corresponding pin is detected
 // (edge-sensitive). 1 The level on
 // the corresponding pin is detected
 // (level-sensitive).
-#define GPIO_GPIO_IS_IS_S       0
+#define GPIO_GPIO_IS_IS_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_IBE register.
 //
 //******************************************************************************
-#define GPIO_GPIO_IBE_IBE_M     0x000000FF  // GPIO Interrupt Both Edges Value
+#define GPIO_GPIO_IBE_IBE_M 0x000000FF // GPIO Interrupt Both Edges Value
 // Description 0 Interrupt
 // generation is controlled by the
 // GPIO Interrupt Event (GPIOIEV)
 // register. 1 Both edges on the
 // corresponding pin trigger an
 // interrupt.
-#define GPIO_GPIO_IBE_IBE_S     0
+#define GPIO_GPIO_IBE_IBE_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_IEV register.
 //
 //******************************************************************************
-#define GPIO_GPIO_IEV_IEV_M     0x000000FF  // GPIO Interrupt Event Value
+#define GPIO_GPIO_IEV_IEV_M 0x000000FF // GPIO Interrupt Event Value
 // Description 1 A falling edge or a
 // Low level on the corresponding
 // pin triggers an interrupt. 0 A
 // rising edge or a High level on
 // the corresponding pin triggers an
 // interrupt.
-#define GPIO_GPIO_IEV_IEV_S     0
+#define GPIO_GPIO_IEV_IEV_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_IM register.
 //
 //******************************************************************************
-#define GPIO_GPIO_IM_IME_M      0x000000FF  // GPIO Interrupt Mask Enable Value
+#define GPIO_GPIO_IM_IME_M 0x000000FF // GPIO Interrupt Mask Enable Value
 // Description 0 The interrupt from
 // the corresponding pin is masked.
 // 1 The interrupt from the
 // corresponding pin is sent to the
 // interrupt controller.
-#define GPIO_GPIO_IM_IME_S      0
+#define GPIO_GPIO_IM_IME_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_RIS register.
 //
 //******************************************************************************
-#define GPIO_GPIO_RIS_RIS_M     0x000000FF  // GPIO Interrupt Raw Status Value
+#define GPIO_GPIO_RIS_RIS_M 0x000000FF // GPIO Interrupt Raw Status Value
 // Description 1 An interrupt
 // condition has occurred on the
 // corresponding pin. 0 interrupt
@@ -759,13 +758,13 @@
 // cleared by writing a 1 to the
 // corresponding bit in the GPIOICR
 // register.
-#define GPIO_GPIO_RIS_RIS_S     0
+#define GPIO_GPIO_RIS_RIS_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_MIS register.
 //
 //******************************************************************************
-#define GPIO_GPIO_MIS_MIS_M     0x000000FF  // GPIO Masked Interrupt Status
+#define GPIO_GPIO_MIS_MIS_M 0x000000FF // GPIO Masked Interrupt Status
 // Value Description 1 An interrupt
 // condition on the corresponding
 // pin has triggered an interrupt to
@@ -776,29 +775,31 @@
 // cleared by writing a 1 to the
 // corresponding bit in the GPIOICR
 // register.
-#define GPIO_GPIO_MIS_MIS_S     0
+#define GPIO_GPIO_MIS_MIS_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_ICR register.
 //
 //******************************************************************************
-#define GPIO_GPIO_ICR_IC_M      0x000000FF  // GPIO Interrupt Clear Value
+#define GPIO_GPIO_ICR_IC_M 0x000000FF // GPIO Interrupt Clear Value
 // Description 1 The corresponding
 // interrupt is cleared. 0 The
 // corresponding interrupt is
 // unaffected.
-#define GPIO_GPIO_ICR_IC_S      0
+#define GPIO_GPIO_ICR_IC_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_AFSEL register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_AFSEL
+// register.
 //
 //******************************************************************************
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_DR2R register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_DR2R
+// register.
 //
 //******************************************************************************
-#define GPIO_GPIO_DR2R_DRV2_M   0x000000FF  // This register is not used in
+#define GPIO_GPIO_DR2R_DRV2_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -819,13 +820,14 @@
 // aperture. If using AHB access@@
 // the change is effective on the
 // next clock cycle.
-#define GPIO_GPIO_DR2R_DRV2_S   0
+#define GPIO_GPIO_DR2R_DRV2_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_DR4R register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_DR4R
+// register.
 //
 //******************************************************************************
-#define GPIO_GPIO_DR4R_DRV4_M   0x000000FF  // This register is not used in
+#define GPIO_GPIO_DR4R_DRV4_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -846,13 +848,14 @@
 // aperture. If using AHB access@@
 // the change is effective on the
 // next clock cycle.
-#define GPIO_GPIO_DR4R_DRV4_S   0
+#define GPIO_GPIO_DR4R_DRV4_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_DR8R register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_DR8R
+// register.
 //
 //******************************************************************************
-#define GPIO_GPIO_DR8R_DRV8_M   0x000000FF  // This register is not used in
+#define GPIO_GPIO_DR8R_DRV8_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -873,13 +876,13 @@
 // aperture. If using AHB access@@
 // the change is effective on the
 // next clock cycle.
-#define GPIO_GPIO_DR8R_DRV8_S   0
+#define GPIO_GPIO_DR8R_DRV8_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_ODR register.
 //
 //******************************************************************************
-#define GPIO_GPIO_ODR_ODE_M     0x000000FF  // This register is not used in
+#define GPIO_GPIO_ODR_ODE_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -889,13 +892,13 @@
 // pin is configured as open drain.
 // 0 The corresponding pin is not
 // configured as open drain.
-#define GPIO_GPIO_ODR_ODE_S     0
+#define GPIO_GPIO_ODR_ODE_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_PUR register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PUR_PUE_M     0x000000FF  // This register is not used in
+#define GPIO_GPIO_PUR_PUE_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -914,13 +917,13 @@
 // AHB access@@ the change is
 // effective on the next clock
 // cycle.
-#define GPIO_GPIO_PUR_PUE_S     0
+#define GPIO_GPIO_PUR_PUE_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_PDR register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PDR_PDE_M     0x000000FF  // This register is not used in
+#define GPIO_GPIO_PDR_PDE_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -939,13 +942,13 @@
 // AHB access@@ the change is
 // effective on the next clock
 // cycle.
-#define GPIO_GPIO_PDR_PDE_S     0
+#define GPIO_GPIO_PDR_PDE_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_SLR register.
 //
 //******************************************************************************
-#define GPIO_GPIO_SLR_SRL_M     0x000000FF  // This register is not used in
+#define GPIO_GPIO_SLR_SRL_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -956,13 +959,13 @@
 // corresponding pin. 0 Slew rate
 // control is disabled for the
 // corresponding pin.
-#define GPIO_GPIO_SLR_SRL_S     0
+#define GPIO_GPIO_SLR_SRL_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_DEN register.
 //
 //******************************************************************************
-#define GPIO_GPIO_DEN_DEN_M     0x000000FF  // This register is not used in
+#define GPIO_GPIO_DEN_DEN_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -972,13 +975,14 @@
 // pin are disabled. 1 The digital
 // functions for the corresponding
 // pin are enabled.
-#define GPIO_GPIO_DEN_DEN_S     0
+#define GPIO_GPIO_DEN_DEN_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_LOCK register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_LOCK
+// register.
 //
 //******************************************************************************
-#define GPIO_GPIO_LOCK_LOCK_M   0xFFFFFFFF  // This register is not used in
+#define GPIO_GPIO_LOCK_LOCK_M 0xFFFFFFFF // This register is not used in
 // cc3xx. GPIO Lock A write of the
 // value 0x4C4F.434B unlocks the
 // GPIO Commit (GPIOCR) register for
@@ -992,13 +996,13 @@
 // register is locked and may not be
 // modified. 0x0 The GPIOCR register
 // is unlocked and may be modified.
-#define GPIO_GPIO_LOCK_LOCK_S   0
+#define GPIO_GPIO_LOCK_LOCK_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the GPIO_O_GPIO_CR register.
 //
 //******************************************************************************
-#define GPIO_GPIO_CR_CR_M       0x000000FF  // This register is not used in
+#define GPIO_GPIO_CR_CR_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -1039,14 +1043,14 @@
 // Port C is 0x0000.00F0@@ for GPIO
 // Port D is 0x0000.007F@@ and for
 // GPIO Port F is 0x0000.00FE.
-#define GPIO_GPIO_CR_CR_S       0
+#define GPIO_GPIO_CR_CR_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_AMSEL register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_AMSEL
+// register.
 //
 //******************************************************************************
-#define GPIO_GPIO_AMSEL_GPIO_AMSEL_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_AMSEL_GPIO_AMSEL_M 0x000000FF // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
@@ -1071,81 +1075,81 @@
 #define GPIO_GPIO_AMSEL_GPIO_AMSEL_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the GPIO_O_GPIO_PCTL register.
+// The following are defines for the bit fields in the GPIO_O_GPIO_PCTL
+// register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PCTL_PMC7_M   0xF0000000  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC7_M 0xF0000000 // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 7 This field controls the
 // configuration for GPIO pin 7.
-#define GPIO_GPIO_PCTL_PMC7_S   28
-#define GPIO_GPIO_PCTL_PMC6_M   0x0F000000  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC7_S 28
+#define GPIO_GPIO_PCTL_PMC6_M 0x0F000000 // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 6 This field controls the
 // configuration for GPIO pin 6.
-#define GPIO_GPIO_PCTL_PMC6_S   24
-#define GPIO_GPIO_PCTL_PMC5_M   0x00F00000  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC6_S 24
+#define GPIO_GPIO_PCTL_PMC5_M 0x00F00000 // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 5 This field controls the
 // configuration for GPIO pin 5.
-#define GPIO_GPIO_PCTL_PMC5_S   20
-#define GPIO_GPIO_PCTL_PMC4_M   0x000F0000  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC5_S 20
+#define GPIO_GPIO_PCTL_PMC4_M 0x000F0000 // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 4 This field controls the
 // configuration for GPIO pin 4.
-#define GPIO_GPIO_PCTL_PMC4_S   16
-#define GPIO_GPIO_PCTL_PMC3_M   0x0000F000  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC4_S 16
+#define GPIO_GPIO_PCTL_PMC3_M 0x0000F000 // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 43 This field controls
 // the configuration for GPIO pin 3.
-#define GPIO_GPIO_PCTL_PMC3_S   12
-#define GPIO_GPIO_PCTL_PMC1_M   0x00000F00  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC3_S 12
+#define GPIO_GPIO_PCTL_PMC1_M 0x00000F00 // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 1 This field controls the
 // configuration for GPIO pin 1.
-#define GPIO_GPIO_PCTL_PMC1_S   8
-#define GPIO_GPIO_PCTL_PMC2_M   0x000000F0  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC1_S 8
+#define GPIO_GPIO_PCTL_PMC2_M 0x000000F0 // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 2 This field controls the
 // configuration for GPIO pin 2.
-#define GPIO_GPIO_PCTL_PMC2_S   4
-#define GPIO_GPIO_PCTL_PMC0_M   0x0000000F  // This register is not used in
+#define GPIO_GPIO_PCTL_PMC2_S 4
+#define GPIO_GPIO_PCTL_PMC0_M 0x0000000F // This register is not used in
 // cc3xx. equivalant register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
 // Control 0 This field controls the
 // configuration for GPIO pin 0.
-#define GPIO_GPIO_PCTL_PMC0_S   0
+#define GPIO_GPIO_PCTL_PMC0_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the
 // GPIO_O_GPIO_ADCCTL register.
 //
 //******************************************************************************
-#define GPIO_GPIO_ADCCTL_ADCEN_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_ADCCTL_ADCEN_M 0x000000FF // This register is not used in
 // cc3xx. ADC trigger via GPIO is
 // not supported. ADC Trigger Enable
 // Value Description 1 The
@@ -1161,8 +1165,7 @@
 // GPIO_O_GPIO_DMACTL register.
 //
 //******************************************************************************
-#define GPIO_GPIO_DMACTL_DMAEN_M \
-                                0x000000FF  // This register is not used in the
+#define GPIO_GPIO_DMACTL_DMAEN_M 0x000000FF // This register is not used in the
 // cc3xx. Alternate register to
 // support this feature is coded in
 // the APPS_NWP_CMN space. refer
@@ -1179,7 +1182,7 @@
 // The following are defines for the bit fields in the GPIO_O_GPIO_SI register.
 //
 //******************************************************************************
-#define GPIO_GPIO_SI_SUM        0x00000001  // Summary Interrupt Value
+#define GPIO_GPIO_SI_SUM 0x00000001 // Summary Interrupt Value
 // Description 1 Each pin has its
 // own interrupt vector. 0 All port
 // pin interrupts are OR'ed together
@@ -1190,8 +1193,7 @@
 // GPIO_O_GPIO_PERIPHID4 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID4_PID4_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PERIPHID4_PID4_M 0x000000FF // This register is not used in
 // CC3XX. GPIO Peripheral ID
 // Register [7:0]
 
@@ -1202,8 +1204,7 @@
 // GPIO_O_GPIO_PERIPHID5 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID5_PID5_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PERIPHID5_PID5_M 0x000000FF // This register is not used in
 // CC3XX. GPIO Peripheral ID
 // Register [15:8]
 
@@ -1214,8 +1215,7 @@
 // GPIO_O_GPIO_PERIPHID6 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID6_PID6_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PERIPHID6_PID6_M 0x000000FF // This register is not used in
 // CC3XX. GPIO Peripheral ID
 // Register [23:16]
 
@@ -1226,8 +1226,7 @@
 // GPIO_O_GPIO_PERIPHID7 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID7_PID7_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PERIPHID7_PID7_M 0x000000FF // This register is not used in
 // CC3XX. GPIO Peripheral ID
 // Register [31:24]
 
@@ -1238,8 +1237,7 @@
 // GPIO_O_GPIO_PERIPHID0 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID0_PID0_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PERIPHID0_PID0_M 0x000000FF // This register is not used in
 // CC3XX. GPIO Peripheral ID
 // Register [7:0] Can be used by
 // software to identify the presence
@@ -1252,8 +1250,7 @@
 // GPIO_O_GPIO_PERIPHID1 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID1_PID1_M \
-                                0x000000FF  // GPIO Peripheral ID Register
+#define GPIO_GPIO_PERIPHID1_PID1_M 0x000000FF // GPIO Peripheral ID Register
 // [15:8] Can be used by software to
 // identify the presence of this
 // peripheral.
@@ -1265,8 +1262,7 @@
 // GPIO_O_GPIO_PERIPHID2 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID2_PID2_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PERIPHID2_PID2_M 0x000000FF // This register is not used in
 // CC3XX.v GPIO Peripheral ID
 // Register [23:16] Can be used by
 // software to identify the presence
@@ -1279,8 +1275,7 @@
 // GPIO_O_GPIO_PERIPHID3 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PERIPHID3_PID3_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PERIPHID3_PID3_M 0x000000FF // This register is not used in
 // CC3XX. GPIO Peripheral ID
 // Register [31:24] Can be used by
 // software to identify the presence
@@ -1293,8 +1288,7 @@
 // GPIO_O_GPIO_PCELLID0 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PCELLID0_CID0_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PCELLID0_CID0_M 0x000000FF // This register is not used in
 // CC3XX. GPIO PrimeCell ID Register
 // [7:0] Provides software a
 // standard cross-peripheral
@@ -1307,8 +1301,7 @@
 // GPIO_O_GPIO_PCELLID1 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PCELLID1_CID1_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PCELLID1_CID1_M 0x000000FF // This register is not used in
 // CC3XX. GPIO PrimeCell ID Register
 // [15:8] Provides software a
 // standard cross-peripheral
@@ -1321,8 +1314,7 @@
 // GPIO_O_GPIO_PCELLID2 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PCELLID2_CID2_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PCELLID2_CID2_M 0x000000FF // This register is not used in
 // CC3XX. GPIO PrimeCell ID Register
 // [23:16] Provides software a
 // standard cross-peripheral
@@ -1335,15 +1327,12 @@
 // GPIO_O_GPIO_PCELLID3 register.
 //
 //******************************************************************************
-#define GPIO_GPIO_PCELLID3_CID3_M \
-                                0x000000FF  // This register is not used in
+#define GPIO_GPIO_PCELLID3_CID3_M 0x000000FF // This register is not used in
 // CC3XX. GPIO PrimeCell ID Register
 // [31:24] Provides software a
 // standard cross-peripheral
 // identification system.
 
 #define GPIO_GPIO_PCELLID3_CID3_S 0
-
-
 
 #endif // __HW_GPIO_H__

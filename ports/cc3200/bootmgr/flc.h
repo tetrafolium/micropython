@@ -33,55 +33,54 @@
 
 *******************************************************************************/
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 /******************************************************************************
    Image file names
 *******************************************************************************/
-#define IMG_BOOT_INFO           "/sys/bootinfo.bin"
-#define IMG_FACTORY             "/sys/factimg.bin"
-#define IMG_UPDATE1             "/sys/updtimg1.bin"
-#define IMG_UPDATE2             "/sys/updtimg2.bin"
-#define IMG_PREFIX              "/sys/updtimg"
+#define IMG_BOOT_INFO "/sys/bootinfo.bin"
+#define IMG_FACTORY "/sys/factimg.bin"
+#define IMG_UPDATE1 "/sys/updtimg1.bin"
+#define IMG_UPDATE2 "/sys/updtimg2.bin"
+#define IMG_PREFIX "/sys/updtimg"
 
-#define IMG_SRVPACK             "/sys/servicepack.ucf"
-#define SRVPACK_SIGN            "/sys/servicepack.sig"
+#define IMG_SRVPACK "/sys/servicepack.ucf"
+#define SRVPACK_SIGN "/sys/servicepack.sig"
 
-#define CA_FILE                 "/cert/ca.pem"
-#define CERT_FILE               "/cert/cert.pem"
-#define KEY_FILE                "/cert/private.key"
+#define CA_FILE "/cert/ca.pem"
+#define CERT_FILE "/cert/cert.pem"
+#define KEY_FILE "/cert/private.key"
 
 /******************************************************************************
    Special file sizes
 *******************************************************************************/
-#define IMG_SIZE                (192 * 1024)    /* 16KB are reserved for the bootloader and at least 48KB for the heap*/
-#define SRVPACK_SIZE            (16  * 1024)
-#define SIGN_SIZE               (2   * 1024)
-#define CA_KEY_SIZE             (4   * 1024)
+#define IMG_SIZE                                                               \
+  (192 * 1024) /* 16KB are reserved for the bootloader and at least 48KB for   \
+                  the heap*/
+#define SRVPACK_SIZE (16 * 1024)
+#define SIGN_SIZE (2 * 1024)
+#define CA_KEY_SIZE (4 * 1024)
 
 /******************************************************************************
    Active Image
 *******************************************************************************/
-#define IMG_ACT_FACTORY         0
-#define IMG_ACT_UPDATE1         1
-#define IMG_ACT_UPDATE2         2
+#define IMG_ACT_FACTORY 0
+#define IMG_ACT_UPDATE1 1
+#define IMG_ACT_UPDATE2 2
 
-#define IMG_STATUS_CHECK        0
-#define IMG_STATUS_READY        1
+#define IMG_STATUS_CHECK 0
+#define IMG_STATUS_READY 1
 
 /******************************************************************************
    Boot Info structure
 *******************************************************************************/
-typedef struct _sBootInfo_t
-{
-    _u8  ActiveImg;
-    _u8  Status;
-    _u8  PrevImg;
-    _u8  : 8;
+typedef struct _sBootInfo_t {
+  _u8 ActiveImg;
+  _u8 Status;
+  _u8 PrevImg;
+  _u8 : 8;
 } sBootInfo_t;
-
 
 /******************************************************************************
 

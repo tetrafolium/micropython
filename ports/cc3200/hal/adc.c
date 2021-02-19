@@ -43,14 +43,13 @@
 //! @{
 //
 //*****************************************************************************
-#include "inc/hw_types.h"
-#include "inc/hw_memmap.h"
-#include "inc/hw_ints.h"
+#include "adc.h"
 #include "inc/hw_adc.h"
 #include "inc/hw_apps_config.h"
+#include "inc/hw_ints.h"
+#include "inc/hw_memmap.h"
+#include "inc/hw_types.h"
 #include "interrupt.h"
-#include "adc.h"
-
 
 //*****************************************************************************
 //
@@ -63,12 +62,11 @@
 //! \return None.
 //
 //*****************************************************************************
-void ADCEnable(unsigned long ulBase)
-{
-    //
-    // Set the global enable bit in the control register.
-    //
-    HWREG(ulBase + ADC_O_ADC_CTRL) |= 0x1;
+void ADCEnable(unsigned long ulBase) {
+  //
+  // Set the global enable bit in the control register.
+  //
+  HWREG(ulBase + ADC_O_ADC_CTRL) |= 0x1;
 }
 
 //*****************************************************************************
@@ -82,12 +80,11 @@ void ADCEnable(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void ADCDisable(unsigned long ulBase)
-{
-    //
-    // Clear the global enable bit in the control register.
-    //
-    HWREG(ulBase + ADC_O_ADC_CTRL) &= ~0x1 ;
+void ADCDisable(unsigned long ulBase) {
+  //
+  // Clear the global enable bit in the control register.
+  //
+  HWREG(ulBase + ADC_O_ADC_CTRL) &= ~0x1;
 }
 
 //*****************************************************************************
@@ -103,15 +100,15 @@ void ADCDisable(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void ADCChannelEnable(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulCh;
+void ADCChannelEnable(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulCh;
 
-    ulCh =  (ulChannel == ADC_CH_0)? 0x02 :
-            (ulChannel == ADC_CH_1)? 0x04 :
-            (ulChannel == ADC_CH_2)? 0x08 : 0x10;
+  ulCh = (ulChannel == ADC_CH_0)
+             ? 0x02
+             : (ulChannel == ADC_CH_1) ? 0x04
+                                       : (ulChannel == ADC_CH_2) ? 0x08 : 0x10;
 
-    HWREG(ulBase + ADC_O_ADC_CH_ENABLE) |= ulCh;
+  HWREG(ulBase + ADC_O_ADC_CH_ENABLE) |= ulCh;
 }
 
 //*****************************************************************************
@@ -126,15 +123,15 @@ void ADCChannelEnable(unsigned long ulBase, unsigned long ulChannel)
 //! \return None.
 //
 //*****************************************************************************
-void ADCChannelDisable(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulCh;
+void ADCChannelDisable(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulCh;
 
-    ulCh =  (ulChannel == ADC_CH_0)? 0x02 :
-            (ulChannel == ADC_CH_1)? 0x04 :
-            (ulChannel == ADC_CH_2)? 0x08 : 0x10;
+  ulCh = (ulChannel == ADC_CH_0)
+             ? 0x02
+             : (ulChannel == ADC_CH_1) ? 0x04
+                                       : (ulChannel == ADC_CH_2) ? 0x08 : 0x10;
 
-    HWREG(ulBase + ADC_O_ADC_CH_ENABLE) &= ~ulCh;
+  HWREG(ulBase + ADC_O_ADC_CH_ENABLE) &= ~ulCh;
 }
 
 //*****************************************************************************
@@ -162,28 +159,28 @@ void ADCChannelDisable(unsigned long ulBase, unsigned long ulChannel)
 //
 //*****************************************************************************
 void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel,
-                    void (*pfnHandler)(void))
-{
-    unsigned long ulIntNo;
+                    void (*pfnHandler)(void)) {
+  unsigned long ulIntNo;
 
-    //
-    // Get the interrupt number associted with the specified channel
-    //
-    ulIntNo = (ulChannel == ADC_CH_0)? INT_ADCCH0 :
-              (ulChannel == ADC_CH_1)? INT_ADCCH1 :
-              (ulChannel == ADC_CH_2)? INT_ADCCH2 : INT_ADCCH3;
+  //
+  // Get the interrupt number associted with the specified channel
+  //
+  ulIntNo = (ulChannel == ADC_CH_0)
+                ? INT_ADCCH0
+                : (ulChannel == ADC_CH_1)
+                      ? INT_ADCCH1
+                      : (ulChannel == ADC_CH_2) ? INT_ADCCH2 : INT_ADCCH3;
 
-    //
-    // Register the interrupt handler
-    //
-    IntRegister(ulIntNo,pfnHandler);
+  //
+  // Register the interrupt handler
+  //
+  IntRegister(ulIntNo, pfnHandler);
 
-    //
-    // Enable ADC interrupt
-    //
-    IntEnable(ulIntNo);
+  //
+  // Enable ADC interrupt
+  //
+  IntEnable(ulIntNo);
 }
-
 
 //*****************************************************************************
 //
@@ -206,26 +203,27 @@ void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel,
 //! \return None.
 //
 //*****************************************************************************
-void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulIntNo;
+void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulIntNo;
 
-    //
-    // Get the interrupt number associted with the specified channel
-    //
-    ulIntNo = (ulChannel == ADC_CH_0)? INT_ADCCH0 :
-              (ulChannel == ADC_CH_1)? INT_ADCCH1 :
-              (ulChannel == ADC_CH_2)? INT_ADCCH2 : INT_ADCCH3;
+  //
+  // Get the interrupt number associted with the specified channel
+  //
+  ulIntNo = (ulChannel == ADC_CH_0)
+                ? INT_ADCCH0
+                : (ulChannel == ADC_CH_1)
+                      ? INT_ADCCH1
+                      : (ulChannel == ADC_CH_2) ? INT_ADCCH2 : INT_ADCCH3;
 
-    //
-    // Disable ADC interrupt
-    //
-    IntDisable(ulIntNo);
+  //
+  // Disable ADC interrupt
+  //
+  IntDisable(ulIntNo);
 
-    //
-    // Unregister the interrupt handler
-    //
-    IntUnregister(ulIntNo);
+  //
+  // Unregister the interrupt handler
+  //
+  IntUnregister(ulIntNo);
 }
 
 //*****************************************************************************
@@ -259,35 +257,34 @@ void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel)
 //
 //*****************************************************************************
 void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
-                  unsigned long ulIntFlags)
-{
-    unsigned long ulOffset;
-    unsigned long ulDmaMsk;
+                  unsigned long ulIntFlags) {
+  unsigned long ulOffset;
+  unsigned long ulDmaMsk;
 
-    //
-    // Enable DMA Done interrupt
-    //
-    if(ulIntFlags & ADC_DMA_DONE)
-    {
-        ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
-                   (ulChannel == ADC_CH_1)?0x00002000:
-                   (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
+  //
+  // Enable DMA Done interrupt
+  //
+  if (ulIntFlags & ADC_DMA_DONE) {
+    ulDmaMsk = (ulChannel == ADC_CH_0)
+                   ? 0x00001000
+                   : (ulChannel == ADC_CH_1)
+                         ? 0x00002000
+                         : (ulChannel == ADC_CH_2) ? 0x00004000 : 0x00008000;
 
-        HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) = ulDmaMsk;
-    }
+    HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_CLR) = ulDmaMsk;
+  }
 
-    ulIntFlags = ulIntFlags &  0x0F;
-    //
-    // Get the interrupt enable register offset for specified channel
-    //
-    ulOffset = ADC_O_adc_ch0_irq_en + ulChannel;
+  ulIntFlags = ulIntFlags & 0x0F;
+  //
+  // Get the interrupt enable register offset for specified channel
+  //
+  ulOffset = ADC_O_adc_ch0_irq_en + ulChannel;
 
-    //
-    // Unmask the specified interrupts
-    //
-    HWREG(ulBase + ulOffset) |= (ulIntFlags & 0xf);
+  //
+  // Unmask the specified interrupts
+  //
+  HWREG(ulBase + ulOffset) |= (ulIntFlags & 0xf);
 }
-
 
 //*****************************************************************************
 //
@@ -309,34 +306,33 @@ void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
 //
 //*****************************************************************************
 void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel,
-                   unsigned long ulIntFlags)
-{
-    unsigned long ulOffset;
-    unsigned long ulDmaMsk;
+                   unsigned long ulIntFlags) {
+  unsigned long ulOffset;
+  unsigned long ulDmaMsk;
 
-    //
-    // Disable DMA Done interrupt
-    //
-    if(ulIntFlags & ADC_DMA_DONE)
-    {
-        ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
-                   (ulChannel == ADC_CH_1)?0x00002000:
-                   (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
+  //
+  // Disable DMA Done interrupt
+  //
+  if (ulIntFlags & ADC_DMA_DONE) {
+    ulDmaMsk = (ulChannel == ADC_CH_0)
+                   ? 0x00001000
+                   : (ulChannel == ADC_CH_1)
+                         ? 0x00002000
+                         : (ulChannel == ADC_CH_2) ? 0x00004000 : 0x00008000;
 
-        HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) = ulDmaMsk;
-    }
+    HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_MASK_SET) = ulDmaMsk;
+  }
 
-    //
-    // Get the interrupt enable register offset for specified channel
-    //
-    ulOffset = ADC_O_adc_ch0_irq_en + ulChannel;
+  //
+  // Get the interrupt enable register offset for specified channel
+  //
+  ulOffset = ADC_O_adc_ch0_irq_en + ulChannel;
 
-    //
-    // Unmask the specified interrupts
-    //
-    HWREG(ulBase + ulOffset) &= ~ulIntFlags;
+  //
+  // Unmask the specified interrupts
+  //
+  HWREG(ulBase + ulOffset) &= ~ulIntFlags;
 }
-
 
 //*****************************************************************************
 //
@@ -353,39 +349,39 @@ void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel,
 //! field of values described in ADCIntEnable()
 //
 //*****************************************************************************
-unsigned long ADCIntStatus(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulOffset;
-    unsigned long ulDmaMsk;
-    unsigned long ulIntStatus;
+unsigned long ADCIntStatus(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulOffset;
+  unsigned long ulDmaMsk;
+  unsigned long ulIntStatus;
 
-    //
-    // Get DMA Done interrupt status
-    //
-    ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
-               (ulChannel == ADC_CH_1)?0x00002000:
-               (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
+  //
+  // Get DMA Done interrupt status
+  //
+  ulDmaMsk = (ulChannel == ADC_CH_0)
+                 ? 0x00001000
+                 : (ulChannel == ADC_CH_1)
+                       ? 0x00002000
+                       : (ulChannel == ADC_CH_2) ? 0x00004000 : 0x00008000;
 
-    ulIntStatus = HWREG(APPS_CONFIG_BASE +
-                        APPS_CONFIG_O_DMA_DONE_INT_STS_MASKED)& ulDmaMsk;
+  ulIntStatus =
+      HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_STS_MASKED) &
+      ulDmaMsk;
 
+  //
+  // Get the interrupt enable register offset for specified channel
+  //
+  ulOffset = ADC_O_adc_ch0_irq_status + ulChannel;
 
-    //
-    // Get the interrupt enable register offset for specified channel
-    //
-    ulOffset = ADC_O_adc_ch0_irq_status + ulChannel;
+  //
+  // Read ADC interrupt status
+  //
+  ulIntStatus |= HWREG(ulBase + ulOffset) & 0xf;
 
-    //
-    // Read ADC interrupt status
-    //
-    ulIntStatus |= HWREG(ulBase + ulOffset) & 0xf;
-
-    //
-    // Return the current interrupt status
-    //
-    return(ulIntStatus);
+  //
+  // Return the current interrupt status
+  //
+  return (ulIntStatus);
 }
-
 
 //*****************************************************************************
 //
@@ -404,32 +400,32 @@ unsigned long ADCIntStatus(unsigned long ulBase, unsigned long ulChannel)
 //
 //*****************************************************************************
 void ADCIntClear(unsigned long ulBase, unsigned long ulChannel,
-                 unsigned long ulIntFlags)
-{
-    unsigned long ulOffset;
-    unsigned long ulDmaMsk;
+                 unsigned long ulIntFlags) {
+  unsigned long ulOffset;
+  unsigned long ulDmaMsk;
 
-    //
-    // Clear DMA Done interrupt
-    //
-    if(ulIntFlags & ADC_DMA_DONE)
-    {
-        ulDmaMsk = (ulChannel == ADC_CH_0)?0x00001000:
-                   (ulChannel == ADC_CH_1)?0x00002000:
-                   (ulChannel == ADC_CH_2)?0x00004000:0x00008000;
+  //
+  // Clear DMA Done interrupt
+  //
+  if (ulIntFlags & ADC_DMA_DONE) {
+    ulDmaMsk = (ulChannel == ADC_CH_0)
+                   ? 0x00001000
+                   : (ulChannel == ADC_CH_1)
+                         ? 0x00002000
+                         : (ulChannel == ADC_CH_2) ? 0x00004000 : 0x00008000;
 
-        HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) = ulDmaMsk;
-    }
+    HWREG(APPS_CONFIG_BASE + APPS_CONFIG_O_DMA_DONE_INT_ACK) = ulDmaMsk;
+  }
 
-    //
-    // Get the interrupt enable register offset for specified channel
-    //
-    ulOffset = ADC_O_adc_ch0_irq_status + ulChannel;
+  //
+  // Get the interrupt enable register offset for specified channel
+  //
+  ulOffset = ADC_O_adc_ch0_irq_status + ulChannel;
 
-    //
-    // Clear the specified interrupts
-    //
-    HWREG(ulBase + ulOffset) = (ulIntFlags & ~(ADC_DMA_DONE));
+  //
+  // Clear the specified interrupts
+  //
+  HWREG(ulBase + ulOffset) = (ulIntFlags & ~(ADC_DMA_DONE));
 }
 
 //*****************************************************************************
@@ -451,21 +447,22 @@ void ADCIntClear(unsigned long ulBase, unsigned long ulChannel,
 //! \return None.
 //
 //*****************************************************************************
-void ADCDMAEnable(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulBitMask;
+void ADCDMAEnable(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulBitMask;
 
-    //
-    // Get the bit mask for enabling DMA for specified channel
-    //
-    ulBitMask = (ulChannel == ADC_CH_0)?0x01:
-                (ulChannel == ADC_CH_1)?0x04:
-                (ulChannel == ADC_CH_2)?0x10:0x40;
+  //
+  // Get the bit mask for enabling DMA for specified channel
+  //
+  ulBitMask = (ulChannel == ADC_CH_0)
+                  ? 0x01
+                  : (ulChannel == ADC_CH_1)
+                        ? 0x04
+                        : (ulChannel == ADC_CH_2) ? 0x10 : 0x40;
 
-    //
-    // Enable DMA request for the specified channel
-    //
-    HWREG(ulBase + ADC_O_adc_dma_mode_en) |= ulBitMask;
+  //
+  // Enable DMA request for the specified channel
+  //
+  HWREG(ulBase + ADC_O_adc_dma_mode_en) |= ulBitMask;
 }
 
 //*****************************************************************************
@@ -487,21 +484,22 @@ void ADCDMAEnable(unsigned long ulBase, unsigned long ulChannel)
 //! \return None.
 //
 //*****************************************************************************
-void ADCDMADisable(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulBitMask;
+void ADCDMADisable(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulBitMask;
 
-    //
-    // Get the bit mask for disabling DMA for specified channel
-    //
-    ulBitMask = (ulChannel == ADC_CH_0)?0x01:
-                (ulChannel == ADC_CH_1)?0x04:
-                (ulChannel == ADC_CH_2)?0x10:0x40;
+  //
+  // Get the bit mask for disabling DMA for specified channel
+  //
+  ulBitMask = (ulChannel == ADC_CH_0)
+                  ? 0x01
+                  : (ulChannel == ADC_CH_1)
+                        ? 0x04
+                        : (ulChannel == ADC_CH_2) ? 0x10 : 0x40;
 
-    //
-    // Disable DMA request for the specified channel
-    //
-    HWREG(ulBase + ADC_O_adc_dma_mode_en) &= ~ulBitMask;
+  //
+  // Disable DMA request for the specified channel
+  //
+  HWREG(ulBase + ADC_O_adc_dma_mode_en) &= ~ulBitMask;
 }
 
 //*****************************************************************************
@@ -521,24 +519,23 @@ void ADCDMADisable(unsigned long ulBase, unsigned long ulChannel)
 //! \returns None.
 //
 //*****************************************************************************
-void ADCTimerConfig(unsigned long ulBase, unsigned long ulValue)
-{
-    unsigned long ulReg;
+void ADCTimerConfig(unsigned long ulBase, unsigned long ulValue) {
+  unsigned long ulReg;
 
-    //
-    // Read the currrent config
-    //
-    ulReg =  HWREG(ulBase + ADC_O_adc_timer_configuration);
+  //
+  // Read the currrent config
+  //
+  ulReg = HWREG(ulBase + ADC_O_adc_timer_configuration);
 
-    //
-    // Mask and set timer count field
-    //
-    ulReg = ((ulReg & ~0x1FFFF) | (ulValue & 0x1FFFF));
+  //
+  // Mask and set timer count field
+  //
+  ulReg = ((ulReg & ~0x1FFFF) | (ulValue & 0x1FFFF));
 
-    //
-    // Set the timer count value
-    //
-    HWREG(ulBase + ADC_O_adc_timer_configuration) = ulReg;
+  //
+  // Set the timer count value
+  //
+  HWREG(ulBase + ADC_O_adc_timer_configuration) = ulReg;
 }
 
 //*****************************************************************************
@@ -552,12 +549,11 @@ void ADCTimerConfig(unsigned long ulBase, unsigned long ulValue)
 //! \returns None.
 //
 //*****************************************************************************
-void ADCTimerReset(unsigned long ulBase)
-{
-    //
-    // Reset the timer
-    //
-    HWREG(ulBase + ADC_O_adc_timer_configuration) |= (1 << 24);
+void ADCTimerReset(unsigned long ulBase) {
+  //
+  // Reset the timer
+  //
+  HWREG(ulBase + ADC_O_adc_timer_configuration) |= (1 << 24);
 }
 
 //*****************************************************************************
@@ -571,12 +567,11 @@ void ADCTimerReset(unsigned long ulBase)
 //! \returns None.
 //
 //*****************************************************************************
-void ADCTimerEnable(unsigned long ulBase)
-{
-    //
-    // Enable the timer
-    //
-    HWREG(ulBase + ADC_O_adc_timer_configuration) |= (1 << 25);
+void ADCTimerEnable(unsigned long ulBase) {
+  //
+  // Enable the timer
+  //
+  HWREG(ulBase + ADC_O_adc_timer_configuration) |= (1 << 25);
 }
 
 //*****************************************************************************
@@ -590,12 +585,11 @@ void ADCTimerEnable(unsigned long ulBase)
 //! \returns None.
 //
 //*****************************************************************************
-void ADCTimerDisable(unsigned long ulBase)
-{
-    //
-    // Disable the timer
-    //
-    HWREG(ulBase + ADC_O_adc_timer_configuration) &= ~(1 << 25);
+void ADCTimerDisable(unsigned long ulBase) {
+  //
+  // Disable the timer
+  //
+  HWREG(ulBase + ADC_O_adc_timer_configuration) &= ~(1 << 25);
 }
 
 //*****************************************************************************
@@ -609,9 +603,8 @@ void ADCTimerDisable(unsigned long ulBase)
 //! \returns Return the current value of ADC internal timer.
 //
 //*****************************************************************************
-unsigned long ADCTimerValueGet(unsigned long ulBase)
-{
-    return(HWREG(ulBase + ADC_O_adc_timer_current_count));
+unsigned long ADCTimerValueGet(unsigned long ulBase) {
+  return (HWREG(ulBase + ADC_O_adc_timer_current_count));
 }
 
 //*****************************************************************************
@@ -633,19 +626,18 @@ unsigned long ADCTimerValueGet(unsigned long ulBase)
 //! \returns Return the current FIFO level for specified channel
 //
 //*****************************************************************************
-unsigned char ADCFIFOLvlGet(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulOffset;
+unsigned char ADCFIFOLvlGet(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulOffset;
 
-    //
-    // Get the fifo level register offset for specified channel
-    //
-    ulOffset = ADC_O_adc_ch0_fifo_lvl + ulChannel;
+  //
+  // Get the fifo level register offset for specified channel
+  //
+  ulOffset = ADC_O_adc_ch0_fifo_lvl + ulChannel;
 
-    //
-    // Return FIFO level
-    //
-    return(HWREG(ulBase + ulOffset) & 0x7);
+  //
+  // Return FIFO level
+  //
+  return (HWREG(ulBase + ulOffset) & 0x7);
 }
 
 //*****************************************************************************
@@ -668,21 +660,19 @@ unsigned char ADCFIFOLvlGet(unsigned long ulBase, unsigned long ulChannel)
 //! \returns Return one data sample from the channel fifo.
 //
 //*****************************************************************************
-unsigned long ADCFIFORead(unsigned long ulBase, unsigned long ulChannel)
-{
-    unsigned long ulOffset;
+unsigned long ADCFIFORead(unsigned long ulBase, unsigned long ulChannel) {
+  unsigned long ulOffset;
 
-    //
-    // Get the fifo register offset for specified channel
-    //
-    ulOffset = ADC_O_channel0FIFODATA + ulChannel;
+  //
+  // Get the fifo register offset for specified channel
+  //
+  ulOffset = ADC_O_channel0FIFODATA + ulChannel;
 
-    //
-    // Return FIFO level
-    //
-    return(HWREG(ulBase + ulOffset));
+  //
+  // Return FIFO level
+  //
+  return (HWREG(ulBase + ulOffset));
 }
-
 
 //*****************************************************************************
 //

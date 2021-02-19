@@ -27,8 +27,8 @@
 #ifndef __MICROPY_INCLUDED_FILESYSTEM_H__
 #define __MICROPY_INCLUDED_FILESYSTEM_H__
 
-#include "py/obj.h"
 #include "py/lexer.h"
+#include "py/obj.h"
 
 #ifndef MBFS_LOG_CHUNK_SIZE
 // This property can be tuned to make the filesystem bigger (while keeping

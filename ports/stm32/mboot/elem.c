@@ -29,16 +29,16 @@
 // Elements are of the form: (type:u8, len:u8, payload)
 
 const uint8_t *elem_search(const uint8_t *elem, uint8_t elem_id) {
-    while (elem + 2 + elem[1] <= ELEM_DATA_MAX) {
-        if (elem[0] == elem_id) {
-            // Found element, return a pointer to the element data
-            return elem + 2;
-        }
-        if (elem[0] == ELEM_TYPE_END) {
-            // End of elements
-            return NULL;
-        }
-        elem += 2 + elem[1];
+  while (elem + 2 + elem[1] <= ELEM_DATA_MAX) {
+    if (elem[0] == elem_id) {
+      // Found element, return a pointer to the element data
+      return elem + 2;
     }
-    return NULL;
+    if (elem[0] == ELEM_TYPE_END) {
+      // End of elements
+      return NULL;
+    }
+    elem += 2 + elem[1];
+  }
+  return NULL;
 }
