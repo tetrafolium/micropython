@@ -100,11 +100,11 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(mod_urandom_getrandbits_obj, mod_urandom_getran
 STATIC mp_obj_t mod_urandom_seed(size_t n_args, const mp_obj_t *args) {
     mp_uint_t seed;
     if (n_args == 0 || args[0] == mp_const_none) {
-        #ifdef MICROPY_PY_URANDOM_SEED_INIT_FUNC
+#ifdef MICROPY_PY_URANDOM_SEED_INIT_FUNC
         seed = MICROPY_PY_URANDOM_SEED_INIT_FUNC;
-        #else
+#else
         mp_raise_ValueError(MP_ERROR_TEXT("no default seed"));
-        #endif
+#endif
     } else {
         seed = mp_obj_get_int_truncated(args[0]);
     }
@@ -229,20 +229,20 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_0(mod_urandom___init___obj, mod_urandom___init__)
 #if !MICROPY_ENABLE_DYNRUNTIME
 STATIC const mp_rom_map_elem_t mp_module_urandom_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_urandom) },
-    #if SEED_ON_IMPORT
+#if SEED_ON_IMPORT
     { MP_ROM_QSTR(MP_QSTR___init__), MP_ROM_PTR(&mod_urandom___init___obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_getrandbits), MP_ROM_PTR(&mod_urandom_getrandbits_obj) },
     { MP_ROM_QSTR(MP_QSTR_seed), MP_ROM_PTR(&mod_urandom_seed_obj) },
-    #if MICROPY_PY_URANDOM_EXTRA_FUNCS
+#if MICROPY_PY_URANDOM_EXTRA_FUNCS
     { MP_ROM_QSTR(MP_QSTR_randrange), MP_ROM_PTR(&mod_urandom_randrange_obj) },
     { MP_ROM_QSTR(MP_QSTR_randint), MP_ROM_PTR(&mod_urandom_randint_obj) },
     { MP_ROM_QSTR(MP_QSTR_choice), MP_ROM_PTR(&mod_urandom_choice_obj) },
-    #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
     { MP_ROM_QSTR(MP_QSTR_random), MP_ROM_PTR(&mod_urandom_random_obj) },
     { MP_ROM_QSTR(MP_QSTR_uniform), MP_ROM_PTR(&mod_urandom_uniform_obj) },
-    #endif
-    #endif
+#endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(mp_module_urandom_globals, mp_module_urandom_globals_table);

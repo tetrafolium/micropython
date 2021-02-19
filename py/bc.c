@@ -75,21 +75,21 @@ const byte *mp_decode_uint_skip(const byte *ptr) {
 #endif
 
 STATIC NORETURN void fun_pos_args_mismatch(mp_obj_fun_bc_t *f, size_t expected, size_t given) {
-    #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
     // generic message, used also for other argument issues
     (void)f;
     (void)expected;
     (void)given;
     mp_arg_error_terse_mismatch();
-    #elif MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_NORMAL
+#elif MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_NORMAL
     (void)f;
     mp_raise_msg_varg(&mp_type_TypeError,
-        MP_ERROR_TEXT("function takes %d positional arguments but %d were given"), expected, given);
-    #elif MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_DETAILED
+                      MP_ERROR_TEXT("function takes %d positional arguments but %d were given"), expected, given);
+#elif MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_DETAILED
     mp_raise_msg_varg(&mp_type_TypeError,
-        MP_ERROR_TEXT("%q() takes %d positional arguments but %d were given"),
-        mp_obj_fun_get_name(MP_OBJ_FROM_PTR(f)), expected, given);
-    #endif
+                      MP_ERROR_TEXT("%q() takes %d positional arguments but %d were given"),
+                      mp_obj_fun_get_name(MP_OBJ_FROM_PTR(f)), expected, given);
+#endif
 }
 
 #if DEBUG_PRINT
@@ -119,14 +119,14 @@ void mp_setup_code_state(mp_code_state_t *code_state, size_t n_args, size_t n_kw
     // ip comes in as an offset into bytecode, so turn it into a true pointer
     code_state->ip = self->bytecode + (size_t)code_state->ip;
 
-    #if MICROPY_STACKLESS
+#if MICROPY_STACKLESS
     code_state->prev = NULL;
-    #endif
+#endif
 
-    #if MICROPY_PY_SYS_SETTRACE
+#if MICROPY_PY_SYS_SETTRACE
     code_state->prev_state = NULL;
     code_state->frame = NULL;
-    #endif
+#endif
 
     // Get cached n_state (rather than decode it again)
     size_t n_state = code_state->n_state;
@@ -204,7 +204,7 @@ void mp_setup_code_state(mp_code_state_t *code_state, size_t n_args, size_t n_kw
                 if (wanted_arg_name == arg_names[j]) {
                     if (code_state->state[n_state - 1 - j] != MP_OBJ_NULL) {
                         mp_raise_msg_varg(&mp_type_TypeError,
-                            MP_ERROR_TEXT("function got multiple values for argument '%q'"), MP_OBJ_QSTR_VALUE(wanted_arg_name));
+                                          MP_ERROR_TEXT("function got multiple values for argument '%q'"), MP_OBJ_QSTR_VALUE(wanted_arg_name));
                     }
                     code_state->state[n_state - 1 - j] = kwargs[2 * i + 1];
                     goto continue2;
@@ -212,15 +212,16 @@ void mp_setup_code_state(mp_code_state_t *code_state, size_t n_args, size_t n_kw
             }
             // Didn't find name match with positional args
             if ((scope_flags & MP_SCOPE_FLAG_VARKEYWORDS) == 0) {
-                #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
                 mp_raise_TypeError(MP_ERROR_TEXT("unexpected keyword argument"));
-                #else
+#else
                 mp_raise_msg_varg(&mp_type_TypeError,
-                    MP_ERROR_TEXT("unexpected keyword argument '%q'"), MP_OBJ_QSTR_VALUE(wanted_arg_name));
-                #endif
+                                  MP_ERROR_TEXT("unexpected keyword argument '%q'"), MP_OBJ_QSTR_VALUE(wanted_arg_name));
+#endif
             }
             mp_obj_dict_store(dict, kwargs[2 * i], kwargs[2 * i + 1]);
-        continue2:;
+continue2:
+            ;
         }
 
         DEBUG_printf("Args with kws flattened: ");
@@ -242,7 +243,7 @@ void mp_setup_code_state(mp_code_state_t *code_state, size_t n_args, size_t n_kw
         while (d < &code_state->state[n_state]) {
             if (*d++ == MP_OBJ_NULL) {
                 mp_raise_msg_varg(&mp_type_TypeError,
-                    MP_ERROR_TEXT("function missing required positional argument #%d"), &code_state->state[n_state] - d);
+                                  MP_ERROR_TEXT("function missing required positional argument #%d"), &code_state->state[n_state] - d);
             }
         }
 
@@ -258,7 +259,7 @@ void mp_setup_code_state(mp_code_state_t *code_state, size_t n_args, size_t n_kw
                     code_state->state[n_state - 1 - n_pos_args - i] = elem->value;
                 } else {
                     mp_raise_msg_varg(&mp_type_TypeError,
-                        MP_ERROR_TEXT("function missing required keyword argument '%q'"), MP_OBJ_QSTR_VALUE(arg_names[n_pos_args + i]));
+                                      MP_ERROR_TEXT("function missing required keyword argument '%q'"), MP_OBJ_QSTR_VALUE(arg_names[n_pos_args + i]));
                 }
             }
         }
@@ -287,10 +288,10 @@ void mp_setup_code_state(mp_code_state_t *code_state, size_t n_args, size_t n_kw
             mp_obj_new_cell(code_state->state[n_state - 1 - local_num]);
     }
 
-    #if !MICROPY_PERSISTENT_CODE
+#if !MICROPY_PERSISTENT_CODE
     // so bytecode is aligned
     ip = MP_ALIGN(ip, sizeof(mp_uint_t));
-    #endif
+#endif
 
     // now that we skipped over the prelude, set the ip for the VM
     code_state->ip = ip;
@@ -316,9 +317,9 @@ uint mp_opcode_format(const byte *ip, size_t *opcode_size, bool count_var_uint) 
     if (f == MP_BC_FORMAT_QSTR) {
         if (MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE_DYNAMIC) {
             if (*ip == MP_BC_LOAD_NAME
-                || *ip == MP_BC_LOAD_GLOBAL
-                || *ip == MP_BC_LOAD_ATTR
-                || *ip == MP_BC_STORE_ATTR) {
+                    || *ip == MP_BC_LOAD_GLOBAL
+                    || *ip == MP_BC_LOAD_ATTR
+                    || *ip == MP_BC_STORE_ATTR) {
                 ip += 1;
             }
         }

@@ -315,17 +315,17 @@ pwm_tim1_intr_handler(void *dummy) {
         pwm_channel = &pwm_channel_toggle[pwm_toggle];
 
         gpio_output_set(pwm_single[*pwm_channel - 1].gpio_set,
-            pwm_single[*pwm_channel - 1].gpio_clear,
-            pwm_gpio,
-            0);
+                        pwm_single[*pwm_channel - 1].gpio_clear,
+                        pwm_gpio,
+                        0);
 
         pwm_current_channel = 0;
 
         RTC_REG_WRITE(FRC1_LOAD_ADDRESS, pwm_single[pwm_current_channel].h_time);
     } else {
         gpio_output_set(pwm_single[pwm_current_channel].gpio_set,
-            pwm_single[pwm_current_channel].gpio_clear,
-            pwm_gpio, 0);
+                        pwm_single[pwm_current_channel].gpio_clear,
+                        pwm_gpio, 0);
 
         pwm_current_channel++;
         RTC_REG_WRITE(FRC1_LOAD_ADDRESS, pwm_single[pwm_current_channel].h_time);
@@ -344,9 +344,9 @@ pwm_init(void) {
     uint8 i;
 
     RTC_REG_WRITE(FRC1_CTRL_ADDRESS,  // FRC2_AUTO_RELOAD|
-        DIVDED_BY_16
-        | FRC1_ENABLE_TIMER
-        | TM_EDGE_INT);
+                  DIVDED_BY_16
+                  | FRC1_ENABLE_TIMER
+                  | TM_EDGE_INT);
     RTC_REG_WRITE(FRC1_LOAD_ADDRESS, 0);
 
     for (i = 0; i < PWM_CHANNEL; i++) {

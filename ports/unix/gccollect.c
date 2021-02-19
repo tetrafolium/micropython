@@ -38,12 +38,12 @@ void gc_collect(void) {
 
     gc_collect_start();
     gc_helper_collect_regs_and_stack();
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     mp_thread_gc_others();
-    #endif
-    #if MICROPY_EMIT_NATIVE
+#endif
+#if MICROPY_EMIT_NATIVE
     mp_unix_mark_exec();
-    #endif
+#endif
     gc_collect_end();
 
     // printf("-----\n");

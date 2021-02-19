@@ -45,9 +45,9 @@ void gc_collect(void) {
     gc_helper_collect_regs_and_stack();
 
     // trace root pointers from any threads
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     mp_thread_gc_others();
-    #endif
+#endif
 
     // end the GC
     gc_collect_end();

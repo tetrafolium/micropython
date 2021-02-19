@@ -264,11 +264,11 @@ STATIC mp_obj_t esp_timer_init_helper(esp_timer_obj_t *self, size_t n_args, cons
         { MP_QSTR_callback,     MP_ARG_KW_ONLY | MP_ARG_OBJ, {.u_obj = mp_const_none} },
         { MP_QSTR_period,       MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 0xffffffff} },
         { MP_QSTR_tick_hz,      MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 1000} },
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         { MP_QSTR_freq,         MP_ARG_KW_ONLY | MP_ARG_OBJ, {.u_obj = mp_const_none} },
-        #else
+#else
         { MP_QSTR_freq,         MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = 0xffffffff} },
-        #endif
+#endif
     };
 
     // parse args
@@ -280,7 +280,7 @@ STATIC mp_obj_t esp_timer_init_helper(esp_timer_obj_t *self, size_t n_args, cons
     os_timer_disarm(&self->timer);
     os_timer_setfn(&self->timer, esp_timer_cb, self);
 
-    #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
     if (args[ARG_freq].u_obj != mp_const_none) {
         mp_float_t freq = mp_obj_get_float(args[ARG_freq].u_obj);
         if (freq < 0.001) {
@@ -289,11 +289,11 @@ STATIC mp_obj_t esp_timer_init_helper(esp_timer_obj_t *self, size_t n_args, cons
             esp_timer_arm_us(self, (mp_int_t)(1000000 / freq), args[ARG_mode].u_int);
         }
     }
-    #else
+#else
     if (args[ARG_freq].u_int != 0xffffffff) {
         esp_timer_arm_us(self, 1000000 / args[ARG_freq].u_int, args[ARG_mode].u_int);
     }
-    #endif
+#endif
     else {
         mp_int_t period = args[ARG_period].u_int;
         mp_int_t hz = args[ARG_tick_hz].u_int;
@@ -421,14 +421,14 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_PWM), MP_ROM_PTR(&pyb_pwm_type) },
     { MP_ROM_QSTR(MP_QSTR_ADC), MP_ROM_PTR(&machine_adc_type) },
     { MP_ROM_QSTR(MP_QSTR_UART), MP_ROM_PTR(&pyb_uart_type) },
-    #if MICROPY_PY_MACHINE_I2C
+#if MICROPY_PY_MACHINE_I2C
     { MP_ROM_QSTR(MP_QSTR_I2C), MP_ROM_PTR(&mp_machine_soft_i2c_type) },
     { MP_ROM_QSTR(MP_QSTR_SoftI2C), MP_ROM_PTR(&mp_machine_soft_i2c_type) },
-    #endif
-    #if MICROPY_PY_MACHINE_SPI
+#endif
+#if MICROPY_PY_MACHINE_SPI
     { MP_ROM_QSTR(MP_QSTR_SPI), MP_ROM_PTR(&machine_hspi_type) },
     { MP_ROM_QSTR(MP_QSTR_SoftSPI), MP_ROM_PTR(&mp_machine_soft_spi_type) },
-    #endif
+#endif
 
     // wake abilities
     { MP_ROM_QSTR(MP_QSTR_DEEPSLEEP), MP_ROM_INT(MACHINE_WAKE_DEEPSLEEP) },

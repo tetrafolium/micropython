@@ -43,7 +43,7 @@ void *mp_pystack_alloc(size_t n_bytes);
 static inline void mp_pystack_free(void *ptr) {
     assert((uint8_t *)ptr >= MP_STATE_THREAD(pystack_start));
     assert((uint8_t *)ptr <= MP_STATE_THREAD(pystack_cur));
-    #if MP_PYSTACK_DEBUG
+#if MP_PYSTACK_DEBUG
     size_t n_bytes_to_free = MP_STATE_THREAD(pystack_cur) - (uint8_t *)ptr;
     size_t n_bytes = *(size_t *)(MP_STATE_THREAD(pystack_cur) - MICROPY_PYSTACK_ALIGN);
     while (n_bytes < n_bytes_to_free) {
@@ -51,10 +51,10 @@ static inline void mp_pystack_free(void *ptr) {
     }
     if (n_bytes != n_bytes_to_free) {
         mp_printf(&mp_plat_print, "mp_pystack_free() failed: %u != %u\n", (uint)n_bytes_to_free,
-            (uint)*(size_t *)(MP_STATE_THREAD(pystack_cur) - MICROPY_PYSTACK_ALIGN));
+                  (uint)*(size_t *)(MP_STATE_THREAD(pystack_cur) - MICROPY_PYSTACK_ALIGN));
         assert(0);
     }
-    #endif
+#endif
     MP_STATE_THREAD(pystack_cur) = (uint8_t *)ptr;
 }
 

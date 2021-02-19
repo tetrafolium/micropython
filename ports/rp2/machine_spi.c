@@ -82,8 +82,8 @@ STATIC machine_spi_obj_t machine_spi_obj[] = {
 STATIC void machine_spi_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     machine_spi_obj_t *self = MP_OBJ_TO_PTR(self_in);
     mp_printf(print, "SPI(%u, baudrate=%u, polarity=%u, phase=%u, bits=%u, sck=%u, mosi=%u, miso=%u)",
-        self->spi_id, self->baudrate, self->polarity, self->phase, self->bits,
-        self->sck, self->mosi, self->miso);
+              self->spi_id, self->baudrate, self->polarity, self->phase, self->bits,
+              self->sck, self->mosi, self->miso);
 }
 
 mp_obj_t machine_spi_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *all_args) {
@@ -224,10 +224,10 @@ STATIC void machine_spi_transfer(mp_obj_base_t *self_in, size_t len, const uint8
         channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
         channel_config_set_dreq(&c, spi_get_index(self->spi_inst) ? DREQ_SPI1_TX : DREQ_SPI0_TX);
         dma_channel_configure(chan_tx, &c,
-            &spi_get_hw(self->spi_inst)->dr,
-            src,
-            len,
-            false);
+                              &spi_get_hw(self->spi_inst)->dr,
+                              src,
+                              len,
+                              false);
 
         c = dma_channel_get_default_config(chan_rx);
         channel_config_set_transfer_data_size(&c, DMA_SIZE_8);
@@ -235,10 +235,10 @@ STATIC void machine_spi_transfer(mp_obj_base_t *self_in, size_t len, const uint8
         channel_config_set_read_increment(&c, false);
         channel_config_set_write_increment(&c, !write_only);
         dma_channel_configure(chan_rx, &c,
-            write_only ? &dev_null : dest,
-            &spi_get_hw(self->spi_inst)->dr,
-            len,
-            false);
+                              write_only ? &dev_null : dest,
+                              &spi_get_hw(self->spi_inst)->dr,
+                              len,
+                              false);
 
         dma_start_channel_mask((1u << chan_rx) | (1u << chan_tx));
         dma_channel_wait_for_finish_blocking(chan_rx);

@@ -57,18 +57,18 @@ mp_uint_t pinbase_ioctl(mp_obj_t obj, mp_uint_t request, uintptr_t arg, int *err
 mp_uint_t pinbase_ioctl(mp_obj_t obj, mp_uint_t request, uintptr_t arg, int *errcode) {
     (void)errcode;
     switch (request) {
-        case MP_PIN_READ: {
-            mp_obj_t dest[2];
-            mp_load_method(obj, MP_QSTR_value, dest);
-            return mp_obj_get_int(mp_call_method_n_kw(0, 0, dest));
-        }
-        case MP_PIN_WRITE: {
-            mp_obj_t dest[3];
-            mp_load_method(obj, MP_QSTR_value, dest);
-            dest[2] = (arg == 0 ? mp_const_false : mp_const_true);
-            mp_call_method_n_kw(1, 0, dest);
-            return 0;
-        }
+    case MP_PIN_READ: {
+        mp_obj_t dest[2];
+        mp_load_method(obj, MP_QSTR_value, dest);
+        return mp_obj_get_int(mp_call_method_n_kw(0, 0, dest));
+    }
+    case MP_PIN_WRITE: {
+        mp_obj_t dest[3];
+        mp_load_method(obj, MP_QSTR_value, dest);
+        dest[2] = (arg == 0 ? mp_const_false : mp_const_true);
+        mp_call_method_n_kw(1, 0, dest);
+        return 0;
+    }
     }
     return -1;
 }

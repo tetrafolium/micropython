@@ -55,9 +55,9 @@ STATIC void machine_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_pri
     struct uart_config config;
     uart_config_get(self->dev, &config);
     mp_printf(print, "UART(\"%s\", baudrate=%u, data_bits=%s, parity_bits=%s, stop_bits=%s, flow_control=%s, timeout=%u, timeout_char=%u)",
-        self->dev->name, config.baudrate, _data_bits_name[config.data_bits],
-        _parity_name[config.parity], _stop_bits_name[config.stop_bits], _flow_control_name[config.flow_ctrl],
-        self->timeout, self->timeout_char);
+              self->dev->name, config.baudrate, _data_bits_name[config.data_bits],
+              _parity_name[config.parity], _stop_bits_name[config.stop_bits], _flow_control_name[config.flow_ctrl],
+              self->timeout, self->timeout_char);
 }
 
 STATIC void machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {

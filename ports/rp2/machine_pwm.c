@@ -105,7 +105,7 @@ STATIC mp_obj_t machine_pwm_freq(size_t n_args, const mp_obj_t *args) {
     } else {
         // Set the frequency, making "top" as large as possible for maximum resolution.
         // Maximum "top" is set at 65534 to be able to achieve 100% duty with 65535.
-        #define TOP_MAX 65534
+#define TOP_MAX 65534
         mp_int_t freq = mp_obj_get_int(args[1]);
         uint32_t div16_top = 16 * source_hz / freq;
         uint32_t top = 1;

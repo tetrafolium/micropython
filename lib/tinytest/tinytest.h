@@ -43,32 +43,32 @@ struct testcase_t;
 
 /** Functions to initialize/teardown a structure for a testcase. */
 struct testcase_setup_t {
-	/** Return a new structure for use by a given testcase. */
-	void *(*setup_fn)(const struct testcase_t *);
-	/** Clean/free a structure from setup_fn. Return 1 if ok, 0 on err. */
-	int (*cleanup_fn)(const struct testcase_t *, void *);
+    /** Return a new structure for use by a given testcase. */
+    void *(*setup_fn)(const struct testcase_t *);
+    /** Clean/free a structure from setup_fn. Return 1 if ok, 0 on err. */
+    int (*cleanup_fn)(const struct testcase_t *, void *);
 };
 
 /** A single test-case that you can run. */
 struct testcase_t {
-	const char *name; /**< An identifier for this case. */
-	testcase_fn fn; /**< The function to run to implement this case. */
-	unsigned long flags; /**< Bitfield of TT_* flags. */
-	const struct testcase_setup_t *setup; /**< Optional setup/cleanup fns*/
-	void *setup_data; /**< Extra data usable by setup function */
+    const char *name; /**< An identifier for this case. */
+    testcase_fn fn; /**< The function to run to implement this case. */
+    unsigned long flags; /**< Bitfield of TT_* flags. */
+    const struct testcase_setup_t *setup; /**< Optional setup/cleanup fns*/
+    void *setup_data; /**< Extra data usable by setup function */
 };
 #define END_OF_TESTCASES { NULL, NULL, 0, NULL, NULL }
 
 /** A group of tests that are selectable together. */
 struct testgroup_t {
-	const char *prefix; /**< Prefix to prepend to testnames. */
-	struct testcase_t *cases; /** Array, ending with END_OF_TESTCASES */
+    const char *prefix; /**< Prefix to prepend to testnames. */
+    struct testcase_t *cases; /** Array, ending with END_OF_TESTCASES */
 };
 #define END_OF_GROUPS { NULL, NULL}
 
 struct testlist_alias_t {
-	const char *name;
-	const char **tests;
+    const char *name;
+    const char **tests;
 };
 #define END_OF_ALIASES { NULL, NULL }
 

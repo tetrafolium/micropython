@@ -149,14 +149,14 @@ STATIC mp_obj_t esp_flash_size(void) {
     // For SDK 1.5.2, either address has shifted and not mirrored in
     // eagle.rom.addr.v6.ld, or extra initial member was added.
     SpiFlashChip *flash = (SpiFlashChip *)(&flashchip + 4);
-    #if 0
+#if 0
     printf("deviceId: %x\n", flash->deviceId);
     printf("chip_size: %u\n", flash->chip_size);
     printf("block_size: %u\n", flash->block_size);
     printf("sector_size: %u\n", flash->sector_size);
     printf("page_size: %u\n", flash->page_size);
     printf("status_mask: %u\n", flash->status_mask);
-    #endif
+#endif
     return mp_obj_new_int_from_uint(flash->chip_size);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(esp_flash_size_obj, esp_flash_size);
@@ -204,7 +204,7 @@ STATIC mp_obj_t esp_neopixel_write_(mp_obj_t pin, mp_obj_t buf, mp_obj_t is800k)
     mp_buffer_info_t bufinfo;
     mp_get_buffer_raise(buf, &bufinfo, MP_BUFFER_READ);
     esp_neopixel_write(mp_obj_get_pin_obj(pin)->phys_port,
-        (uint8_t *)bufinfo.buf, bufinfo.len, mp_obj_is_true(is800k));
+                       (uint8_t *)bufinfo.buf, bufinfo.len, mp_obj_is_true(is800k));
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_3(esp_neopixel_write_obj, esp_neopixel_write_);
@@ -214,8 +214,8 @@ STATIC mp_obj_t esp_apa102_write_(mp_obj_t clockPin, mp_obj_t dataPin, mp_obj_t 
     mp_buffer_info_t bufinfo;
     mp_get_buffer_raise(buf, &bufinfo, MP_BUFFER_READ);
     esp_apa102_write(mp_obj_get_pin_obj(clockPin)->phys_port,
-        mp_obj_get_pin_obj(dataPin)->phys_port,
-        (uint8_t *)bufinfo.buf, bufinfo.len);
+                     mp_obj_get_pin_obj(dataPin)->phys_port,
+                     (uint8_t *)bufinfo.buf, bufinfo.len);
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_3(esp_apa102_write_obj, esp_apa102_write_);
@@ -289,7 +289,7 @@ void *esp_native_code_commit(void *buf, size_t len, void *reloc) {
     len = (len + 3) & ~3;
     if (esp_native_code_cur + len > esp_native_code_end) {
         mp_raise_msg_varg(&mp_type_MemoryError,
-            MP_ERROR_TEXT("memory allocation failed, allocating %u bytes for native code"), (uint)len);
+                          MP_ERROR_TEXT("memory allocation failed, allocating %u bytes for native code"), (uint)len);
     }
 
     void *dest;
@@ -363,12 +363,12 @@ STATIC const mp_rom_map_elem_t esp_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_flash_erase), MP_ROM_PTR(&esp_flash_erase_obj) },
     { MP_ROM_QSTR(MP_QSTR_flash_size), MP_ROM_PTR(&esp_flash_size_obj) },
     { MP_ROM_QSTR(MP_QSTR_flash_user_start), MP_ROM_PTR(&esp_flash_user_start_obj) },
-    #if MICROPY_ESP8266_NEOPIXEL
+#if MICROPY_ESP8266_NEOPIXEL
     { MP_ROM_QSTR(MP_QSTR_neopixel_write), MP_ROM_PTR(&esp_neopixel_write_obj) },
-    #endif
-    #if MICROPY_ESP8266_APA102
+#endif
+#if MICROPY_ESP8266_APA102
     { MP_ROM_QSTR(MP_QSTR_apa102_write), MP_ROM_PTR(&esp_apa102_write_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_dht_readinto), MP_ROM_PTR(&dht_readinto_obj) },
     { MP_ROM_QSTR(MP_QSTR_freemem), MP_ROM_PTR(&esp_freemem_obj) },
     { MP_ROM_QSTR(MP_QSTR_meminfo), MP_ROM_PTR(&esp_meminfo_obj) },
@@ -377,15 +377,15 @@ STATIC const mp_rom_map_elem_t esp_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_malloc), MP_ROM_PTR(&esp_malloc_obj) },
     { MP_ROM_QSTR(MP_QSTR_free), MP_ROM_PTR(&esp_free_obj) },
     { MP_ROM_QSTR(MP_QSTR_esf_free_bufs), MP_ROM_PTR(&esp_esf_free_bufs_obj) },
-    #if MICROPY_EMIT_XTENSA || MICROPY_EMIT_INLINE_XTENSA
+#if MICROPY_EMIT_XTENSA || MICROPY_EMIT_INLINE_XTENSA
     { MP_ROM_QSTR(MP_QSTR_set_native_code_location), MP_ROM_PTR(&esp_set_native_code_location_obj) },
-    #endif
+#endif
 
-    #if MODESP_INCLUDE_CONSTANTS
+#if MODESP_INCLUDE_CONSTANTS
     { MP_ROM_QSTR(MP_QSTR_SLEEP_NONE), MP_ROM_INT(NONE_SLEEP_T) },
     { MP_ROM_QSTR(MP_QSTR_SLEEP_LIGHT), MP_ROM_INT(LIGHT_SLEEP_T) },
     { MP_ROM_QSTR(MP_QSTR_SLEEP_MODEM), MP_ROM_INT(MODEM_SLEEP_T) },
-    #endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(esp_module_globals, esp_module_globals_table);

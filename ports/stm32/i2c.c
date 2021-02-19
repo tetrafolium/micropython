@@ -84,9 +84,9 @@ int i2c_init(i2c_t *i2c, mp_hal_pin_obj_t scl, mp_hal_pin_obj_t sda, uint32_t fr
         i2c->TRISE = PCLK1 / 1000000 * 3 / 10 + 1; // 300ns rise time in FM
     }
 
-    #if defined(I2C_FLTR_ANOFF)
+#if defined(I2C_FLTR_ANOFF)
     i2c->FLTR = 0; // analog filter on, digital filter off
-    #endif
+#endif
 
     return 0;
 }
@@ -342,9 +342,9 @@ int i2c_start_addr(i2c_t *i2c, int rd_wrn, uint16_t addr, size_t len, bool stop)
     // Enable the peripheral and send the START condition with slave address
     i2c->CR1 |= I2C_CR1_PE;
     i2c->CR2 = (len > 1) << I2C_CR2_RELOAD_Pos
-        | (len > 0) << I2C_CR2_NBYTES_Pos
-        | rd_wrn << I2C_CR2_RD_WRN_Pos
-        | (addr & 0x7f) << 1;
+               | (len > 0) << I2C_CR2_NBYTES_Pos
+               | rd_wrn << I2C_CR2_RD_WRN_Pos
+               | (addr & 0x7f) << 1;
     i2c->CR2 |= I2C_CR2_START;
 
     // Wait for address to be sent
@@ -400,11 +400,11 @@ int i2c_read(i2c_t *i2c, uint8_t *dest, size_t len, size_t next_len) {
             return ret;
         }
         *dest++ = i2c->RXDR;
-    load_cr2:
+load_cr2:
         if (len) {
             i2c->CR2 = (i2c->CR2 & I2C_CR2_AUTOEND)
-                | (len + next_len > 1) << I2C_CR2_RELOAD_Pos
-                | 1 << I2C_CR2_NBYTES_Pos;
+                       | (len + next_len > 1) << I2C_CR2_RELOAD_Pos
+                       | 1 << I2C_CR2_NBYTES_Pos;
         }
     }
 
@@ -448,11 +448,11 @@ int i2c_write(i2c_t *i2c, const uint8_t *src, size_t len, size_t next_len) {
             break;
         }
         ++num_acks;
-    load_cr2:
+load_cr2:
         if (len) {
             i2c->CR2 = (i2c->CR2 & I2C_CR2_AUTOEND)
-                | (len + next_len > 1) << I2C_CR2_RELOAD_Pos
-                | 1 << I2C_CR2_NBYTES_Pos;
+                       | (len + next_len > 1) << I2C_CR2_RELOAD_Pos
+                       | 1 << I2C_CR2_NBYTES_Pos;
         }
     }
 
@@ -490,41 +490,41 @@ int i2c_writeto(i2c_t *i2c, uint16_t addr, const uint8_t *src, size_t len, bool 
 
 STATIC const uint8_t i2c_available =
     0
-    #if defined(MICROPY_HW_I2C1_SCL)
+#if defined(MICROPY_HW_I2C1_SCL)
     | 1 << 1
-    #endif
-    #if defined(MICROPY_HW_I2C2_SCL)
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
     | 1 << 2
-    #endif
-    #if defined(MICROPY_HW_I2C3_SCL)
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
     | 1 << 3
-    #endif
-    #if defined(MICROPY_HW_I2C4_SCL)
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
     | 1 << 4
-    #endif
-;
+#endif
+    ;
 
 int i2c_find_peripheral(mp_obj_t id) {
     int i2c_id = 0;
     if (mp_obj_is_str(id)) {
         const char *port = mp_obj_str_get_str(id);
         if (0) {
-        #ifdef MICROPY_HW_I2C1_NAME
+#ifdef MICROPY_HW_I2C1_NAME
         } else if (strcmp(port, MICROPY_HW_I2C1_NAME) == 0) {
             i2c_id = 1;
-        #endif
-        #ifdef MICROPY_HW_I2C2_NAME
+#endif
+#ifdef MICROPY_HW_I2C2_NAME
         } else if (strcmp(port, MICROPY_HW_I2C2_NAME) == 0) {
             i2c_id = 2;
-        #endif
-        #ifdef MICROPY_HW_I2C3_NAME
+#endif
+#ifdef MICROPY_HW_I2C3_NAME
         } else if (strcmp(port, MICROPY_HW_I2C3_NAME) == 0) {
             i2c_id = 3;
-        #endif
-        #ifdef MICROPY_HW_I2C4_NAME
+#endif
+#ifdef MICROPY_HW_I2C4_NAME
         } else if (strcmp(port, MICROPY_HW_I2C4_NAME) == 0) {
             i2c_id = 4;
-        #endif
+#endif
         } else {
             mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("I2C(%s) doesn't exist"), port);
         }

@@ -60,15 +60,15 @@ void check_esp_err(esp_err_t code) {
         // map esp-idf error code to posix error code
         uint32_t pcode = -code;
         switch (code) {
-            case ESP_ERR_NO_MEM:
-                pcode = MP_ENOMEM;
-                break;
-            case ESP_ERR_TIMEOUT:
-                pcode = MP_ETIMEDOUT;
-                break;
-            case ESP_ERR_NOT_SUPPORTED:
-                pcode = MP_EOPNOTSUPP;
-                break;
+        case ESP_ERR_NO_MEM:
+            pcode = MP_ENOMEM;
+            break;
+        case ESP_ERR_TIMEOUT:
+            pcode = MP_ETIMEDOUT;
+            break;
+        case ESP_ERR_NOT_SUPPORTED:
+            pcode = MP_EOPNOTSUPP;
+            break;
         }
         // construct string object
         mp_obj_str_t *o_str = m_new_obj_maybe(mp_obj_str_t);

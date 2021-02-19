@@ -108,26 +108,26 @@ I2C_HandleTypeDef I2CHandle4 = {.Instance = NULL};
 STATIC bool pyb_i2c_use_dma[4];
 
 const pyb_i2c_obj_t pyb_i2c_obj[] = {
-    #if defined(MICROPY_HW_I2C1_SCL)
+#if defined(MICROPY_HW_I2C1_SCL)
     {{&pyb_i2c_type}, &I2CHandle1, &dma_I2C_1_TX, &dma_I2C_1_RX, &pyb_i2c_use_dma[0]},
-    #else
+#else
     {{&pyb_i2c_type}, NULL, NULL, NULL, NULL},
-    #endif
-    #if defined(MICROPY_HW_I2C2_SCL)
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
     {{&pyb_i2c_type}, &I2CHandle2, &dma_I2C_2_TX, &dma_I2C_2_RX, &pyb_i2c_use_dma[1]},
-    #else
+#else
     {{&pyb_i2c_type}, NULL, NULL, NULL, NULL},
-    #endif
-    #if defined(MICROPY_HW_I2C3_SCL)
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
     {{&pyb_i2c_type}, &I2CHandle3, &dma_I2C_3_TX, &dma_I2C_3_RX, &pyb_i2c_use_dma[2]},
-    #else
+#else
     {{&pyb_i2c_type}, NULL, NULL, NULL, NULL},
-    #endif
-    #if defined(MICROPY_HW_I2C4_SCL)
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
     {{&pyb_i2c_type}, &I2CHandle4, &dma_I2C_4_TX, &dma_I2C_4_RX, &pyb_i2c_use_dma[3]},
-    #else
+#else
     {{&pyb_i2c_type}, NULL, NULL, NULL, NULL},
-    #endif
+#endif
 };
 
 #if defined(STM32F7) || defined(STM32L4) || defined(STM32H7)
@@ -241,18 +241,18 @@ uint32_t pyb_i2c_get_baudrate(I2C_HandleTypeDef *i2c) {
 void i2c_init0(void) {
     // Initialise the I2C handles.
     // The structs live on the BSS so all other fields will be zero after a reset.
-    #if defined(MICROPY_HW_I2C1_SCL)
+#if defined(MICROPY_HW_I2C1_SCL)
     I2CHandle1.Instance = I2C1;
-    #endif
-    #if defined(MICROPY_HW_I2C2_SCL)
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
     I2CHandle2.Instance = I2C2;
-    #endif
-    #if defined(MICROPY_HW_I2C3_SCL)
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
     I2CHandle3.Instance = I2C3;
-    #endif
-    #if defined(MICROPY_HW_I2C4_SCL)
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
     I2CHandle4.Instance = I2C4;
-    #endif
+#endif
 }
 
 void pyb_i2c_init(I2C_HandleTypeDef *i2c) {
@@ -261,34 +261,34 @@ void pyb_i2c_init(I2C_HandleTypeDef *i2c) {
     const pin_obj_t *sda_pin;
 
     if (0) {
-    #if defined(MICROPY_HW_I2C1_SCL)
+#if defined(MICROPY_HW_I2C1_SCL)
     } else if (i2c == &I2CHandle1) {
         i2c_unit = 1;
         scl_pin = MICROPY_HW_I2C1_SCL;
         sda_pin = MICROPY_HW_I2C1_SDA;
         __HAL_RCC_I2C1_CLK_ENABLE();
-    #endif
-    #if defined(MICROPY_HW_I2C2_SCL)
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
     } else if (i2c == &I2CHandle2) {
         i2c_unit = 2;
         scl_pin = MICROPY_HW_I2C2_SCL;
         sda_pin = MICROPY_HW_I2C2_SDA;
         __HAL_RCC_I2C2_CLK_ENABLE();
-    #endif
-    #if defined(MICROPY_HW_I2C3_SCL)
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
     } else if (i2c == &I2CHandle3) {
         i2c_unit = 3;
         scl_pin = MICROPY_HW_I2C3_SCL;
         sda_pin = MICROPY_HW_I2C3_SDA;
         __HAL_RCC_I2C3_CLK_ENABLE();
-    #endif
-    #if defined(MICROPY_HW_I2C4_SCL)
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
     } else if (i2c == &I2CHandle4) {
         i2c_unit = 4;
         scl_pin = MICROPY_HW_I2C4_SCL;
         sda_pin = MICROPY_HW_I2C4_SDA;
         __HAL_RCC_I2C4_CLK_ENABLE();
-    #endif
+#endif
     } else {
         // I2C does not exist for this board (shouldn't get here, should be checked by caller)
         return;
@@ -315,64 +315,64 @@ void pyb_i2c_init(I2C_HandleTypeDef *i2c) {
     dma_invalidate_channel(self->rx_dma_descr);
 
     if (0) {
-    #if defined(MICROPY_HW_I2C1_SCL)
+#if defined(MICROPY_HW_I2C1_SCL)
     } else if (i2c->Instance == I2C1) {
         HAL_NVIC_EnableIRQ(I2C1_EV_IRQn);
         HAL_NVIC_EnableIRQ(I2C1_ER_IRQn);
-    #endif
-    #if defined(MICROPY_HW_I2C2_SCL)
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
     } else if (i2c->Instance == I2C2) {
         HAL_NVIC_EnableIRQ(I2C2_EV_IRQn);
         HAL_NVIC_EnableIRQ(I2C2_ER_IRQn);
-    #endif
-    #if defined(MICROPY_HW_I2C3_SCL)
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
     } else if (i2c->Instance == I2C3) {
         HAL_NVIC_EnableIRQ(I2C3_EV_IRQn);
         HAL_NVIC_EnableIRQ(I2C3_ER_IRQn);
-    #endif
-    #if defined(MICROPY_HW_I2C4_SCL)
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
     } else if (i2c->Instance == I2C4) {
         HAL_NVIC_EnableIRQ(I2C4_EV_IRQn);
         HAL_NVIC_EnableIRQ(I2C4_ER_IRQn);
-    #endif
+#endif
     }
 }
 
 void i2c_deinit(I2C_HandleTypeDef *i2c) {
     HAL_I2C_DeInit(i2c);
     if (0) {
-    #if defined(MICROPY_HW_I2C1_SCL)
+#if defined(MICROPY_HW_I2C1_SCL)
     } else if (i2c->Instance == I2C1) {
         __HAL_RCC_I2C1_FORCE_RESET();
         __HAL_RCC_I2C1_RELEASE_RESET();
         __HAL_RCC_I2C1_CLK_DISABLE();
         HAL_NVIC_DisableIRQ(I2C1_EV_IRQn);
         HAL_NVIC_DisableIRQ(I2C1_ER_IRQn);
-    #endif
-    #if defined(MICROPY_HW_I2C2_SCL)
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
     } else if (i2c->Instance == I2C2) {
         __HAL_RCC_I2C2_FORCE_RESET();
         __HAL_RCC_I2C2_RELEASE_RESET();
         __HAL_RCC_I2C2_CLK_DISABLE();
         HAL_NVIC_DisableIRQ(I2C2_EV_IRQn);
         HAL_NVIC_DisableIRQ(I2C2_ER_IRQn);
-    #endif
-    #if defined(MICROPY_HW_I2C3_SCL)
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
     } else if (i2c->Instance == I2C3) {
         __HAL_RCC_I2C3_FORCE_RESET();
         __HAL_RCC_I2C3_RELEASE_RESET();
         __HAL_RCC_I2C3_CLK_DISABLE();
         HAL_NVIC_DisableIRQ(I2C3_EV_IRQn);
         HAL_NVIC_DisableIRQ(I2C3_ER_IRQn);
-    #endif
-    #if defined(MICROPY_HW_I2C4_SCL)
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
     } else if (i2c->Instance == I2C4) {
         __HAL_RCC_I2C4_FORCE_RESET();
         __HAL_RCC_I2C4_RELEASE_RESET();
         __HAL_RCC_I2C4_CLK_DISABLE();
         HAL_NVIC_DisableIRQ(I2C4_EV_IRQn);
         HAL_NVIC_DisableIRQ(I2C4_ER_IRQn);
-    #endif
+#endif
     }
 }
 
@@ -414,31 +414,31 @@ void i2c_ev_irq_handler(mp_uint_t i2c_id) {
     I2C_HandleTypeDef *hi2c;
 
     switch (i2c_id) {
-        #if defined(MICROPY_HW_I2C1_SCL)
-        case 1:
-            hi2c = &I2CHandle1;
-            break;
-        #endif
-        #if defined(MICROPY_HW_I2C2_SCL)
-        case 2:
-            hi2c = &I2CHandle2;
-            break;
-        #endif
-        #if defined(MICROPY_HW_I2C3_SCL)
-        case 3:
-            hi2c = &I2CHandle3;
-            break;
-        #endif
-        #if defined(MICROPY_HW_I2C4_SCL)
-        case 4:
-            hi2c = &I2CHandle4;
-            break;
-        #endif
-        default:
-            return;
+#if defined(MICROPY_HW_I2C1_SCL)
+    case 1:
+        hi2c = &I2CHandle1;
+        break;
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
+    case 2:
+        hi2c = &I2CHandle2;
+        break;
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
+    case 3:
+        hi2c = &I2CHandle3;
+        break;
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
+    case 4:
+        hi2c = &I2CHandle4;
+        break;
+#endif
+    default:
+        return;
     }
 
-    #if defined(STM32F4)
+#if defined(STM32F4)
 
     if (hi2c->Instance->SR1 & I2C_FLAG_BTF && hi2c->State == HAL_I2C_STATE_BUSY_TX) {
         if (hi2c->XferCount != 0U) {
@@ -454,43 +454,43 @@ void i2c_ev_irq_handler(mp_uint_t i2c_id) {
         }
     }
 
-    #else
+#else
 
     // if not an F4 MCU, use the HAL's IRQ handler
     HAL_I2C_EV_IRQHandler(hi2c);
 
-    #endif
+#endif
 }
 
 void i2c_er_irq_handler(mp_uint_t i2c_id) {
     I2C_HandleTypeDef *hi2c;
 
     switch (i2c_id) {
-        #if defined(MICROPY_HW_I2C1_SCL)
-        case 1:
-            hi2c = &I2CHandle1;
-            break;
-        #endif
-        #if defined(MICROPY_HW_I2C2_SCL)
-        case 2:
-            hi2c = &I2CHandle2;
-            break;
-        #endif
-        #if defined(MICROPY_HW_I2C3_SCL)
-        case 3:
-            hi2c = &I2CHandle3;
-            break;
-        #endif
-        #if defined(MICROPY_HW_I2C4_SCL)
-        case 4:
-            hi2c = &I2CHandle4;
-            break;
-        #endif
-        default:
-            return;
+#if defined(MICROPY_HW_I2C1_SCL)
+    case 1:
+        hi2c = &I2CHandle1;
+        break;
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
+    case 2:
+        hi2c = &I2CHandle2;
+        break;
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
+    case 3:
+        hi2c = &I2CHandle3;
+        break;
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
+    case 4:
+        hi2c = &I2CHandle4;
+        break;
+#endif
+    default:
+        return;
     }
 
-    #if defined(STM32F4)
+#if defined(STM32F4)
 
     uint32_t sr1 = hi2c->Instance->SR1;
 
@@ -519,12 +519,12 @@ void i2c_er_irq_handler(mp_uint_t i2c_id) {
         __HAL_I2C_CLEAR_FLAG(hi2c, I2C_FLAG_OVR);
     }
 
-    #else
+#else
 
     // if not an F4 MCU, use the HAL's IRQ handler
     HAL_I2C_ER_IRQHandler(hi2c);
 
-    #endif
+#endif
 }
 
 STATIC HAL_StatusTypeDef i2c_wait_dma_finished(I2C_HandleTypeDef *i2c, uint32_t timeout) {
@@ -553,40 +553,40 @@ STATIC void pyb_i2c_print(const mp_print_t *print, mp_obj_t self_in, mp_print_ki
     uint i2c_num = 0;
     if (0) {
     }
-    #if defined(MICROPY_HW_I2C1_SCL)
+#if defined(MICROPY_HW_I2C1_SCL)
     else if (self->i2c->Instance == I2C1) {
         i2c_num = 1;
     }
-    #endif
-    #if defined(MICROPY_HW_I2C2_SCL)
+#endif
+#if defined(MICROPY_HW_I2C2_SCL)
     else if (self->i2c->Instance == I2C2) {
         i2c_num = 2;
     }
-    #endif
-    #if defined(MICROPY_HW_I2C3_SCL)
+#endif
+#if defined(MICROPY_HW_I2C3_SCL)
     else if (self->i2c->Instance == I2C3) {
         i2c_num = 3;
     }
-    #endif
-    #if defined(MICROPY_HW_I2C4_SCL)
+#endif
+#if defined(MICROPY_HW_I2C4_SCL)
     else if (self->i2c->Instance == I2C4) {
         i2c_num = 4;
     }
-    #endif
+#endif
 
     if (self->i2c->State == HAL_I2C_STATE_RESET) {
         mp_printf(print, "I2C(%u)", i2c_num);
     } else {
         if (in_master_mode(self)) {
             mp_printf(print, "I2C(%u, I2C.MASTER, baudrate=%u"
-                #if PYB_I2C_TIMINGR
-                ", timingr=0x%08x"
-                #endif
-                ")", i2c_num, pyb_i2c_get_baudrate(self->i2c)
-                #if PYB_I2C_TIMINGR
-                , self->i2c->Init.Timing
-                #endif
-                );
+#if PYB_I2C_TIMINGR
+                      ", timingr=0x%08x"
+#endif
+                      ")", i2c_num, pyb_i2c_get_baudrate(self->i2c)
+#if PYB_I2C_TIMINGR
+                      , self->i2c->Init.Timing
+#endif
+                     );
         } else {
             mp_printf(print, "I2C(%u, I2C.SLAVE, addr=0x%02x)", i2c_num, (self->i2c->Instance->OAR1 >> 1) & 0x7f);
         }
@@ -608,9 +608,9 @@ STATIC mp_obj_t pyb_i2c_init_helper(const pyb_i2c_obj_t *self, size_t n_args, co
         { MP_QSTR_baudrate, MP_ARG_KW_ONLY | MP_ARG_INT, {.u_int = MICROPY_HW_I2C_BAUDRATE_DEFAULT} },
         { MP_QSTR_gencall,  MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
         { MP_QSTR_dma,      MP_ARG_KW_ONLY | MP_ARG_BOOL, {.u_bool = false} },
-        #if PYB_I2C_TIMINGR
+#if PYB_I2C_TIMINGR
         { MP_QSTR_timingr,  MP_ARG_KW_ONLY | MP_ARG_OBJ, {.u_rom_obj = MP_ROM_NONE} },
-        #endif
+#endif
     };
 
     // parse args
@@ -628,11 +628,11 @@ STATIC mp_obj_t pyb_i2c_init_helper(const pyb_i2c_obj_t *self, size_t n_args, co
     }
 
     // Set baudrate or timing value (if supported)
-    #if PYB_I2C_TIMINGR
+#if PYB_I2C_TIMINGR
     if (args[5].u_obj != mp_const_none) {
         init->Timing = mp_obj_get_int_truncated(args[5].u_obj);
     } else
-    #endif
+#endif
     {
         i2c_set_baudrate(init, MIN(args[2].u_int, MICROPY_HW_I2C_BAUDRATE_MAX));
     }

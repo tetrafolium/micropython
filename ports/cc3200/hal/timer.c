@@ -647,11 +647,11 @@ TimerValueSet(unsigned long ulBase, unsigned long ulTimer,
     //
     if( (ulTimer == TIMER_A) )
     {
-      HWREG(ulBase + TIMER_O_TAV) = ulValue;
+        HWREG(ulBase + TIMER_O_TAV) = ulValue;
     }
     else
     {
-      HWREG(ulBase + TIMER_O_TBV) = ulValue;
+        HWREG(ulBase + TIMER_O_TBV) = ulValue;
     }
 }
 

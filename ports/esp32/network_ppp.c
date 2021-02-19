@@ -63,17 +63,17 @@ static void ppp_status_cb(ppp_pcb *pcb, int err_code, void *ctx) {
     struct netif *pppif = ppp_netif(self->pcb);
 
     switch (err_code) {
-        case PPPERR_NONE:
-            self->connected = (pppif->ip_addr.u_addr.ip4.addr != 0);
-            break;
-        case PPPERR_USER:
-            self->clean_close = true;
-            break;
-        case PPPERR_CONNECT:
-            self->connected = false;
-            break;
-        default:
-            break;
+    case PPPERR_NONE:
+        self->connected = (pppif->ip_addr.u_addr.ip4.addr != 0);
+        break;
+    case PPPERR_USER:
+        self->clean_close = true;
+        break;
+    case PPPERR_CONNECT:
+        self->connected = false;
+        break;
+    default:
+        break;
     }
 }
 
@@ -185,12 +185,12 @@ STATIC mp_obj_t ppp_connect_py(size_t n_args, const mp_obj_t *args, mp_map_t *kw
     }
 
     switch (parsed_args[ARG_authmode].u_int) {
-        case PPPAUTHTYPE_NONE:
-        case PPPAUTHTYPE_PAP:
-        case PPPAUTHTYPE_CHAP:
-            break;
-        default:
-            mp_raise_ValueError(MP_ERROR_TEXT("invalid auth"));
+    case PPPAUTHTYPE_NONE:
+    case PPPAUTHTYPE_PAP:
+    case PPPAUTHTYPE_CHAP:
+        break;
+    default:
+        mp_raise_ValueError(MP_ERROR_TEXT("invalid auth"));
     }
 
     if (parsed_args[ARG_authmode].u_int != PPPAUTHTYPE_NONE) {

@@ -150,15 +150,15 @@ STATIC mp_obj_t machine_sdcard_make_new(const mp_obj_type_t *type, size_t n_args
     mp_map_init_fixed_table(&kw_args, n_kw, args + n_args);
 
     mp_arg_parse_all(n_args, args, &kw_args,
-        MP_ARRAY_SIZE(allowed_args), allowed_args, arg_vals);
+                     MP_ARRAY_SIZE(allowed_args), allowed_args, arg_vals);
 
     DEBUG_printf("  slot=%d, width=%d, cd=%p, wp=%p",
-        arg_vals[ARG_slot].u_int, arg_vals[ARG_width].u_int,
-        arg_vals[ARG_cd].u_obj, arg_vals[ARG_wp].u_obj);
+                 arg_vals[ARG_slot].u_int, arg_vals[ARG_width].u_int,
+                 arg_vals[ARG_cd].u_obj, arg_vals[ARG_wp].u_obj);
 
     DEBUG_printf("  miso=%p, mosi=%p, sck=%p, cs=%p",
-        arg_vals[ARG_miso].u_obj, arg_vals[ARG_mosi].u_obj,
-        arg_vals[ARG_sck].u_obj, arg_vals[ARG_cs].u_obj);
+                 arg_vals[ARG_miso].u_obj, arg_vals[ARG_mosi].u_obj,
+                 arg_vals[ARG_sck].u_obj, arg_vals[ARG_cs].u_obj);
 
     int slot_num = arg_vals[ARG_slot].u_int;
     if (slot_num < 0 || slot_num > 3) {
@@ -326,35 +326,35 @@ STATIC mp_obj_t machine_sdcard_ioctl(mp_obj_t self_in, mp_obj_t cmd_in, mp_obj_t
     mp_int_t cmd = mp_obj_get_int(cmd_in);
 
     switch (cmd) {
-        case MP_BLOCKDEV_IOCTL_INIT:
-            err = sdcard_ensure_card_init(self, false);
-            return MP_OBJ_NEW_SMALL_INT((err == ESP_OK) ? 0 : -1);
+    case MP_BLOCKDEV_IOCTL_INIT:
+        err = sdcard_ensure_card_init(self, false);
+        return MP_OBJ_NEW_SMALL_INT((err == ESP_OK) ? 0 : -1);
 
-        case MP_BLOCKDEV_IOCTL_DEINIT:
-            // Ensure that future attempts to look at info re-read the card
-            self->flags &= ~SDCARD_CARD_FLAGS_CARD_INIT_DONE;
-            return MP_OBJ_NEW_SMALL_INT(0); // success
+    case MP_BLOCKDEV_IOCTL_DEINIT:
+        // Ensure that future attempts to look at info re-read the card
+        self->flags &= ~SDCARD_CARD_FLAGS_CARD_INIT_DONE;
+        return MP_OBJ_NEW_SMALL_INT(0); // success
 
-        case MP_BLOCKDEV_IOCTL_SYNC:
-            // nothing to do
-            return MP_OBJ_NEW_SMALL_INT(0); // success
+    case MP_BLOCKDEV_IOCTL_SYNC:
+        // nothing to do
+        return MP_OBJ_NEW_SMALL_INT(0); // success
 
-        case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
-            err = sdcard_ensure_card_init(self, false);
-            if (err != ESP_OK) {
-                return MP_OBJ_NEW_SMALL_INT(-1);
-            }
-            return MP_OBJ_NEW_SMALL_INT(self->card.csd.capacity);
+    case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
+        err = sdcard_ensure_card_init(self, false);
+        if (err != ESP_OK) {
+            return MP_OBJ_NEW_SMALL_INT(-1);
+        }
+        return MP_OBJ_NEW_SMALL_INT(self->card.csd.capacity);
 
-        case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
-            err = sdcard_ensure_card_init(self, false);
-            if (err != ESP_OK) {
-                return MP_OBJ_NEW_SMALL_INT(-1);
-            }
-            return MP_OBJ_NEW_SMALL_INT(_SECTOR_SIZE(self));
+    case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
+        err = sdcard_ensure_card_init(self, false);
+        if (err != ESP_OK) {
+            return MP_OBJ_NEW_SMALL_INT(-1);
+        }
+        return MP_OBJ_NEW_SMALL_INT(_SECTOR_SIZE(self));
 
-        default: // unknown command
-            return MP_OBJ_NEW_SMALL_INT(-1); // error
+    default: // unknown command
+        return MP_OBJ_NEW_SMALL_INT(-1); // error
     }
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_3(machine_sdcard_ioctl_obj, machine_sdcard_ioctl);

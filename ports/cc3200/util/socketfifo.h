@@ -45,7 +45,7 @@ typedef struct {
     unsigned char           closesockets;
     bool                    freedata;
 
-}SocketFifoElement_t;
+} SocketFifoElement_t;
 
 /*----------------------------------------------------------------------------
  ** Declare public functions

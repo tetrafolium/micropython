@@ -57,17 +57,17 @@
 // Configure PLL to give the desired CPU freq
 #undef MICROPY_HW_FLASH_LATENCY
 #if defined(STM32F4) || defined(STM32F7)
-  #if MBOOT_ENABLE_PACKING
-    // With encryption/signing/compression, a faster CPU makes processing much faster.
-    #define CORE_PLL_FREQ (96000000)
-    #define MICROPY_HW_FLASH_LATENCY FLASH_LATENCY_3
-  #else
-    #define CORE_PLL_FREQ (48000000)
-    #define MICROPY_HW_FLASH_LATENCY FLASH_LATENCY_1
-  #endif
+#if MBOOT_ENABLE_PACKING
+// With encryption/signing/compression, a faster CPU makes processing much faster.
+#define CORE_PLL_FREQ (96000000)
+#define MICROPY_HW_FLASH_LATENCY FLASH_LATENCY_3
+#else
+#define CORE_PLL_FREQ (48000000)
+#define MICROPY_HW_FLASH_LATENCY FLASH_LATENCY_1
+#endif
 #elif defined(STM32H7)
-  #define CORE_PLL_FREQ (96000000)
-  #define MICROPY_HW_FLASH_LATENCY FLASH_LATENCY_2
+#define CORE_PLL_FREQ (96000000)
+#define MICROPY_HW_FLASH_LATENCY FLASH_LATENCY_2
 #endif
 #undef MICROPY_HW_CLK_PLLM
 #undef MICROPY_HW_CLK_PLLN
@@ -106,11 +106,11 @@ uint32_t get_le32(const uint8_t *b) {
 void mp_hal_delay_us(mp_uint_t usec) {
     // use a busy loop for the delay
     // sys freq is always a multiple of 2MHz, so division here won't lose precision
-    #if defined(CORE_PLL_FREQ)
+#if defined(CORE_PLL_FREQ)
     const uint32_t ucount = CORE_PLL_FREQ / 2000000 * usec / 2;
-    #else
+#else
     const uint32_t ucount = SystemCoreClock / 2000000 * usec / 2;
-    #endif
+#endif
     for (uint32_t count = 0; ++count <= ucount;) {
     }
 }
@@ -191,9 +191,9 @@ void SystemClock_Config(void) {
         | MICROPY_HW_CLK_PLLN << RCC_PLLCFGR_PLLN_Pos
         | ((MICROPY_HW_CLK_PLLP >> 1) - 1) << RCC_PLLCFGR_PLLP_Pos
         | MICROPY_HW_CLK_PLLQ << RCC_PLLCFGR_PLLQ_Pos
-        #ifdef RCC_PLLCFGR_PLLR
+#ifdef RCC_PLLCFGR_PLLR
         | 2 << RCC_PLLCFGR_PLLR_Pos // default PLLR value of 2
-        #endif
+#endif
         ;
 
     // Enable PLL
@@ -227,12 +227,12 @@ void SystemClock_Config(void) {
     SystemCoreClock = CORE_PLL_FREQ;
     systick_init();
 
-    #if defined(STM32F7)
+#if defined(STM32F7)
     // The DFU bootloader changes the clocksource register from its default power
     // on reset value, so we set it back here, so the clocksources are the same
     // whether we were started from DFU or from a power on reset.
     RCC->DCKCFGR2 = 0;
-    #endif
+#endif
 }
 
 #elif defined(STM32H7)
@@ -387,12 +387,12 @@ static int led0_toggle_count = 0;
 MP_WEAK void led_init(void) {
     mp_hal_pin_output(LED0);
     mp_hal_pin_output(LED1);
-    #ifdef LED2
+#ifdef LED2
     mp_hal_pin_output(LED2);
-    #endif
-    #ifdef LED3
+#endif
+#ifdef LED3
     mp_hal_pin_output(LED3);
-    #endif
+#endif
     led0_cur_state = LED0_STATE_OFF;
 }
 
@@ -407,12 +407,12 @@ MP_WEAK void led_state(uint32_t led, int val) {
 void led_state_all(unsigned int mask) {
     led_state(LED0, mask & 1);
     led_state(LED1, mask & 2);
-    #ifdef LED2
+#ifdef LED2
     led_state(LED2, mask & 4);
-    #endif
-    #ifdef LED3
+#endif
+#ifdef LED3
     led_state(LED3, mask & 8);
-    #endif
+#endif
 }
 
 void led0_state(led0_state_t state) {
@@ -488,7 +488,7 @@ static int mboot_flash_page_erase(uint32_t addr, uint32_t *next_addr) {
         // Don't allow to erase the sector with this bootloader in it, or invalid sectors
         dfu_context.status = DFU_STATUS_ERROR_ADDRESS;
         dfu_context.error = (sector == 0) ? MBOOT_ERROR_STR_OVERWRITE_BOOTLOADER_IDX
-                                          : MBOOT_ERROR_STR_INVALID_ADDRESS_IDX;
+                            : MBOOT_ERROR_STR_INVALID_ADDRESS_IDX;
         return -MBOOT_ERRNO_FLASH_ERASE_DISALLOWED;
     }
 
@@ -516,7 +516,7 @@ static int mboot_flash_write(uint32_t addr, const uint8_t *src8, size_t len) {
         // Don't allow to write the sector with this bootloader in it
         dfu_context.status = DFU_STATUS_ERROR_ADDRESS;
         dfu_context.error = (sector == 0) ? MBOOT_ERROR_STR_OVERWRITE_BOOTLOADER_IDX
-                                          : MBOOT_ERROR_STR_INVALID_ADDRESS_IDX;
+                            : MBOOT_ERROR_STR_INVALID_ADDRESS_IDX;
         return -MBOOT_ERRNO_FLASH_WRITE_DISALLOWED;
     }
 
@@ -559,23 +559,23 @@ int hw_page_erase(uint32_t addr, uint32_t *next_addr) {
     int ret = -1;
     led0_state(LED0_STATE_ON);
 
-    #if defined(MBOOT_SPIFLASH_ADDR)
+#if defined(MBOOT_SPIFLASH_ADDR)
     if (MBOOT_SPIFLASH_ADDR <= addr && addr < MBOOT_SPIFLASH_ADDR + MBOOT_SPIFLASH_BYTE_SIZE) {
         *next_addr = addr + MBOOT_SPIFLASH_ERASE_BLOCKS_PER_PAGE * MP_SPIFLASH_ERASE_BLOCK_SIZE;
         ret = spiflash_page_erase(MBOOT_SPIFLASH_SPIFLASH,
-            addr - MBOOT_SPIFLASH_ADDR, MBOOT_SPIFLASH_ERASE_BLOCKS_PER_PAGE);
+                                  addr - MBOOT_SPIFLASH_ADDR, MBOOT_SPIFLASH_ERASE_BLOCKS_PER_PAGE);
     } else
-    #endif
-    #if defined(MBOOT_SPIFLASH2_ADDR)
-    if (MBOOT_SPIFLASH2_ADDR <= addr && addr < MBOOT_SPIFLASH2_ADDR + MBOOT_SPIFLASH2_BYTE_SIZE) {
-        *next_addr = addr + MBOOT_SPIFLASH2_ERASE_BLOCKS_PER_PAGE * MP_SPIFLASH_ERASE_BLOCK_SIZE;
-        ret = spiflash_page_erase(MBOOT_SPIFLASH2_SPIFLASH,
-            addr - MBOOT_SPIFLASH2_ADDR, MBOOT_SPIFLASH2_ERASE_BLOCKS_PER_PAGE);
-    } else
-    #endif
-    {
-        ret = mboot_flash_page_erase(addr, next_addr);
-    }
+#endif
+#if defined(MBOOT_SPIFLASH2_ADDR)
+        if (MBOOT_SPIFLASH2_ADDR <= addr && addr < MBOOT_SPIFLASH2_ADDR + MBOOT_SPIFLASH2_BYTE_SIZE) {
+            *next_addr = addr + MBOOT_SPIFLASH2_ERASE_BLOCKS_PER_PAGE * MP_SPIFLASH_ERASE_BLOCK_SIZE;
+            ret = spiflash_page_erase(MBOOT_SPIFLASH2_SPIFLASH,
+                                      addr - MBOOT_SPIFLASH2_ADDR, MBOOT_SPIFLASH2_ERASE_BLOCKS_PER_PAGE);
+        } else
+#endif
+        {
+            ret = mboot_flash_page_erase(addr, next_addr);
+        }
 
     led0_state((ret == 0) ? LED0_STATE_SLOW_FLASH : LED0_STATE_SLOW_INVERTED_FLASH);
     return ret;
@@ -583,73 +583,73 @@ int hw_page_erase(uint32_t addr, uint32_t *next_addr) {
 
 void hw_read(uint32_t addr, int len, uint8_t *buf) {
     led0_state(LED0_STATE_FAST_FLASH);
-    #if defined(MBOOT_SPIFLASH_ADDR)
+#if defined(MBOOT_SPIFLASH_ADDR)
     if (MBOOT_SPIFLASH_ADDR <= addr && addr < MBOOT_SPIFLASH_ADDR + MBOOT_SPIFLASH_BYTE_SIZE) {
         mp_spiflash_read(MBOOT_SPIFLASH_SPIFLASH, addr - MBOOT_SPIFLASH_ADDR, len, buf);
     } else
-    #endif
-    #if defined(MBOOT_SPIFLASH2_ADDR)
-    if (MBOOT_SPIFLASH2_ADDR <= addr && addr < MBOOT_SPIFLASH2_ADDR + MBOOT_SPIFLASH2_BYTE_SIZE) {
-        mp_spiflash_read(MBOOT_SPIFLASH2_SPIFLASH, addr - MBOOT_SPIFLASH2_ADDR, len, buf);
-    } else
-    #endif
-    {
-        // Other addresses, just read directly from memory
-        memcpy(buf, (void*)addr, len);
-    }
+#endif
+#if defined(MBOOT_SPIFLASH2_ADDR)
+        if (MBOOT_SPIFLASH2_ADDR <= addr && addr < MBOOT_SPIFLASH2_ADDR + MBOOT_SPIFLASH2_BYTE_SIZE) {
+            mp_spiflash_read(MBOOT_SPIFLASH2_SPIFLASH, addr - MBOOT_SPIFLASH2_ADDR, len, buf);
+        } else
+#endif
+        {
+            // Other addresses, just read directly from memory
+            memcpy(buf, (void*)addr, len);
+        }
     led0_state(LED0_STATE_SLOW_FLASH);
 }
 
 int hw_write(uint32_t addr, const uint8_t *src8, size_t len) {
     int ret = -1;
     led0_state(LED0_STATE_FAST_FLASH);
-    #if defined(MBOOT_SPIFLASH_ADDR)
+#if defined(MBOOT_SPIFLASH_ADDR)
     if (MBOOT_SPIFLASH_ADDR <= addr && addr < MBOOT_SPIFLASH_ADDR + MBOOT_SPIFLASH_BYTE_SIZE) {
         ret = mp_spiflash_write(MBOOT_SPIFLASH_SPIFLASH, addr - MBOOT_SPIFLASH_ADDR, len, src8);
     } else
-    #endif
-    #if defined(MBOOT_SPIFLASH2_ADDR)
-    if (MBOOT_SPIFLASH2_ADDR <= addr && addr < MBOOT_SPIFLASH2_ADDR + MBOOT_SPIFLASH2_BYTE_SIZE) {
-        ret = mp_spiflash_write(MBOOT_SPIFLASH2_SPIFLASH, addr - MBOOT_SPIFLASH2_ADDR, len, src8);
-    } else
-    #endif
-    if (flash_is_valid_addr(addr)) {
-        ret = mboot_flash_write(addr, src8, len);
-    } else {
-        dfu_context.status = DFU_STATUS_ERROR_ADDRESS;
-        dfu_context.error = MBOOT_ERROR_STR_INVALID_ADDRESS_IDX;
-    }
+#endif
+#if defined(MBOOT_SPIFLASH2_ADDR)
+        if (MBOOT_SPIFLASH2_ADDR <= addr && addr < MBOOT_SPIFLASH2_ADDR + MBOOT_SPIFLASH2_BYTE_SIZE) {
+            ret = mp_spiflash_write(MBOOT_SPIFLASH2_SPIFLASH, addr - MBOOT_SPIFLASH2_ADDR, len, src8);
+        } else
+#endif
+            if (flash_is_valid_addr(addr)) {
+                ret = mboot_flash_write(addr, src8, len);
+            } else {
+                dfu_context.status = DFU_STATUS_ERROR_ADDRESS;
+                dfu_context.error = MBOOT_ERROR_STR_INVALID_ADDRESS_IDX;
+            }
 
     led0_state((ret == 0) ? LED0_STATE_SLOW_FLASH : LED0_STATE_SLOW_INVERTED_FLASH);
     return ret;
 }
 
 int do_page_erase(uint32_t addr, uint32_t *next_addr) {
-    #if MBOOT_ENABLE_PACKING
+#if MBOOT_ENABLE_PACKING
     // Erase handled automatically for packed mode.
     return 0;
-    #else
+#else
     return hw_page_erase(addr, next_addr);
-    #endif
+#endif
 }
 
 void do_read(uint32_t addr, int len, uint8_t *buf) {
-    #if MBOOT_ENABLE_PACKING
+#if MBOOT_ENABLE_PACKING
     // Read disabled on packed (encrypted) mode.
     dfu_context.status = DFU_STATUS_ERROR_FILE;
     dfu_context.error = MBOOT_ERROR_STR_INVALID_READ_IDX;
     led0_state(LED0_STATE_SLOW_INVERTED_FLASH);
-    #else
+#else
     hw_read(addr, len, buf);
-    #endif
+#endif
 }
 
 int do_write(uint32_t addr, const uint8_t *src8, size_t len) {
-    #if MBOOT_ENABLE_PACKING
+#if MBOOT_ENABLE_PACKING
     return mboot_pack_write(addr, src8, len);
-    #else
+#else
     return hw_write(addr, src8, len);
-    #endif
+#endif
 }
 
 /******************************************************************************/
@@ -920,19 +920,19 @@ static int dfu_handle_tx(int cmd, int arg, int len, uint8_t *buf, int max_len) {
     } else if (cmd == DFU_GETSTATUS && len == 6) {
         // execute command and get status
         switch (dfu_context.cmd) {
-            case DFU_CMD_NONE:
-                break;
-            case DFU_CMD_EXIT:
-                dfu_context.state = DFU_STATE_MANIFEST;
-                break;
-            case DFU_CMD_UPLOAD:
-                dfu_context.state = DFU_STATE_UPLOAD_IDLE;
-                break;
-            case DFU_CMD_DNLOAD:
-                dfu_context.state = DFU_STATE_BUSY;
-                break;
-            default:
-                dfu_context.state = DFU_STATE_BUSY;
+        case DFU_CMD_NONE:
+            break;
+        case DFU_CMD_EXIT:
+            dfu_context.state = DFU_STATE_MANIFEST;
+            break;
+        case DFU_CMD_UPLOAD:
+            dfu_context.state = DFU_STATE_UPLOAD_IDLE;
+            break;
+        case DFU_CMD_DNLOAD:
+            dfu_context.state = DFU_STATE_BUSY;
+            break;
+        default:
+            dfu_context.state = DFU_STATE_BUSY;
         }
         buf[0] = dfu_context.status;          // bStatus
         buf[1] = 0;                           // bwPollTimeout_lsb (ms)
@@ -1003,9 +1003,9 @@ STATIC const uint8_t usbd_fifo_size[USBD_PMA_NUM_FIFO] = {
 #else
 static const uint8_t usbd_fifo_size[] = {
     32, 8, 16, 8, 16, 0, 0, // FS: RX, EP0(in), 5x IN endpoints
-    #if MICROPY_HW_USB_HS
+#if MICROPY_HW_USB_HS
     116, 8, 64, 4, 64, 0, 0, 0, 0, 0, // HS: RX, EP0(in), 8x IN endpoints
-    #endif
+#endif
 };
 #endif
 
@@ -1028,7 +1028,7 @@ static uint8_t cfg_descr[9 + 9 + 9] =
     "\x09\x02\x1b\x00\x01\x01\x00\xc0\x32"
     "\x09\x04\x00\x00\x00\xfe\x01\x02\x04"
     "\x09\x21\x0b\xff\x00\x00\x08\x1a\x01" // \x00\x08 goes with USB_XFER_SIZE
-;
+    ;
 
 static uint8_t *pyb_usbdd_DeviceDescriptor(USBD_HandleTypeDef *pdev, uint16_t *length) {
     *length = USB_LEN_DEV_DESC;
@@ -1053,69 +1053,69 @@ static uint8_t *pyb_usbdd_StrDescriptor(USBD_HandleTypeDef *pdev, uint8_t idx, u
     pyb_usbdd_obj_t *self = (pyb_usbdd_obj_t*)pdev->pClassData;
     uint8_t *str_desc = self->usbd_str_desc;
     switch (idx) {
-        case USBD_IDX_LANGID_STR:
-            *length = sizeof(USBD_LangIDDesc);
-            return (uint8_t*)USBD_LangIDDesc; // the data should only be read from this buf
+    case USBD_IDX_LANGID_STR:
+        *length = sizeof(USBD_LangIDDesc);
+        return (uint8_t*)USBD_LangIDDesc; // the data should only be read from this buf
 
-        case USBD_IDX_MFC_STR:
-            USBD_GetString((uint8_t*)MBOOT_USBD_MANUFACTURER_STRING, str_desc, length);
-            return str_desc;
+    case USBD_IDX_MFC_STR:
+        USBD_GetString((uint8_t*)MBOOT_USBD_MANUFACTURER_STRING, str_desc, length);
+        return str_desc;
 
-        case USBD_IDX_PRODUCT_STR:
-            USBD_GetString((uint8_t*)MBOOT_USBD_PRODUCT_STRING, str_desc, length);
-            return str_desc;
+    case USBD_IDX_PRODUCT_STR:
+        USBD_GetString((uint8_t*)MBOOT_USBD_PRODUCT_STRING, str_desc, length);
+        return str_desc;
 
-        case USBD_IDX_SERIAL_STR: {
-            // This document: http://www.usb.org/developers/docs/devclass_docs/usbmassbulk_10.pdf
-            // says that the serial number has to be at least 12 digits long and that
-            // the last 12 digits need to be unique. It also stipulates that the valid
-            // character set is that of upper-case hexadecimal digits.
-            //
-            // The onboard DFU bootloader produces a 12-digit serial number based on
-            // the 96-bit unique ID, so for consistency we go with this algorithm.
-            // You can see the serial number if you do:
-            //
-            //     dfu-util -l
-            //
-            // See: https://my.st.com/52d187b7 for the algorithim used.
-            uint8_t *id = (uint8_t*)MP_HAL_UNIQUE_ID_ADDRESS;
-            char serial_buf[16];
-            format_hex(&serial_buf[0], id[11]);
-            format_hex(&serial_buf[2], id[10] + id[2]);
-            format_hex(&serial_buf[4], id[9]);
-            format_hex(&serial_buf[6], id[8] + id[0]);
-            format_hex(&serial_buf[8], id[7]);
-            format_hex(&serial_buf[10], id[6]);
-            serial_buf[12] = '\0';
+    case USBD_IDX_SERIAL_STR: {
+        // This document: http://www.usb.org/developers/docs/devclass_docs/usbmassbulk_10.pdf
+        // says that the serial number has to be at least 12 digits long and that
+        // the last 12 digits need to be unique. It also stipulates that the valid
+        // character set is that of upper-case hexadecimal digits.
+        //
+        // The onboard DFU bootloader produces a 12-digit serial number based on
+        // the 96-bit unique ID, so for consistency we go with this algorithm.
+        // You can see the serial number if you do:
+        //
+        //     dfu-util -l
+        //
+        // See: https://my.st.com/52d187b7 for the algorithim used.
+        uint8_t *id = (uint8_t*)MP_HAL_UNIQUE_ID_ADDRESS;
+        char serial_buf[16];
+        format_hex(&serial_buf[0], id[11]);
+        format_hex(&serial_buf[2], id[10] + id[2]);
+        format_hex(&serial_buf[4], id[9]);
+        format_hex(&serial_buf[6], id[8] + id[0]);
+        format_hex(&serial_buf[8], id[7]);
+        format_hex(&serial_buf[10], id[6]);
+        serial_buf[12] = '\0';
 
-            USBD_GetString((uint8_t*)serial_buf, str_desc, length);
-            return str_desc;
-        }
+        USBD_GetString((uint8_t*)serial_buf, str_desc, length);
+        return str_desc;
+    }
 
-        case USBD_IDX_CONFIG_STR:
-            USBD_GetString((uint8_t*)FLASH_LAYOUT_STR, str_desc, length);
-            return str_desc;
+    case USBD_IDX_CONFIG_STR:
+        USBD_GetString((uint8_t*)FLASH_LAYOUT_STR, str_desc, length);
+        return str_desc;
 
-        case MBOOT_ERROR_STR_OVERWRITE_BOOTLOADER_IDX:
-            USBD_GetString((uint8_t*)MBOOT_ERROR_STR_OVERWRITE_BOOTLOADER, str_desc, length);
-            return str_desc;
+    case MBOOT_ERROR_STR_OVERWRITE_BOOTLOADER_IDX:
+        USBD_GetString((uint8_t*)MBOOT_ERROR_STR_OVERWRITE_BOOTLOADER, str_desc, length);
+        return str_desc;
 
-        case MBOOT_ERROR_STR_INVALID_ADDRESS_IDX:
-            USBD_GetString((uint8_t*)MBOOT_ERROR_STR_INVALID_ADDRESS, str_desc, length);
-            return str_desc;
+    case MBOOT_ERROR_STR_INVALID_ADDRESS_IDX:
+        USBD_GetString((uint8_t*)MBOOT_ERROR_STR_INVALID_ADDRESS, str_desc, length);
+        return str_desc;
 
-        #if MBOOT_ENABLE_PACKING
-        case MBOOT_ERROR_STR_INVALID_SIG_IDX:
-            USBD_GetString((uint8_t*)MBOOT_ERROR_STR_INVALID_SIG, str_desc, length);
-            return str_desc;
+#if MBOOT_ENABLE_PACKING
+    case MBOOT_ERROR_STR_INVALID_SIG_IDX:
+        USBD_GetString((uint8_t*)MBOOT_ERROR_STR_INVALID_SIG, str_desc, length);
+        return str_desc;
 
-        case MBOOT_ERROR_STR_INVALID_READ_IDX:
-            USBD_GetString((uint8_t*)MBOOT_ERROR_STR_INVALID_READ, str_desc, length);
-            return str_desc;
-        #endif
+    case MBOOT_ERROR_STR_INVALID_READ_IDX:
+        USBD_GetString((uint8_t*)MBOOT_ERROR_STR_INVALID_READ, str_desc, length);
+        return str_desc;
+#endif
 
-        default:
-            return NULL;
+    default:
+        return NULL;
     }
 }
 
@@ -1165,10 +1165,10 @@ static uint8_t pyb_usbdd_Setup(USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef *r
 static uint8_t pyb_usbdd_EP0_TxSent(USBD_HandleTypeDef *pdev) {
     pyb_usbdd_obj_t *self = (pyb_usbdd_obj_t*)pdev->pClassData;
     self->tx_pending = false;
-    #if !USE_USB_POLLING
+#if !USE_USB_POLLING
     // Process now that we have sent a response
     dfu_process();
-    #endif
+#endif
     return USBD_OK;
 }
 
@@ -1215,7 +1215,7 @@ static const USBD_ClassTypeDef pyb_usbdd_class = {
 static pyb_usbdd_obj_t pyb_usbdd SECTION_NOZERO_BSS;
 
 static int pyb_usbdd_detect_port(void) {
-    #if MBOOT_USB_AUTODETECT_PORT
+#if MBOOT_USB_AUTODETECT_PORT
     mp_hal_pin_config(pin_A11, MP_HAL_PIN_MODE_INPUT, MP_HAL_PIN_PULL_UP, 0);
     mp_hal_pin_config(pin_A12, MP_HAL_PIN_MODE_INPUT, MP_HAL_PIN_PULL_UP, 0);
     int state = mp_hal_pin_read(pin_A11) == 0 && mp_hal_pin_read(pin_A12) == 0;
@@ -1232,7 +1232,7 @@ static int pyb_usbdd_detect_port(void) {
     if (state) {
         return USB_PHY_HS_ID;
     }
-    #endif
+#endif
     return MICROPY_HW_USB_MAIN_DEV;
 }
 
@@ -1249,11 +1249,11 @@ static void pyb_usbdd_init(pyb_usbdd_obj_t *self, int phy_id) {
 
 static void pyb_usbdd_start(pyb_usbdd_obj_t *self) {
     if (!self->started) {
-        #if defined(STM32H7)
+#if defined(STM32H7)
         PWR->CR3 |= PWR_CR3_USB33DEN;
         while (!(PWR->CR3 & PWR_CR3_USB33RDY)) {
         }
-        #endif
+#endif
         USBD_LL_Init(&self->hUSBDDevice, 0, usbd_fifo_size);
         USBD_LL_Start(&self->hUSBDDevice);
         self->started = true;
@@ -1326,9 +1326,9 @@ static void do_reset(void) {
     led_state_all(0);
     mp_hal_delay_ms(50);
     pyb_usbdd_shutdown();
-    #if defined(MBOOT_I2C_SCL)
+#if defined(MBOOT_I2C_SCL)
     i2c_slave_shutdown(MBOOT_I2Cx, I2Cx_EV_IRQn);
-    #endif
+#endif
     mp_hal_delay_ms(50);
     NVIC_SystemReset();
 }
@@ -1337,7 +1337,7 @@ extern PCD_HandleTypeDef pcd_fs_handle;
 extern PCD_HandleTypeDef pcd_hs_handle;
 
 void stm32_main(int initial_r0) {
-    #if defined(STM32H7)
+#if defined(STM32H7)
     // Configure write-once power options, and wait for voltage levels to be ready
     PWR->CR3 = PWR_CR3_LDOEN;
     while (!(PWR->CSR1 & PWR_CSR1_ACTVOSRDY)) {
@@ -1348,7 +1348,7 @@ void stm32_main(int initial_r0) {
     RCC->D2CCIP1R = 0x00000000;
     RCC->D2CCIP2R = 0x00000000;
     RCC->D3CCIPR = 0x00000000;
-    #endif
+#endif
 
     // Make sure IRQ vector table points to flash where this bootloader lives.
     SCB->VTOR = FLASH_BASE;
@@ -1356,39 +1356,39 @@ void stm32_main(int initial_r0) {
     // Enable 8-byte stack alignment for IRQ handlers, in accord with EABI
     SCB->CCR |= SCB_CCR_STKALIGN_Msk;
 
-    #if defined(STM32F4)
-    #if INSTRUCTION_CACHE_ENABLE
+#if defined(STM32F4)
+#if INSTRUCTION_CACHE_ENABLE
     __HAL_FLASH_INSTRUCTION_CACHE_ENABLE();
-    #endif
-    #if DATA_CACHE_ENABLE
+#endif
+#if DATA_CACHE_ENABLE
     __HAL_FLASH_DATA_CACHE_ENABLE();
-    #endif
-    #if PREFETCH_ENABLE
+#endif
+#if PREFETCH_ENABLE
     __HAL_FLASH_PREFETCH_BUFFER_ENABLE();
-    #endif
-    #elif defined(STM32F7)
-    #if ART_ACCLERATOR_ENABLE
+#endif
+#elif defined(STM32F7)
+#if ART_ACCLERATOR_ENABLE
     __HAL_FLASH_ART_ENABLE();
-    #endif
-    #endif
+#endif
+#endif
 
     NVIC_SetPriorityGrouping(NVIC_PRIORITYGROUP_4);
 
-    #if USE_CACHE && defined(STM32F7)
+#if USE_CACHE && defined(STM32F7)
     SCB_EnableICache();
     SCB_EnableDCache();
-    #endif
+#endif
 
-    #if defined(MBOOT_BOARD_EARLY_INIT)
+#if defined(MBOOT_BOARD_EARLY_INIT)
     MBOOT_BOARD_EARLY_INIT();
-    #endif
+#endif
 
-    #ifdef MBOOT_BOOTPIN_PIN
+#ifdef MBOOT_BOOTPIN_PIN
     mp_hal_pin_config(MBOOT_BOOTPIN_PIN, MP_HAL_PIN_MODE_INPUT, MBOOT_BOOTPIN_PULL, 0);
     if (mp_hal_pin_read(MBOOT_BOOTPIN_PIN) == MBOOT_BOOTPIN_ACTIVE) {
         goto enter_bootloader;
     }
-    #endif
+#endif
 
     if ((initial_r0 & 0xffffff00) == 0x70ad0000) {
         goto enter_bootloader;
@@ -1400,10 +1400,10 @@ void stm32_main(int initial_r0) {
         // not DFU mode so jump to application, passing through reset_mode
         // undo our DFU settings
         // TODO probably should disable all IRQ sources first
-        #if USE_CACHE && defined(STM32F7)
+#if USE_CACHE && defined(STM32F7)
         SCB_DisableICache();
         SCB_DisableDCache();
-        #endif
+#endif
         __set_MSP(msp);
         ((void (*)(uint32_t)) *((volatile uint32_t*)(APPLICATION_ADDR + 4)))(reset_mode);
     }
@@ -1416,29 +1416,29 @@ enter_bootloader:
     // set the system clock to be HSE
     SystemClock_Config();
 
-    #if USE_USB_POLLING
+#if USE_USB_POLLING
     // irqs with a priority value greater or equal to "pri" will be disabled
     // "pri" should be between 1 and 15 inclusive
     uint32_t pri = 2;
     pri <<= (8 - __NVIC_PRIO_BITS);
     __ASM volatile ("msr basepri_max, %0" : : "r" (pri) : "memory");
-    #endif
+#endif
 
-    #if defined(MBOOT_SPIFLASH_ADDR)
+#if defined(MBOOT_SPIFLASH_ADDR)
     MBOOT_SPIFLASH_SPIFLASH->config = MBOOT_SPIFLASH_CONFIG;
     mp_spiflash_init(MBOOT_SPIFLASH_SPIFLASH);
-    #endif
+#endif
 
-    #if defined(MBOOT_SPIFLASH2_ADDR)
+#if defined(MBOOT_SPIFLASH2_ADDR)
     MBOOT_SPIFLASH2_SPIFLASH->config = MBOOT_SPIFLASH2_CONFIG;
     mp_spiflash_init(MBOOT_SPIFLASH2_SPIFLASH);
-    #endif
+#endif
 
-    #if MBOOT_ENABLE_PACKING
+#if MBOOT_ENABLE_PACKING
     mboot_pack_init();
-    #endif
+#endif
 
-    #if MBOOT_FSLOAD
+#if MBOOT_FSLOAD
     if ((initial_r0 & 0xffffff80) == 0x70ad0080) {
         // Application passed through elements, validate then process them
         const uint8_t *elem_end = elem_search(ELEM_DATA_START, ELEM_TYPE_END);
@@ -1456,54 +1456,54 @@ enter_bootloader:
         led_state_all(0);
         NVIC_SystemReset();
     }
-    #endif
+#endif
 
     dfu_init();
 
     pyb_usbdd_init(&pyb_usbdd, pyb_usbdd_detect_port());
     pyb_usbdd_start(&pyb_usbdd);
 
-    #if defined(MBOOT_I2C_SCL)
+#if defined(MBOOT_I2C_SCL)
     initial_r0 &= 0x7f;
     if (initial_r0 == 0) {
         initial_r0 = 0x23; // Default I2C address
     }
     i2c_init(initial_r0);
-    #endif
+#endif
 
     led_state_all(0);
     led0_state(LED0_STATE_SLOW_FLASH);
 
-    #if MBOOT_USB_RESET_ON_DISCONNECT
+#if MBOOT_USB_RESET_ON_DISCONNECT
     bool has_connected = false;
-    #endif
+#endif
     for (;;) {
-        #if USE_USB_POLLING
-        #if MBOOT_USB_AUTODETECT_PORT || MICROPY_HW_USB_MAIN_DEV == USB_PHY_FS_ID
+#if USE_USB_POLLING
+#if MBOOT_USB_AUTODETECT_PORT || MICROPY_HW_USB_MAIN_DEV == USB_PHY_FS_ID
         if (USB_OTG_FS->GINTSTS & USB_OTG_FS->GINTMSK) {
             HAL_PCD_IRQHandler(&pcd_fs_handle);
         }
-        #endif
-        #if MBOOT_USB_AUTODETECT_PORT || MICROPY_HW_USB_MAIN_DEV == USB_PHY_HS_ID
+#endif
+#if MBOOT_USB_AUTODETECT_PORT || MICROPY_HW_USB_MAIN_DEV == USB_PHY_HS_ID
         if (USB_OTG_HS->GINTSTS & USB_OTG_HS->GINTMSK) {
             HAL_PCD_IRQHandler(&pcd_hs_handle);
         }
-        #endif
+#endif
         if (!pyb_usbdd.tx_pending) {
             dfu_process();
         }
-        #else // !USE_USB_POLLING
+#else // !USE_USB_POLLING
         __WFI();
-        #endif
+#endif
 
-        #if MBOOT_USB_RESET_ON_DISCONNECT
+#if MBOOT_USB_RESET_ON_DISCONNECT
         if (pyb_usbdd.hUSBDDevice.dev_state == USBD_STATE_CONFIGURED) {
             has_connected = true;
         }
         if (has_connected && pyb_usbdd.hUSBDDevice.dev_state == USBD_STATE_SUSPENDED) {
             do_reset();
         }
-        #endif
+#endif
     }
 }
 

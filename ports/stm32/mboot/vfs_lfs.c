@@ -106,19 +106,19 @@ int VFS_LFSx_MOUNT(VFS_LFSx_CONTEXT_T *ctx, uint32_t base_addr, uint32_t byte_le
     config->block_size = block_size;
     config->block_count = byte_len / block_size;
 
-    #if MBOOT_VFS_LFS1
+#if MBOOT_VFS_LFS1
     config->lookahead = LFS_LOOKAHEAD_SIZE;
     config->read_buffer = lfs_read_buffer;
     config->prog_buffer = lfs_prog_buffer;
     config->lookahead_buffer = lfs_lookahead_buffer;
-    #else
+#else
     config->block_cycles = 100;
     config->cache_size = LFS_CACHE_SIZE;
     config->lookahead_size = LFS_LOOKAHEAD_SIZE;
     config->read_buffer = lfs_read_buffer;
     config->prog_buffer = lfs_prog_buffer;
     config->lookahead_buffer = lfs_lookahead_buffer;
-    #endif
+#endif
 
     int ret = LFSx_API(mount)(&ctx->lfs, &ctx->config);
     if (ret < 0) {

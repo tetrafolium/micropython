@@ -91,7 +91,7 @@ STATIC mp_obj_t decompio_make_new(const mp_obj_type_t *type, size_t n_args, size
     } else if (dict_opt >= 0) {
         dict_opt = uzlib_zlib_parse_header(&o->decomp);
         if (dict_opt < 0) {
-        header_error:
+header_error:
             mp_raise_ValueError(MP_ERROR_TEXT("compression header"));
         }
         dict_sz = 1 << dict_opt;

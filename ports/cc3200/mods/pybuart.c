@@ -109,7 +109,8 @@ struct _pyb_uart_obj_t {
  DECLARE PRIVATE DATA
  ******************************************************************************/
 STATIC pyb_uart_obj_t pyb_uart_obj[PYB_NUM_UARTS] = { {.reg = UARTA0_BASE, .baudrate = 0, .read_buf = NULL, .peripheral = PRCM_UARTA0},
-                                                      {.reg = UARTA1_BASE, .baudrate = 0, .read_buf = NULL, .peripheral = PRCM_UARTA1} };
+    {.reg = UARTA1_BASE, .baudrate = 0, .read_buf = NULL, .peripheral = PRCM_UARTA1}
+};
 STATIC const mp_irq_methods_t uart_irq_methods;
 
 STATIC const mp_obj_t pyb_uart_def_pin[PYB_NUM_UARTS][2] = { {&pin_GP1, &pin_GP2}, {&pin_GP3, &pin_GP4} };
@@ -127,7 +128,7 @@ uint32_t uart_rx_any(pyb_uart_obj_t *self) {
     if (self->read_buf_tail != self->read_buf_head) {
         // buffering  via irq
         return (self->read_buf_head > self->read_buf_tail) ? self->read_buf_head - self->read_buf_tail :
-                PYBUART_RX_BUFFER_LEN - self->read_buf_tail + self->read_buf_head;
+               PYBUART_RX_BUFFER_LEN - self->read_buf_tail + self->read_buf_head;
     }
     return MAP_UARTCharsAvail(self->reg) ? 1 : 0;
 }

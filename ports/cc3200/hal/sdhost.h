@@ -169,7 +169,7 @@ extern "C"
 extern void SDHostCmdReset(unsigned long ulBase);
 extern void SDHostInit(unsigned long ulBase);
 extern long SDHostCmdSend(unsigned long ulBase,unsigned long ulCmd,
-                       unsigned ulArg);
+                          unsigned ulArg);
 extern void SDHostIntRegister(unsigned long ulBase, void (*pfnHandler)(void));
 extern void SDHostIntUnregister(unsigned long ulBase);
 extern void SDHostIntEnable(unsigned long ulBase,unsigned long ulIntFlags);
@@ -180,15 +180,15 @@ extern void SDHostCardErrorMaskSet(unsigned long ulBase,
                                    unsigned long ulErrMask);
 extern unsigned long SDHostCardErrorMaskGet(unsigned long ulBase);
 extern void SDHostSetExpClk(unsigned long ulBase, unsigned long ulSDHostClk,
-              unsigned long ulCardClk);
+                            unsigned long ulCardClk);
 extern void SDHostRespGet(unsigned long ulBase, unsigned long ulRespnse[4]);
 extern void SDHostBlockSizeSet(unsigned long ulBase, unsigned short ulBlkSize);
 extern void SDHostBlockCountSet(unsigned long ulBase,
                                 unsigned short ulBlkCount);
 extern tBoolean SDHostDataNonBlockingWrite(unsigned long ulBase,
-                                        unsigned long ulData);
+        unsigned long ulData);
 extern tBoolean SDHostDataNonBlockingRead(unsigned long ulBase,
-                                   unsigned long *pulData);
+        unsigned long *pulData);
 extern void SDHostDataWrite(unsigned long ulBase, unsigned long ulData);
 extern void SDHostDataRead(unsigned long ulBase, unsigned long *ulData);
 

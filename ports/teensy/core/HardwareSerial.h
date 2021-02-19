@@ -144,82 +144,186 @@ void serial3_clear(void);
 class HardwareSerial : public Stream
 {
 public:
-	virtual void begin(uint32_t baud) { serial_begin(BAUD2DIV(baud)); }
-	virtual void begin(uint32_t baud, uint32_t format) {
-					  serial_begin(BAUD2DIV(baud));
-					  serial_format(format); }
-	virtual void end(void)		{ serial_end(); }
-	virtual void transmitterEnable(uint8_t pin) { serial_set_transmit_pin(pin); }
-	virtual int available(void)     { return serial_available(); }
-	virtual int peek(void)          { return serial_peek(); }
-	virtual int read(void)          { return serial_getchar(); }
-	virtual void flush(void)        { serial_flush(); }
-	virtual void clear(void)	{ serial_clear(); }
-	virtual size_t write(uint8_t c) { serial_putchar(c); return 1; }
-	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
-	virtual size_t write(long n)            { return write((uint8_t)n); }
-	virtual size_t write(unsigned int n)    { return write((uint8_t)n); }
-	virtual size_t write(int n)             { return write((uint8_t)n); }
-	virtual size_t write(const uint8_t *buffer, size_t size)
-					{ serial_write(buffer, size); return size; }
-        virtual size_t write(const char *str)	{ size_t len = strlen(str);
-					  serial_write((const uint8_t *)str, len);
-					  return len; }
-	virtual size_t write9bit(uint32_t c)	{ serial_putchar(c); return 1; }
+    virtual void begin(uint32_t baud) {
+        serial_begin(BAUD2DIV(baud));
+    }
+    virtual void begin(uint32_t baud, uint32_t format) {
+        serial_begin(BAUD2DIV(baud));
+        serial_format(format);
+    }
+    virtual void end(void)		{
+        serial_end();
+    }
+    virtual void transmitterEnable(uint8_t pin) {
+        serial_set_transmit_pin(pin);
+    }
+    virtual int available(void)     {
+        return serial_available();
+    }
+    virtual int peek(void)          {
+        return serial_peek();
+    }
+    virtual int read(void)          {
+        return serial_getchar();
+    }
+    virtual void flush(void)        {
+        serial_flush();
+    }
+    virtual void clear(void)	{
+        serial_clear();
+    }
+    virtual size_t write(uint8_t c) {
+        serial_putchar(c);
+        return 1;
+    }
+    virtual size_t write(unsigned long n)   {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(long n)            {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(unsigned int n)    {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(int n)             {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(const uint8_t *buffer, size_t size)
+    {
+        serial_write(buffer, size);
+        return size;
+    }
+    virtual size_t write(const char *str)	{
+        size_t len = strlen(str);
+        serial_write((const uint8_t *)str, len);
+        return len;
+    }
+    virtual size_t write9bit(uint32_t c)	{
+        serial_putchar(c);
+        return 1;
+    }
 };
 extern HardwareSerial Serial1;
 
 class HardwareSerial2 : public HardwareSerial
 {
 public:
-	virtual void begin(uint32_t baud) { serial2_begin(BAUD2DIV(baud)); }
-	virtual void begin(uint32_t baud, uint32_t format) {
-					  serial2_begin(BAUD2DIV(baud));
-					  serial2_format(format); }
-	virtual void end(void)		{ serial2_end(); }
-	virtual int available(void)     { return serial2_available(); }
-	virtual int peek(void)          { return serial2_peek(); }
-	virtual int read(void)          { return serial2_getchar(); }
-	virtual void flush(void)        { serial2_flush(); }
-	virtual void clear(void)	{ serial2_clear(); }
-	virtual size_t write(uint8_t c) { serial2_putchar(c); return 1; }
-	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
-	virtual size_t write(long n)            { return write((uint8_t)n); }
-	virtual size_t write(unsigned int n)    { return write((uint8_t)n); }
-	virtual size_t write(int n)             { return write((uint8_t)n); }
-	virtual size_t write(const uint8_t *buffer, size_t size)
-					{ serial2_write(buffer, size); return size; }
-        virtual size_t write(const char *str)	{ size_t len = strlen(str);
-					  serial2_write((const uint8_t *)str, len);
-					  return len; }
-	virtual size_t write9bit(uint32_t c)	{ serial2_putchar(c); return 1; }
+    virtual void begin(uint32_t baud) {
+        serial2_begin(BAUD2DIV(baud));
+    }
+    virtual void begin(uint32_t baud, uint32_t format) {
+        serial2_begin(BAUD2DIV(baud));
+        serial2_format(format);
+    }
+    virtual void end(void)		{
+        serial2_end();
+    }
+    virtual int available(void)     {
+        return serial2_available();
+    }
+    virtual int peek(void)          {
+        return serial2_peek();
+    }
+    virtual int read(void)          {
+        return serial2_getchar();
+    }
+    virtual void flush(void)        {
+        serial2_flush();
+    }
+    virtual void clear(void)	{
+        serial2_clear();
+    }
+    virtual size_t write(uint8_t c) {
+        serial2_putchar(c);
+        return 1;
+    }
+    virtual size_t write(unsigned long n)   {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(long n)            {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(unsigned int n)    {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(int n)             {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(const uint8_t *buffer, size_t size)
+    {
+        serial2_write(buffer, size);
+        return size;
+    }
+    virtual size_t write(const char *str)	{
+        size_t len = strlen(str);
+        serial2_write((const uint8_t *)str, len);
+        return len;
+    }
+    virtual size_t write9bit(uint32_t c)	{
+        serial2_putchar(c);
+        return 1;
+    }
 };
 extern HardwareSerial2 Serial2;
 
 class HardwareSerial3 : public HardwareSerial
 {
 public:
-	virtual void begin(uint32_t baud) { serial3_begin(BAUD2DIV3(baud)); }
-	virtual void begin(uint32_t baud, uint32_t format) {
-					  serial3_begin(BAUD2DIV3(baud));
-					  serial3_format(format); }
-	virtual void end(void)          { serial3_end(); }
-	virtual int available(void)     { return serial3_available(); }
-	virtual int peek(void)          { return serial3_peek(); }
-	virtual int read(void)          { return serial3_getchar(); }
-	virtual void flush(void)        { serial3_flush(); }
-	virtual void clear(void)	{ serial3_clear(); }
-	virtual size_t write(uint8_t c) { serial3_putchar(c); return 1; }
-	virtual size_t write(unsigned long n)   { return write((uint8_t)n); }
-	virtual size_t write(long n)            { return write((uint8_t)n); }
-	virtual size_t write(unsigned int n)    { return write((uint8_t)n); }
-	virtual size_t write(int n)             { return write((uint8_t)n); }
-	virtual size_t write(const uint8_t *buffer, size_t size)
-					{ serial3_write(buffer, size); return size; }
-        virtual size_t write(const char *str)	{ size_t len = strlen(str);
-					  serial3_write((const uint8_t *)str, len);
-					  return len; }
-	virtual size_t write9bit(uint32_t c)	{ serial3_putchar(c); return 1; }
+    virtual void begin(uint32_t baud) {
+        serial3_begin(BAUD2DIV3(baud));
+    }
+    virtual void begin(uint32_t baud, uint32_t format) {
+        serial3_begin(BAUD2DIV3(baud));
+        serial3_format(format);
+    }
+    virtual void end(void)          {
+        serial3_end();
+    }
+    virtual int available(void)     {
+        return serial3_available();
+    }
+    virtual int peek(void)          {
+        return serial3_peek();
+    }
+    virtual int read(void)          {
+        return serial3_getchar();
+    }
+    virtual void flush(void)        {
+        serial3_flush();
+    }
+    virtual void clear(void)	{
+        serial3_clear();
+    }
+    virtual size_t write(uint8_t c) {
+        serial3_putchar(c);
+        return 1;
+    }
+    virtual size_t write(unsigned long n)   {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(long n)            {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(unsigned int n)    {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(int n)             {
+        return write((uint8_t)n);
+    }
+    virtual size_t write(const uint8_t *buffer, size_t size)
+    {
+        serial3_write(buffer, size);
+        return size;
+    }
+    virtual size_t write(const char *str)	{
+        size_t len = strlen(str);
+        serial3_write((const uint8_t *)str, len);
+        return len;
+    }
+    virtual size_t write9bit(uint32_t c)	{
+        serial3_putchar(c);
+        return 1;
+    }
 };
 extern HardwareSerial3 Serial3;
 

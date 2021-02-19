@@ -51,11 +51,11 @@ bool upytest_is_failed(void) {
     if (test_failed) {
         return true;
     }
-    #if 0
+#if 0
     if (test_rem_output_len != 0) {
         printf("remaining len: %d\n", test_rem_output_len);
     }
-    #endif
+#endif
     return test_rem_output_len != 0;
 }
 
@@ -70,17 +70,17 @@ void upytest_output(const char *str, mp_uint_t len) {
             test_failed = true;
         } else {
             test_failed = memcmp(test_exp_output, str, len);
-            #if 0
+#if 0
             if (test_failed) {
                 printf("failed after char %u, within %d chars, res: %d\n",
-                    test_exp_output_len - test_rem_output_len, (int)len, test_failed);
+                       test_exp_output_len - test_rem_output_len, (int)len, test_failed);
                 for (int i = 0; i < len; i++) {
                     if (str[i] != test_exp_output[i]) {
                         printf("%d %02x %02x\n", i, str[i], test_exp_output[i]);
                     }
                 }
             }
-            #endif
+#endif
             test_exp_output += len;
             test_rem_output_len -= len;
         }

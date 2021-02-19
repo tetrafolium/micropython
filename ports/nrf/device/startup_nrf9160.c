@@ -38,96 +38,256 @@ typedef void (*func)(void);
 extern void  _start(void) __attribute__((noreturn));
 extern void SystemInit(void);
 
-void Default_Handler(void) { while (1); }
+void Default_Handler(void) {
+    while (1);
+}
 
-void Reserved_Handler1(void) { while (1); }
-void Reserved_Handler2(void) { while (1); }
-void Reserved_Handler3(void) { while (1); }
-void Reserved_Handler4(void) { while (1); }
-void Reserved_Handler5(void) { while (1); }
-void Reserved_Handler6(void) { while (1); }
-void Reserved_Handler7(void) { while (1); }
-void Reserved_Handler8(void) { while (1); }
-void Reserved_Handler9(void) { while (1); }
-void Reserved_Handler10(void) { while (1); }
-void Reserved_Handler11(void) { while (1); }
-void Reserved_Handler12(void) { while (1); }
-void Reserved_Handler13(void) { while (1); }
-void Reserved_Handler14(void) { while (1); }
-void Reserved_Handler15(void) { while (1); }
-void Reserved_Handler16(void) { while (1); }
-void Reserved_Handler17(void) { while (1); }
-void Reserved_Handler18(void) { while (1); }
-void Reserved_Handler19(void) { while (1); }
-void Reserved_Handler20(void) { while (1); }
-void Reserved_Handler21(void) { while (1); }
-void Reserved_Handler22(void) { while (1); }
-void Reserved_Handler23(void) { while (1); }
-void Reserved_Handler24(void) { while (1); }
-void Reserved_Handler25(void) { while (1); }
-void Reserved_Handler26(void) { while (1); }
-void Reserved_Handler27(void) { while (1); }
-void Reserved_Handler28(void) { while (1); }
-void Reserved_Handler29(void) { while (1); }
-void Reserved_Handler30(void) { while (1); }
-void Reserved_Handler31(void) { while (1); }
-void Reserved_Handler32(void) { while (1); }
-void Reserved_Handler33(void) { while (1); }
-void Reserved_Handler34(void) { while (1); }
-void Reserved_Handler35(void) { while (1); }
-void Reserved_Handler36(void) { while (1); }
-void Reserved_Handler37(void) { while (1); }
-void Reserved_Handler38(void) { while (1); }
+void Reserved_Handler1(void) {
+    while (1);
+}
+void Reserved_Handler2(void) {
+    while (1);
+}
+void Reserved_Handler3(void) {
+    while (1);
+}
+void Reserved_Handler4(void) {
+    while (1);
+}
+void Reserved_Handler5(void) {
+    while (1);
+}
+void Reserved_Handler6(void) {
+    while (1);
+}
+void Reserved_Handler7(void) {
+    while (1);
+}
+void Reserved_Handler8(void) {
+    while (1);
+}
+void Reserved_Handler9(void) {
+    while (1);
+}
+void Reserved_Handler10(void) {
+    while (1);
+}
+void Reserved_Handler11(void) {
+    while (1);
+}
+void Reserved_Handler12(void) {
+    while (1);
+}
+void Reserved_Handler13(void) {
+    while (1);
+}
+void Reserved_Handler14(void) {
+    while (1);
+}
+void Reserved_Handler15(void) {
+    while (1);
+}
+void Reserved_Handler16(void) {
+    while (1);
+}
+void Reserved_Handler17(void) {
+    while (1);
+}
+void Reserved_Handler18(void) {
+    while (1);
+}
+void Reserved_Handler19(void) {
+    while (1);
+}
+void Reserved_Handler20(void) {
+    while (1);
+}
+void Reserved_Handler21(void) {
+    while (1);
+}
+void Reserved_Handler22(void) {
+    while (1);
+}
+void Reserved_Handler23(void) {
+    while (1);
+}
+void Reserved_Handler24(void) {
+    while (1);
+}
+void Reserved_Handler25(void) {
+    while (1);
+}
+void Reserved_Handler26(void) {
+    while (1);
+}
+void Reserved_Handler27(void) {
+    while (1);
+}
+void Reserved_Handler28(void) {
+    while (1);
+}
+void Reserved_Handler29(void) {
+    while (1);
+}
+void Reserved_Handler30(void) {
+    while (1);
+}
+void Reserved_Handler31(void) {
+    while (1);
+}
+void Reserved_Handler32(void) {
+    while (1);
+}
+void Reserved_Handler33(void) {
+    while (1);
+}
+void Reserved_Handler34(void) {
+    while (1);
+}
+void Reserved_Handler35(void) {
+    while (1);
+}
+void Reserved_Handler36(void) {
+    while (1);
+}
+void Reserved_Handler37(void) {
+    while (1);
+}
+void Reserved_Handler38(void) {
+    while (1);
+}
 
-void Default_NMI_Handler                 (void) { while (1); }
-void Default_HardFault_Handler           (void) { while (1); }
-void Default_MemoryManagement_Handler    (void) { while (1); }
-void Default_BusFault_Handler            (void) { while (1); }
-void Default_UsageFault_Handler          (void) { while (1); }
-void Default_SecureFault_Handler         (void) { while (1); }
-void Default_SVC_Handler                 (void) { while (1); }
-void Default_DebugMon_Handler            (void) { while (1); }
-void Default_PendSV_Handler              (void) { while (1); }
-void Default_SysTick_Handler             (void) { while (1); }
+void Default_NMI_Handler                 (void) {
+    while (1);
+}
+void Default_HardFault_Handler           (void) {
+    while (1);
+}
+void Default_MemoryManagement_Handler    (void) {
+    while (1);
+}
+void Default_BusFault_Handler            (void) {
+    while (1);
+}
+void Default_UsageFault_Handler          (void) {
+    while (1);
+}
+void Default_SecureFault_Handler         (void) {
+    while (1);
+}
+void Default_SVC_Handler                 (void) {
+    while (1);
+}
+void Default_DebugMon_Handler            (void) {
+    while (1);
+}
+void Default_PendSV_Handler              (void) {
+    while (1);
+}
+void Default_SysTick_Handler             (void) {
+    while (1);
+}
 
-void Default_SPU_IRQHandler              (void) { while (1); }
-void Default_CLOCK_POWER_IRQHandler      (void) { while (1); }
-void Default_UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler (void) { while (1); }
-void Default_UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler (void) { while (1); }
-void Default_UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler (void) { while (1); }
-void Default_UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler (void) { while (1); }
-void Default_GPIOTE0_IRQHandler          (void) { while (1); }
-void Default_SAADC_IRQHandler            (void) { while (1); }
-void Default_TIMER0_IRQHandler           (void) { while (1); }
-void Default_TIMER1_IRQHandler           (void) { while (1); }
-void Default_TIMER2_IRQHandler           (void) { while (1); }
-void Default_RTC0_IRQHandler             (void) { while (1); }
-void Default_RTC1_IRQHandler             (void) { while (1); }
-void Default_WDT_IRQHandler              (void) { while (1); }
-void Default_EGU0_IRQHandler             (void) { while (1); }
-void Default_EGU1_IRQHandler             (void) { while (1); }
-void Default_EGU2_IRQHandler             (void) { while (1); }
-void Default_EGU3_IRQHandler             (void) { while (1); }
-void Default_EGU4_IRQHandler             (void) { while (1); }
-void Default_EGU5_IRQHandler             (void) { while (1); }
-void Default_PWM0_IRQHandler             (void) { while (1); }
-void Default_PWM1_IRQHandler             (void) { while (1); }
-void Default_PWM2_IRQHandler             (void) { while (1); }
-void Default_PWM3_IRQHandler             (void) { while (1); }
-void Default_PDM_IRQHandler              (void) { while (1); }
-void Default_I2S_IRQHandler              (void) { while (1); }
-void Default_IPC_IRQHandler              (void) { while (1); }
-void Default_FPU_IRQHandler              (void) { while (1); }
-void Default_GPIOTE1_IRQHandler          (void) { while (1); }
-void Default_KMU_IRQHandler              (void) { while (1); }
-void Default_CRYPTOCELL_IRQHandler       (void) { while (1); }
+void Default_SPU_IRQHandler              (void) {
+    while (1);
+}
+void Default_CLOCK_POWER_IRQHandler      (void) {
+    while (1);
+}
+void Default_UARTE0_SPIM0_SPIS0_TWIM0_TWIS0_IRQHandler (void) {
+    while (1);
+}
+void Default_UARTE1_SPIM1_SPIS1_TWIM1_TWIS1_IRQHandler (void) {
+    while (1);
+}
+void Default_UARTE2_SPIM2_SPIS2_TWIM2_TWIS2_IRQHandler (void) {
+    while (1);
+}
+void Default_UARTE3_SPIM3_SPIS3_TWIM3_TWIS3_IRQHandler (void) {
+    while (1);
+}
+void Default_GPIOTE0_IRQHandler          (void) {
+    while (1);
+}
+void Default_SAADC_IRQHandler            (void) {
+    while (1);
+}
+void Default_TIMER0_IRQHandler           (void) {
+    while (1);
+}
+void Default_TIMER1_IRQHandler           (void) {
+    while (1);
+}
+void Default_TIMER2_IRQHandler           (void) {
+    while (1);
+}
+void Default_RTC0_IRQHandler             (void) {
+    while (1);
+}
+void Default_RTC1_IRQHandler             (void) {
+    while (1);
+}
+void Default_WDT_IRQHandler              (void) {
+    while (1);
+}
+void Default_EGU0_IRQHandler             (void) {
+    while (1);
+}
+void Default_EGU1_IRQHandler             (void) {
+    while (1);
+}
+void Default_EGU2_IRQHandler             (void) {
+    while (1);
+}
+void Default_EGU3_IRQHandler             (void) {
+    while (1);
+}
+void Default_EGU4_IRQHandler             (void) {
+    while (1);
+}
+void Default_EGU5_IRQHandler             (void) {
+    while (1);
+}
+void Default_PWM0_IRQHandler             (void) {
+    while (1);
+}
+void Default_PWM1_IRQHandler             (void) {
+    while (1);
+}
+void Default_PWM2_IRQHandler             (void) {
+    while (1);
+}
+void Default_PWM3_IRQHandler             (void) {
+    while (1);
+}
+void Default_PDM_IRQHandler              (void) {
+    while (1);
+}
+void Default_I2S_IRQHandler              (void) {
+    while (1);
+}
+void Default_IPC_IRQHandler              (void) {
+    while (1);
+}
+void Default_FPU_IRQHandler              (void) {
+    while (1);
+}
+void Default_GPIOTE1_IRQHandler          (void) {
+    while (1);
+}
+void Default_KMU_IRQHandler              (void) {
+    while (1);
+}
+void Default_CRYPTOCELL_IRQHandler       (void) {
+    while (1);
+}
 
 void Reset_Handler(void) {
     uint32_t * p_src  = &_sidata;
     uint32_t * p_dest = &_sdata;
 
     while (p_dest < &_edata) {
-      *p_dest++ = *p_src++;
+        *p_dest++ = *p_src++;
     }
 
     uint32_t * p_bss     = &_sbss;

@@ -55,16 +55,16 @@
 STATIC char get_fmt_type(const char **fmt) {
     char t = **fmt;
     switch (t) {
-        case '!':
-            t = '>';
-            break;
-        case '@':
-        case '=':
-        case '<':
-        case '>':
-            break;
-        default:
-            return '@';
+    case '!':
+        t = '>';
+        break;
+    case '@':
+    case '=':
+    case '<':
+    case '>':
+        break;
+    default:
+        return '@';
     }
     // Skip type char
     (*fmt)++;

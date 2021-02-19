@@ -77,17 +77,17 @@ void servo_init(void) {
     }
 
     // assign servo objects to specific pins (must be some permutation of PA0-PA3)
-    #ifdef pyb_pin_X1
+#ifdef pyb_pin_X1
     pyb_servo_obj[0].pin = pyb_pin_X1;
     pyb_servo_obj[1].pin = pyb_pin_X2;
     pyb_servo_obj[2].pin = pyb_pin_X3;
     pyb_servo_obj[3].pin = pyb_pin_X4;
-    #else
+#else
     pyb_servo_obj[0].pin = pin_A0;
     pyb_servo_obj[1].pin = pin_A1;
     pyb_servo_obj[2].pin = pin_A2;
     pyb_servo_obj[3].pin = pin_A3;
-    #endif
+#endif
 }
 
 void servo_timer_irq_callback(void) {
@@ -160,18 +160,18 @@ STATIC mp_obj_t pyb_servo_set(mp_obj_t port, mp_obj_t value) {
         v = 250;
     }
     switch (p) {
-        case 1:
-            TIM5->CCR1 = v;
-            break;
-        case 2:
-            TIM5->CCR2 = v;
-            break;
-        case 3:
-            TIM5->CCR3 = v;
-            break;
-        case 4:
-            TIM5->CCR4 = v;
-            break;
+    case 1:
+        TIM5->CCR1 = v;
+        break;
+    case 2:
+        TIM5->CCR2 = v;
+        break;
+    case 3:
+        TIM5->CCR3 = v;
+        break;
+    case 4:
+        TIM5->CCR4 = v;
+        break;
     }
     return mp_const_none;
 }
@@ -277,11 +277,11 @@ STATIC mp_obj_t pyb_servo_angle(size_t n_args, const mp_obj_t *args) {
         // get angle
         return mp_obj_new_int((self->pulse_cur - self->pulse_centre) * 90 / self->pulse_angle_90);
     } else {
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         self->pulse_dest = self->pulse_centre + (int16_t)((mp_float_t)self->pulse_angle_90 * mp_obj_get_float(args[1]) / MICROPY_FLOAT_CONST(90.0));
-        #else
+#else
         self->pulse_dest = self->pulse_centre + self->pulse_angle_90 * mp_obj_get_int(args[1]) / 90;
-        #endif
+#endif
         if (n_args == 2) {
             // set angle immediately
             self->time_left = 0;
@@ -307,11 +307,11 @@ STATIC mp_obj_t pyb_servo_speed(size_t n_args, const mp_obj_t *args) {
         // get speed
         return mp_obj_new_int((self->pulse_cur - self->pulse_centre) * 100 / self->pulse_speed_100);
     } else {
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         self->pulse_dest = self->pulse_centre + (int16_t)((mp_float_t)self->pulse_speed_100 * mp_obj_get_float(args[1]) / MICROPY_FLOAT_CONST(100.0));
-        #else
+#else
         self->pulse_dest = self->pulse_centre + self->pulse_speed_100 * mp_obj_get_int(args[1]) / 100;
-        #endif
+#endif
         if (n_args == 2) {
             // set speed immediately
             self->time_left = 0;

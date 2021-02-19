@@ -415,10 +415,22 @@ WCHAR ff_uni2oem (  /* Returns OEM code character, zero on error */
                 }
             } else {    /* DBCS */
                 switch (cp) {   /* Get conversion table */
-                case 932 : p = uni2oem932; hi = sizeof uni2oem932 / 4 - 1; break;
-                case 936 : p = uni2oem936; hi = sizeof uni2oem936 / 4 - 1; break;
-                case 949 : p = uni2oem949; hi = sizeof uni2oem949 / 4 - 1; break;
-                case 950 : p = uni2oem950; hi = sizeof uni2oem950 / 4 - 1; break;
+                case 932 :
+                    p = uni2oem932;
+                    hi = sizeof uni2oem932 / 4 - 1;
+                    break;
+                case 936 :
+                    p = uni2oem936;
+                    hi = sizeof uni2oem936 / 4 - 1;
+                    break;
+                case 949 :
+                    p = uni2oem949;
+                    hi = sizeof uni2oem949 / 4 - 1;
+                    break;
+                case 950 :
+                    p = uni2oem950;
+                    hi = sizeof uni2oem950 / 4 - 1;
+                    break;
                 }
                 if (p) {    /* Is it valid code page? */
                     li = 0;
@@ -464,10 +476,22 @@ WCHAR ff_oem2uni (  /* Returns Unicode character, zero on error */
             }
         } else {    /* DBCS */
             switch (cp) {
-            case 932 : p = oem2uni932; hi = sizeof oem2uni932 / 4 - 1; break;
-            case 936 : p = oem2uni936; hi = sizeof oem2uni936 / 4 - 1; break;
-            case 949 : p = oem2uni949; hi = sizeof oem2uni949 / 4 - 1; break;
-            case 950 : p = oem2uni950; hi = sizeof oem2uni950 / 4 - 1; break;
+            case 932 :
+                p = oem2uni932;
+                hi = sizeof oem2uni932 / 4 - 1;
+                break;
+            case 936 :
+                p = oem2uni936;
+                hi = sizeof oem2uni936 / 4 - 1;
+                break;
+            case 949 :
+                p = oem2uni949;
+                hi = sizeof oem2uni949 / 4 - 1;
+                break;
+            case 950 :
+                p = oem2uni950;
+                hi = sizeof oem2uni950 / 4 - 1;
+                break;
             }
             if (p) {
                 li = 0;
@@ -600,18 +624,38 @@ DWORD ff_wtoupper ( /* Returns up-converted code point */
         for (;;) {
             bc = *p++;                              /* Get the block base */
             if (bc == 0 || uc < bc) break;          /* Not matched? */
-            nc = *p++; cmd = nc >> 8; nc &= 0xFF;   /* Get processing command and block size */
+            nc = *p++;
+            cmd = nc >> 8;
+            nc &= 0xFF;   /* Get processing command and block size */
             if (uc < bc + nc) { /* In the block? */
                 switch (cmd) {
-                case 0: uc = p[uc - bc]; break;     /* Table conversion */
-                case 1: uc -= (uc - bc) & 1; break; /* Case pairs */
-                case 2: uc -= 16; break;            /* Shift -16 */
-                case 3: uc -= 32; break;            /* Shift -32 */
-                case 4: uc -= 48; break;            /* Shift -48 */
-                case 5: uc -= 26; break;            /* Shift -26 */
-                case 6: uc += 8; break;             /* Shift +8 */
-                case 7: uc -= 80; break;            /* Shift -80 */
-                case 8: uc -= 0x1C60; break;        /* Shift -0x1C60 */
+                case 0:
+                    uc = p[uc - bc];
+                    break;     /* Table conversion */
+                case 1:
+                    uc -= (uc - bc) & 1;
+                    break; /* Case pairs */
+                case 2:
+                    uc -= 16;
+                    break;            /* Shift -16 */
+                case 3:
+                    uc -= 32;
+                    break;            /* Shift -32 */
+                case 4:
+                    uc -= 48;
+                    break;            /* Shift -48 */
+                case 5:
+                    uc -= 26;
+                    break;            /* Shift -26 */
+                case 6:
+                    uc += 8;
+                    break;             /* Shift +8 */
+                case 7:
+                    uc -= 80;
+                    break;            /* Shift -80 */
+                case 8:
+                    uc -= 0x1C60;
+                    break;        /* Shift -0x1C60 */
                 }
                 break;
             }

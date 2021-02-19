@@ -129,14 +129,30 @@ mp_obj_t mpy_init(mp_obj_fun_bc_t *self, size_t n_args, size_t n_kw, mp_obj_t *a
     btree_type.iternext = btree_iternext;
     btree_type.binary_op = btree_binary_op;
     btree_type.subscr = btree_subscr;
-    btree_locals_dict_table[0] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_close), MP_OBJ_FROM_PTR(&btree_close_obj) };
-    btree_locals_dict_table[1] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_flush), MP_OBJ_FROM_PTR(&btree_flush_obj) };
-    btree_locals_dict_table[2] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_get), MP_OBJ_FROM_PTR(&btree_get_obj) };
-    btree_locals_dict_table[3] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_put), MP_OBJ_FROM_PTR(&btree_put_obj) };
-    btree_locals_dict_table[4] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_seq), MP_OBJ_FROM_PTR(&btree_seq_obj) };
-    btree_locals_dict_table[5] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_keys), MP_OBJ_FROM_PTR(&btree_keys_obj) };
-    btree_locals_dict_table[6] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_values), MP_OBJ_FROM_PTR(&btree_values_obj) };
-    btree_locals_dict_table[7] = (mp_map_elem_t){ MP_OBJ_NEW_QSTR(MP_QSTR_items), MP_OBJ_FROM_PTR(&btree_items_obj) };
+    btree_locals_dict_table[0] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_close), MP_OBJ_FROM_PTR(&btree_close_obj)
+    };
+    btree_locals_dict_table[1] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_flush), MP_OBJ_FROM_PTR(&btree_flush_obj)
+    };
+    btree_locals_dict_table[2] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_get), MP_OBJ_FROM_PTR(&btree_get_obj)
+    };
+    btree_locals_dict_table[3] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_put), MP_OBJ_FROM_PTR(&btree_put_obj)
+    };
+    btree_locals_dict_table[4] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_seq), MP_OBJ_FROM_PTR(&btree_seq_obj)
+    };
+    btree_locals_dict_table[5] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_keys), MP_OBJ_FROM_PTR(&btree_keys_obj)
+    };
+    btree_locals_dict_table[6] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_values), MP_OBJ_FROM_PTR(&btree_values_obj)
+    };
+    btree_locals_dict_table[7] = (mp_map_elem_t) {
+        MP_OBJ_NEW_QSTR(MP_QSTR_items), MP_OBJ_FROM_PTR(&btree_items_obj)
+    };
     btree_type.locals_dict = (void*)&btree_locals_dict;
 
     mp_store_global(MP_QSTR__open, MP_OBJ_FROM_PTR(&btree_open_obj));

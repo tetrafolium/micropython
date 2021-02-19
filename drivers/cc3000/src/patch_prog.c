@@ -35,9 +35,10 @@ static void systick_sleep(unsigned long ms) {
 }
 
 // 2 dim array to store address and length of new FAT
-static const unsigned short aFATEntries[2][NVMEM_RM_FILEID + 1] = 
+static const unsigned short aFATEntries[2][NVMEM_RM_FILEID + 1] =
 /*  address 	*/  {{0x50, 	0x1f0, 	0x390, 	0x1390, 	0x2390, 	0x4390, 	0x6390, 	0x63a0, 	0x63b0, 	0x63f0, 	0x6430, 	0x6830},
-/*  length	*/	{0x1a0, 	0x1a0, 	0x1000, 	0x1000, 	0x2000, 	0x2000, 	0x10, 	0x10, 	0x40, 	0x40, 	0x400, 	0x200}};
+    /*  length	*/	{0x1a0, 	0x1a0, 	0x1000, 	0x1000, 	0x2000, 	0x2000, 	0x10, 	0x10, 	0x40, 	0x40, 	0x400, 	0x200}
+};
 /* 0. NVS */
 /* 1. NVS Shadow */
 /* 2. Wireless Conf */
@@ -63,7 +64,7 @@ static const unsigned short aFATEntries[2][NVMEM_RM_FILEID + 1] =
 //!
 //! \return none
 //!
-//! \brief  The function returns a pointer to the driver patch: 
+//! \brief  The function returns a pointer to the driver patch:
 //!         since there is no patch yet - it returns 0
 //
 //*****************************************************************************
@@ -83,7 +84,7 @@ static char *sendDriverPatch(unsigned long *Length)
 //!
 //! \return none
 //!
-//! \brief  The function returns a pointer to the boot loader patch: 
+//! \brief  The function returns a pointer to the boot loader patch:
 //!         since there is no patch yet - it returns 0
 //
 //*****************************************************************************
@@ -102,7 +103,7 @@ static char *sendBootLoaderPatch(unsigned long *Length)
 //!
 //! \return none
 //!
-//! \brief  The function returns a pointer to the FW patch: 
+//! \brief  The function returns a pointer to the FW patch:
 //!         since there is no patch yet - it returns 0
 //
 //*****************************************************************************
@@ -121,26 +122,26 @@ static char *sendWLFWPatch(unsigned long *Length)
 //!
 //! \return none
 //!
-//! \brief  The function handles asynchronous events that come from CC3000 
+//! \brief  The function handles asynchronous events that come from CC3000
 //!         device and operates a LED4 to have an on-board indication
 //
 //*****************************************************************************
 
 static void CC3000_UsynchCallback(long lEventType, char * data, unsigned char length)
 {
-	
+
 }
 
 //*****************************************************************************
 //
 //! initDriver
 //!
-//!  \param[in] cRequestPatch 0 to load with EEPROM patches 
+//!  \param[in] cRequestPatch 0 to load with EEPROM patches
 //!             and 1 to load with no patches
 //!
 //!  \return none
 //!
-//!  \brief  The function initializes a CC3000 device 
+//!  \brief  The function initializes a CC3000 device
 //!          and triggers it to start operation
 //
 //*****************************************************************************
@@ -172,7 +173,7 @@ static int initDriver(unsigned short cRequestPatch)
 //! fat_read_content
 //!
 //! \param[out] is_allocated  array of is_allocated in FAT table:\n
-//!             an allocated entry implies the address and length of the 
+//!             an allocated entry implies the address and length of the
 //!             file are valid.
 //!             0: not allocated; 1: allocated.
 //! \param[out] is_valid  array of is_valid in FAT table:\n
@@ -189,12 +190,12 @@ static int initDriver(unsigned short cRequestPatch)
 //!
 //! \return on succes 0, error otherwise
 //!
-//! \brief  parse the FAT table from eeprom 
+//! \brief  parse the FAT table from eeprom
 //
 //*****************************************************************************
 static unsigned char  __attribute__ ((unused))
 fat_read_content(unsigned char *is_allocated, unsigned char *is_valid,
-        unsigned char *write_protected, unsigned short *file_address, unsigned short *file_length)
+                 unsigned char *write_protected, unsigned short *file_address, unsigned short *file_length)
 {
     unsigned short  index;
     unsigned char   ucStatus;
@@ -206,12 +207,12 @@ fat_read_content(unsigned char *is_allocated, unsigned char *is_valid,
     //
     for (index = 0; index < 6; index++)
     {
-        ucStatus = nvmem_read(16, 8, 4 + 8*index, fatTablePtr); 
+        ucStatus = nvmem_read(16, 8, 4 + 8*index, fatTablePtr);
         fatTablePtr += 8;
     }
-	
+
     fatTablePtr = fatTable;
-	
+
     for (index = 0; index <= NVMEM_RM_FILEID; index++)
     {
         *is_allocated++ = (*fatTablePtr) & BIT0;
@@ -219,13 +220,13 @@ fat_read_content(unsigned char *is_allocated, unsigned char *is_valid,
         *write_protected++ = ((*fatTablePtr) & BIT2) >> 2;
         *file_address++ = ((*(fatTablePtr+1)<<8) | (*fatTablePtr)) & (BIT4|BIT5|BIT6|BIT7);
         *file_length++ = ((*(fatTablePtr+3)<<8) | (*(fatTablePtr+2))) & (BIT4|BIT5|BIT6|BIT7);
-        
+
         //
         // Move to next file ID
         //
-        fatTablePtr += 4;  
+        fatTablePtr += 4;
     }
-    
+
     return ucStatus;
 }
 
@@ -240,11 +241,11 @@ fat_read_content(unsigned char *is_allocated, unsigned char *is_valid,
 //!
 //! \return on succes 0, error otherwise
 //!
-//! \brief  parse the FAT table from eeprom 
+//! \brief  parse the FAT table from eeprom
 //
 //*****************************************************************************
 static unsigned char fat_write_content(unsigned short const *file_address,
-                                unsigned short const *file_length)
+                                       unsigned short const *file_length)
 {
     unsigned short  index = 0;
     unsigned char   ucStatus;
@@ -254,44 +255,44 @@ static unsigned char fat_write_content(unsigned short const *file_address,
     //
     // First, write the magic number.
     //
-    ucStatus = nvmem_write(16, 2, 0, (unsigned char*)"LS"); 
-	
+    ucStatus = nvmem_write(16, 2, 0, (unsigned char*)"LS");
+
     for (; index <= NVMEM_RM_FILEID; index++)
     {
         //
         // Write address low char and mark as allocated.
         //
         *fatTablePtr++ = (unsigned char)(file_address[index] & 0xff) | BIT0;
-	
-        //	
+
+        //
         // Write address high char.
         //
         *fatTablePtr++ = (unsigned char)((file_address[index]>>8) & 0xff);
-		
+
         //
         // Write length low char.
         //
         *fatTablePtr++ = (unsigned char)(file_length[index] & 0xff);
-		
+
         //
         // Write length high char.
         //
-        *fatTablePtr++ = (unsigned char)((file_length[index]>>8) & 0xff);		
+        *fatTablePtr++ = (unsigned char)((file_length[index]>>8) & 0xff);
     }
-	
+
     //
     // Second, write the FAT.
     // Write in two parts to work with tiny driver.
     //
-    ucStatus = nvmem_write(16, 24, 4, fatTable); 
-    ucStatus = nvmem_write(16, 24, 24+4, &fatTable[24]); 
-	
+    ucStatus = nvmem_write(16, 24, 4, fatTable);
+    ucStatus = nvmem_write(16, 24, 24+4, &fatTable[24]);
+
     //
     // Third, we want to erase any user files.
     //
     memset(fatTable, 0, sizeof(fatTable));
-    ucStatus = nvmem_write(16, 16, 52, fatTable); 
-	
+    ucStatus = nvmem_write(16, 16, 52, fatTable);
+
     return ucStatus;
 }
 
@@ -354,7 +355,7 @@ void patch_prog_start()
             return_status |= nvmem_write(NVMEM_RM_FILEID,
                                          32,
                                          32*index,
-                                         (pRMParams + 32*index)); 
+                                         (pRMParams + 32*index));
         }
     }
 

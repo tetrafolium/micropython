@@ -132,11 +132,11 @@ static void cdc_task(void)
         int chars = 0;
         while (cdc_tx_any()) {
             if (chars < 64) {
-               tud_cdc_write_char(cdc_tx_char());
-               chars++;
+                tud_cdc_write_char(cdc_tx_char());
+                chars++;
             } else {
-               chars = 0;
-               tud_cdc_write_flush();
+                chars = 0;
+                tud_cdc_write_flush();
             }
         }
 

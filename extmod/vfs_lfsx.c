@@ -85,19 +85,19 @@ STATIC void MP_VFS_LFSx(init_config)(MP_OBJ_VFS_LFSx * self, mp_obj_t bdev, size
     config->block_size = bs;
     config->block_count = bc;
 
-    #if LFS_BUILD_VERSION == 1
+#if LFS_BUILD_VERSION == 1
     config->lookahead = lookahead;
     config->read_buffer = m_new(uint8_t, config->read_size);
     config->prog_buffer = m_new(uint8_t, config->prog_size);
     config->lookahead_buffer = m_new(uint8_t, config->lookahead / 8);
-    #else
+#else
     config->block_cycles = 100;
     config->cache_size = 4 * MAX(read_size, prog_size);
     config->lookahead_size = lookahead;
     config->read_buffer = m_new(uint8_t, config->cache_size);
     config->prog_buffer = m_new(uint8_t, config->cache_size);
     config->lookahead_buffer = m_new(uint8_t, config->lookahead_size);
-    #endif
+#endif
 }
 
 const char *MP_VFS_LFSx(make_path)(MP_OBJ_VFS_LFSx * self, mp_obj_t path_in) {
@@ -121,11 +121,11 @@ STATIC mp_obj_t MP_VFS_LFSx(make_new)(const mp_obj_type_t * type, size_t n_args,
     self->base.type = type;
     vstr_init(&self->cur_dir, 16);
     vstr_add_byte(&self->cur_dir, '/');
-    #if LFS_BUILD_VERSION == 2
+#if LFS_BUILD_VERSION == 2
     self->enable_mtime = args[LFS_MAKE_ARG_mtime].u_bool;
-    #endif
+#endif
     MP_VFS_LFSx(init_config)(self, args[LFS_MAKE_ARG_bdev].u_obj,
-        args[LFS_MAKE_ARG_readsize].u_int, args[LFS_MAKE_ARG_progsize].u_int, args[LFS_MAKE_ARG_lookahead].u_int);
+                             args[LFS_MAKE_ARG_readsize].u_int, args[LFS_MAKE_ARG_progsize].u_int, args[LFS_MAKE_ARG_lookahead].u_int);
     int ret = LFSx_API(mount)(&self->lfs, &self->config);
     if (ret < 0) {
         mp_raise_OSError(-ret);
@@ -139,7 +139,7 @@ STATIC mp_obj_t MP_VFS_LFSx(mkfs)(size_t n_args, const mp_obj_t *pos_args, mp_ma
 
     MP_OBJ_VFS_LFSx self;
     MP_VFS_LFSx(init_config)(&self, args[LFS_MAKE_ARG_bdev].u_obj,
-        args[LFS_MAKE_ARG_readsize].u_int, args[LFS_MAKE_ARG_progsize].u_int, args[LFS_MAKE_ARG_lookahead].u_int);
+                             args[LFS_MAKE_ARG_readsize].u_int, args[LFS_MAKE_ARG_progsize].u_int, args[LFS_MAKE_ARG_lookahead].u_int);
     int ret = LFSx_API(format)(&self.lfs, &self.config);
     if (ret < 0) {
         mp_raise_OSError(-ret);
@@ -158,7 +158,8 @@ typedef struct MP_VFS_LFSx (_ilistdir_it_t) {
     bool is_str;
     MP_OBJ_VFS_LFSx *vfs;
     LFSx_API(dir_t) dir;
-} MP_VFS_LFSx(ilistdir_it_t);
+}
+MP_VFS_LFSx(ilistdir_it_t);
 
 STATIC mp_obj_t MP_VFS_LFSx(ilistdir_it_iternext)(mp_obj_t self_in) {
     MP_VFS_LFSx(ilistdir_it_t) * self = MP_OBJ_TO_PTR(self_in);
@@ -295,7 +296,7 @@ STATIC mp_obj_t MP_VFS_LFSx(chdir)(mp_obj_t self_in, mp_obj_t path_in) {
     if (vstr_len(&self->cur_dir) != 1) {
         vstr_add_byte(&self->cur_dir, '/');
 
-        #define CWD_LEN (vstr_len(&self->cur_dir))
+#define CWD_LEN (vstr_len(&self->cur_dir))
         size_t to = 1;
         size_t from = 1;
         char *cwd = vstr_str(&self->cur_dir);
@@ -357,7 +358,7 @@ STATIC mp_obj_t MP_VFS_LFSx(stat)(mp_obj_t self_in, mp_obj_t path_in) {
     }
 
     mp_uint_t mtime = 0;
-    #if LFS_BUILD_VERSION == 2
+#if LFS_BUILD_VERSION == 2
     uint8_t mtime_buf[8];
     lfs2_ssize_t sz = lfs2_getattr(&self->lfs, path, LFS_ATTR_MTIME, &mtime_buf, sizeof(mtime_buf));
     if (sz == sizeof(mtime_buf)) {
@@ -368,7 +369,7 @@ STATIC mp_obj_t MP_VFS_LFSx(stat)(mp_obj_t self_in, mp_obj_t path_in) {
         // On-disk storage of timestamps uses 1970 as the Epoch, so convert to host's Epoch.
         mtime = timeutils_seconds_since_epoch_from_nanoseconds_since_1970(ns);
     }
-    #endif
+#endif
 
     mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(10, NULL));
     t->items[0] = MP_OBJ_NEW_SMALL_INT(info.type == LFSx_MACRO(_TYPE_REG) ? MP_S_IFREG : MP_S_IFDIR); // st_mode
@@ -397,11 +398,11 @@ STATIC mp_obj_t MP_VFS_LFSx(statvfs)(mp_obj_t self_in, mp_obj_t path_in) {
     (void)path_in;
     MP_OBJ_VFS_LFSx *self = MP_OBJ_TO_PTR(self_in);
     uint32_t n_used_blocks = 0;
-    #if LFS_BUILD_VERSION == 1
+#if LFS_BUILD_VERSION == 1
     int ret = LFSx_API(traverse)(&self->lfs, LFSx_API(traverse_cb), &n_used_blocks);
-    #else
+#else
     int ret = LFSx_API(fs_traverse)(&self->lfs, LFSx_API(traverse_cb), &n_used_blocks);
-    #endif
+#endif
     if (ret < 0) {
         mp_raise_OSError(-ret);
     }
@@ -484,11 +485,11 @@ STATIC const mp_vfs_proto_t MP_VFS_LFSx(proto) = {
 
 const mp_obj_type_t MP_TYPE_VFS_LFSx = {
     { &mp_type_type },
-    #if LFS_BUILD_VERSION == 1
+#if LFS_BUILD_VERSION == 1
     .name = MP_QSTR_VfsLfs1,
-    #else
+#else
     .name = MP_QSTR_VfsLfs2,
-    #endif
+#endif
     .make_new = MP_VFS_LFSx(make_new),
     .protocol = &MP_VFS_LFSx(proto),
     .locals_dict = (mp_obj_dict_t *)&MP_VFS_LFSx(locals_dict),

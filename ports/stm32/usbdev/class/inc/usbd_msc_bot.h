@@ -84,25 +84,25 @@
 
 typedef struct
 {
-  uint32_t dSignature;
-  uint32_t dTag;
-  uint32_t dDataLength;
-  uint8_t  bmFlags;
-  uint8_t  bLUN;
-  uint8_t  bCBLength;
-  uint8_t  CB[16];
-  uint8_t  ReservedForAlign;
+    uint32_t dSignature;
+    uint32_t dTag;
+    uint32_t dDataLength;
+    uint8_t  bmFlags;
+    uint8_t  bLUN;
+    uint8_t  bCBLength;
+    uint8_t  CB[16];
+    uint8_t  ReservedForAlign;
 }
 USBD_MSC_BOT_CBWTypeDef;
 
 
 typedef struct
 {
-  uint32_t dSignature;
-  uint32_t dTag;
-  uint32_t dDataResidue;
-  uint8_t  bStatus;
-  uint8_t  ReservedForAlign[3];
+    uint32_t dSignature;
+    uint32_t dTag;
+    uint32_t dDataResidue;
+    uint8_t  bStatus;
+    uint8_t  ReservedForAlign[3];
 }
 USBD_MSC_BOT_CSWTypeDef;
 
@@ -131,7 +131,7 @@ void MSC_BOT_DataOut (USBD_HandleTypeDef  *pdev,
                       uint8_t epnum);
 
 void MSC_BOT_SendCSW (USBD_HandleTypeDef  *pdev,
-                             uint8_t CSW_Status);
+                      uint8_t CSW_Status);
 
 void  MSC_BOT_CplClrFeature (USBD_HandleTypeDef  *pdev,
                              uint8_t epnum);

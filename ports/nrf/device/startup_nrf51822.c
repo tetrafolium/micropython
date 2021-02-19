@@ -58,7 +58,7 @@ void Reset_Handler(void) {
     uint32_t * p_dest = &_sdata;
 
     while (p_dest < &_edata) {
-      *p_dest++ = *p_src++;
+        *p_dest++ = *p_src++;
     }
 
     uint32_t * p_bss     = &_sbss;

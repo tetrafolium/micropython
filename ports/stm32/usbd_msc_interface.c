@@ -121,47 +121,47 @@ STATIC int lu_ioctl(uint8_t lun, int op, uint32_t *data) {
 
     if (lu == &pyb_flash_type) {
         switch (op) {
-            case MP_BLOCKDEV_IOCTL_INIT:
-                storage_init();
-                *data = 0;
-                return 0;
-            case MP_BLOCKDEV_IOCTL_SYNC:
-                storage_flush();
-                return 0;
-            case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
-                *data = storage_get_block_size();
-                return 0;
-            case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
-                *data = storage_get_block_count();
-                return 0;
-            default:
-                return -1;
+        case MP_BLOCKDEV_IOCTL_INIT:
+            storage_init();
+            *data = 0;
+            return 0;
+        case MP_BLOCKDEV_IOCTL_SYNC:
+            storage_flush();
+            return 0;
+        case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
+            *data = storage_get_block_size();
+            return 0;
+        case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
+            *data = storage_get_block_count();
+            return 0;
+        default:
+            return -1;
         }
-    #if MICROPY_HW_ENABLE_SDCARD
+#if MICROPY_HW_ENABLE_SDCARD
     } else if (lu == &pyb_sdcard_type
-               #if MICROPY_HW_ENABLE_MMCARD
+#if MICROPY_HW_ENABLE_MMCARD
                || lu == &pyb_mmcard_type
-               #endif
-               ) {
+#endif
+              ) {
         switch (op) {
-            case MP_BLOCKDEV_IOCTL_INIT:
-                if (!sdcard_power_on()) {
-                    return -1;
-                }
-                *data = 0;
-                return 0;
-            case MP_BLOCKDEV_IOCTL_SYNC:
-                return 0;
-            case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
-                *data = SDCARD_BLOCK_SIZE;
-                return 0;
-            case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
-                *data = sdcard_get_capacity_in_bytes() / (uint64_t)SDCARD_BLOCK_SIZE;
-                return 0;
-            default:
+        case MP_BLOCKDEV_IOCTL_INIT:
+            if (!sdcard_power_on()) {
                 return -1;
+            }
+            *data = 0;
+            return 0;
+        case MP_BLOCKDEV_IOCTL_SYNC:
+            return 0;
+        case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
+            *data = SDCARD_BLOCK_SIZE;
+            return 0;
+        case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
+            *data = sdcard_get_capacity_in_bytes() / (uint64_t)SDCARD_BLOCK_SIZE;
+            return 0;
+        default:
+            return -1;
         }
-    #endif
+#endif
     } else {
         return -1;
     }
@@ -193,14 +193,14 @@ STATIC int usbd_msc_Inquiry(uint8_t lun, const uint8_t *params, uint8_t *data_ou
         // EVPD set - return vital product data parameters
         uint8_t page_code = params[2];
         switch (page_code) {
-            case 0x00: // Supported VPD pages
-                memcpy(data_out, usbd_msc_vpd00, sizeof(usbd_msc_vpd00));
-                return sizeof(usbd_msc_vpd00);
-            case 0x83: // Device identification
-                memcpy(data_out, usbd_msc_vpd83, sizeof(usbd_msc_vpd83));
-                return sizeof(usbd_msc_vpd83);
-            default: // Unsupported
-                return -1;
+        case 0x00: // Supported VPD pages
+            memcpy(data_out, usbd_msc_vpd00, sizeof(usbd_msc_vpd00));
+            return sizeof(usbd_msc_vpd00);
+        case 0x83: // Device identification
+            memcpy(data_out, usbd_msc_vpd83, sizeof(usbd_msc_vpd83));
+            return sizeof(usbd_msc_vpd83);
+        default: // Unsupported
+            return -1;
         }
     }
 
@@ -214,19 +214,19 @@ STATIC int usbd_msc_Inquiry(uint8_t lun, const uint8_t *params, uint8_t *data_ou
     int len = MIN(sizeof(usbd_msc_inquiry_data), alloc_len);
     memcpy(data_out, usbd_msc_inquiry_data, len);
 
-    #if MICROPY_HW_ENABLE_SDCARD
+#if MICROPY_HW_ENABLE_SDCARD
     const void *lu = usbd_msc_lu_data[lun];
     if (len == sizeof(usbd_msc_inquiry_data)) {
         if (lu == &pyb_sdcard_type) {
             memcpy(data_out + 24, "SDCard", sizeof("SDCard") - 1);
         }
-        #if MICROPY_HW_ENABLE_MMCARD
+#if MICROPY_HW_ENABLE_MMCARD
         else if (lu == &pyb_mmcard_type) {
             memcpy(data_out + 24, "MMCard", sizeof("MMCard") - 1);
         }
-        #endif
+#endif
     }
-    #endif
+#endif
 
     return len;
 }
@@ -288,16 +288,16 @@ STATIC int8_t usbd_msc_Read(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16
     if (lu == &pyb_flash_type) {
         storage_read_blocks(buf, blk_addr, blk_len);
         return 0;
-    #if MICROPY_HW_ENABLE_SDCARD
+#if MICROPY_HW_ENABLE_SDCARD
     } else if (lu == &pyb_sdcard_type
-               #if MICROPY_HW_ENABLE_MMCARD
+#if MICROPY_HW_ENABLE_MMCARD
                || lu == &pyb_mmcard_type
-               #endif
-               ) {
+#endif
+              ) {
         if (sdcard_read_blocks(buf, blk_addr, blk_len) == 0) {
             return 0;
         }
-    #endif
+#endif
     }
     return -1;
 }
@@ -312,16 +312,16 @@ STATIC int8_t usbd_msc_Write(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint1
     if (lu == &pyb_flash_type) {
         storage_write_blocks(buf, blk_addr, blk_len);
         return 0;
-    #if MICROPY_HW_ENABLE_SDCARD
+#if MICROPY_HW_ENABLE_SDCARD
     } else if (lu == &pyb_sdcard_type
-               #if MICROPY_HW_ENABLE_MMCARD
+#if MICROPY_HW_ENABLE_MMCARD
                || lu == &pyb_mmcard_type
-               #endif
-               ) {
+#endif
+              ) {
         if (sdcard_write_blocks(buf, blk_addr, blk_len) == 0) {
             return 0;
         }
-    #endif
+#endif
     }
     return -1;
 }

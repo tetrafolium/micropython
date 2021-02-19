@@ -146,11 +146,11 @@ STATIC mp_obj_t machine_timer_make_new(const mp_obj_type_t *type, size_t n_args,
         .frequency = NRF_TIMER_FREQ_1MHz,
         .mode = NRF_TIMER_MODE_TIMER,
         .bit_width = NRF_TIMER_BIT_WIDTH_24,
-        #ifdef NRF51
+#ifdef NRF51
         .interrupt_priority = 3,
-        #else
+#else
         .interrupt_priority = 6,
-        #endif
+#endif
         .p_context = self,
     };
 
@@ -160,14 +160,14 @@ STATIC mp_obj_t machine_timer_make_new(const mp_obj_type_t *type, size_t n_args,
 
     // Configure channel 0.
     nrf_timer_short_mask_t short_mask = NRF_TIMER_SHORT_COMPARE0_CLEAR_MASK |
-        ((args[ARG_mode].u_int == TIMER_MODE_ONESHOT) ? NRF_TIMER_SHORT_COMPARE0_STOP_MASK : 0);
+                                        ((args[ARG_mode].u_int == TIMER_MODE_ONESHOT) ? NRF_TIMER_SHORT_COMPARE0_STOP_MASK : 0);
     bool enable_interrupts = true;
     nrfx_timer_extended_compare(
-            &self->p_instance,
-            NRF_TIMER_CC_CHANNEL0,
-            args[ARG_period].u_int,
-            short_mask,
-            enable_interrupts);
+        &self->p_instance,
+        NRF_TIMER_CC_CHANNEL0,
+        args[ARG_period].u_int,
+        short_mask,
+        enable_interrupts);
 
     return MP_OBJ_FROM_PTR(self);
 }

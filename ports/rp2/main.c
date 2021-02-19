@@ -54,25 +54,25 @@ bi_decl(bi_program_version_string(MICROPY_GIT_TAG));
 // Add a section to the picotool output similar to program features, but for frozen modules
 // (it will aggregate BINARY_INFO_ID_MP_FROZEN binary info)
 bi_decl(bi_program_feature_group_with_flags(BINARY_INFO_TAG_MICROPYTHON,
-    BINARY_INFO_ID_MP_FROZEN, "frozen modules",
-    BI_NAMED_GROUP_SEPARATE_COMMAS | BI_NAMED_GROUP_SORT_ALPHA));
+        BINARY_INFO_ID_MP_FROZEN, "frozen modules",
+        BI_NAMED_GROUP_SEPARATE_COMMAS | BI_NAMED_GROUP_SORT_ALPHA));
 
 int main(int argc, char **argv) {
-    #if MICROPY_HW_ENABLE_UART_REPL
+#if MICROPY_HW_ENABLE_UART_REPL
     bi_decl(bi_program_feature("UART REPL"))
     setup_default_uart();
     mp_uart_init();
-    #endif
+#endif
 
-    #if MICROPY_HW_ENABLE_USBDEV
+#if MICROPY_HW_ENABLE_USBDEV
     bi_decl(bi_program_feature("USB REPL"))
     tusb_init();
-    #endif
+#endif
 
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     bi_decl(bi_program_feature("thread support"))
     mp_thread_init();
-    #endif
+#endif
 
     // Start and initialise the RTC
     datetime_t t = {
@@ -133,7 +133,7 @@ int main(int argc, char **argv) {
             }
         }
 
-    soft_reset_exit:
+soft_reset_exit:
         mp_printf(MP_PYTHON_PRINTER, "MPY: soft reboot\n");
         rp2_pio_deinit();
         machine_pin_deinit();
@@ -147,9 +147,9 @@ int main(int argc, char **argv) {
 void gc_collect(void) {
     gc_collect_start();
     gc_helper_collect_regs_and_stack();
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     mp_thread_gc_others();
-    #endif
+#endif
     gc_collect_end();
 }
 
@@ -211,5 +211,5 @@ const char rp2_help_text[] =
     "\n"
     "For further help on a specific object, type help(obj)\n"
     "For a list of available modules, type help('modules')\n"
-;
+    ;
 

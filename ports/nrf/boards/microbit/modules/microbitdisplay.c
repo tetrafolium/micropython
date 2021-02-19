@@ -317,41 +317,41 @@ static void microbit_display_update(void) {
     }
     async_tick = 0;
     switch (async_mode) {
-        case ASYNC_MODE_ANIMATION:
-        {
-            if (MP_STATE_PORT(async_data)[0] == NULL || MP_STATE_PORT(async_data)[1] == NULL) {
-                async_stop();
-                break;
-            }
-            /* WARNING: We are executing in an interrupt handler.
-             * If an exception is raised here then we must hand it to the VM. */
-            mp_obj_t obj;
-            nlr_buf_t nlr;
-            gc_lock();
-            if (nlr_push(&nlr) == 0) {
-                obj = mp_iternext_allow_raise(async_iterator);
-                nlr_pop();
-                gc_unlock();
-            } else {
-                gc_unlock();
-                if (!mp_obj_is_subclass_fast(MP_OBJ_FROM_PTR(((mp_obj_base_t*)nlr.ret_val)->type),
-                    MP_OBJ_FROM_PTR(&mp_type_StopIteration))) {
-                    // An exception other than StopIteration, so set it for the VM to raise later
-                    // If memory error, write an appropriate message.
-                    if (mp_obj_get_type(nlr.ret_val) == &mp_type_MemoryError) {
-                        mp_printf(&mp_plat_print, "Allocation in interrupt handler");
-                    }
-                    MP_STATE_VM(mp_pending_exception) = MP_OBJ_FROM_PTR(nlr.ret_val);
-                }
-                obj = MP_OBJ_STOP_ITERATION;
-            }
-            draw_object(obj);
-            break;
-        }
-        case ASYNC_MODE_CLEAR:
-            microbit_display_show(&microbit_display_obj, BLANK_IMAGE);
+    case ASYNC_MODE_ANIMATION:
+    {
+        if (MP_STATE_PORT(async_data)[0] == NULL || MP_STATE_PORT(async_data)[1] == NULL) {
             async_stop();
             break;
+        }
+        /* WARNING: We are executing in an interrupt handler.
+         * If an exception is raised here then we must hand it to the VM. */
+        mp_obj_t obj;
+        nlr_buf_t nlr;
+        gc_lock();
+        if (nlr_push(&nlr) == 0) {
+            obj = mp_iternext_allow_raise(async_iterator);
+            nlr_pop();
+            gc_unlock();
+        } else {
+            gc_unlock();
+            if (!mp_obj_is_subclass_fast(MP_OBJ_FROM_PTR(((mp_obj_base_t*)nlr.ret_val)->type),
+                                         MP_OBJ_FROM_PTR(&mp_type_StopIteration))) {
+                // An exception other than StopIteration, so set it for the VM to raise later
+                // If memory error, write an appropriate message.
+                if (mp_obj_get_type(nlr.ret_val) == &mp_type_MemoryError) {
+                    mp_printf(&mp_plat_print, "Allocation in interrupt handler");
+                }
+                MP_STATE_VM(mp_pending_exception) = MP_OBJ_FROM_PTR(nlr.ret_val);
+            }
+            obj = MP_OBJ_STOP_ITERATION;
+        }
+        draw_object(obj);
+        break;
+    }
+    case ASYNC_MODE_CLEAR:
+        microbit_display_show(&microbit_display_obj, BLANK_IMAGE);
+        async_stop();
+        break;
     }
 }
 
@@ -426,20 +426,20 @@ MP_DEFINE_CONST_FUN_OBJ_KW(microbit_display_scroll_obj, 1, microbit_display_scro
 mp_obj_t microbit_display_on_func(mp_obj_t obj) {
     microbit_display_obj_t *self = (microbit_display_obj_t*)obj;
     /* Try to reclaim the pins we need */
-/*
-    microbit_obj_pin_fail_if_cant_acquire(&microbit_p3_obj);
-    microbit_obj_pin_fail_if_cant_acquire(&microbit_p4_obj);
-    microbit_obj_pin_fail_if_cant_acquire(&microbit_p6_obj);
-    microbit_obj_pin_fail_if_cant_acquire(&microbit_p7_obj);
-    microbit_obj_pin_fail_if_cant_acquire(&microbit_p9_obj);
-    microbit_obj_pin_fail_if_cant_acquire(&microbit_p10_obj);
-    microbit_obj_pin_acquire(&microbit_p3_obj, microbit_pin_mode_display);
-    microbit_obj_pin_acquire(&microbit_p4_obj, microbit_pin_mode_display);
-    microbit_obj_pin_acquire(&microbit_p6_obj, microbit_pin_mode_display);
-    microbit_obj_pin_acquire(&microbit_p7_obj, microbit_pin_mode_display);
-    microbit_obj_pin_acquire(&microbit_p9_obj, microbit_pin_mode_display);
-    microbit_obj_pin_acquire(&microbit_p10_obj, microbit_pin_mode_display);
-*/
+    /*
+        microbit_obj_pin_fail_if_cant_acquire(&microbit_p3_obj);
+        microbit_obj_pin_fail_if_cant_acquire(&microbit_p4_obj);
+        microbit_obj_pin_fail_if_cant_acquire(&microbit_p6_obj);
+        microbit_obj_pin_fail_if_cant_acquire(&microbit_p7_obj);
+        microbit_obj_pin_fail_if_cant_acquire(&microbit_p9_obj);
+        microbit_obj_pin_fail_if_cant_acquire(&microbit_p10_obj);
+        microbit_obj_pin_acquire(&microbit_p3_obj, microbit_pin_mode_display);
+        microbit_obj_pin_acquire(&microbit_p4_obj, microbit_pin_mode_display);
+        microbit_obj_pin_acquire(&microbit_p6_obj, microbit_pin_mode_display);
+        microbit_obj_pin_acquire(&microbit_p7_obj, microbit_pin_mode_display);
+        microbit_obj_pin_acquire(&microbit_p9_obj, microbit_pin_mode_display);
+        microbit_obj_pin_acquire(&microbit_p10_obj, microbit_pin_mode_display);
+    */
     /* Make sure all pins are in the correct state */
     microbit_display_init();
     /* Re-enable the display loop.  This will resume any animations in
@@ -460,14 +460,14 @@ mp_obj_t microbit_display_off_func(mp_obj_t obj) {
      * GPIO. */
     nrf_gpio_port_out_clear(0, ROW_PINS_MASK);
     /* Free pins for other uses */
-/*
-    microbit_obj_pin_free(&microbit_p3_obj);
-    microbit_obj_pin_free(&microbit_p4_obj);
-    microbit_obj_pin_free(&microbit_p6_obj);
-    microbit_obj_pin_free(&microbit_p7_obj);
-    microbit_obj_pin_free(&microbit_p9_obj);
-    microbit_obj_pin_free(&microbit_p10_obj);
-*/
+    /*
+        microbit_obj_pin_free(&microbit_p3_obj);
+        microbit_obj_pin_free(&microbit_p4_obj);
+        microbit_obj_pin_free(&microbit_p6_obj);
+        microbit_obj_pin_free(&microbit_p7_obj);
+        microbit_obj_pin_free(&microbit_p9_obj);
+        microbit_obj_pin_free(&microbit_p10_obj);
+    */
     return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_1(microbit_display_off_obj, microbit_display_off_func);

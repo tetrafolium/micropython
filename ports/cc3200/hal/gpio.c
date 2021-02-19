@@ -74,7 +74,7 @@ GPIOBaseValid(unsigned long ulPort)
     return((ulPort == GPIOA0_BASE) ||
            (ulPort == GPIOA1_BASE) ||
            (ulPort == GPIOA2_BASE) ||
-           (ulPort == GPIOA3_BASE) ||             
+           (ulPort == GPIOA3_BASE) ||
            (ulPort == GPIOA4_BASE));
 }
 #else
@@ -103,34 +103,34 @@ GPIOGetIntNumber(unsigned long ulPort)
     //
     switch(ulPort)
     {
-        case GPIOA0_BASE:
-        {
-            ulInt = INT_GPIOA0;
-            break;
-        }
+    case GPIOA0_BASE:
+    {
+        ulInt = INT_GPIOA0;
+        break;
+    }
 
-        case GPIOA1_BASE:
-        {
-            ulInt = INT_GPIOA1;
-            break;
-        }
+    case GPIOA1_BASE:
+    {
+        ulInt = INT_GPIOA1;
+        break;
+    }
 
-        case GPIOA2_BASE:
-        {
-            ulInt = INT_GPIOA2;
-            break;
-        }
+    case GPIOA2_BASE:
+    {
+        ulInt = INT_GPIOA2;
+        break;
+    }
 
-        case GPIOA3_BASE:
-        {
-            ulInt = INT_GPIOA3;
-            break;
-        }
+    case GPIOA3_BASE:
+    {
+        ulInt = INT_GPIOA3;
+        break;
+    }
 
-        default:
-        {
-            return(-1);
-        }
+    default:
+    {
+        return(-1);
+    }
     }
 
     //
@@ -185,8 +185,8 @@ GPIODirModeSet(unsigned long ulPort, unsigned char ucPins,
     // Set the pin direction and mode.
     //
     HWREG(ulPort + GPIO_O_GPIO_DIR) = ((ulPinIO & 1) ?
-                                  (HWREG(ulPort + GPIO_O_GPIO_DIR) | ucPins) :
-                                  (HWREG(ulPort + GPIO_O_GPIO_DIR) & ~(ucPins)));
+                                       (HWREG(ulPort + GPIO_O_GPIO_DIR) | ucPins) :
+                                       (HWREG(ulPort + GPIO_O_GPIO_DIR) & ~(ucPins)));
 }
 
 //*****************************************************************************
@@ -269,14 +269,14 @@ GPIOIntTypeSet(unsigned long ulPort, unsigned char ucPins,
     // Set the pin interrupt type.
     //
     HWREG(ulPort + GPIO_O_GPIO_IBE) = ((ulIntType & 1) ?
-                                  (HWREG(ulPort + GPIO_O_GPIO_IBE) | ucPins) :
-                                  (HWREG(ulPort + GPIO_O_GPIO_IBE) & ~(ucPins)));
+                                       (HWREG(ulPort + GPIO_O_GPIO_IBE) | ucPins) :
+                                       (HWREG(ulPort + GPIO_O_GPIO_IBE) & ~(ucPins)));
     HWREG(ulPort + GPIO_O_GPIO_IS) = ((ulIntType & 2) ?
-                                 (HWREG(ulPort + GPIO_O_GPIO_IS) | ucPins) :
-                                 (HWREG(ulPort + GPIO_O_GPIO_IS) & ~(ucPins)));
+                                      (HWREG(ulPort + GPIO_O_GPIO_IS) | ucPins) :
+                                      (HWREG(ulPort + GPIO_O_GPIO_IS) & ~(ucPins)));
     HWREG(ulPort + GPIO_O_GPIO_IEV) = ((ulIntType & 4) ?
-                                  (HWREG(ulPort + GPIO_O_GPIO_IEV) | ucPins) :
-                                  (HWREG(ulPort + GPIO_O_GPIO_IEV) & ~(ucPins)));
+                                       (HWREG(ulPort + GPIO_O_GPIO_IEV) | ucPins) :
+                                       (HWREG(ulPort + GPIO_O_GPIO_IEV) & ~(ucPins)));
 }
 
 //*****************************************************************************
@@ -640,19 +640,19 @@ GPIODMATriggerEnable(unsigned long ulPort)
     //
     if(ulPort == GPIOA0_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x1;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x1;
     }
     else if(ulPort == GPIOA1_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x2;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x2;
     }
     else if(ulPort == GPIOA2_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x4;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x4;
     }
     else if(ulPort == GPIOA3_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x8;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) |= 0x8;
     }
 }
 
@@ -682,19 +682,19 @@ GPIODMATriggerDisable(unsigned long ulPort)
     //
     if(ulPort == GPIOA0_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x1;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x1;
     }
     else if(ulPort == GPIOA1_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x2;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x2;
     }
     else if(ulPort == GPIOA2_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x4;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x4;
     }
     else if(ulPort == GPIOA3_BASE)
     {
-      HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x8;
+        HWREG(COMMON_REG_BASE + COMMON_REG_O_APPS_GPIO_TRIG_EN) &= ~0x8;
     }
 }
 

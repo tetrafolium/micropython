@@ -64,38 +64,38 @@ unsigned short dist_base[30];
 #else
 
 const unsigned char length_bits[30] = {
-   0, 0, 0, 0, 0, 0, 0, 0,
-   1, 1, 1, 1, 2, 2, 2, 2,
-   3, 3, 3, 3, 4, 4, 4, 4,
-   5, 5, 5, 5
+    0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 2, 2, 2, 2,
+    3, 3, 3, 3, 4, 4, 4, 4,
+    5, 5, 5, 5
 };
 const unsigned short length_base[30] = {
-   3, 4, 5, 6, 7, 8, 9, 10,
-   11, 13, 15, 17, 19, 23, 27, 31,
-   35, 43, 51, 59, 67, 83, 99, 115,
-   131, 163, 195, 227, 258
+    3, 4, 5, 6, 7, 8, 9, 10,
+    11, 13, 15, 17, 19, 23, 27, 31,
+    35, 43, 51, 59, 67, 83, 99, 115,
+    131, 163, 195, 227, 258
 };
 
 const unsigned char dist_bits[30] = {
-   0, 0, 0, 0, 1, 1, 2, 2,
-   3, 3, 4, 4, 5, 5, 6, 6,
-   7, 7, 8, 8, 9, 9, 10, 10,
-   11, 11, 12, 12, 13, 13
+    0, 0, 0, 0, 1, 1, 2, 2,
+    3, 3, 4, 4, 5, 5, 6, 6,
+    7, 7, 8, 8, 9, 9, 10, 10,
+    11, 11, 12, 12, 13, 13
 };
 const unsigned short dist_base[30] = {
-   1, 2, 3, 4, 5, 7, 9, 13,
-   17, 25, 33, 49, 65, 97, 129, 193,
-   257, 385, 513, 769, 1025, 1537, 2049, 3073,
-   4097, 6145, 8193, 12289, 16385, 24577
+    1, 2, 3, 4, 5, 7, 9, 13,
+    17, 25, 33, 49, 65, 97, 129, 193,
+    257, 385, 513, 769, 1025, 1537, 2049, 3073,
+    4097, 6145, 8193, 12289, 16385, 24577
 };
 
 #endif
 
 /* special ordering of code length codes */
 const unsigned char clcidx[] = {
-   16, 17, 18, 0, 8, 7, 9, 6,
-   10, 5, 11, 4, 12, 3, 13, 2,
-   14, 1, 15
+    16, 17, 18, 0, 8, 7, 9, 6,
+    10, 5, 11, 4, 12, 3, 13, 2,
+    14, 1, 15
 };
 
 /* ----------------------- *
@@ -106,83 +106,83 @@ const unsigned char clcidx[] = {
 /* build extra bits and base tables */
 static void tinf_build_bits_base(unsigned char *bits, unsigned short *base, int delta, int first)
 {
-   int i, sum;
+    int i, sum;
 
-   /* build bits table */
-   for (i = 0; i < delta; ++i) bits[i] = 0;
-   for (i = 0; i < 30 - delta; ++i) bits[i + delta] = i / delta;
+    /* build bits table */
+    for (i = 0; i < delta; ++i) bits[i] = 0;
+    for (i = 0; i < 30 - delta; ++i) bits[i + delta] = i / delta;
 
-   /* build base table */
-   for (sum = first, i = 0; i < 30; ++i)
-   {
-      base[i] = sum;
-      sum += 1 << bits[i];
-   }
+    /* build base table */
+    for (sum = first, i = 0; i < 30; ++i)
+    {
+        base[i] = sum;
+        sum += 1 << bits[i];
+    }
 }
 #endif
 
 /* build the fixed huffman trees */
 static void tinf_build_fixed_trees(TINF_TREE *lt, TINF_TREE *dt)
 {
-   int i;
+    int i;
 
-   /* build fixed length tree */
-   for (i = 0; i < 7; ++i) lt->table[i] = 0;
+    /* build fixed length tree */
+    for (i = 0; i < 7; ++i) lt->table[i] = 0;
 
-   lt->table[7] = 24;
-   lt->table[8] = 152;
-   lt->table[9] = 112;
+    lt->table[7] = 24;
+    lt->table[8] = 152;
+    lt->table[9] = 112;
 
-   for (i = 0; i < 24; ++i) lt->trans[i] = 256 + i;
-   for (i = 0; i < 144; ++i) lt->trans[24 + i] = i;
-   for (i = 0; i < 8; ++i) lt->trans[24 + 144 + i] = 280 + i;
-   for (i = 0; i < 112; ++i) lt->trans[24 + 144 + 8 + i] = 144 + i;
+    for (i = 0; i < 24; ++i) lt->trans[i] = 256 + i;
+    for (i = 0; i < 144; ++i) lt->trans[24 + i] = i;
+    for (i = 0; i < 8; ++i) lt->trans[24 + 144 + i] = 280 + i;
+    for (i = 0; i < 112; ++i) lt->trans[24 + 144 + 8 + i] = 144 + i;
 
-   /* build fixed distance tree */
-   for (i = 0; i < 5; ++i) dt->table[i] = 0;
+    /* build fixed distance tree */
+    for (i = 0; i < 5; ++i) dt->table[i] = 0;
 
-   dt->table[5] = 32;
+    dt->table[5] = 32;
 
-   for (i = 0; i < 32; ++i) dt->trans[i] = i;
+    for (i = 0; i < 32; ++i) dt->trans[i] = i;
 }
 
 /* given an array of code lengths, build a tree */
 static void tinf_build_tree(TINF_TREE *t, const unsigned char *lengths, unsigned int num)
 {
-   unsigned short offs[16];
-   unsigned int i, sum;
+    unsigned short offs[16];
+    unsigned int i, sum;
 
-   /* clear code length count table */
-   for (i = 0; i < 16; ++i) t->table[i] = 0;
+    /* clear code length count table */
+    for (i = 0; i < 16; ++i) t->table[i] = 0;
 
-   /* scan symbol lengths, and sum code length counts */
-   for (i = 0; i < num; ++i) t->table[lengths[i]]++;
+    /* scan symbol lengths, and sum code length counts */
+    for (i = 0; i < num; ++i) t->table[lengths[i]]++;
 
-   #if UZLIB_CONF_DEBUG_LOG >= 2
-   UZLIB_DUMP_ARRAY("codelen counts:", t->table, TINF_ARRAY_SIZE(t->table));
-   #endif
+#if UZLIB_CONF_DEBUG_LOG >= 2
+    UZLIB_DUMP_ARRAY("codelen counts:", t->table, TINF_ARRAY_SIZE(t->table));
+#endif
 
-   /* In the lengths array, 0 means unused code. So, t->table[0] now contains
-      number of unused codes. But table's purpose is to contain # of codes of
-      particular length, and there're 0 codes of length 0. */
-   t->table[0] = 0;
+    /* In the lengths array, 0 means unused code. So, t->table[0] now contains
+       number of unused codes. But table's purpose is to contain # of codes of
+       particular length, and there're 0 codes of length 0. */
+    t->table[0] = 0;
 
-   /* compute offset table for distribution sort */
-   for (sum = 0, i = 0; i < 16; ++i)
-   {
-      offs[i] = sum;
-      sum += t->table[i];
-   }
+    /* compute offset table for distribution sort */
+    for (sum = 0, i = 0; i < 16; ++i)
+    {
+        offs[i] = sum;
+        sum += t->table[i];
+    }
 
-   #if UZLIB_CONF_DEBUG_LOG >= 2
-   UZLIB_DUMP_ARRAY("codelen offsets:", offs, TINF_ARRAY_SIZE(offs));
-   #endif
+#if UZLIB_CONF_DEBUG_LOG >= 2
+    UZLIB_DUMP_ARRAY("codelen offsets:", offs, TINF_ARRAY_SIZE(offs));
+#endif
 
-   /* create code->symbol translation table (symbols sorted by code) */
-   for (i = 0; i < num; ++i)
-   {
-      if (lengths[i]) t->trans[offs[lengths[i]]++] = i;
-   }
+    /* create code->symbol translation table (symbols sorted by code) */
+    for (i = 0; i < num; ++i)
+    {
+        if (lengths[i]) t->trans[offs[lengths[i]]++] = i;
+    }
 }
 
 /* ---------------------- *
@@ -238,164 +238,164 @@ uint32_t tinf_get_be_uint32(TINF_DATA *d)
 /* get one bit from source stream */
 static int tinf_getbit(TINF_DATA *d)
 {
-   unsigned int bit;
+    unsigned int bit;
 
-   /* check if tag is empty */
-   if (!d->bitcount--)
-   {
-      /* load next tag */
-      d->tag = uzlib_get_byte(d);
-      d->bitcount = 7;
-   }
+    /* check if tag is empty */
+    if (!d->bitcount--)
+    {
+        /* load next tag */
+        d->tag = uzlib_get_byte(d);
+        d->bitcount = 7;
+    }
 
-   /* shift bit out of tag */
-   bit = d->tag & 0x01;
-   d->tag >>= 1;
+    /* shift bit out of tag */
+    bit = d->tag & 0x01;
+    d->tag >>= 1;
 
-   return bit;
+    return bit;
 }
 
 /* read a num bit value from a stream and add base */
 static unsigned int tinf_read_bits(TINF_DATA *d, int num, int base)
 {
-   unsigned int val = 0;
+    unsigned int val = 0;
 
-   /* read num bits */
-   if (num)
-   {
-      unsigned int limit = 1 << (num);
-      unsigned int mask;
+    /* read num bits */
+    if (num)
+    {
+        unsigned int limit = 1 << (num);
+        unsigned int mask;
 
-      for (mask = 1; mask < limit; mask *= 2)
-         if (tinf_getbit(d)) val += mask;
-   }
+        for (mask = 1; mask < limit; mask *= 2)
+            if (tinf_getbit(d)) val += mask;
+    }
 
-   return val + base;
+    return val + base;
 }
 
 /* given a data stream and a tree, decode a symbol */
 static int tinf_decode_symbol(TINF_DATA *d, TINF_TREE *t)
 {
-   int sum = 0, cur = 0, len = 0;
+    int sum = 0, cur = 0, len = 0;
 
-   /* get more bits while code value is above sum */
-   do {
+    /* get more bits while code value is above sum */
+    do {
 
-      cur = 2*cur + tinf_getbit(d);
+        cur = 2*cur + tinf_getbit(d);
 
-      if (++len == TINF_ARRAY_SIZE(t->table)) {
-         return TINF_DATA_ERROR;
-      }
+        if (++len == TINF_ARRAY_SIZE(t->table)) {
+            return TINF_DATA_ERROR;
+        }
 
-      sum += t->table[len];
-      cur -= t->table[len];
+        sum += t->table[len];
+        cur -= t->table[len];
 
-   } while (cur >= 0);
+    } while (cur >= 0);
 
-   sum += cur;
-   #if UZLIB_CONF_PARANOID_CHECKS
-   if (sum < 0 || sum >= TINF_ARRAY_SIZE(t->trans)) {
-      return TINF_DATA_ERROR;
-   }
-   #endif
+    sum += cur;
+#if UZLIB_CONF_PARANOID_CHECKS
+    if (sum < 0 || sum >= TINF_ARRAY_SIZE(t->trans)) {
+        return TINF_DATA_ERROR;
+    }
+#endif
 
-   return t->trans[sum];
+    return t->trans[sum];
 }
 
 /* given a data stream, decode dynamic trees from it */
 static int tinf_decode_trees(TINF_DATA *d, TINF_TREE *lt, TINF_TREE *dt)
 {
-   /* code lengths for 288 literal/len symbols and 32 dist symbols */
-   unsigned char lengths[288+32];
-   unsigned int hlit, hdist, hclen, hlimit;
-   unsigned int i, num, length;
+    /* code lengths for 288 literal/len symbols and 32 dist symbols */
+    unsigned char lengths[288+32];
+    unsigned int hlit, hdist, hclen, hlimit;
+    unsigned int i, num, length;
 
-   /* get 5 bits HLIT (257-286) */
-   hlit = tinf_read_bits(d, 5, 257);
+    /* get 5 bits HLIT (257-286) */
+    hlit = tinf_read_bits(d, 5, 257);
 
-   /* get 5 bits HDIST (1-32) */
-   hdist = tinf_read_bits(d, 5, 1);
+    /* get 5 bits HDIST (1-32) */
+    hdist = tinf_read_bits(d, 5, 1);
 
-   /* get 4 bits HCLEN (4-19) */
-   hclen = tinf_read_bits(d, 4, 4);
+    /* get 4 bits HCLEN (4-19) */
+    hclen = tinf_read_bits(d, 4, 4);
 
-   for (i = 0; i < 19; ++i) lengths[i] = 0;
+    for (i = 0; i < 19; ++i) lengths[i] = 0;
 
-   /* read code lengths for code length alphabet */
-   for (i = 0; i < hclen; ++i)
-   {
-      /* get 3 bits code length (0-7) */
-      unsigned int clen = tinf_read_bits(d, 3, 0);
+    /* read code lengths for code length alphabet */
+    for (i = 0; i < hclen; ++i)
+    {
+        /* get 3 bits code length (0-7) */
+        unsigned int clen = tinf_read_bits(d, 3, 0);
 
-      lengths[clcidx[i]] = clen;
-   }
+        lengths[clcidx[i]] = clen;
+    }
 
-   /* build code length tree, temporarily use length tree */
-   tinf_build_tree(lt, lengths, 19);
+    /* build code length tree, temporarily use length tree */
+    tinf_build_tree(lt, lengths, 19);
 
-   /* decode code lengths for the dynamic trees */
-   hlimit = hlit + hdist;
-   for (num = 0; num < hlimit; )
-   {
-      int sym = tinf_decode_symbol(d, lt);
-      unsigned char fill_value = 0;
-      int lbits, lbase = 3;
+    /* decode code lengths for the dynamic trees */
+    hlimit = hlit + hdist;
+    for (num = 0; num < hlimit; )
+    {
+        int sym = tinf_decode_symbol(d, lt);
+        unsigned char fill_value = 0;
+        int lbits, lbase = 3;
 
-      /* error decoding */
-      if (sym < 0) return sym;
+        /* error decoding */
+        if (sym < 0) return sym;
 
-      switch (sym)
-      {
-      case 16:
-         /* copy previous code length 3-6 times (read 2 bits) */
-         if (num == 0) return TINF_DATA_ERROR;
-         fill_value = lengths[num - 1];
-         lbits = 2;
-         break;
-      case 17:
-         /* repeat code length 0 for 3-10 times (read 3 bits) */
-         lbits = 3;
-         break;
-      case 18:
-         /* repeat code length 0 for 11-138 times (read 7 bits) */
-         lbits = 7;
-         lbase = 11;
-         break;
-      default:
-         /* values 0-15 represent the actual code lengths */
-         lengths[num++] = sym;
-         /* continue the for loop */
-         continue;
-      }
+        switch (sym)
+        {
+        case 16:
+            /* copy previous code length 3-6 times (read 2 bits) */
+            if (num == 0) return TINF_DATA_ERROR;
+            fill_value = lengths[num - 1];
+            lbits = 2;
+            break;
+        case 17:
+            /* repeat code length 0 for 3-10 times (read 3 bits) */
+            lbits = 3;
+            break;
+        case 18:
+            /* repeat code length 0 for 11-138 times (read 7 bits) */
+            lbits = 7;
+            lbase = 11;
+            break;
+        default:
+            /* values 0-15 represent the actual code lengths */
+            lengths[num++] = sym;
+            /* continue the for loop */
+            continue;
+        }
 
-      /* special code length 16-18 are handled here */
-      length = tinf_read_bits(d, lbits, lbase);
-      if (num + length > hlimit) return TINF_DATA_ERROR;
-      for (; length; --length)
-      {
-         lengths[num++] = fill_value;
-      }
-   }
+        /* special code length 16-18 are handled here */
+        length = tinf_read_bits(d, lbits, lbase);
+        if (num + length > hlimit) return TINF_DATA_ERROR;
+        for (; length; --length)
+        {
+            lengths[num++] = fill_value;
+        }
+    }
 
-   #if UZLIB_CONF_DEBUG_LOG >= 2
-   printf("lit code lengths (%d):", hlit);
-   UZLIB_DUMP_ARRAY("", lengths, hlit);
-   printf("dist code lengths (%d):", hdist);
-   UZLIB_DUMP_ARRAY("", lengths + hlit, hdist);
-   #endif
+#if UZLIB_CONF_DEBUG_LOG >= 2
+    printf("lit code lengths (%d):", hlit);
+    UZLIB_DUMP_ARRAY("", lengths, hlit);
+    printf("dist code lengths (%d):", hdist);
+    UZLIB_DUMP_ARRAY("", lengths + hlit, hdist);
+#endif
 
-   #if UZLIB_CONF_PARANOID_CHECKS
-   /* Check that there's "end of block" symbol */
-   if (lengths[256] == 0) {
-      return TINF_DATA_ERROR;
-   }
-   #endif
+#if UZLIB_CONF_PARANOID_CHECKS
+    /* Check that there's "end of block" symbol */
+    if (lengths[256] == 0) {
+        return TINF_DATA_ERROR;
+    }
+#endif
 
-   /* build dynamic trees */
-   tinf_build_tree(lt, lengths, hlit);
-   tinf_build_tree(dt, lengths + hlit, hdist);
+    /* build dynamic trees */
+    tinf_build_tree(lt, lengths, hlit);
+    tinf_build_tree(dt, lengths + hlit, hdist);
 
-   return TINF_OK;
+    return TINF_OK;
 }
 
 /* ----------------------------- *
@@ -525,27 +525,27 @@ static int tinf_inflate_uncompressed_block(TINF_DATA *d)
 void uzlib_init(void)
 {
 #ifdef RUNTIME_BITS_TABLES
-   /* build extra bits and base tables */
-   tinf_build_bits_base(length_bits, length_base, 4, 3);
-   tinf_build_bits_base(dist_bits, dist_base, 2, 1);
+    /* build extra bits and base tables */
+    tinf_build_bits_base(length_bits, length_base, 4, 3);
+    tinf_build_bits_base(dist_bits, dist_base, 2, 1);
 
-   /* fix a special case */
-   length_bits[28] = 0;
-   length_base[28] = 258;
+    /* fix a special case */
+    length_bits[28] = 0;
+    length_base[28] = 258;
 #endif
 }
 
 /* initialize decompression structure */
 void uzlib_uncompress_init(TINF_DATA *d, void *dict, unsigned int dictLen)
 {
-   d->eof = 0;
-   d->bitcount = 0;
-   d->bfinal = 0;
-   d->btype = -1;
-   d->dict_size = dictLen;
-   d->dict_ring = dict;
-   d->dict_idx = 0;
-   d->curlen = 0;
+    d->eof = 0;
+    d->bitcount = 0;
+    d->bfinal = 0;
+    d->btype = -1;
+    d->dict_size = dictLen;
+    d->dict_ring = dict;
+    d->dict_idx = 0;
+    d->curlen = 0;
 }
 
 /* inflate next output bytes from compressed stream */
@@ -562,9 +562,9 @@ next_blk:
             /* read block type (2 bits) */
             d->btype = tinf_read_bits(d, 2, 0);
 
-            #if UZLIB_CONF_DEBUG_LOG >= 1
+#if UZLIB_CONF_DEBUG_LOG >= 1
             printf("Started new block: type=%d final=%d\n", d->btype, d->bfinal);
-            #endif
+#endif
 
             if (d->btype == 1) {
                 /* build fixed huffman trees */

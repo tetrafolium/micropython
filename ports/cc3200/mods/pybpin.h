@@ -88,11 +88,11 @@ enum {
 };
 
 typedef struct {
-  qstr name;
-  int8_t  idx;
-  uint8_t fn;
-  uint8_t unit;
-  uint8_t type;
+    qstr name;
+    int8_t  idx;
+    uint8_t fn;
+    uint8_t unit;
+    uint8_t type;
 } pin_af_t;
 
 typedef struct {

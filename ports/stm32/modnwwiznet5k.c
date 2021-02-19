@@ -105,15 +105,15 @@ STATIC int wiznet5k_socket_socket(mod_network_socket_obj_t *socket, int *_errno)
     }
 
     switch (socket->u_param.type) {
-        case MOD_NETWORK_SOCK_STREAM:
-            socket->u_param.type = Sn_MR_TCP;
-            break;
-        case MOD_NETWORK_SOCK_DGRAM:
-            socket->u_param.type = Sn_MR_UDP;
-            break;
-        default:
-            *_errno = MP_EINVAL;
-            return -1;
+    case MOD_NETWORK_SOCK_STREAM:
+        socket->u_param.type = Sn_MR_TCP;
+        break;
+    case MOD_NETWORK_SOCK_DGRAM:
+        socket->u_param.type = Sn_MR_UDP;
+        break;
+    default:
+        *_errno = MP_EINVAL;
+        return -1;
     }
 
     if (socket->u_param.fileno == -1) {
@@ -417,11 +417,11 @@ STATIC mp_obj_t wiznet5k_regs(mp_obj_t self_in) {
         if (i % 16 == 0) {
             printf("\n  %04x:", i);
         }
-        #if MICROPY_PY_WIZNET5K == 5200
+#if MICROPY_PY_WIZNET5K == 5200
         uint32_t reg = i;
-        #else
+#else
         uint32_t reg = _W5500_IO_BASE_ | i << 8;
-        #endif
+#endif
         printf(" %02x", WIZCHIP_READ(reg));
     }
     for (int sn = 0; sn < 4; ++sn) {
@@ -430,11 +430,11 @@ STATIC mp_obj_t wiznet5k_regs(mp_obj_t self_in) {
             if (i % 16 == 0) {
                 printf("\n  %04x:", i);
             }
-            #if MICROPY_PY_WIZNET5K == 5200
+#if MICROPY_PY_WIZNET5K == 5200
             uint32_t reg = WIZCHIP_SREG_ADDR(sn, i);
-            #else
+#else
             uint32_t reg = _W5500_IO_BASE_ | i << 8 | WIZCHIP_SREG_BLOCK(sn) << 3;
-            #endif
+#endif
             printf(" %02x", WIZCHIP_READ(reg));
         }
     }

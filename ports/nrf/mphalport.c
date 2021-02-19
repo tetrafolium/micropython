@@ -79,11 +79,11 @@ const nrfx_rtc_config_t rtc_config_time_ticks = {
     .prescaler = 0,
     .reliable = 0,
     .tick_latency = 0,
-    #ifdef NRF51
+#ifdef NRF51
     .interrupt_priority = 1,
-    #else
+#else
     .interrupt_priority = 3,
-    #endif
+#endif
 };
 
 STATIC void rtc_irq_time(nrfx_rtc_int_type_t event) {
@@ -172,7 +172,7 @@ void mp_hal_set_interrupt_char(int c) {
 uintptr_t mp_hal_stdio_poll(uintptr_t poll_flags) {
     uintptr_t ret = 0;
     if ((poll_flags & MP_STREAM_POLL_RD) && MP_STATE_PORT(board_stdio_uart) != NULL
-        && uart_rx_any(MP_STATE_PORT(board_stdio_uart))) {
+            && uart_rx_any(MP_STATE_PORT(board_stdio_uart))) {
         ret |= MP_STREAM_POLL_RD;
     }
     return ret;
@@ -240,11 +240,11 @@ void mp_hal_delay_us(mp_uint_t us) {
     register uint32_t delay __ASM("r0") = us;
     __ASM volatile (
         "1:\n"
-        #ifdef NRF51
+#ifdef NRF51
         " SUB %0, %0, #1\n"
-        #else
+#else
         " SUBS %0, %0, #1\n"
-        #endif
+#endif
         " NOP\n"
         " NOP\n"
         " NOP\n"
@@ -257,20 +257,7 @@ void mp_hal_delay_us(mp_uint_t us) {
         " NOP\n"
         " NOP\n"
         " NOP\n"
-        #if defined(NRF52) || defined(NRF9160_XXAA)
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
-        " NOP\n"
+#if defined(NRF52) || defined(NRF9160_XXAA)
         " NOP\n"
         " NOP\n"
         " NOP\n"
@@ -304,7 +291,20 @@ void mp_hal_delay_us(mp_uint_t us) {
         " NOP\n"
         " NOP\n"
         " NOP\n"
-        #endif
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+        " NOP\n"
+#endif
         " BNE 1b\n"
         : "+r" (delay));
 }

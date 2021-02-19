@@ -171,7 +171,9 @@ void NORETURN __fatal_error(const char *msg) {
 #endif
     // signal the crash with the system led
     MAP_GPIOPinWrite(MICROPY_SYS_LED_PORT, MICROPY_SYS_LED_PORT_PIN, MICROPY_SYS_LED_PORT_PIN);
-    for ( ;; ) {__WFI();}
+    for ( ;; ) {
+        __WFI();
+    }
 }
 
 void __assert_func(const char *file, int line, const char *func, const char *expr) {
@@ -192,10 +194,10 @@ void nlr_jump_fail(void *val) {
 
 void mperror_enable_heartbeat (bool enable) {
     if (enable) {
-    #ifndef BOOTLOADER
+#ifndef BOOTLOADER
         // configure the led again
         pin_config ((pin_obj_t *)&MICROPY_SYS_LED_GPIO, PIN_MODE_0, GPIO_DIR_MODE_OUT, PIN_TYPE_STD, 0, PIN_STRENGTH_6MA);
-    #endif
+#endif
         mperror_heart_beat.enabled = true;
         mperror_heart_beat.do_disable = false;
         mperror_heartbeat_switch_off();

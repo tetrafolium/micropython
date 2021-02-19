@@ -58,14 +58,14 @@ STATIC rp2_flash_obj_t rp2_flash_obj = {
 
 // Tag the flash drive in the binary as readable/writable (but not reformatable)
 bi_decl(bi_block_device(
-    BINARY_INFO_TAG_MICROPYTHON,
-    "MicroPython",
-    XIP_BASE + MICROPY_HW_FLASH_STORAGE_BASE,
-    MICROPY_HW_FLASH_STORAGE_BYTES,
-    NULL,
-    BINARY_INFO_BLOCK_DEV_FLAG_READ |
-    BINARY_INFO_BLOCK_DEV_FLAG_WRITE |
-    BINARY_INFO_BLOCK_DEV_FLAG_PT_UNKNOWN));
+            BINARY_INFO_TAG_MICROPYTHON,
+            "MicroPython",
+            XIP_BASE + MICROPY_HW_FLASH_STORAGE_BASE,
+            MICROPY_HW_FLASH_STORAGE_BYTES,
+            NULL,
+            BINARY_INFO_BLOCK_DEV_FLAG_READ |
+            BINARY_INFO_BLOCK_DEV_FLAG_WRITE |
+            BINARY_INFO_BLOCK_DEV_FLAG_PT_UNKNOWN));
 
 STATIC mp_obj_t rp2_flash_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *all_args) {
     // Check args.
@@ -109,24 +109,24 @@ STATIC mp_obj_t rp2_flash_ioctl(mp_obj_t self_in, mp_obj_t cmd_in, mp_obj_t arg_
     rp2_flash_obj_t *self = MP_OBJ_TO_PTR(self_in);
     mp_int_t cmd = mp_obj_get_int(cmd_in);
     switch (cmd) {
-        case MP_BLOCKDEV_IOCTL_INIT:
-            return MP_OBJ_NEW_SMALL_INT(0);
-        case MP_BLOCKDEV_IOCTL_DEINIT:
-            return MP_OBJ_NEW_SMALL_INT(0);
-        case MP_BLOCKDEV_IOCTL_SYNC:
-            return MP_OBJ_NEW_SMALL_INT(0);
-        case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
-            return MP_OBJ_NEW_SMALL_INT(self->flash_size / BLOCK_SIZE_BYTES);
-        case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
-            return MP_OBJ_NEW_SMALL_INT(BLOCK_SIZE_BYTES);
-        case MP_BLOCKDEV_IOCTL_BLOCK_ERASE: {
-            uint32_t offset = mp_obj_get_int(arg_in) * BLOCK_SIZE_BYTES;
-            flash_range_erase(self->flash_base + offset, BLOCK_SIZE_BYTES);
-            // TODO check return value
-            return MP_OBJ_NEW_SMALL_INT(0);
-        }
-        default:
-            return mp_const_none;
+    case MP_BLOCKDEV_IOCTL_INIT:
+        return MP_OBJ_NEW_SMALL_INT(0);
+    case MP_BLOCKDEV_IOCTL_DEINIT:
+        return MP_OBJ_NEW_SMALL_INT(0);
+    case MP_BLOCKDEV_IOCTL_SYNC:
+        return MP_OBJ_NEW_SMALL_INT(0);
+    case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
+        return MP_OBJ_NEW_SMALL_INT(self->flash_size / BLOCK_SIZE_BYTES);
+    case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
+        return MP_OBJ_NEW_SMALL_INT(BLOCK_SIZE_BYTES);
+    case MP_BLOCKDEV_IOCTL_BLOCK_ERASE: {
+        uint32_t offset = mp_obj_get_int(arg_in) * BLOCK_SIZE_BYTES;
+        flash_range_erase(self->flash_base + offset, BLOCK_SIZE_BYTES);
+        // TODO check return value
+        return MP_OBJ_NEW_SMALL_INT(0);
+    }
+    default:
+        return mp_const_none;
     }
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_3(rp2_flash_ioctl_obj, rp2_flash_ioctl);

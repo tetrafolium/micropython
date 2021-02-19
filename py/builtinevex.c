@@ -90,17 +90,17 @@ STATIC mp_obj_t mp_builtin_compile(size_t n_args, const mp_obj_t *args) {
     qstr mode = mp_obj_str_get_qstr(args[2]);
     mp_parse_input_kind_t parse_input_kind;
     switch (mode) {
-        case MP_QSTR_single:
-            parse_input_kind = MP_PARSE_SINGLE_INPUT;
-            break;
-        case MP_QSTR_exec:
-            parse_input_kind = MP_PARSE_FILE_INPUT;
-            break;
-        case MP_QSTR_eval:
-            parse_input_kind = MP_PARSE_EVAL_INPUT;
-            break;
-        default:
-            mp_raise_ValueError(MP_ERROR_TEXT("bad compile mode"));
+    case MP_QSTR_single:
+        parse_input_kind = MP_PARSE_SINGLE_INPUT;
+        break;
+    case MP_QSTR_exec:
+        parse_input_kind = MP_PARSE_FILE_INPUT;
+        break;
+    case MP_QSTR_eval:
+        parse_input_kind = MP_PARSE_EVAL_INPUT;
+        break;
+    default:
+        mp_raise_ValueError(MP_ERROR_TEXT("bad compile mode"));
     }
 
     mp_obj_code_t *code = m_new_obj(mp_obj_code_t);
@@ -130,11 +130,11 @@ STATIC mp_obj_t eval_exec_helper(size_t n_args, const mp_obj_t *args, mp_parse_i
         }
     }
 
-    #if MICROPY_PY_BUILTINS_COMPILE
+#if MICROPY_PY_BUILTINS_COMPILE
     if (mp_obj_is_type(args[0], &mp_type_code)) {
         return code_execute(MP_OBJ_TO_PTR(args[0]), globals, locals);
     }
-    #endif
+#endif
 
     // Extract the source code.
     mp_buffer_info_t bufinfo;

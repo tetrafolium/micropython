@@ -482,7 +482,7 @@ STATIC mp_obj_t rp2_state_machine_init_helper(const rp2_state_machine_obj_t *sel
 
     // Adjust wrap top/bottom to account for location of program in instruction memory.
     config.execctrl += (offset << PIO_SM0_EXECCTRL_WRAP_TOP_LSB)
-        + (offset << PIO_SM0_EXECCTRL_WRAP_BOTTOM_LSB);
+                       + (offset << PIO_SM0_EXECCTRL_WRAP_BOTTOM_LSB);
 
     // Configure in pin base, if needed.
     if (args[ARG_in_base].u_obj != mp_const_none) {

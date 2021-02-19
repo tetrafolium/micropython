@@ -73,35 +73,35 @@ int vprintf_null(const char *format, va_list ap) {
 
 void mp_task(void *pvParameter) {
     volatile uint32_t sp = (uint32_t)get_sp();
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     mp_thread_init(pxTaskGetStackStart(NULL), MP_TASK_STACK_SIZE / sizeof(uintptr_t));
-    #endif
+#endif
     uart_init();
 
     // TODO: CONFIG_SPIRAM_SUPPORT is for 3.3 compatibility, remove after move to 4.0.
-    #if CONFIG_ESP32_SPIRAM_SUPPORT || CONFIG_SPIRAM_SUPPORT
+#if CONFIG_ESP32_SPIRAM_SUPPORT || CONFIG_SPIRAM_SUPPORT
     // Try to use the entire external SPIRAM directly for the heap
     size_t mp_task_heap_size;
     void *mp_task_heap = (void *)0x3f800000;
     switch (esp_spiram_get_chip_size()) {
-        case ESP_SPIRAM_SIZE_16MBITS:
-            mp_task_heap_size = 2 * 1024 * 1024;
-            break;
-        case ESP_SPIRAM_SIZE_32MBITS:
-        case ESP_SPIRAM_SIZE_64MBITS:
-            mp_task_heap_size = 4 * 1024 * 1024;
-            break;
-        default:
-            // No SPIRAM, fallback to normal allocation
-            mp_task_heap_size = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
-            mp_task_heap = malloc(mp_task_heap_size);
-            break;
+    case ESP_SPIRAM_SIZE_16MBITS:
+        mp_task_heap_size = 2 * 1024 * 1024;
+        break;
+    case ESP_SPIRAM_SIZE_32MBITS:
+    case ESP_SPIRAM_SIZE_64MBITS:
+        mp_task_heap_size = 4 * 1024 * 1024;
+        break;
+    default:
+        // No SPIRAM, fallback to normal allocation
+        mp_task_heap_size = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
+        mp_task_heap = malloc(mp_task_heap_size);
+        break;
     }
-    #else
+#else
     // Allocate the uPy heap using malloc and get the largest available region
     size_t mp_task_heap_size = heap_caps_get_largest_free_block(MALLOC_CAP_8BIT);
     void *mp_task_heap = malloc(mp_task_heap_size);
-    #endif
+#endif
 
 soft_reset:
     // initialise the stack pointer for the main thread
@@ -139,15 +139,15 @@ soft_reset:
         }
     }
 
-    #if MICROPY_BLUETOOTH_NIMBLE
+#if MICROPY_BLUETOOTH_NIMBLE
     mp_bluetooth_deinit();
-    #endif
+#endif
 
     machine_timer_deinit_all();
 
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     mp_thread_deinit();
-    #endif
+#endif
 
     gc_sweep_all();
 

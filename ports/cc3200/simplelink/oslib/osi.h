@@ -3,35 +3,35 @@
 //
 // MACRO and Function prototypes for TI-RTOS and Free-RTOS API calls
 //
-// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
-// 
-// 
-//  Redistribution and use in source and binary forms, with or without 
-//  modification, are permitted provided that the following conditions 
+// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
 //  are met:
 //
-//    Redistributions of source code must retain the above copyright 
+//    Redistributions of source code must retain the above copyright
 //    notice, this list zof conditions and the following disclaimer.
 //
 //    Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the 
-//    documentation and/or other materials provided with the   
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
 //    distribution.
 //
 //    Neither the name of Texas Instruments Incorporated nor the names of
 //    its contributors may be used to endorse or promote products derived
 //    from this software without specific prior written permission.
 //
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 //  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
-//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
 //  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 //  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
-//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
@@ -49,16 +49,16 @@ extern "C" {
 
 typedef enum
 {
-  OSI_OK = 0,
-  OSI_FAILURE = -1,
-  OSI_OPERATION_FAILED = -2,
-  OSI_ABORTED = -3,
-  OSI_INVALID_PARAMS = -4,
-  OSI_MEMORY_ALLOCATION_FAILURE = -5,
-  OSI_TIMEOUT = -6,
-  OSI_EVENTS_IN_USE = -7,
-  OSI_EVENT_OPEARTION_FAILURE = -8
-}OsiReturnVal_e;
+    OSI_OK = 0,
+    OSI_FAILURE = -1,
+    OSI_OPERATION_FAILED = -2,
+    OSI_ABORTED = -3,
+    OSI_INVALID_PARAMS = -4,
+    OSI_MEMORY_ALLOCATION_FAILURE = -5,
+    OSI_TIMEOUT = -6,
+    OSI_EVENTS_IN_USE = -7,
+    OSI_EVENT_OPEARTION_FAILURE = -8
+} OsiReturnVal_e;
 
 
 //#define ENTER_CRITICAL_SECTION			osi_EnterCritical()
@@ -66,10 +66,10 @@ typedef enum
 
 typedef void* OsiMsgQ_t;
 
- /*!
-	\brief type definition for a time value
+/*!
+\brief type definition for a time value
 
-	\note	On each porting or platform the type could be whatever is needed - integer, pointer to structure etc.
+\note	On each porting or platform the type could be whatever is needed - integer, pointer to structure etc.
 */
 //typedef unsigned int OsiTime_t;
 typedef unsigned int OsiTime_t;
@@ -222,7 +222,7 @@ OsiReturnVal_e osi_SyncObjSignalFromISR(OsiSyncObj_t* pSyncObj);
 	\note
 	\warning
 */
-OsiReturnVal_e osi_SyncObjWait(OsiSyncObj_t* pSyncObj , OsiTime_t Timeout);
+OsiReturnVal_e osi_SyncObjWait(OsiSyncObj_t* pSyncObj, OsiTime_t Timeout);
 
 /*!
 	\brief 	This function clears a sync object
@@ -361,38 +361,38 @@ void osi_TaskDelete(OsiTaskHandle* pTaskHandle);
 	\note
 	\warning
 */
-OsiReturnVal_e osi_Spawn(P_OSI_SPAWN_ENTRY pEntry , void* pValue , unsigned long flags);
+OsiReturnVal_e osi_Spawn(P_OSI_SPAWN_ENTRY pEntry, void* pValue, unsigned long flags);
 
 
 /*******************************************************************************
 
 This function creates a message queue that is typically used for inter thread
-communication. 
+communication.
 
 Parameters:
 
 	pMsgQ		-	pointer to the message queue control block
 	pMsgQName	-	pointer to the name of the message queue
-	MsgSize		-	the size of the message. 
+	MsgSize		-	the size of the message.
 
 			NOTICE: THE MESSGAE SIZE MUST BE SMALLER THAN 16
 
 	MaxMsgs		-	maximum number of messages.
 
-Please note that this function allocates the entire memory required 
-for the maximum number of messages (MsgSize * MaxMsgs). 
+Please note that this function allocates the entire memory required
+for the maximum number of messages (MsgSize * MaxMsgs).
 
 ********************************************************************************/
-OsiReturnVal_e osi_MsgQCreate(OsiMsgQ_t* 		pMsgQ , 
-							  char*				pMsgQName,
-							  unsigned long 		MsgSize,
-							  unsigned long 		MaxMsgs);
+OsiReturnVal_e osi_MsgQCreate(OsiMsgQ_t* 		pMsgQ,
+                              char*				pMsgQName,
+                              unsigned long 		MsgSize,
+                              unsigned long 		MaxMsgs);
 
 /*******************************************************************************
 
 This function deletes a specific message queue.
 All threads suspended waiting for a message from this queue are resumed with
-an error return value. 
+an error return value.
 
 Parameters:
 
@@ -406,11 +406,11 @@ OsiReturnVal_e osi_MsgQDelete(OsiMsgQ_t* pMsgQ);
 
 This function writes a message to a specific message queue.
 
-Notice that the message is copied to the queue from the memory area specified 
+Notice that the message is copied to the queue from the memory area specified
 by pMsg pointer.
 
 --------------------------------------------------------------------------------
-THIS FUNCTION COULD BE CALLED FROM ISR AS LONG AS THE TIMEOUT PARAMETER IS 
+THIS FUNCTION COULD BE CALLED FROM ISR AS LONG AS THE TIMEOUT PARAMETER IS
 SET TO "OSI_NO_WAIT"
 --------------------------------------------------------------------------------
 
@@ -418,28 +418,28 @@ Parameters:
 
 	pMsgQ		-	pointer to the message queue control block
 	pMsg		- 	pointer to the message
-	Timeout		-	numeric value specifies the maximum number of mSec to stay 
+	Timeout		-	numeric value specifies the maximum number of mSec to stay
 					suspended while waiting for available space for the message
 
 ********************************************************************************/
-OsiReturnVal_e osi_MsgQWrite(OsiMsgQ_t* pMsgQ, void* pMsg , OsiTime_t Timeout);
+OsiReturnVal_e osi_MsgQWrite(OsiMsgQ_t* pMsgQ, void* pMsg, OsiTime_t Timeout);
 
 
 /*******************************************************************************
 
 This function retrieves a message from the specified message queue. The
-retrieved message is copied from the queue into the memory area specified by 
-the pMsg pointer 
+retrieved message is copied from the queue into the memory area specified by
+the pMsg pointer
 
 Parameters:
 
 	pMsgQ		-	pointer to the message queue control block
 	pMsg		- 	pointer that specify the location where to copy the message
-	Timeout		-	numeric value specifies the maximum number of mSec to stay 
+	Timeout		-	numeric value specifies the maximum number of mSec to stay
 					suspended while waiting for a message to be available
 
 ********************************************************************************/
-OsiReturnVal_e osi_MsgQRead(OsiMsgQ_t* pMsgQ, void* pMsg , OsiTime_t Timeout);
+OsiReturnVal_e osi_MsgQRead(OsiMsgQ_t* pMsgQ, void* pMsg, OsiTime_t Timeout);
 
 /*!
 	\brief 	This function starts the OS Scheduler
@@ -478,7 +478,7 @@ void mem_Free(void *pMem);
 	\param	Size 		- 	Size of the memory to be set
     \sa
     \note
-    \warning        
+    \warning
 */
 void  mem_set(void *pBuf,int Val,size_t Size);
 
@@ -489,7 +489,7 @@ void  mem_set(void *pBuf,int Val,size_t Size);
 	\param	Size 		- 	Size of the memory to be copied
 	\return void
     \note
-    \warning        
+    \warning
 */
 void  mem_copy(void *pDst, void *pSrc,size_t Size);
 
@@ -497,7 +497,7 @@ void  mem_copy(void *pDst, void *pSrc,size_t Size);
     \brief			Enter Critical Section
     \sa
     \note
-    \warning        
+    \warning
 */
 void osi_EnterCritical(void);
 
@@ -505,7 +505,7 @@ void osi_EnterCritical(void);
     \brief			Exit Critical Section
     \sa
     \note
-    \warning        
+    \warning
 */
 void osi_ExitCritical(void);
 
@@ -562,8 +562,8 @@ typedef struct
 {
     P_OSI_SPAWN_ENTRY pEntry;
     void* pValue;
-}tSimpleLinkSpawnMsg;
-  
+} tSimpleLinkSpawnMsg;
+
 /* The queue used to send message to simple link spawn task. */
 extern void* xSimpleLinkSpawnQueue;
 

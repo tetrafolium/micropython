@@ -70,7 +70,7 @@ mp_obj_t ble_obj_address(void) {
     vstr_init(&vstr, 17);
 
     vstr_printf(&vstr, ""HEX2_FMT":"HEX2_FMT":"HEX2_FMT":" \
-                         HEX2_FMT":"HEX2_FMT":"HEX2_FMT"",
+                HEX2_FMT":"HEX2_FMT":"HEX2_FMT"",
                 local_addr.addr[5], local_addr.addr[4], local_addr.addr[3],
                 local_addr.addr[2], local_addr.addr[1], local_addr.addr[0]);
 

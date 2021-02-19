@@ -1,35 +1,35 @@
 /*
  * wlan_rx_filters.h - CC31xx/CC32xx Host Driver Implementation
  *
- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
- * 
- * 
- *  Redistribution and use in source and binary forms, with or without 
- *  modification, are permitted provided that the following conditions 
+ * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
  *  are met:
  *
- *    Redistributions of source code must retain the above copyright 
+ *    Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  *
  *    Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the 
- *    documentation and/or other materials provided with the   
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
  *    distribution.
  *
  *    Neither the name of Texas Instruments Incorporated nor the names of
  *    its contributors may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
- *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
- *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
 */
@@ -91,7 +91,7 @@ extern "C" {
 #define RXFL_OK                                                (0) /*  O.K */
 #define RXFL_OUTPUT_OR_INPUT_BUFFER_LENGTH_TOO_SMALL           (76) /* ! The output buffer length is smaller than required for that operation */
 #define RXFL_DEPENDENT_FILTER_SOFTWARE_FILTER_NOT_FIT          (75) /* Node filter can't be child of software filter and vice_versa */
-#define RXFL_DEPENDENCY_IS_NOT_PERSISTENT                      (74) /*  Dependency filter is not persistent */ 
+#define RXFL_DEPENDENCY_IS_NOT_PERSISTENT                      (74) /*  Dependency filter is not persistent */
 #define RXFL_SYSTEM_STATE_NOT_SUPPORTED_FOR_THIS_FILTER        (72) /*  System state is not supported */
 #define RXFL_TRIGGER_USE_REG5_TO_REG8                          (71) /*  Only counters 5 - 8 are allowed, for Tigger */
 #define RXFL_TRIGGER_USE_REG1_TO_REG4                          (70) /*  Only counters 1 - 4 are allowed, for trigger */
@@ -189,7 +189,7 @@ typedef _u8   SlrxFilterPrePreparedFiltersMask_t[SL_RX_FILTER_MAX_PRE_PREPARED_F
 typedef struct SlrxFilterRegxPattern_t
 {
     _u8 x[SL_RX_FILTER_LENGTH_OF_REGX_PATTERN_LENGTH];
-}SlrxFilterRegxPattern_t;
+} SlrxFilterRegxPattern_t;
 
 
 /*! \typedef SlrxFilterAsciiArg_t
@@ -251,30 +251,30 @@ typedef union SlrxFilterFlags_t
 
     /* struct
     { */
-        /*!
-         *  The filter argument can be set as binary argument or ASCII arguments.
-         *  When the bit is on the argument are binary.
-         */
-        /* _u8 Binary: 1; */
-        /*!
-         * 
-         */
-        /* _u8 AutoSort : 1; */
-        /*!
-         * 
-         */
-        /* _u8 AutoFaultDetect : 1; */
-        /*!
-         *  When the bit is on it means the the node is enabled .
-        */
-        /* _u8 Enabled : 1; */
-        /* _u8 padding : 3; */
+    /*!
+     *  The filter argument can be set as binary argument or ASCII arguments.
+     *  When the bit is on the argument are binary.
+     */
+    /* _u8 Binary: 1; */
+    /*!
+     *
+     */
+    /* _u8 AutoSort : 1; */
+    /*!
+     *
+     */
+    /* _u8 AutoFaultDetect : 1; */
+    /*!
+     *  When the bit is on it means the the node is enabled .
+    */
+    /* _u8 Enabled : 1; */
+    /* _u8 padding : 3; */
     /*
     };*/
 
     _u8 IntRepresentation;
 
-}SlrxFilterFlags_t;
+} SlrxFilterFlags_t;
 
 /*! \typedef SlrxFilterCompareFunction_t
  * Used as comparison function for the header type arguments
@@ -316,21 +316,21 @@ typedef _u8 SlrxFilterHdrField_t;
 #define FRAME_TYPE_FIELD             (1)
 /*  802.11 beacon\probe\.. */
 #define FRAME_SUBTYPE_FIELD          (2)
- /*  802.11 bssid type */
+/*  802.11 bssid type */
 #define BSSID_FIELD                  (3)
- /* */
+/* */
 #define MAC_SRC_ADDRESS_FIELD        (4)
- /* */
+/* */
 #define MAC_DST_ADDRESS_FIELD        (5)
 /* */
 #define FRAME_LENGTH_FIELD           (6)
 /* */
 #define PROTOCOL_TYPE_FIELD          (7)
- /* */
+/* */
 #define IP_VERSION_FIELD             (8)
- /* TCP / UDP */
+/* TCP / UDP */
 #define IP_PROTOCOL_FIELD            (9)
- /* */
+/* */
 #define IPV4_SRC_ADRRESS_FIELD       (10)
 /* */
 #define IPV4_DST_ADDRESS_FIELD       (11)
@@ -338,11 +338,11 @@ typedef _u8 SlrxFilterHdrField_t;
 #define IPV6_SRC_ADRRESS_FIELD       (12)
 /* */
 #define IPV6_DST_ADDRESS_FIELD       (13)
- /* */
+/* */
 #define SRC_PORT_FIELD               (14)
- /* */
+/* */
 #define DST_PORT_FIELD               (15)
- /* Definition */
+/* Definition */
 #define NUM_OF_FIELD_NAME_FIELD      (16)
 
 /*! \union SlrxFilterHeaderArg_t
@@ -388,7 +388,7 @@ typedef union SlrxFilterHeaderArg_t
     /*! buffer for binary arguments, number of argument may be up to SL_RX_FILTER_NUM_OF_FILTER_HEADER_ARGS
      */
     SlrxFilterBinaryArg_t RxFilterDB1BytesRuleArgs[SL_RX_FILTER_NUM_OF_FILTER_HEADER_ARGS][1]; /*  Binary Values for comparison */
-}SlrxFilterHeaderArg_t;
+} SlrxFilterHeaderArg_t;
 
 
 
@@ -408,7 +408,7 @@ typedef struct SlrxFilterRuleHeaderArgsAndMask_t
     /* -- 16 bytes */
     SlrxFilterCompareMask_t RuleHeaderArgsMask[16];
 
-}SlrxFilterRuleHeaderArgsAndMask_t;
+} SlrxFilterRuleHeaderArgsAndMask_t;
 
 /*! \typedef SlrxFilterHeaderType_t
  * Structure which defines the Header rule
@@ -420,7 +420,7 @@ typedef struct SlrxFilterRuleHeaderArgsAndMask_t
 typedef struct SlrxFilterHeaderType_t
 {
     /*! see :: SlrxFilterRuleHeaderArgsAndMask_t */
-    /* -- 52 bytes */ 
+    /* -- 52 bytes */
     SlrxFilterRuleHeaderArgsAndMask_t RuleHeaderArgsAndMask;
 
     /*! Packet HDR field which will be compared to the argument */
@@ -437,7 +437,7 @@ typedef struct SlrxFilterHeaderType_t
     /* -- 2 bytes */
     _u8 RulePadding[2];
 
-}SlrxFilterHeaderType_t;
+} SlrxFilterHeaderType_t;
 
 /*! \typedef SlrxFilterPayloadType_t
  *  Structure which defines payload rule.
@@ -455,7 +455,7 @@ typedef struct SlrxFilterPayloadType_t
     /*! Not supported on current release */
     /* -- 4 byte */
     SlrxFilterOffset_t UpperOffset;
-}SlrxFilterPayloadType_t;
+} SlrxFilterPayloadType_t;
 
 /*! \typedef SlrxFilterCombinationTypeOperator_t
  * Enumerate the optional operators for the combination type
@@ -488,7 +488,7 @@ typedef struct SlrxFilterCombinationType_t
     /* ! Padding */
     /*  -- 1  byte */
     _u8 Padding;
-}SlrxFilterCombinationType_t;
+} SlrxFilterCombinationType_t;
 
 
 /*! \typedef SlrxFilterRule_t
@@ -507,7 +507,7 @@ typedef union SlrxFilterRule_t
     /* ! Combined type rule , see explanation in ::SlrxFilterCombinationType_t structure */
     /*  -- 4  byte */
     SlrxFilterCombinationType_t CombinationType;
-}SlrxFilterRule_t;
+} SlrxFilterRule_t;
 
 /*! \typedef SlrxFilterTriggerRoles_t
  * Bit field which represents the roleId possible values
@@ -520,18 +520,18 @@ typedef union SlrxFilterRule_t
 
 typedef union SlrxFilterTriggerRoles_t
 {
-/*     struct                                                            */
-/*     {                                                                 */
-/*         _u8 RoleAP :1;                                      */
-/*         _u8 RoleStation :1;                                 */
-      /* The filter is activated only in Promiscuous mode          */
-/*         _u8 PromiscuousMode :1;                             */
-/*         _u8 RoleReserved :5;                                */
-/*     };                                                                */
-    /* ! Bit fiels of the Filter role    */   
+    /*     struct                                                            */
+    /*     {                                                                 */
+    /*         _u8 RoleAP :1;                                      */
+    /*         _u8 RoleStation :1;                                 */
+    /* The filter is activated only in Promiscuous mode          */
+    /*         _u8 PromiscuousMode :1;                             */
+    /*         _u8 RoleReserved :5;                                */
+    /*     };                                                                */
+    /* ! Bit fiels of the Filter role    */
     _u8 IntRepresentation;
 
-}SlrxFilterTriggerRoles_t;
+} SlrxFilterTriggerRoles_t;
 
 /*! \typedef SlrxFilterTriggerConnectionStates_t
  * Bit field representing the possible values of the When section of the rule
@@ -544,20 +544,20 @@ typedef union SlrxFilterTriggerRoles_t
 
 typedef union SlrxFilterTriggerConnectionStates_t
 {
-/*     struct */
-/*     {      */
-/*         _u8 RoleStationWiFiConnected :1;  */
-/*         _u8 RoleStationWiFiDisconneted:1; */
-/*         _u8 RoleStationWiFiHasIp:1;       */
-/*         _u8 RoleStationWiFiHasNoIp:1;     */
-/*         _u8 RoleStationWiFiSocketOpened:1; */
-/*         _u8 RoleStationWiFiSocketclosed:1; */
-/*     }; */
-/*  */
+    /*     struct */
+    /*     {      */
+    /*         _u8 RoleStationWiFiConnected :1;  */
+    /*         _u8 RoleStationWiFiDisconneted:1; */
+    /*         _u8 RoleStationWiFiHasIp:1;       */
+    /*         _u8 RoleStationWiFiHasNoIp:1;     */
+    /*         _u8 RoleStationWiFiSocketOpened:1; */
+    /*         _u8 RoleStationWiFiSocketclosed:1; */
+    /*     }; */
+    /*  */
     /* ! */
     _u8 IntRepresentation;
-        
-}SlrxFilterTriggerConnectionStates_t;
+
+} SlrxFilterTriggerConnectionStates_t;
 
 /*! \typedef SlrxFilterDBTriggerArg_t
  * Provides container for entering the filter 'when' argument.
@@ -596,9 +596,9 @@ typedef _u8 SlrxFilterCounterId_t;
 typedef _u8  SlrxFilterActionArgs_t;
 /* Possible values for SlrxFilterActionArgs_t */
 #define ACTION_ARG_REG_1_4                          (0)
-    /* ! Can be use as counter */
+/* ! Can be use as counter */
 #define ACTION_ARG_TEMPLATE                         (1)
-    /* ! Can be use as counter */
+/* ! Can be use as counter */
 #define ACTION_ARG_EVENT                            (2)
 
 /* ! GPIO number */
@@ -670,32 +670,32 @@ typedef struct SlrxFilterTrigger_t
 
 typedef union SlrxFilterActionType_t
 {
-/*     struct */
-/*     { */
-         /* ! No action to execute the packet is dropped,drop is always on leaf. */
-         /* ! If not dropped ,The packet is passed to the next filter or in case it is the last filter to the host */
-/*         _u8 ActionDrop : 1; */
-         /* ! Not Supported in the current release */
-/*         _u8 ActionGpio : 1; */
-         /*! action can increase counter registers.
-          *  1 = Increase
-          *  2 = decrease
-          *  3 = reset
-          */
-/*         _u8 ActionOnREGIncrease : 1; */
-/*         _u8 ActionOnREGDecrease : 1; */
-/*         _u8 ActionOnREGReset : 1;    */
+    /*     struct */
+    /*     { */
+    /* ! No action to execute the packet is dropped,drop is always on leaf. */
+    /* ! If not dropped ,The packet is passed to the next filter or in case it is the last filter to the host */
+    /*         _u8 ActionDrop : 1; */
+    /* ! Not Supported in the current release */
+    /*         _u8 ActionGpio : 1; */
+    /*! action can increase counter registers.
+     *  1 = Increase
+     *  2 = decrease
+     *  3 = reset
+     */
+    /*         _u8 ActionOnREGIncrease : 1; */
+    /*         _u8 ActionOnREGDecrease : 1; */
+    /*         _u8 ActionOnREGReset : 1;    */
 
-         /* ! Not Supported in the current release */
-/*         _u8 ActionSendTemplate : 1; */
-         /* ! Not Supported in the current release */
-/*         _u8 ActionEventToHost: 1;   */
-/*         _u8 padding: 1;             */
-/*     }; */
+    /* ! Not Supported in the current release */
+    /*         _u8 ActionSendTemplate : 1; */
+    /* ! Not Supported in the current release */
+    /*         _u8 ActionEventToHost: 1;   */
+    /*         _u8 padding: 1;             */
+    /*     }; */
 
     _u8 IntRepresentation;
 
-}SlrxFilterActionType_t;
+} SlrxFilterActionType_t;
 
 /*! \typedef SlrxFilterAction_t
  * Several actions can be defined,\n
@@ -740,7 +740,7 @@ typedef struct _WlanRxFilterOperationCommandBuff_t
     SlrxFilterIdMask_t FilterIdMask;
     /*  4 bytes */
     _u8 Padding[4];
-}_WlanRxFilterOperationCommandBuff_t;
+} _WlanRxFilterOperationCommandBuff_t;
 
 
 
@@ -759,7 +759,7 @@ typedef struct _WlanRxFilterUpdateArgsCommandBuff_t
 
     /* -- 2 bytes */
     _u8 Padding[2];
-}_WlanRxFilterUpdateArgsCommandBuff_t;
+} _WlanRxFilterUpdateArgsCommandBuff_t;
 
 
 /*! \typedef _WlanRxFilterRetrieveEnableStatusCommandResponseBuff_t
@@ -774,7 +774,7 @@ typedef struct _WlanRxFilterRetrieveEnableStatusCommandResponseBuff_t
     /*  -- 16 bytes             */
     SlrxFilterIdMask_t FilterIdMask;
 
-}_WlanRxFilterRetrieveEnableStatusCommandResponseBuff_t;
+} _WlanRxFilterRetrieveEnableStatusCommandResponseBuff_t;
 
 
 /*! \struct _WlanRxFilterPrePreparedFiltersCommandBuff_t
@@ -787,7 +787,7 @@ typedef struct _WlanRxFilterPrePreparedFiltersCommandBuff_t
     /*  -- 4 bytes */
     SlrxFilterPrePreparedFiltersMask_t  FilterPrePreparedFiltersMask;
 
-}_WlanRxFilterPrePreparedFiltersCommandBuff_t;
+} _WlanRxFilterPrePreparedFiltersCommandBuff_t;
 
 
 /*! \typedef sl_protocol_WlanRxFilterPrePreparedFiltersCommandResponseBuff_t
@@ -800,7 +800,7 @@ typedef struct _WlanRxFilterPrePreparedFiltersCommandResponseBuff_t
     /* ! the filter set bit map */
     SlrxFilterPrePreparedFiltersMask_t  FilterPrePreparedFiltersMask;
 
-}_WlanRxFilterPrePreparedFiltersCommandResponseBuff_t;
+} _WlanRxFilterPrePreparedFiltersCommandResponseBuff_t;
 
 
 
@@ -846,11 +846,11 @@ typedef _u8 SLrxFilterOperation_t;
  */
 #if _SL_INCLUDE_FUNC(sl_WlanRxFilterAdd)
 SlrxFilterID_t sl_WlanRxFilterAdd(    SlrxFilterRuleType_t                 RuleType,
-                                    SlrxFilterFlags_t                     FilterFlags,
-                                    const SlrxFilterRule_t* const         Rule,
-                                    const SlrxFilterTrigger_t* const     Trigger,
-                                    const SlrxFilterAction_t* const     Action,
-                                    SlrxFilterID_t*                     pFilterId);
+                                      SlrxFilterFlags_t                     FilterFlags,
+                                      const SlrxFilterRule_t* const         Rule,
+                                      const SlrxFilterTrigger_t* const     Trigger,
+                                      const SlrxFilterAction_t* const     Action,
+                                      SlrxFilterID_t*                     pFilterId);
 
 #endif
 
@@ -887,7 +887,7 @@ SlrxFilterID_t sl_WlanRxFilterAdd(    SlrxFilterRuleType_t                 RuleT
 #if _SL_INCLUDE_FUNC(sl_WlanRxFilterSet)
 _i16 sl_WlanRxFilterSet(  const SLrxFilterOperation_t RxFilterOperation,
                           const _u8*  const pInputBuffer,
-                         _u16 InputbufferLength);
+                          _u16 InputbufferLength);
 #endif
 
 /*!

@@ -242,19 +242,23 @@ typedef uint32_t mp_float_uint_t;
 
 typedef union _mp_float_union_t {
     mp_float_t f;
-    #if MP_ENDIANNESS_LITTLE
+#if MP_ENDIANNESS_LITTLE
     struct {
-        mp_float_uint_t frc : MP_FLOAT_FRAC_BITS;
-        mp_float_uint_t exp : MP_FLOAT_EXP_BITS;
+mp_float_uint_t frc :
+        MP_FLOAT_FRAC_BITS;
+mp_float_uint_t exp :
+        MP_FLOAT_EXP_BITS;
         mp_float_uint_t sgn : 1;
     } p;
-    #else
+#else
     struct {
         mp_float_uint_t sgn : 1;
-        mp_float_uint_t exp : MP_FLOAT_EXP_BITS;
-        mp_float_uint_t frc : MP_FLOAT_FRAC_BITS;
+mp_float_uint_t exp :
+        MP_FLOAT_EXP_BITS;
+mp_float_uint_t frc :
+        MP_FLOAT_FRAC_BITS;
     } p;
-    #endif
+#endif
     mp_float_uint_t i;
 } mp_float_union_t;
 
@@ -276,10 +280,10 @@ typedef union _mp_float_union_t {
 
 // Force usage of the MP_ERROR_TEXT macro by requiring an opaque type.
 typedef struct {
-    #ifdef __clang__
+#ifdef __clang__
     // Fix "error: empty struct has size 0 in C, size 1 in C++".
     char dummy;
-    #endif
+#endif
 } *mp_rom_error_text_t;
 
 #include <string.h>
@@ -287,12 +291,12 @@ typedef struct {
 inline __attribute__((always_inline)) const char *MP_COMPRESSED_ROM_TEXT(const char *msg) {
     // "genhdr/compressed.data.h" contains an invocation of the MP_MATCH_COMPRESSED macro for each compressed string.
     // The giant if(strcmp) tree is optimized by the compiler, which turns this into a direct return of the compressed data.
-    #define MP_MATCH_COMPRESSED(a, b) if (strcmp(msg, a) == 0) { return b; } else
+#define MP_MATCH_COMPRESSED(a, b) if (strcmp(msg, a) == 0) { return b; } else
 
     // It also contains a single invocation of the MP_COMPRESSED_DATA macro, we don't need that here.
-    #define MP_COMPRESSED_DATA(x)
+#define MP_COMPRESSED_DATA(x)
 
-    #include "genhdr/compressed.data.h"
+#include "genhdr/compressed.data.h"
 
 #undef MP_COMPRESSED_DATA
 #undef MP_MATCH_COMPRESSED

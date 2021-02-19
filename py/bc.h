@@ -206,13 +206,13 @@ typedef struct _mp_code_state_t {
     uint16_t n_state;
     uint16_t exc_sp_idx;
     mp_obj_dict_t *old_globals;
-    #if MICROPY_STACKLESS
+#if MICROPY_STACKLESS
     struct _mp_code_state_t *prev;
-    #endif
-    #if MICROPY_PY_SYS_SETTRACE
+#endif
+#if MICROPY_PY_SYS_SETTRACE
     struct _mp_code_state_t *prev_state;
     struct _mp_obj_frame_t *frame;
-    #endif
+#endif
     // Variable-length
     mp_obj_t state[0];
     // Variable-length, never accessed by name, only as (void*)(state + n_state)

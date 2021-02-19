@@ -44,12 +44,12 @@ STATIC void flash_error(int n) {
 
 #if !MICROPY_HW_USES_BOOTLOADER
 STATIC uint update_reset_mode(uint reset_mode) {
-    #if MICROPY_HW_HAS_SWITCH
+#if MICROPY_HW_HAS_SWITCH
     if (switch_get()) {
 
         // The original method used on the pyboard is appropriate if you have 2
         // or more LEDs.
-        #if defined(MICROPY_HW_LED2)
+#if defined(MICROPY_HW_LED2)
         for (uint i = 0; i < 3000; i++) {
             if (!switch_get()) {
                 break;
@@ -77,7 +77,7 @@ STATIC uint update_reset_mode(uint reset_mode) {
         }
         mp_hal_delay_ms(400);
 
-        #elif defined(MICROPY_HW_LED1)
+#elif defined(MICROPY_HW_LED1)
 
         // For boards with only a single LED, we'll flash that LED the
         // appropriate number of times, with a pause between each one
@@ -110,32 +110,32 @@ STATIC uint update_reset_mode(uint reset_mode) {
             }
             mp_hal_delay_ms(400);
         }
-        #else
-        #error Need a reset mode update method
-        #endif
+#else
+#error Need a reset mode update method
+#endif
     }
-    #endif
+#endif
     return reset_mode;
 }
 #endif
 
 void boardctrl_before_soft_reset_loop(boardctrl_state_t *state) {
-    #if !MICROPY_HW_USES_BOOTLOADER
+#if !MICROPY_HW_USES_BOOTLOADER
     // Update the reset_mode via the default
     // method which uses the board switch/button and LEDs.
     state->reset_mode = update_reset_mode(1);
-    #endif
+#endif
 }
 
 void boardctrl_top_soft_reset_loop(boardctrl_state_t *state) {
     // Turn on a single LED to indicate start up.
-    #if defined(MICROPY_HW_LED2)
+#if defined(MICROPY_HW_LED2)
     led_state(1, 0);
     led_state(2, 1);
-    #else
+#else
     led_state(1, 1);
     led_state(2, 0);
-    #endif
+#endif
     led_state(3, 0);
     led_state(4, 0);
 }
@@ -151,12 +151,12 @@ void boardctrl_after_boot_py(boardctrl_state_t *state) {
 
     // Turn boot-up LEDs off
 
-    #if !defined(MICROPY_HW_LED2)
+#if !defined(MICROPY_HW_LED2)
     // If there is only one LED on the board then it's used to signal boot-up
     // and so we turn it off here.  Otherwise LED(1) is used to indicate dirty
     // flash cache and so we shouldn't change its state.
     led_state(1, 0);
-    #endif
+#endif
     led_state(2, 0);
     led_state(3, 0);
     led_state(4, 0);
@@ -164,7 +164,7 @@ void boardctrl_after_boot_py(boardctrl_state_t *state) {
 
 void boardctrl_before_main_py(boardctrl_state_t *state) {
     state->run_main_py = (state->reset_mode == 1 || state->reset_mode == 3)
-        && pyexec_mode_kind == PYEXEC_MODE_FRIENDLY_REPL;
+                         && pyexec_mode_kind == PYEXEC_MODE_FRIENDLY_REPL;
 }
 
 void boardctrl_after_main_py(boardctrl_state_t *state) {

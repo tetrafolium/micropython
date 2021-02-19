@@ -62,14 +62,14 @@ static const flash_layout_t flash_layout[] = {
     { 0x08000000, 0x04000, 4 },
     { 0x08010000, 0x10000, 1 },
     { 0x08020000, 0x20000, 3 },
-    #if defined(FLASH_SECTOR_8)
+#if defined(FLASH_SECTOR_8)
     { 0x08080000, 0x20000, 4 },
-    #endif
-    #if defined(FLASH_SECTOR_12)
+#endif
+#if defined(FLASH_SECTOR_12)
     { 0x08100000, 0x04000, 4 },
     { 0x08110000, 0x10000, 1 },
     { 0x08120000, 0x20000, 7 },
-    #endif
+#endif
 };
 
 #elif defined(STM32F7)
@@ -89,11 +89,11 @@ static const flash_layout_t flash_layout[] = {
 static const flash_layout_t flash_layout[] = {
     { 0x08000000, 0x08000, 4 },
     { 0x08020000, 0x20000, 1 },
-    #if FLASH_SECTOR_TOTAL == 8
+#if FLASH_SECTOR_TOTAL == 8
     { 0x08040000, 0x40000, 3 },
-    #else
+#else
     { 0x08040000, 0x40000, 7 },
-    #endif
+#endif
 };
 #endif
 
@@ -117,11 +117,11 @@ static const flash_layout_t flash_layout[] = {
 
 // get the bank of a given flash address
 static uint32_t get_bank(uint32_t addr) {
-    #if defined(STM32H7)
+#if defined(STM32H7)
     if (READ_BIT(FLASH->OPTCR, FLASH_OPTCR_SWAP_BANK) == 0) {
-    #else
+#else
     if (READ_BIT(SYSCFG->MEMRMP, SYSCFG_MEMRMP_FB_MODE) == 0) {
-        #endif
+#endif
         // no bank swap
         if (addr < (FLASH_BASE + FLASH_BANK_SIZE)) {
             return FLASH_BANK_1;
@@ -162,7 +162,7 @@ static uint32_t get_page(uint32_t addr) {
 bool flash_is_valid_addr(uint32_t addr) {
     uint8_t last = MP_ARRAY_SIZE(flash_layout) - 1;
     uint32_t end_of_flash = flash_layout[last].base_address +
-        flash_layout[last].sector_count * flash_layout[last].sector_size;
+                            flash_layout[last].sector_count * flash_layout[last].sector_size;
     return flash_layout[0].base_address <= addr && addr < end_of_flash;
 }
 
@@ -172,11 +172,11 @@ int32_t flash_get_sector_info(uint32_t addr, uint32_t *start_addr, uint32_t *siz
         for (int i = 0; i < MP_ARRAY_SIZE(flash_layout); ++i) {
             for (int j = 0; j < flash_layout[i].sector_count; ++j) {
                 uint32_t sector_start_next = flash_layout[i].base_address
-                    + (j + 1) * flash_layout[i].sector_size;
+                                             + (j + 1) * flash_layout[i].sector_size;
                 if (addr < sector_start_next) {
                     if (start_addr != NULL) {
                         *start_addr = flash_layout[i].base_address
-                            + j * flash_layout[i].sector_size;
+                                      + j * flash_layout[i].sector_size;
                     }
                     if (size != NULL) {
                         *size = flash_layout[i].sector_size;
@@ -196,16 +196,16 @@ int flash_erase(uint32_t flash_dest, uint32_t num_word32) {
         return 0;
     }
 
-    #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
     // Acquire lock on the flash peripheral.
     while (LL_HSEM_1StepLock(HSEM, SEMID_FLASH_REGISTERS)) {
     }
-    #endif
+#endif
 
     // Unlock the flash for erase.
     HAL_FLASH_Unlock();
 
-    #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
     // Tell the HCI controller stack we're starting an erase, so it
     // avoids radio activity for a while.
     rfcore_start_flash_erase();
@@ -215,27 +215,27 @@ int flash_erase(uint32_t flash_dest, uint32_t num_word32) {
     // Wait for flash lock.
     while (LL_HSEM_1StepLock(HSEM, SEMID_FLASH_CPU2)) {
     }
-    #endif
+#endif
 
     // Clear pending flags (if any) and set up EraseInitStruct.
 
     FLASH_EraseInitTypeDef EraseInitStruct;
-    #if defined(STM32F0)
+#if defined(STM32F0)
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_WRPERR | FLASH_FLAG_PGERR);
     EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
     EraseInitStruct.PageAddress = flash_dest;
     EraseInitStruct.NbPages = (4 * num_word32 + FLASH_PAGE_SIZE - 4) / FLASH_PAGE_SIZE;
-    #elif defined(STM32L0)
+#elif defined(STM32L0)
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_WRPERR | FLASH_FLAG_PGAERR);
     EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
     EraseInitStruct.PageAddress = flash_dest;
     EraseInitStruct.NbPages = (4 * num_word32 + FLASH_PAGE_SIZE - 4) / FLASH_PAGE_SIZE;
-    #elif (defined(STM32L4) && !defined(SYSCFG_MEMRMP_FB_MODE)) || defined(STM32WB)
+#elif (defined(STM32L4) && !defined(SYSCFG_MEMRMP_FB_MODE)) || defined(STM32WB)
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
     EraseInitStruct.TypeErase = FLASH_TYPEERASE_PAGES;
     EraseInitStruct.Page = get_page(flash_dest);
     EraseInitStruct.NbPages = (4 * num_word32 + FLASH_PAGE_SIZE - 4) / FLASH_PAGE_SIZE;
-    #elif defined(STM32L4)
+#elif defined(STM32L4)
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS);
     // The sector returned by flash_get_sector_info can not be used
     // as the flash has on each bank 0/1 pages 0..255
@@ -243,45 +243,45 @@ int flash_erase(uint32_t flash_dest, uint32_t num_word32) {
     EraseInitStruct.Banks = get_bank(flash_dest);
     EraseInitStruct.Page = get_page(flash_dest);
     EraseInitStruct.NbPages = get_page(flash_dest + 4 * num_word32 - 1) - EraseInitStruct.Page + 1;
-    #else
+#else
 
-    #if defined(STM32H7)
+#if defined(STM32H7)
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_ALL_ERRORS_BANK1 | FLASH_FLAG_ALL_ERRORS_BANK2);
-    #else
+#else
     __HAL_FLASH_CLEAR_FLAG(FLASH_FLAG_EOP | FLASH_FLAG_OPERR | FLASH_FLAG_WRPERR |
-        FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
-    #endif
+                           FLASH_FLAG_PGAERR | FLASH_FLAG_PGPERR | FLASH_FLAG_PGSERR);
+#endif
 
     EraseInitStruct.TypeErase = TYPEERASE_SECTORS;
     EraseInitStruct.VoltageRange = VOLTAGE_RANGE_3; // voltage range needs to be 2.7V to 3.6V
-    #if defined(STM32H7)
+#if defined(STM32H7)
     EraseInitStruct.Banks = get_bank(flash_dest);
-    #endif
+#endif
     EraseInitStruct.Sector = flash_get_sector_info(flash_dest, NULL, NULL);
     EraseInitStruct.NbSectors = flash_get_sector_info(flash_dest + 4 * num_word32 - 1, NULL, NULL) - EraseInitStruct.Sector + 1;
 
-    #endif
+#endif
 
     // Erase the sectors.
     uint32_t SectorError = 0;
     HAL_StatusTypeDef status = HAL_FLASHEx_Erase(&EraseInitStruct, &SectorError);
 
-    #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
     // Release flash lock.
     while (__HAL_FLASH_GET_FLAG(FLASH_FLAG_CFGBSY)) {
     }
     LL_HSEM_ReleaseLock(HSEM, SEMID_FLASH_CPU2, 0);
     // Tell HCI controller that erase is over.
     rfcore_end_flash_erase();
-    #endif
+#endif
 
     // Lock the flash after erase.
     HAL_FLASH_Lock();
 
-    #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
     // Release lock on the flash peripheral.
     LL_HSEM_ReleaseLock(HSEM, SEMID_FLASH_REGISTERS, 0);
-    #endif
+#endif
 
     return mp_hal_status_to_neg_errno(status);
 }
@@ -316,43 +316,43 @@ void flash_erase_it(uint32_t flash_dest, uint32_t num_word32) {
 */
 
 int flash_write(uint32_t flash_dest, const uint32_t *src, uint32_t num_word32) {
-    #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
     // Acquire lock on the flash peripheral.
     while (LL_HSEM_1StepLock(HSEM, SEMID_FLASH_REGISTERS)) {
     }
-    #endif
+#endif
 
     // Unlock the flash for write.
     HAL_FLASH_Unlock();
 
-    #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
     // Wait for PES.
     while (LL_FLASH_IsActiveFlag_OperationSuspended()) {
     }
-    #endif
+#endif
 
     HAL_StatusTypeDef status = HAL_OK;
 
-    #if defined(STM32L4) || defined(STM32WB)
+#if defined(STM32L4) || defined(STM32WB)
 
     // program the flash uint64 by uint64
     for (int i = 0; i < num_word32 / 2; i++) {
         uint64_t val = *(uint64_t *)src;
 
-        #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
         // Wait for flash lock.
         while (LL_HSEM_1StepLock(HSEM, SEMID_FLASH_CPU2)) {
         }
-        #endif
+#endif
 
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_dest, val);
 
-        #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
         // Release flash lock.
         LL_HSEM_ReleaseLock(HSEM, SEMID_FLASH_CPU2, 0);
         while (__HAL_FLASH_GET_FLAG(FLASH_FLAG_CFGBSY)) {
         }
-        #endif
+#endif
 
         if (status != HAL_OK) {
             num_word32 = 0; // don't write any odd word after this loop
@@ -365,23 +365,23 @@ int flash_write(uint32_t flash_dest, const uint32_t *src, uint32_t num_word32) {
         uint64_t val = *(uint64_t *)flash_dest;
         val = (val & 0xffffffff00000000uL) | (*src);
 
-        #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
         // Wait for flash lock.
         while (LL_HSEM_1StepLock(HSEM, SEMID_FLASH_CPU2)) {
         }
-        #endif
+#endif
 
         status = HAL_FLASH_Program(FLASH_TYPEPROGRAM_DOUBLEWORD, flash_dest, val);
 
-        #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
         // Release flash lock.
         LL_HSEM_ReleaseLock(HSEM, SEMID_FLASH_CPU2, 0);
         while (__HAL_FLASH_GET_FLAG(FLASH_FLAG_CFGBSY)) {
         }
-        #endif
+#endif
     }
 
-    #elif defined(STM32H7)
+#elif defined(STM32H7)
 
     // program the flash 256 bits at a time
     for (int i = 0; i < num_word32 / 8; i++) {
@@ -393,7 +393,7 @@ int flash_write(uint32_t flash_dest, const uint32_t *src, uint32_t num_word32) {
         src += 8;
     }
 
-    #else
+#else
 
     // program the flash word by word
     for (int i = 0; i < num_word32; i++) {
@@ -405,15 +405,15 @@ int flash_write(uint32_t flash_dest, const uint32_t *src, uint32_t num_word32) {
         src += 1;
     }
 
-    #endif
+#endif
 
     // Lock the flash after write.
     HAL_FLASH_Lock();
 
-    #if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
+#if MICROPY_HW_STM32WB_FLASH_SYNCRONISATION
     // Release lock on the flash peripheral.
     LL_HSEM_ReleaseLock(HSEM, SEMID_FLASH_REGISTERS, 0);
-    #endif
+#endif
 
     return mp_hal_status_to_neg_errno(status);
 }

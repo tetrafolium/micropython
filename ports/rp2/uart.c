@@ -39,12 +39,12 @@ void uart_irq(void) {
     uart_get_hw(uart_default)->icr = UART_UARTICR_BITS; // clear interrupt flags
     if (uart_is_readable(uart_default)) {
         int c = uart_getc(uart_default);
-        #if MICROPY_KBD_EXCEPTION
+#if MICROPY_KBD_EXCEPTION
         if (c == mp_interrupt_char) {
             mp_keyboard_interrupt();
             return;
         }
-        #endif
+#endif
         ringbuf_put(&stdin_ringbuf, c);
     }
 }

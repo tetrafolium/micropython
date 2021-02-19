@@ -50,7 +50,7 @@
 #define NVIC_INT_TYPE           0xE000E004  // Interrupt Controller Type Reg
 #define NVIC_ACTLR              0xE000E008  // Auxiliary Control
 #define NVIC_ST_CTRL            0xE000E010  // SysTick Control and Status
-                                            // Register
+// Register
 #define NVIC_ST_RELOAD          0xE000E014  // SysTick Reload Value Register
 #define NVIC_ST_CURRENT         0xE000E018  // SysTick Current Value Register
 #define NVIC_ST_CAL             0xE000E01C  // SysTick Calibration Value Reg
@@ -151,7 +151,7 @@
 #define NVIC_INT_CTRL           0xE000ED04  // Interrupt Control and State
 #define NVIC_VTABLE             0xE000ED08  // Vector Table Offset
 #define NVIC_APINT              0xE000ED0C  // Application Interrupt and Reset
-                                            // Control
+// Control
 #define NVIC_SYS_CTRL           0xE000ED10  // System Control
 #define NVIC_CFG_CTRL           0xE000ED14  // Configuration and Control
 #define NVIC_SYS_PRI1           0xE000ED18  // System Handler Priority 1
@@ -170,13 +170,13 @@
 #define NVIC_MPU_ATTR           0xE000EDA0  // MPU Region Attribute and Size
 #define NVIC_MPU_BASE1          0xE000EDA4  // MPU Region Base Address Alias 1
 #define NVIC_MPU_ATTR1          0xE000EDA8  // MPU Region Attribute and Size
-                                            // Alias 1
+// Alias 1
 #define NVIC_MPU_BASE2          0xE000EDAC  // MPU Region Base Address Alias 2
 #define NVIC_MPU_ATTR2          0xE000EDB0  // MPU Region Attribute and Size
-                                            // Alias 2
+// Alias 2
 #define NVIC_MPU_BASE3          0xE000EDB4  // MPU Region Base Address Alias 3
 #define NVIC_MPU_ATTR3          0xE000EDB8  // MPU Region Attribute and Size
-                                            // Alias 3
+// Alias 3
 #define NVIC_DBG_CTRL           0xE000EDF0  // Debug Control and Status Reg
 #define NVIC_DBG_XFER           0xE000EDF4  // Debug Core Reg. Transfer Select
 #define NVIC_DBG_DATA           0xE000EDF8  // Debug Core Register Data
@@ -199,7 +199,7 @@
 #define NVIC_ACTLR_DISFOLD      0x00000004  // Disable IT Folding
 #define NVIC_ACTLR_DISWBUF      0x00000002  // Disable Write Buffer
 #define NVIC_ACTLR_DISMCYC      0x00000001  // Disable Interrupts of Multiple
-                                            // Cycle Instructions
+// Cycle Instructions
 
 //*****************************************************************************
 //
@@ -1297,9 +1297,9 @@
 //
 //*****************************************************************************
 #define NVIC_CFG_CTRL_STKALIGN  0x00000200  // Stack Alignment on Exception
-                                            // Entry
+// Entry
 #define NVIC_CFG_CTRL_BFHFNMIGN 0x00000100  // Ignore Bus Fault in NMI and
-                                            // Fault
+// Fault
 #define NVIC_CFG_CTRL_DIV0      0x00000010  // Trap on Divide by 0
 #define NVIC_CFG_CTRL_UNALIGNED 0x00000008  // Trap on Unaligned Access
 #define NVIC_CFG_CTRL_MAIN_PEND 0x00000002  // Allow Main Interrupt Trigger
@@ -1371,11 +1371,11 @@
 #define NVIC_FAULT_STAT_INVPC   0x00040000  // Invalid PC Load Usage Fault
 #define NVIC_FAULT_STAT_INVSTAT 0x00020000  // Invalid State Usage Fault
 #define NVIC_FAULT_STAT_UNDEF   0x00010000  // Undefined Instruction Usage
-                                            // Fault
+// Fault
 #define NVIC_FAULT_STAT_BFARV   0x00008000  // Bus Fault Address Register Valid
 
 #define NVIC_FAULT_STAT_BLSPERR 0x00002000  // Bus Fault on Floating-Point Lazy
-                                            // State Preservation
+// State Preservation
 
 #define NVIC_FAULT_STAT_BSTKE   0x00001000  // Stack Bus Fault
 #define NVIC_FAULT_STAT_BUSTKE  0x00000800  // Unstack Bus Fault
@@ -1383,11 +1383,11 @@
 #define NVIC_FAULT_STAT_PRECISE 0x00000200  // Precise Data Bus Error
 #define NVIC_FAULT_STAT_IBUS    0x00000100  // Instruction Bus Error
 #define NVIC_FAULT_STAT_MMARV   0x00000080  // Memory Management Fault Address
-                                            // Register Valid
+// Register Valid
 
 #define NVIC_FAULT_STAT_MLSPERR 0x00000020  // Memory Management Fault on
-                                            // Floating-Point Lazy State
-                                            // Preservation
+// Floating-Point Lazy State
+// Preservation
 
 #define NVIC_FAULT_STAT_MSTKE   0x00000010  // Stack Access Violation
 #define NVIC_FAULT_STAT_MUSTKE  0x00000008  // Unstack Access Violation
@@ -1629,7 +1629,7 @@
                                 0x02000000  // Core has reset since last read
 #define NVIC_DBG_CTRL_S_RETIRE_ST \
                                 0x01000000  // Core has executed insruction
-                                            // since last read
+// since last read
 #define NVIC_DBG_CTRL_S_LOCKUP  0x00080000  // Core is locked up
 #define NVIC_DBG_CTRL_S_SLEEP   0x00040000  // Core is sleeping
 #define NVIC_DBG_CTRL_S_HALT    0x00020000  // Core status on halt

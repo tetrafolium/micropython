@@ -67,32 +67,32 @@ static inline int msec_sleep_tv(struct timeval *tv) {
 #endif
 
 STATIC mp_obj_t mod_time_time(void) {
-    #if MICROPY_PY_BUILTINS_FLOAT && MICROPY_FLOAT_IMPL == MICROPY_FLOAT_IMPL_DOUBLE
+#if MICROPY_PY_BUILTINS_FLOAT && MICROPY_FLOAT_IMPL == MICROPY_FLOAT_IMPL_DOUBLE
     struct timeval tv;
     gettimeofday(&tv, NULL);
     mp_float_t val = tv.tv_sec + (mp_float_t)tv.tv_usec / 1000000;
     return mp_obj_new_float(val);
-    #else
+#else
     return mp_obj_new_int((mp_int_t)time(NULL));
-    #endif
+#endif
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(mod_time_time_obj, mod_time_time);
 
 // Note: this is deprecated since CPy3.3, but pystone still uses it.
 STATIC mp_obj_t mod_time_clock(void) {
-    #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
     // float cannot represent full range of int32 precisely, so we pre-divide
     // int to reduce resolution, and then actually do float division hoping
     // to preserve integer part resolution.
     return mp_obj_new_float((clock() / 1000) / CLOCK_DIV);
-    #else
+#else
     return mp_obj_new_int((mp_int_t)clock());
-    #endif
+#endif
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(mod_time_clock_obj, mod_time_clock);
 
 STATIC mp_obj_t mod_time_sleep(mp_obj_t arg) {
-    #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
     struct timeval tv;
     mp_float_t val = mp_obj_get_float(arg);
     mp_float_t ipart;
@@ -103,7 +103,7 @@ STATIC mp_obj_t mod_time_sleep(mp_obj_t arg) {
         MP_THREAD_GIL_EXIT();
         res = sleep_select(0, NULL, NULL, NULL, &tv);
         MP_THREAD_GIL_ENTER();
-        #if MICROPY_SELECT_REMAINING_TIME
+#if MICROPY_SELECT_REMAINING_TIME
         // TODO: This assumes Linux behavior of modifying tv to the remaining
         // time.
         if (res != -1 || errno != EINTR) {
@@ -111,12 +111,12 @@ STATIC mp_obj_t mod_time_sleep(mp_obj_t arg) {
         }
         mp_handle_pending(true);
         // printf("select: EINTR: %ld:%ld\n", tv.tv_sec, tv.tv_usec);
-        #else
+#else
         break;
-        #endif
+#endif
     }
     RAISE_ERRNO(res, errno);
-    #else
+#else
     int seconds = mp_obj_get_int(arg);
     for (;;) {
         MP_THREAD_GIL_EXIT();
@@ -127,7 +127,7 @@ STATIC mp_obj_t mod_time_sleep(mp_obj_t arg) {
         }
         mp_handle_pending(true);
     }
-    #endif
+#endif
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(mod_time_sleep_obj, mod_time_sleep);
@@ -137,12 +137,12 @@ STATIC mp_obj_t mod_time_gm_local_time(size_t n_args, const mp_obj_t *args, stru
     if (n_args == 0) {
         t = time(NULL);
     } else {
-        #if MICROPY_PY_BUILTINS_FLOAT && MICROPY_FLOAT_IMPL == MICROPY_FLOAT_IMPL_DOUBLE
+#if MICROPY_PY_BUILTINS_FLOAT && MICROPY_FLOAT_IMPL == MICROPY_FLOAT_IMPL_DOUBLE
         mp_float_t val = mp_obj_get_float(args[0]);
         t = (time_t)MICROPY_FLOAT_C_FUN(trunc)(val);
-        #else
+#else
         t = mp_obj_get_int(args[0]);
-        #endif
+#endif
     }
     struct tm *tm = time_func(&t);
 

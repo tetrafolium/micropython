@@ -743,8 +743,8 @@ UARTFlowControlSet(unsigned long ulBase, unsigned long ulMode)
     // Set the flow control mode as requested.
     //
     HWREG(ulBase + UART_O_CTL) = ((HWREG(ulBase + UART_O_CTL) &
-                                 ~(UART_FLOWCONTROL_TX |
-                                   UART_FLOWCONTROL_RX)) | ulMode);
+                                   ~(UART_FLOWCONTROL_TX |
+                                     UART_FLOWCONTROL_RX)) | ulMode);
 }
 
 //*****************************************************************************
@@ -818,8 +818,8 @@ UARTTxIntModeSet(unsigned long ulBase, unsigned long ulMode)
     // Set or clear the EOT bit of the UART control register as appropriate.
     //
     HWREG(ulBase + UART_O_CTL) = ((HWREG(ulBase + UART_O_CTL) &
-                                 ~(UART_TXINT_MODE_EOT |
-                                   UART_TXINT_MODE_FIFO)) | ulMode);
+                                   ~(UART_TXINT_MODE_EOT |
+                                     UART_TXINT_MODE_FIFO)) | ulMode);
 }
 
 //*****************************************************************************

@@ -232,18 +232,18 @@ STATIC uint32_t bt_sleep_ticks;
 #endif
 
 int mp_bluetooth_hci_controller_sleep_maybe(void) {
-    #ifdef pyb_pin_BT_DEV_WAKE
+#ifdef pyb_pin_BT_DEV_WAKE
     if (mp_hal_pin_read(pyb_pin_BT_DEV_WAKE) == 0) {
         if (mp_hal_ticks_ms() - bt_sleep_ticks > 500) {
             mp_hal_pin_high(pyb_pin_BT_DEV_WAKE); // let sleep
         }
     }
-    #endif
+#endif
     return 0;
 }
 
 bool mp_bluetooth_hci_controller_woken(void) {
-    #ifdef pyb_pin_BT_HOST_WAKE
+#ifdef pyb_pin_BT_HOST_WAKE
     bool host_wake = mp_hal_pin_read(pyb_pin_BT_HOST_WAKE);
     /*
     // this is just for info/tracing purposes
@@ -254,13 +254,13 @@ bool mp_bluetooth_hci_controller_woken(void) {
     }
     */
     return host_wake;
-    #else
+#else
     return true;
-    #endif
+#endif
 }
 
 int mp_bluetooth_hci_controller_wakeup(void) {
-    #ifdef pyb_pin_BT_DEV_WAKE
+#ifdef pyb_pin_BT_DEV_WAKE
     bt_sleep_ticks = mp_hal_ticks_ms();
 
     if (mp_hal_pin_read(pyb_pin_BT_DEV_WAKE) == 1) {
@@ -269,7 +269,7 @@ int mp_bluetooth_hci_controller_wakeup(void) {
         // might result in more BLE operations).
         mp_hal_delay_us(5000); // can't go lower than this
     }
-    #endif
+#endif
 
     return 0;
 }

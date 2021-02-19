@@ -1,35 +1,35 @@
 /*
 * device.c - CC31xx/CC32xx Host Driver Implementation
 *
-* Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
-* 
-* 
-*  Redistribution and use in source and binary forms, with or without 
-*  modification, are permitted provided that the following conditions 
+* Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+*
+*
+*  Redistribution and use in source and binary forms, with or without
+*  modification, are permitted provided that the following conditions
 *  are met:
 *
-*    Redistributions of source code must retain the above copyright 
+*    Redistributions of source code must retain the above copyright
 *    notice, this list of conditions and the following disclaimer.
 *
 *    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the 
-*    documentation and/or other materials provided with the   
+*    notice, this list of conditions and the following disclaimer in the
+*    documentation and/or other materials provided with the
 *    distribution.
 *
 *    Neither the name of Texas Instruments Incorporated nor the names of
 *    its contributors may be used to endorse or promote products derived
 *    from this software without specific prior written permission.
 *
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
 *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 *
 */
@@ -49,7 +49,7 @@
 /* Internal functions                                                        */
 /*****************************************************************************/
 
-const _i8 StartResponseLUT[8] = 
+const _i8 StartResponseLUT[8] =
 {
     ROLE_UNKNOWN_ERR,
     ROLE_STA,
@@ -58,7 +58,7 @@ const _i8 StartResponseLUT[8] =
     ROLE_AP_ERR,
     ROLE_P2P,
     ROLE_P2P_ERR,
-    ROLE_UNKNOWN_ERR    
+    ROLE_UNKNOWN_ERR
 };
 
 
@@ -110,7 +110,7 @@ _i16 sl_Start(const void* pIfHdl, _i8*  pDevName, const P_INIT_CALLBACK pInitCal
     {
         g_pCB->FD = (_SlFd_t)pIfHdl;
     }
-    
+
     ObjIdx = _SlDrvProtectAsyncRespSetting((_u8 *)&AsyncRsp, START_STOP_ID, SL_MAX_SOCKETS);
 
     if (MAX_CONCURRENT_ACTIONS == ObjIdx)
@@ -126,14 +126,14 @@ _i16 sl_Start(const void* pIfHdl, _i8*  pDevName, const P_INIT_CALLBACK pInitCal
 
         g_pCB->pInitCallback = pInitCallBack;
         sl_DeviceEnable();
-        
+
         if (NULL == pInitCallBack)
         {
             _SlDrvSyncObjWaitForever(&g_pCB->ObjPool[ObjIdx].SyncObj);
 
             /* release Pool Object */
             _SlDrvReleasePoolObj(g_pCB->FunctionParams.AsyncExt.ActionIndex);
-	         return _sl_GetStartResponseConvert(AsyncRsp.Status);
+            return _sl_GetStartResponseConvert(AsyncRsp.Status);
         }
         else
         {
@@ -145,7 +145,7 @@ _i16 sl_Start(const void* pIfHdl, _i8*  pDevName, const P_INIT_CALLBACK pInitCal
 #endif
 
 /***************************************************************************
-_sl_HandleAsync_InitComplete - handles init complete signalling to 
+_sl_HandleAsync_InitComplete - handles init complete signalling to
 a waiting object
 ****************************************************************************/
 void _sl_HandleAsync_InitComplete(void *pVoidBuf)
@@ -163,9 +163,9 @@ void _sl_HandleAsync_InitComplete(void *pVoidBuf)
         sl_Memcpy(g_pCB->ObjPool[g_pCB->FunctionParams.AsyncExt.ActionIndex].pRespArgs, pMsgArgs, sizeof(InitComplete_t));
         _SlDrvSyncObjSignal(&g_pCB->ObjPool[g_pCB->FunctionParams.AsyncExt.ActionIndex].SyncObj);
     }
-    
-   _SlDrvProtectionObjUnLock();
-   
+
+    _SlDrvProtectionObjUnLock();
+
     if(g_pCB->pInitCallback)
     {
         _SlDrvReleasePoolObj(g_pCB->FunctionParams.AsyncExt.ActionIndex);
@@ -174,7 +174,7 @@ void _sl_HandleAsync_InitComplete(void *pVoidBuf)
 }
 
 /***************************************************************************
-_sl_HandleAsync_Stop - handles stop signalling to 
+_sl_HandleAsync_Stop - handles stop signalling to
 a waiting object
 ****************************************************************************/
 void _sl_HandleAsync_Stop(void *pVoidBuf)
@@ -189,7 +189,7 @@ void _sl_HandleAsync_Stop(void *pVoidBuf)
 
     _SlDrvSyncObjSignal(&g_pCB->ObjPool[g_pCB->FunctionParams.AsyncExt.ActionIndex].SyncObj);
     _SlDrvProtectionObjUnLock();
-    
+
     return;
 }
 
@@ -200,8 +200,8 @@ sl_stop
 typedef union
 {
     _DevStopCommand_t  Cmd;
-    _BasicResponse_t   Rsp;    
-}_SlStopMsg_u;
+    _BasicResponse_t   Rsp;
+} _SlStopMsg_u;
 
 const _SlCmdCtrl_t _SlStopCmdCtrl =
 {
@@ -218,7 +218,7 @@ _i16 sl_Stop(const _u16 timeout)
     _BasicResponse_t  AsyncRsp;
     _i8 ObjIdx = MAX_CONCURRENT_ACTIONS;
     /* if timeout is 0 the shutdown is forced immediately */
-    if( 0 == timeout ) 
+    if( 0 == timeout )
     {
         sl_IfRegIntHdlr(NULL, NULL);
         sl_DeviceDisable();
@@ -230,25 +230,25 @@ _i16 sl_Stop(const _u16 timeout)
         /* let the device make the shutdown using the defined timeout */
         Msg.Cmd.Timeout = timeout;
 
-      ObjIdx = _SlDrvProtectAsyncRespSetting((_u8 *)&AsyncRsp, START_STOP_ID, SL_MAX_SOCKETS);
-      if (MAX_CONCURRENT_ACTIONS == ObjIdx)
-      {
-          return SL_POOL_IS_EMPTY;
-      }
+        ObjIdx = _SlDrvProtectAsyncRespSetting((_u8 *)&AsyncRsp, START_STOP_ID, SL_MAX_SOCKETS);
+        if (MAX_CONCURRENT_ACTIONS == ObjIdx)
+        {
+            return SL_POOL_IS_EMPTY;
+        }
 
-      VERIFY_RET_OK(_SlDrvCmdOp((_SlCmdCtrl_t *)&_SlStopCmdCtrl, &Msg, NULL));
+        VERIFY_RET_OK(_SlDrvCmdOp((_SlCmdCtrl_t *)&_SlStopCmdCtrl, &Msg, NULL));
 
-      if(SL_OS_RET_CODE_OK == (_i16)Msg.Rsp.status)
-      {
-         _SlDrvSyncObjWaitForever(&g_pCB->ObjPool[ObjIdx].SyncObj);
-         Msg.Rsp.status = AsyncRsp.status;
-         RetVal = Msg.Rsp.status;
-      }
+        if(SL_OS_RET_CODE_OK == (_i16)Msg.Rsp.status)
+        {
+            _SlDrvSyncObjWaitForever(&g_pCB->ObjPool[ObjIdx].SyncObj);
+            Msg.Rsp.status = AsyncRsp.status;
+            RetVal = Msg.Rsp.status;
+        }
 
-      _SlDrvReleasePoolObj(ObjIdx);
-      sl_IfRegIntHdlr(NULL, NULL);
-      sl_DeviceDisable();
-      sl_IfClose(g_pCB->FD);
+        _SlDrvReleasePoolObj(ObjIdx);
+        sl_IfRegIntHdlr(NULL, NULL);
+        sl_DeviceDisable();
+        sl_IfClose(g_pCB->FD);
     }
     _SlDrvDriverCBDeinit();
 
@@ -264,7 +264,7 @@ typedef union
 {
     _DevMaskEventSetCommand_t	    Cmd;
     _BasicResponse_t	            Rsp;
-}_SlEventMaskSetMsg_u;
+} _SlEventMaskSetMsg_u;
 
 
 
@@ -279,7 +279,7 @@ const _SlCmdCtrl_t _SlEventMaskSetCmdCtrl =
 };
 
 
-_i16 sl_EventMaskSet(const _u8 EventClass ,const _u32 Mask)
+_i16 sl_EventMaskSet(const _u8 EventClass,const _u32 Mask)
 {
     _SlEventMaskSetMsg_u Msg;
 
@@ -299,7 +299,7 @@ typedef union
 {
     _DevMaskEventGetCommand_t	    Cmd;
     _DevMaskEventGetResponse_t      Rsp;
-}_SlEventMaskGetMsg_u;
+} _SlEventMaskGetMsg_u;
 
 
 
@@ -336,7 +336,7 @@ typedef union
 {
     _DeviceSetGet_t	    Cmd;
     _DeviceSetGet_t	    Rsp;
-}_SlDeviceMsgGet_u;
+} _SlDeviceMsgGet_u;
 
 
 
@@ -362,7 +362,7 @@ _i32 sl_DevGet(const _u8 DeviceGetId,_u8 *pOption,_u8 *pConfigLen, _u8 *pValues)
     if( pOption )
     {
 
-      _SlDrvResetCmdExt(&CmdExt);
+        _SlDrvResetCmdExt(&CmdExt);
         CmdExt.RxPayloadLen = *pConfigLen;
         CmdExt.pRxPayload = (_u8 *)pValues;
 
@@ -377,7 +377,7 @@ _i32 sl_DevGet(const _u8 DeviceGetId,_u8 *pOption,_u8 *pConfigLen, _u8 *pValues)
             *pOption = (_u8)Msg.Rsp.Option;
         }
 
-        if (CmdExt.RxPayloadLen < CmdExt.ActualRxPayloadLen) 
+        if (CmdExt.RxPayloadLen < CmdExt.ActualRxPayloadLen)
         {
             *pConfigLen = (_u8)CmdExt.RxPayloadLen;
             return SL_ESMALLBUF;
@@ -403,7 +403,7 @@ typedef union
 {
     _DeviceSetGet_t    Cmd;
     _BasicResponse_t   Rsp;
-}_SlDeviceMsgSet_u;
+} _SlDeviceMsgSet_u;
 
 
 
@@ -416,7 +416,7 @@ const _SlCmdCtrl_t _SlDeviceSetCmdCtrl =
     sizeof(_BasicResponse_t)
 };
 
-_i32 sl_DevSet(const _u8 DeviceSetId ,const _u8 Option,const _u8 ConfigLen,const _u8 *pValues)
+_i32 sl_DevSet(const _u8 DeviceSetId,const _u8 Option,const _u8 ConfigLen,const _u8 *pValues)
 {
     _SlDeviceMsgSet_u         Msg;
     _SlCmdExt_t               CmdExt;
@@ -455,30 +455,30 @@ void _SlDrvDeviceEventHandler(void* pArgs)
         break;
 
 
-		case SL_OPCODE_DEVICE_ABORT:
-			{
+    case SL_OPCODE_DEVICE_ABORT:
+    {
 #if defined (sl_GeneralEvtHdlr) || defined(EXT_LIB_REGISTERED_GENERAL_EVENTS)
-				SlDeviceEvent_t      devHandler;
-				devHandler.Event = SL_DEVICE_ABORT_ERROR_EVENT;	
-				devHandler.EventData.deviceReport.AbortType = *((_u32*)pArgs + 2);
-				devHandler.EventData.deviceReport.AbortData = *((_u32*)pArgs + 3);
-				_SlDrvHandleGeneralEvents(&devHandler);
-#endif		
-			}
-        break;
+        SlDeviceEvent_t      devHandler;
+        devHandler.Event = SL_DEVICE_ABORT_ERROR_EVENT;
+        devHandler.EventData.deviceReport.AbortType = *((_u32*)pArgs + 2);
+        devHandler.EventData.deviceReport.AbortData = *((_u32*)pArgs + 3);
+        _SlDrvHandleGeneralEvents(&devHandler);
+#endif
+    }
+    break;
 
     case  SL_OPCODE_DEVICE_DEVICEASYNCFATALERROR:
 #if defined (sl_GeneralEvtHdlr) || defined(EXT_LIB_REGISTERED_GENERAL_EVENTS)
-        {
-            _BasicResponse_t     *pMsgArgs   = (_BasicResponse_t *)_SL_RESP_ARGS_START(pHdr);
-            SlDeviceEvent_t      devHandler;
-            devHandler.Event = SL_DEVICE_FATAL_ERROR_EVENT;
-            devHandler.EventData.deviceEvent.status = pMsgArgs->status & 0xFF;
-            devHandler.EventData.deviceEvent.sender = (SlErrorSender_e)((pMsgArgs->status >> 8) & 0xFF);
-            _SlDrvHandleGeneralEvents(&devHandler);
-        }
+    {
+        _BasicResponse_t     *pMsgArgs   = (_BasicResponse_t *)_SL_RESP_ARGS_START(pHdr);
+        SlDeviceEvent_t      devHandler;
+        devHandler.Event = SL_DEVICE_FATAL_ERROR_EVENT;
+        devHandler.EventData.deviceEvent.status = pMsgArgs->status & 0xFF;
+        devHandler.EventData.deviceEvent.sender = (SlErrorSender_e)((pMsgArgs->status >> 8) & 0xFF);
+        _SlDrvHandleGeneralEvents(&devHandler);
+    }
 #endif
-        break;
+    break;
     default:
         SL_ERROR_TRACE2(MSG_306, "ASSERT: _SlDrvDeviceEventHandler : invalid opcode = 0x%x = %1", pHdr->GenHeader.Opcode, pHdr->GenHeader.Opcode);
     }
@@ -486,14 +486,14 @@ void _SlDrvDeviceEventHandler(void* pArgs)
 
 
 /******************************************************************************
-sl_UartSetMode 
+sl_UartSetMode
 ******************************************************************************/
 #ifdef SL_IF_TYPE_UART
 typedef union
 {
     _DevUartSetModeCommand_t	  Cmd;
     _DevUartSetModeResponse_t     Rsp;
-}_SlUartSetModeMsg_u;
+} _SlUartSetModeMsg_u;
 
 
 #if _SL_INCLUDE_FUNC(sl_UartSetMode)

@@ -51,7 +51,7 @@ uintptr_t mod_machine_mem_get_addr(mp_obj_t addr_o, uint align) {
     if ((addr & (align - 1)) != 0) {
         mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("address %08x is not aligned to %d bytes"), addr, align);
     }
-    #if MICROPY_PLAT_DEV_MEM
+#if MICROPY_PLAT_DEV_MEM
     {
         // Not thread-safe
         static int fd;
@@ -72,7 +72,7 @@ uintptr_t mod_machine_mem_get_addr(mp_obj_t addr_o, uint align) {
         }
         addr = map_page + (addr & MICROPY_PAGE_MASK);
     }
-    #endif
+#endif
 
     return addr;
 }
@@ -92,15 +92,15 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_mem16), MP_ROM_PTR(&machine_mem16_obj) },
     { MP_ROM_QSTR(MP_QSTR_mem32), MP_ROM_PTR(&machine_mem32_obj) },
 
-    #ifdef MICROPY_UNIX_MACHINE_IDLE
+#ifdef MICROPY_UNIX_MACHINE_IDLE
     { MP_ROM_QSTR(MP_QSTR_idle), MP_ROM_PTR(&machine_idle_obj) },
-    #endif
+#endif
 
     { MP_ROM_QSTR(MP_QSTR_PinBase), MP_ROM_PTR(&machine_pinbase_type) },
     { MP_ROM_QSTR(MP_QSTR_Signal), MP_ROM_PTR(&machine_signal_type) },
-    #if MICROPY_PY_MACHINE_PULSE
+#if MICROPY_PY_MACHINE_PULSE
     { MP_ROM_QSTR(MP_QSTR_time_pulse_us), MP_ROM_PTR(&machine_time_pulse_us_obj) },
-    #endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(machine_module_globals, machine_module_globals_table);

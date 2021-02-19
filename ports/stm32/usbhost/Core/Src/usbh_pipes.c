@@ -16,14 +16,14 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 
 /* Includes ------------------------------------------------------------------*/
 #include "usbh_pipes.h"
@@ -35,47 +35,47 @@
 /** @addtogroup USBH_LIB_CORE
 * @{
 */
-  
+
 /** @defgroup USBH_PIPES
   * @brief This file includes opening and closing Pipes
   * @{
-  */ 
+  */
 
 /** @defgroup USBH_PIPES_Private_Defines
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 /** @defgroup USBH_PIPES_Private_TypesDefinitions
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 
 /** @defgroup USBH_PIPES_Private_Macros
   * @{
-  */ 
+  */
 /**
   * @}
-  */ 
+  */
 
 
 /** @defgroup USBH_PIPES_Private_Variables
   * @{
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 
 /** @defgroup USBH_PIPES_Private_Functions
   * @{
-  */ 
+  */
 static uint16_t USBH_GetFreePipe (USBH_HandleTypeDef *phost);
 
 
@@ -91,23 +91,23 @@ static uint16_t USBH_GetFreePipe (USBH_HandleTypeDef *phost);
   * @retval USBH Status
   */
 USBH_StatusTypeDef USBH_OpenPipe  (USBH_HandleTypeDef *phost,
-                            uint8_t pipe_num,
-                            uint8_t epnum,
-                            uint8_t dev_address,
-                            uint8_t speed,
-                            uint8_t ep_type,
-                            uint16_t mps)
+                                   uint8_t pipe_num,
+                                   uint8_t epnum,
+                                   uint8_t dev_address,
+                                   uint8_t speed,
+                                   uint8_t ep_type,
+                                   uint16_t mps)
 {
 
-  USBH_LL_OpenPipe(phost,
-                        pipe_num,
-                        epnum,
-                        dev_address,
-                        speed,
-                        ep_type,
-                        mps);
-  
-  return USBH_OK; 
+    USBH_LL_OpenPipe(phost,
+                     pipe_num,
+                     epnum,
+                     dev_address,
+                     speed,
+                     ep_type,
+                     mps);
+
+    return USBH_OK;
 
 }
 
@@ -119,12 +119,12 @@ USBH_StatusTypeDef USBH_OpenPipe  (USBH_HandleTypeDef *phost,
   * @retval USBH Status
   */
 USBH_StatusTypeDef USBH_ClosePipe  (USBH_HandleTypeDef *phost,
-                            uint8_t pipe_num)
+                                    uint8_t pipe_num)
 {
 
-  USBH_LL_ClosePipe(phost, pipe_num);
-  
-  return USBH_OK; 
+    USBH_LL_ClosePipe(phost, pipe_num);
+
+    return USBH_OK;
 
 }
 
@@ -137,31 +137,31 @@ USBH_StatusTypeDef USBH_ClosePipe  (USBH_HandleTypeDef *phost,
   */
 uint8_t USBH_AllocPipe  (USBH_HandleTypeDef *phost, uint8_t ep_addr)
 {
-  uint16_t pipe;
-  
-  pipe =  USBH_GetFreePipe(phost);
+    uint16_t pipe;
 
-  if (pipe != 0xFFFF)
-  {
-	phost->Pipes[pipe] = 0x8000 | ep_addr;
-  }
-  return pipe;
+    pipe =  USBH_GetFreePipe(phost);
+
+    if (pipe != 0xFFFF)
+    {
+        phost->Pipes[pipe] = 0x8000 | ep_addr;
+    }
+    return pipe;
 }
 
 /**
   * @brief  USBH_Free_Pipe
   *         Free the USB Pipe
   * @param  phost: Host Handle
-  * @param  idx: Pipe number to be freed 
+  * @param  idx: Pipe number to be freed
   * @retval USBH Status
   */
 USBH_StatusTypeDef USBH_FreePipe  (USBH_HandleTypeDef *phost, uint8_t idx)
 {
-   if(idx < 11)
-   {
-	 phost->Pipes[idx] &= 0x7FFF;
-   }
-   return USBH_OK;
+    if(idx < 11)
+    {
+        phost->Pipes[idx] &= 0x7FFF;
+    }
+    return USBH_OK;
 }
 
 /**
@@ -172,24 +172,20 @@ USBH_StatusTypeDef USBH_FreePipe  (USBH_HandleTypeDef *phost, uint8_t idx)
   */
 static uint16_t USBH_GetFreePipe (USBH_HandleTypeDef *phost)
 {
-  uint8_t idx = 0;
-  
-  for (idx = 0 ; idx < 11 ; idx++)
-  {
-	if ((phost->Pipes[idx] & 0x8000) == 0)
-	{
-	   return idx;
-	} 
-  }
-  return 0xFFFF;
+    uint8_t idx = 0;
+
+    for (idx = 0 ; idx < 11 ; idx++)
+    {
+        if ((phost->Pipes[idx] & 0x8000) == 0)
+        {
+            return idx;
+        }
+    }
+    return 0xFFFF;
 }
 /**
 * @}
-*/ 
-
-/**
-* @}
-*/ 
+*/
 
 /**
 * @}
@@ -197,7 +193,11 @@ static uint16_t USBH_GetFreePipe (USBH_HandleTypeDef *phost)
 
 /**
 * @}
-*/ 
+*/
+
+/**
+* @}
+*/
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
 

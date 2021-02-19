@@ -43,12 +43,12 @@ typedef struct _mp_obj_btree_t {
     DB *db;
     mp_obj_t start_key;
     mp_obj_t end_key;
-    #define FLAG_END_KEY_INCL 1
-    #define FLAG_DESC 2
-    #define FLAG_ITER_TYPE_MASK 0xc0
-    #define FLAG_ITER_KEYS   0x40
-    #define FLAG_ITER_VALUES 0x80
-    #define FLAG_ITER_ITEMS  0xc0
+#define FLAG_END_KEY_INCL 1
+#define FLAG_DESC 2
+#define FLAG_ITER_TYPE_MASK 0xc0
+#define FLAG_ITER_KEYS   0x40
+#define FLAG_ITER_VALUES 0x80
+#define FLAG_ITER_ITEMS  0xc0
     byte flags;
     byte next_flags;
 } mp_obj_btree_t;
@@ -236,17 +236,17 @@ STATIC mp_obj_t btree_iternext(mp_obj_t self_in) {
     }
 
     switch (self->flags & FLAG_ITER_TYPE_MASK) {
-        case FLAG_ITER_KEYS:
-            return mp_obj_new_bytes(key.data, key.size);
-        case FLAG_ITER_VALUES:
-            return mp_obj_new_bytes(val.data, val.size);
-        default: {
-            mp_obj_t pair_o = mp_obj_new_tuple(2, NULL);
-            mp_obj_tuple_t *pair = MP_OBJ_TO_PTR(pair_o);
-            pair->items[0] = mp_obj_new_bytes(key.data, key.size);
-            pair->items[1] = mp_obj_new_bytes(val.data, val.size);
-            return pair_o;
-        }
+    case FLAG_ITER_KEYS:
+        return mp_obj_new_bytes(key.data, key.size);
+    case FLAG_ITER_VALUES:
+        return mp_obj_new_bytes(val.data, val.size);
+    default: {
+        mp_obj_t pair_o = mp_obj_new_tuple(2, NULL);
+        mp_obj_tuple_t *pair = MP_OBJ_TO_PTR(pair_o);
+        pair->items[0] = mp_obj_new_bytes(key.data, key.size);
+        pair->items[1] = mp_obj_new_bytes(val.data, val.size);
+        return pair_o;
+    }
     }
 }
 
@@ -286,16 +286,16 @@ STATIC mp_obj_t btree_subscr(mp_obj_t self_in, mp_obj_t index, mp_obj_t value) {
 STATIC mp_obj_t btree_binary_op(mp_binary_op_t op, mp_obj_t lhs_in, mp_obj_t rhs_in) {
     mp_obj_btree_t *self = MP_OBJ_TO_PTR(lhs_in);
     switch (op) {
-        case MP_BINARY_OP_CONTAINS: {
-            DBT key, val;
-            key.data = (void *)mp_obj_str_get_data(rhs_in, &key.size);
-            int res = __bt_get(self->db, &key, &val, 0);
-            CHECK_ERROR(res);
-            return mp_obj_new_bool(res != RET_SPECIAL);
-        }
-        default:
-            // op not supported
-            return MP_OBJ_NULL;
+    case MP_BINARY_OP_CONTAINS: {
+        DBT key, val;
+        key.data = (void *)mp_obj_str_get_data(rhs_in, &key.size);
+        int res = __bt_get(self->db, &key, &val, 0);
+        CHECK_ERROR(res);
+        return mp_obj_new_bool(res != RET_SPECIAL);
+    }
+    default:
+        // op not supported
+        return MP_OBJ_NULL;
     }
 }
 
@@ -352,7 +352,7 @@ STATIC mp_obj_t mod_btree_open(size_t n_args, const mp_obj_t *pos_args, mp_map_t
         mp_arg_val_t minkeypage;
     } args;
     mp_arg_parse_all(n_args - 1, pos_args + 1, kw_args,
-        MP_ARRAY_SIZE(allowed_args), allowed_args, (mp_arg_val_t *)&args);
+                     MP_ARRAY_SIZE(allowed_args), allowed_args, (mp_arg_val_t *)&args);
     BTREEINFO openinfo = {0};
     openinfo.flags = args.flags.u_int;
     openinfo.cachesize = args.cachesize.u_int;

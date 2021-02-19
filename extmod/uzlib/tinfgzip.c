@@ -82,20 +82,24 @@ int uzlib_gzip_parse_header(TINF_DATA *d)
     /* skip extra data if present */
     if (flg & FEXTRA)
     {
-       unsigned int xlen = tinf_get_uint16(d);
-       tinf_skip_bytes(d, xlen);
+        unsigned int xlen = tinf_get_uint16(d);
+        tinf_skip_bytes(d, xlen);
     }
 
     /* skip file name if present */
-    if (flg & FNAME) { while (uzlib_get_byte(d)); }
+    if (flg & FNAME) {
+        while (uzlib_get_byte(d));
+    }
 
     /* skip file comment if present */
-    if (flg & FCOMMENT) { while (uzlib_get_byte(d)); }
+    if (flg & FCOMMENT) {
+        while (uzlib_get_byte(d));
+    }
 
     /* check header crc if present */
     if (flg & FHCRC)
     {
-       /*unsigned int hcrc =*/ tinf_get_uint16(d);
+        /*unsigned int hcrc =*/ tinf_get_uint16(d);
 
         // TODO: Check!
 //       if (hcrc != (tinf_crc32(src, start - src) & 0x0000ffff))

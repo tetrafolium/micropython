@@ -65,13 +65,13 @@ STATIC void network_cyw43_print(const mp_print_t *print, mp_obj_t self_in, mp_pr
         status_str = "fail";
     }
     mp_printf(print, "<CYW43 %s %s %u.%u.%u.%u>",
-        self->itf == 0 ? "STA" : "AP",
-        status_str,
-        netif->ip_addr.addr & 0xff,
-        netif->ip_addr.addr >> 8 & 0xff,
-        netif->ip_addr.addr >> 16 & 0xff,
-        netif->ip_addr.addr >> 24
-        );
+              self->itf == 0 ? "STA" : "AP",
+              status_str,
+              netif->ip_addr.addr & 0xff,
+              netif->ip_addr.addr >> 8 & 0xff,
+              netif->ip_addr.addr >> 16 & 0xff,
+              netif->ip_addr.addr >> 24
+             );
 }
 
 STATIC mp_obj_t network_cyw43_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args) {
@@ -276,23 +276,23 @@ STATIC mp_obj_t network_cyw43_status(size_t n_args, const mp_obj_t *args) {
 
     // one argument: return status based on query parameter
     switch (mp_obj_str_get_qstr(args[1])) {
-        case MP_QSTR_stations: {
-            // return list of connected stations
-            if (self->itf != CYW43_ITF_AP) {
-                mp_raise_ValueError(MP_ERROR_TEXT("AP required"));
-            }
-            int num_stas;
-            uint8_t macs[32 * 6];
-            cyw43_wifi_ap_get_stas(self->cyw, &num_stas, macs);
-            mp_obj_t list = mp_obj_new_list(num_stas, NULL);
-            for (int i = 0; i < num_stas; ++i) {
-                mp_obj_t tuple[1] = {
-                    mp_obj_new_bytes(&macs[i * 6], 6),
-                };
-                ((mp_obj_list_t *)MP_OBJ_TO_PTR(list))->items[i] = mp_obj_new_tuple(1, tuple);
-            }
-            return list;
+    case MP_QSTR_stations: {
+        // return list of connected stations
+        if (self->itf != CYW43_ITF_AP) {
+            mp_raise_ValueError(MP_ERROR_TEXT("AP required"));
         }
+        int num_stas;
+        uint8_t macs[32 * 6];
+        cyw43_wifi_ap_get_stas(self->cyw, &num_stas, macs);
+        mp_obj_t list = mp_obj_new_list(num_stas, NULL);
+        for (int i = 0; i < num_stas; ++i) {
+            mp_obj_t tuple[1] = {
+                mp_obj_new_bytes(&macs[i * 6], 6),
+            };
+            ((mp_obj_list_t *)MP_OBJ_TO_PTR(list))->items[i] = mp_obj_new_tuple(1, tuple);
+        }
+        return list;
+    }
     }
 
     mp_raise_ValueError(MP_ERROR_TEXT("unknown status param"));
@@ -320,41 +320,41 @@ STATIC mp_obj_t network_cyw43_config(size_t n_args, const mp_obj_t *args, mp_map
         }
 
         switch (mp_obj_str_get_qstr(args[1])) {
-            case MP_QSTR_antenna: {
-                uint8_t buf[4];
-                cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_ANTDIV, 4, buf, self->itf);
-                return MP_OBJ_NEW_SMALL_INT(nw_get_le32(buf));
+        case MP_QSTR_antenna: {
+            uint8_t buf[4];
+            cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_ANTDIV, 4, buf, self->itf);
+            return MP_OBJ_NEW_SMALL_INT(nw_get_le32(buf));
+        }
+        case MP_QSTR_channel: {
+            uint8_t buf[4];
+            cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_CHANNEL, 4, buf, self->itf);
+            return MP_OBJ_NEW_SMALL_INT(nw_get_le32(buf));
+        }
+        case MP_QSTR_essid: {
+            if (self->itf == CYW43_ITF_STA) {
+                uint8_t buf[36];
+                cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_SSID, 36, buf, self->itf);
+                return mp_obj_new_str((const char *)buf + 4, nw_get_le32(buf));
+            } else {
+                size_t len;
+                const uint8_t *buf;
+                cyw43_wifi_ap_get_ssid(self->cyw, &len, &buf);
+                return mp_obj_new_str((const char *)buf, len);
             }
-            case MP_QSTR_channel: {
-                uint8_t buf[4];
-                cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_CHANNEL, 4, buf, self->itf);
-                return MP_OBJ_NEW_SMALL_INT(nw_get_le32(buf));
-            }
-            case MP_QSTR_essid: {
-                if (self->itf == CYW43_ITF_STA) {
-                    uint8_t buf[36];
-                    cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_SSID, 36, buf, self->itf);
-                    return mp_obj_new_str((const char *)buf + 4, nw_get_le32(buf));
-                } else {
-                    size_t len;
-                    const uint8_t *buf;
-                    cyw43_wifi_ap_get_ssid(self->cyw, &len, &buf);
-                    return mp_obj_new_str((const char *)buf, len);
-                }
-            }
-            case MP_QSTR_mac: {
-                uint8_t buf[6];
-                cyw43_wifi_get_mac(self->cyw, self->itf, buf);
-                return mp_obj_new_bytes(buf, 6);
-            }
-            case MP_QSTR_txpower: {
-                uint8_t buf[13];
-                memcpy(buf, "qtxpower\x00\x00\x00\x00\x00", 13);
-                cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_VAR, 13, buf, self->itf);
-                return MP_OBJ_NEW_SMALL_INT(nw_get_le32(buf) / 4);
-            }
-            default:
-                mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
+        }
+        case MP_QSTR_mac: {
+            uint8_t buf[6];
+            cyw43_wifi_get_mac(self->cyw, self->itf, buf);
+            return mp_obj_new_bytes(buf, 6);
+        }
+        case MP_QSTR_txpower: {
+            uint8_t buf[13];
+            memcpy(buf, "qtxpower\x00\x00\x00\x00\x00", 13);
+            cyw43_ioctl(self->cyw, CYW43_IOCTL_GET_VAR, 13, buf, self->itf);
+            return MP_OBJ_NEW_SMALL_INT(nw_get_le32(buf) / 4);
+        }
+        default:
+            mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
         }
     } else {
         // Set config value(s)
@@ -366,61 +366,61 @@ STATIC mp_obj_t network_cyw43_config(size_t n_args, const mp_obj_t *args, mp_map
             if (MP_MAP_SLOT_IS_FILLED(kwargs, i)) {
                 mp_map_elem_t *e = &kwargs->table[i];
                 switch (mp_obj_str_get_qstr(e->key)) {
-                    case MP_QSTR_antenna: {
-                        uint8_t buf[4];
-                        nw_put_le32(buf, mp_obj_get_int(e->value));
-                        cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_ANTDIV, 4, buf, self->itf);
-                        break;
+                case MP_QSTR_antenna: {
+                    uint8_t buf[4];
+                    nw_put_le32(buf, mp_obj_get_int(e->value));
+                    cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_ANTDIV, 4, buf, self->itf);
+                    break;
+                }
+                case MP_QSTR_channel: {
+                    cyw43_wifi_ap_set_channel(self->cyw, mp_obj_get_int(e->value));
+                    break;
+                }
+                case MP_QSTR_essid: {
+                    size_t len;
+                    const char *str = mp_obj_str_get_data(e->value, &len);
+                    cyw43_wifi_ap_set_ssid(self->cyw, len, (const uint8_t *)str);
+                    break;
+                }
+                case MP_QSTR_monitor: {
+                    mp_int_t value = mp_obj_get_int(e->value);
+                    uint8_t buf[9 + 4];
+                    memcpy(buf, "allmulti\x00", 9);
+                    nw_put_le32(buf + 9, value);
+                    cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_VAR, 9 + 4, buf, self->itf);
+                    nw_put_le32(buf, value);
+                    cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_MONITOR, 4, buf, self->itf);
+                    if (value) {
+                        self->cyw->trace_flags |= CYW43_TRACE_MAC;
+                    } else {
+                        self->cyw->trace_flags &= ~CYW43_TRACE_MAC;
                     }
-                    case MP_QSTR_channel: {
-                        cyw43_wifi_ap_set_channel(self->cyw, mp_obj_get_int(e->value));
-                        break;
-                    }
-                    case MP_QSTR_essid: {
-                        size_t len;
-                        const char *str = mp_obj_str_get_data(e->value, &len);
-                        cyw43_wifi_ap_set_ssid(self->cyw, len, (const uint8_t *)str);
-                        break;
-                    }
-                    case MP_QSTR_monitor: {
-                        mp_int_t value = mp_obj_get_int(e->value);
-                        uint8_t buf[9 + 4];
-                        memcpy(buf, "allmulti\x00", 9);
-                        nw_put_le32(buf + 9, value);
-                        cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_VAR, 9 + 4, buf, self->itf);
-                        nw_put_le32(buf, value);
-                        cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_MONITOR, 4, buf, self->itf);
-                        if (value) {
-                            self->cyw->trace_flags |= CYW43_TRACE_MAC;
-                        } else {
-                            self->cyw->trace_flags &= ~CYW43_TRACE_MAC;
-                        }
-                        break;
-                    }
-                    case MP_QSTR_password: {
-                        size_t len;
-                        const char *str = mp_obj_str_get_data(e->value, &len);
-                        cyw43_wifi_ap_set_password(self->cyw, len, (const uint8_t *)str);
-                        break;
-                    }
-                    case MP_QSTR_pm: {
-                        cyw43_wifi_pm(self->cyw, mp_obj_get_int(e->value));
-                        break;
-                    }
-                    case MP_QSTR_trace: {
-                        self->cyw->trace_flags = mp_obj_get_int(e->value);
-                        break;
-                    }
-                    case MP_QSTR_txpower: {
-                        mp_int_t dbm = mp_obj_get_int(e->value);
-                        uint8_t buf[9 + 4];
-                        memcpy(buf, "qtxpower\x00", 9);
-                        nw_put_le32(buf + 9, dbm * 4);
-                        cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_VAR, 9 + 4, buf, self->itf);
-                        break;
-                    }
-                    default:
-                        mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
+                    break;
+                }
+                case MP_QSTR_password: {
+                    size_t len;
+                    const char *str = mp_obj_str_get_data(e->value, &len);
+                    cyw43_wifi_ap_set_password(self->cyw, len, (const uint8_t *)str);
+                    break;
+                }
+                case MP_QSTR_pm: {
+                    cyw43_wifi_pm(self->cyw, mp_obj_get_int(e->value));
+                    break;
+                }
+                case MP_QSTR_trace: {
+                    self->cyw->trace_flags = mp_obj_get_int(e->value);
+                    break;
+                }
+                case MP_QSTR_txpower: {
+                    mp_int_t dbm = mp_obj_get_int(e->value);
+                    uint8_t buf[9 + 4];
+                    memcpy(buf, "qtxpower\x00", 9);
+                    nw_put_le32(buf + 9, dbm * 4);
+                    cyw43_ioctl(self->cyw, CYW43_IOCTL_SET_VAR, 9 + 4, buf, self->itf);
+                    break;
+                }
+                default:
+                    mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
                 }
             }
         }

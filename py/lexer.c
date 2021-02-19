@@ -222,10 +222,10 @@ STATIC const char *const tok_kw[] = {
     "and",
     "as",
     "assert",
-    #if MICROPY_PY_ASYNC_AWAIT
+#if MICROPY_PY_ASYNC_AWAIT
     "async",
     "await",
-    #endif
+#endif
     "break",
     "class",
     "continue",
@@ -307,79 +307,79 @@ STATIC void parse_string_literal(mp_lexer_t *lex, bool is_raw) {
                     vstr_add_char(&lex->vstr, '\\');
                 } else {
                     switch (c) {
-                        // note: "c" can never be MP_LEXER_EOF because next_char
-                        // always inserts a newline at the end of the input stream
-                        case '\n':
-                            c = MP_LEXER_EOF;
-                            break;                          // backslash escape the newline, just ignore it
-                        case '\\':
-                            break;
-                        case '\'':
-                            break;
-                        case '"':
-                            break;
-                        case 'a':
-                            c = 0x07;
-                            break;
-                        case 'b':
-                            c = 0x08;
-                            break;
-                        case 't':
-                            c = 0x09;
-                            break;
-                        case 'n':
-                            c = 0x0a;
-                            break;
-                        case 'v':
-                            c = 0x0b;
-                            break;
-                        case 'f':
-                            c = 0x0c;
-                            break;
-                        case 'r':
-                            c = 0x0d;
-                            break;
-                        case 'u':
-                        case 'U':
-                            if (lex->tok_kind == MP_TOKEN_BYTES) {
-                                // b'\u1234' == b'\\u1234'
-                                vstr_add_char(&lex->vstr, '\\');
-                                break;
-                            }
-                            // Otherwise fall through.
-                            MP_FALLTHROUGH
-                        case 'x': {
-                            mp_uint_t num = 0;
-                            if (!get_hex(lex, (c == 'x' ? 2 : c == 'u' ? 4 : 8), &num)) {
-                                // not enough hex chars for escape sequence
-                                lex->tok_kind = MP_TOKEN_INVALID;
-                            }
-                            c = num;
+                    // note: "c" can never be MP_LEXER_EOF because next_char
+                    // always inserts a newline at the end of the input stream
+                    case '\n':
+                        c = MP_LEXER_EOF;
+                        break;                          // backslash escape the newline, just ignore it
+                    case '\\':
+                        break;
+                    case '\'':
+                        break;
+                    case '"':
+                        break;
+                    case 'a':
+                        c = 0x07;
+                        break;
+                    case 'b':
+                        c = 0x08;
+                        break;
+                    case 't':
+                        c = 0x09;
+                        break;
+                    case 'n':
+                        c = 0x0a;
+                        break;
+                    case 'v':
+                        c = 0x0b;
+                        break;
+                    case 'f':
+                        c = 0x0c;
+                        break;
+                    case 'r':
+                        c = 0x0d;
+                        break;
+                    case 'u':
+                    case 'U':
+                        if (lex->tok_kind == MP_TOKEN_BYTES) {
+                            // b'\u1234' == b'\\u1234'
+                            vstr_add_char(&lex->vstr, '\\');
                             break;
                         }
-                        case 'N':
-                            // Supporting '\N{LATIN SMALL LETTER A}' == 'a' would require keeping the
-                            // entire Unicode name table in the core. As of Unicode 6.3.0, that's nearly
-                            // 3MB of text; even gzip-compressed and with minimal structure, it'll take
-                            // roughly half a meg of storage. This form of Unicode escape may be added
-                            // later on, but it's definitely not a priority right now. -- CJA 20140607
-                            mp_raise_NotImplementedError(MP_ERROR_TEXT("unicode name escapes"));
-                            break;
-                        default:
-                            if (c >= '0' && c <= '7') {
-                                // Octal sequence, 1-3 chars
-                                size_t digits = 3;
-                                mp_uint_t num = c - '0';
-                                while (is_following_odigit(lex) && --digits != 0) {
-                                    next_char(lex);
-                                    num = num * 8 + (CUR_CHAR(lex) - '0');
-                                }
-                                c = num;
-                            } else {
-                                // unrecognised escape character; CPython lets this through verbatim as '\' and then the character
-                                vstr_add_char(&lex->vstr, '\\');
+                        // Otherwise fall through.
+                        MP_FALLTHROUGH
+                    case 'x': {
+                        mp_uint_t num = 0;
+                        if (!get_hex(lex, (c == 'x' ? 2 : c == 'u' ? 4 : 8), &num)) {
+                            // not enough hex chars for escape sequence
+                            lex->tok_kind = MP_TOKEN_INVALID;
+                        }
+                        c = num;
+                        break;
+                    }
+                    case 'N':
+                        // Supporting '\N{LATIN SMALL LETTER A}' == 'a' would require keeping the
+                        // entire Unicode name table in the core. As of Unicode 6.3.0, that's nearly
+                        // 3MB of text; even gzip-compressed and with minimal structure, it'll take
+                        // roughly half a meg of storage. This form of Unicode escape may be added
+                        // later on, but it's definitely not a priority right now. -- CJA 20140607
+                        mp_raise_NotImplementedError(MP_ERROR_TEXT("unicode name escapes"));
+                        break;
+                    default:
+                        if (c >= '0' && c <= '7') {
+                            // Octal sequence, 1-3 chars
+                            size_t digits = 3;
+                            mp_uint_t num = c - '0';
+                            while (is_following_odigit(lex) && --digits != 0) {
+                                next_char(lex);
+                                num = num * 8 + (CUR_CHAR(lex) - '0');
                             }
-                            break;
+                            c = num;
+                        } else {
+                            // unrecognised escape character; CPython lets this through verbatim as '\' and then the character
+                            vstr_add_char(&lex->vstr, '\\');
+                        }
+                        break;
                     }
                 }
                 if (c != MP_LEXER_EOF) {

@@ -15,7 +15,7 @@ typedef struct
     unsigned int ulBlockSize;
     DSTATUS bStatus;
     unsigned short usRCA;
-}DiskInfo_t;
+} DiskInfo_t;
 
 extern DiskInfo_t sd_disk_info;
 

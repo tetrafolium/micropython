@@ -302,91 +302,91 @@ STATIC const uint8_t set_event_event_mask2_fix_payload[] = { 0x04, 0x0e, 0x04, 0
 
 STATIC size_t tl_parse_hci_msg(const uint8_t *buf, parse_hci_info_t *parse) {
     const char *info;
-    #if HCI_TRACE
+#if HCI_TRACE
     int applied_set_event_event_mask2_fix = 0;
-    #endif
+#endif
     size_t len;
     switch (buf[0]) {
-        case HCI_KIND_BT_ACL: {
-            info = "HCI_ACL";
+    case HCI_KIND_BT_ACL: {
+        info = "HCI_ACL";
 
-            len = 5 + buf[3] + (buf[4] << 8);
-            if (parse != NULL) {
-                parse->cb_fun(parse->cb_env, buf, len);
-            }
-            break;
+        len = 5 + buf[3] + (buf[4] << 8);
+        if (parse != NULL) {
+            parse->cb_fun(parse->cb_env, buf, len);
         }
-        case HCI_KIND_BT_EVENT: {
-            info = "HCI_EVT";
+        break;
+    }
+    case HCI_KIND_BT_EVENT: {
+        info = "HCI_EVT";
 
-            // Acknowledgment of a pending ACL request, allow another one to be sent.
-            if (buf[1] == HCI_EVENT_NUMBER_OF_COMPLETED_PACKETS) {
-                hci_acl_cmd_pending = false;
-            }
+        // Acknowledgment of a pending ACL request, allow another one to be sent.
+        if (buf[1] == HCI_EVENT_NUMBER_OF_COMPLETED_PACKETS) {
+            hci_acl_cmd_pending = false;
+        }
 
-            len = 3 + buf[2];
-            if (parse != NULL) {
+        len = 3 + buf[2];
+        if (parse != NULL) {
 
-                if (buf[1] == HCI_EVENT_COMMAND_COMPLETE && len == 7) {
-                    uint16_t opcode = (buf[5] << 8) | buf[4];
-                    uint8_t status = buf[6];
+            if (buf[1] == HCI_EVENT_COMMAND_COMPLETE && len == 7) {
+                uint16_t opcode = (buf[5] << 8) | buf[4];
+                uint8_t status = buf[6];
 
-                    if (opcode == HCI_OPCODE(OGF_CTLR_BASEBAND, OCF_CB_SET_EVENT_MASK2) && status != 0) {
-                        // For WS firmware v1.8.0.0.4 and below. Reply with the "everything OK" payload.
-                        parse->cb_fun(parse->cb_env, set_event_event_mask2_fix_payload, sizeof(set_event_event_mask2_fix_payload));
-                        #if HCI_TRACE
-                        applied_set_event_event_mask2_fix = 18;
-                        #endif
-                        break; // Don't send the original payload.
-                    }
-
-                    if (opcode == HCI_OPCODE(OGF_CTLR_BASEBAND, OCF_CB_RESET) && status == 0) {
-                        // Controller acknowledged reset command.
-                        // This will trigger setting the MAC address.
-                        parse->was_hci_reset_evt = true;
-                    }
+                if (opcode == HCI_OPCODE(OGF_CTLR_BASEBAND, OCF_CB_SET_EVENT_MASK2) && status != 0) {
+                    // For WS firmware v1.8.0.0.4 and below. Reply with the "everything OK" payload.
+                    parse->cb_fun(parse->cb_env, set_event_event_mask2_fix_payload, sizeof(set_event_event_mask2_fix_payload));
+#if HCI_TRACE
+                    applied_set_event_event_mask2_fix = 18;
+#endif
+                    break; // Don't send the original payload.
                 }
 
-                if (buf[1] == HCI_EVENT_COMMAND_STATUS && len == 7) {
-                    uint16_t opcode = (buf[6] << 8) | buf[5];
-                    uint8_t status = buf[3];
-
-                    if (opcode == HCI_OPCODE(OGF_CTLR_BASEBAND, OCF_CB_SET_EVENT_MASK2) && status != 0) {
-                        // For WS firmware v1.9.0.0.4 and higher. Reply with the "everything OK" payload.
-                        parse->cb_fun(parse->cb_env, set_event_event_mask2_fix_payload, sizeof(set_event_event_mask2_fix_payload));
-                        #if HCI_TRACE
-                        applied_set_event_event_mask2_fix = 19;
-                        #endif
-                        break;  // Don't send the original payload.
-                    }
+                if (opcode == HCI_OPCODE(OGF_CTLR_BASEBAND, OCF_CB_RESET) && status == 0) {
+                    // Controller acknowledged reset command.
+                    // This will trigger setting the MAC address.
+                    parse->was_hci_reset_evt = true;
                 }
-
-                parse->cb_fun(parse->cb_env, buf, len);
             }
-            break;
+
+            if (buf[1] == HCI_EVENT_COMMAND_STATUS && len == 7) {
+                uint16_t opcode = (buf[6] << 8) | buf[5];
+                uint8_t status = buf[3];
+
+                if (opcode == HCI_OPCODE(OGF_CTLR_BASEBAND, OCF_CB_SET_EVENT_MASK2) && status != 0) {
+                    // For WS firmware v1.9.0.0.4 and higher. Reply with the "everything OK" payload.
+                    parse->cb_fun(parse->cb_env, set_event_event_mask2_fix_payload, sizeof(set_event_event_mask2_fix_payload));
+#if HCI_TRACE
+                    applied_set_event_event_mask2_fix = 19;
+#endif
+                    break;  // Don't send the original payload.
+                }
+            }
+
+            parse->cb_fun(parse->cb_env, buf, len);
         }
-        case HCI_KIND_VENDOR_RESPONSE: {
-            // assert(buf[1] == 0x0e);
-            info = "VEND_RESP";
-            len = 3 + buf[2]; // ???
-            // uint16_t cmd = buf[4] | buf[5] << 8;
-            // uint8_t status = buf[6];
-            break;
-        }
-        case HCI_KIND_VENDOR_EVENT: {
-            // assert(buf[1] == 0xff);
-            info = "VEND_EVT";
-            len = 3 + buf[2]; // ???
-            // uint16_t evt = buf[3] | buf[4] << 8;
-            break;
-        }
-        default:
-            info = "HCI_UNKNOWN";
-            len = 0;
-            break;
+        break;
+    }
+    case HCI_KIND_VENDOR_RESPONSE: {
+        // assert(buf[1] == 0x0e);
+        info = "VEND_RESP";
+        len = 3 + buf[2]; // ???
+        // uint16_t cmd = buf[4] | buf[5] << 8;
+        // uint8_t status = buf[6];
+        break;
+    }
+    case HCI_KIND_VENDOR_EVENT: {
+        // assert(buf[1] == 0xff);
+        info = "VEND_EVT";
+        len = 3 + buf[2]; // ???
+        // uint16_t evt = buf[3] | buf[4] << 8;
+        break;
+    }
+    default:
+        info = "HCI_UNKNOWN";
+        len = 0;
+        break;
     }
 
-    #if HCI_TRACE
+#if HCI_TRACE
     printf("[% 8d] <%s(%02x", mp_hal_ticks_ms(), info, buf[0]);
     for (int i = 1; i < len; ++i) {
         printf(":%02x", buf[i]);
@@ -400,9 +400,9 @@ STATIC size_t tl_parse_hci_msg(const uint8_t *buf, parse_hci_info_t *parse) {
     }
     printf("\n");
 
-    #else
+#else
     (void)info;
-    #endif
+#endif
 
     return len;
 }
@@ -457,13 +457,13 @@ STATIC void tl_hci_cmd(uint8_t *cmd, unsigned int ch, uint8_t hdr, uint16_t opco
     cmd[11] = len;
     memcpy(&cmd[12], buf, len);
 
-    #if HCI_TRACE
+#if HCI_TRACE
     printf("[% 8d] >HCI(", mp_hal_ticks_ms());
     for (int i = 0; i < len + 4; ++i) {
         printf(":%02x", cmd[i + 8]);
     }
     printf(")\n");
-    #endif
+#endif
 
     // Indicate that this channel is ready.
     LL_C1_IPCC_SetFlag_CHx(IPCC, ch);
@@ -593,13 +593,13 @@ void rfcore_ble_init(void) {
 void rfcore_ble_hci_cmd(size_t len, const uint8_t *src) {
     DEBUG_printf("rfcore_ble_hci_cmd\n");
 
-    #if HCI_TRACE
+#if HCI_TRACE
     printf("[% 8d] >HCI_CMD(%02x", mp_hal_ticks_ms(), src[0]);
     for (int i = 1; i < len; ++i) {
         printf(":%02x", src[i]);
     }
     printf(")\n");
-    #endif
+#endif
 
     tl_list_node_t *n;
     uint32_t ch;
@@ -616,9 +616,9 @@ void rfcore_ble_hci_cmd(size_t len, const uint8_t *src) {
             if (mp_hal_ticks_ms() - timeout_start_ticks_ms > 100) {
                 break;
             }
-            #if MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_NIMBLE
+#if MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_NIMBLE
             mp_bluetooth_nimble_hci_uart_wfi();
-            #endif
+#endif
         }
 
         // Prevent sending another command until this one returns with HCI_EVENT_COMMAND_{COMPLETE,STATUS}.
@@ -646,7 +646,7 @@ void rfcore_ble_check_msg(int (*cb)(void *, const uint8_t *, size_t), void *env)
         buf[0] = 0; // config offset
         buf[1] = 6; // config length
         mp_hal_get_mac(MP_HAL_MAC_BDADDR, &buf[2]);
-        #define SWAP_UINT8(a, b) { uint8_t temp = a; a = b; b = temp; \
+#define SWAP_UINT8(a, b) { uint8_t temp = a; a = b; b = temp; \
 }
         SWAP_UINT8(buf[2], buf[7]);
         SWAP_UINT8(buf[3], buf[6]);
@@ -688,11 +688,11 @@ void IPCC_C1_RX_IRQHandler(void) {
         // Disable this IRQ until the incoming data is processed (in tl_check_msg).
         LL_C1_IPCC_DisableReceiveChannel(IPCC, IPCC_CH_BLE);
 
-        #if MICROPY_PY_BLUETOOTH
+#if MICROPY_PY_BLUETOOTH
         // Queue up the scheduler to process UART data and run events.
         extern void mp_bluetooth_hci_systick(uint32_t ticks_ms);
         mp_bluetooth_hci_systick(0);
-        #endif
+#endif
     }
 
     IRQ_EXIT(IPCC_C1_RX_IRQn);

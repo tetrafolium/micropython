@@ -42,7 +42,7 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
 
         /* In case of Output or Alternate function mode selection */
         if ((GPIO_Init->Mode == GPIO_MODE_OUTPUT_PP) || (GPIO_Init->Mode == GPIO_MODE_AF_PP) ||
-            (GPIO_Init->Mode == GPIO_MODE_OUTPUT_OD) || (GPIO_Init->Mode == GPIO_MODE_AF_OD)) {
+                (GPIO_Init->Mode == GPIO_MODE_OUTPUT_OD) || (GPIO_Init->Mode == GPIO_MODE_AF_OD)) {
             /* Check the Speed parameter */
             assert_param(IS_GPIO_SPEED(GPIO_Init->Speed));
 
@@ -77,7 +77,7 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
             }
         }
 
-        #if 0
+#if 0
         /*--------------------- EXTI Mode Configuration ------------------------*/
         /* Configure the External Interrupt or event for the current IO */
         if ((GPIO_Init->Mode & EXTI_MODE) == EXTI_MODE) {
@@ -110,6 +110,6 @@ void HAL_GPIO_Init(GPIO_TypeDef *GPIOx, GPIO_InitTypeDef *GPIO_Init) {
                 EXTI->FTSR |= iocurrent;
             }
         }
-        #endif
+#endif
     }
 }

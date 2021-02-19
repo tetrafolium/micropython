@@ -88,9 +88,9 @@ const mp_stream_p_t *mp_get_stream_raise(mp_obj_t self_in, int flags) {
     const mp_obj_type_t *type = mp_obj_get_type(self_in);
     const mp_stream_p_t *stream_p = type->protocol;
     if (stream_p == NULL
-        || ((flags & MP_STREAM_OP_READ) && stream_p->read == NULL)
-        || ((flags & MP_STREAM_OP_WRITE) && stream_p->write == NULL)
-        || ((flags & MP_STREAM_OP_IOCTL) && stream_p->ioctl == NULL)) {
+            || ((flags & MP_STREAM_OP_READ) && stream_p->read == NULL)
+            || ((flags & MP_STREAM_OP_WRITE) && stream_p->write == NULL)
+            || ((flags & MP_STREAM_OP_IOCTL) && stream_p->ioctl == NULL)) {
         // CPython: io.UnsupportedOperation, OSError subclass
         mp_raise_msg(&mp_type_OSError, MP_ERROR_TEXT("stream operation not supported"));
     }
@@ -108,7 +108,7 @@ STATIC mp_obj_t stream_read_generic(size_t n_args, const mp_obj_t *args, byte fl
 
     const mp_stream_p_t *stream_p = mp_get_stream(args[0]);
 
-    #if MICROPY_PY_BUILTINS_STR_UNICODE
+#if MICROPY_PY_BUILTINS_STR_UNICODE
     if (stream_p->is_text) {
         // We need to read sz number of unicode characters.  Because we don't have any
         // buffering, and because the stream API can only read bytes, we must read here
@@ -192,7 +192,7 @@ STATIC mp_obj_t stream_read_generic(size_t n_args, const mp_obj_t *args, byte fl
 
         return mp_obj_new_str_from_vstr(&mp_type_str, &vstr);
     }
-    #endif
+#endif
 
     vstr_t vstr;
     vstr_init_len(&vstr, sz);
@@ -378,7 +378,7 @@ STATIC mp_obj_t stream_unbuffered_readline(size_t n_args, const mp_obj_t *args) 
             mp_raise_OSError(error);
         }
         if (out_sz == 0) {
-        done:
+done:
             // Back out previously added byte
             // Consider, what's better - read a char and get OutOfMemory (so read
             // char is lost), or allocate first as we do.

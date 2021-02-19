@@ -243,17 +243,17 @@ DESDataLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 bool
 DESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 {
-	volatile uint32_t pui32Dest[2];
-	uint8_t ui8BytCnt;
-	uint8_t *pui8DestTemp;
+    volatile uint32_t pui32Dest[2];
+    uint8_t ui8BytCnt;
+    uint8_t *pui8DestTemp;
 
-	//
+    //
     // Check the arguments.
     //
     ASSERT(ui32Base == DES_BASE);
     if((ui8Length == 0)||(ui8Length>8))
     {
-       	return(false);
+        return(false);
     }
 
     //
@@ -276,7 +276,7 @@ DESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
     pui8DestTemp = (uint8_t *)pui32Dest;
     for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
     {
- 		*(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
+        *(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
     }
 
     //
@@ -303,18 +303,18 @@ DESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 void
 DESDataRead(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 {
-	volatile uint32_t pui32Dest[2];
-	uint8_t ui8BytCnt;
-	uint8_t *pui8DestTemp;
+    volatile uint32_t pui32Dest[2];
+    uint8_t ui8BytCnt;
+    uint8_t *pui8DestTemp;
 
-	//
-	// Check the arguments.
-	//
-	ASSERT(ui32Base == DES_BASE);
-	if((ui8Length == 0)||(ui8Length>8))
-	{
-		return;
-	}
+    //
+    // Check the arguments.
+    //
+    ASSERT(ui32Base == DES_BASE);
+    if((ui8Length == 0)||(ui8Length>8))
+    {
+        return;
+    }
     //
     // Wait for data output to be ready.
     //
@@ -334,7 +334,7 @@ DESDataRead(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
     pui8DestTemp = (uint8_t *)pui32Dest;
     for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
     {
-    	*(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
+        *(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
     }
 }
 
@@ -356,7 +356,7 @@ bool
 DESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 {
 
-    volatile uint32_t pui32Src[2]={0,0};
+    volatile uint32_t pui32Src[2]= {0,0};
     uint8_t ui8BytCnt;
     uint8_t *pui8SrcTemp;
 
@@ -367,7 +367,7 @@ DESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 
     if((ui8Length == 0)||(ui8Length>8))
     {
-            return(false);
+        return(false);
     }
 
     //
@@ -385,7 +385,7 @@ DESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
     pui8SrcTemp = (uint8_t *)pui32Src;
     for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
     {
-            *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
+        *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
     }
 
     //
@@ -417,7 +417,7 @@ DESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 void
 DESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 {
-    volatile uint32_t pui32Src[2]={0,0};
+    volatile uint32_t pui32Src[2]= {0,0};
     uint8_t ui8BytCnt;
     uint8_t *pui8SrcTemp;
 
@@ -428,7 +428,7 @@ DESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 
     if((ui8Length == 0)||(ui8Length>8))
     {
-            return;
+        return;
     }
 
     //
@@ -444,7 +444,7 @@ DESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
     pui8SrcTemp = (uint8_t *)pui32Src;
     for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
     {
-            *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
+        *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
     }
 
     //
@@ -502,29 +502,29 @@ DESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
     ui32BlkCount = ui32Length/8;
     for(ui32Count = 0; ui32Count <ui32BlkCount; ui32Count ++)
     {
-      //
-      // Check if the input ready is fine
-      //
-      while((DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
-      {
-      }
+        //
+        // Check if the input ready is fine
+        //
+        while((DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+        {
+        }
 
-      //
-      // Write the data registers.
-      //
-      DESDataWriteNonBlocking(ui32Base, pui8Src + ui32Count*8 ,8);
+        //
+        // Write the data registers.
+        //
+        DESDataWriteNonBlocking(ui32Base, pui8Src + ui32Count*8,8);
 
-      //
-      // Wait for the output ready
-      //
-      while((DES_CTRL_OUTPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
-      {
-      }
+        //
+        // Wait for the output ready
+        //
+        while((DES_CTRL_OUTPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+        {
+        }
 
-      //
-      // Read the data registers.
-      //
-      DESDataReadNonBlocking(ui32Base, pui8Dest + ui32Count*8 ,8);
+        //
+        // Read the data registers.
+        //
+        DESDataReadNonBlocking(ui32Base, pui8Dest + ui32Count*8,8);
     }
 
     //
@@ -533,29 +533,29 @@ DESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
     ui32ByteCount = ui32Length%8;
     if(ui32ByteCount)
     {
-      //
-      // Check if the input ready is fine
-      //
-      while((DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
-      {
-      }
-      //
-      // Write the data registers.
-      //
-      DESDataWriteNonBlocking(ui32Base, pui8Src + (8*ui32BlkCount) ,
-                              ui32ByteCount);
-      //
-      // Wait for the output ready
-      //
-      while((DES_CTRL_OUTPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
-      {
-      }
+        //
+        // Check if the input ready is fine
+        //
+        while((DES_CTRL_INPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+        {
+        }
+        //
+        // Write the data registers.
+        //
+        DESDataWriteNonBlocking(ui32Base, pui8Src + (8*ui32BlkCount),
+                                ui32ByteCount);
+        //
+        // Wait for the output ready
+        //
+        while((DES_CTRL_OUTPUT_READY & (HWREG(ui32Base + DES_O_CTRL))) == 0)
+        {
+        }
 
-      //
-      // Read the data registers.
-      //
-      DESDataReadNonBlocking(ui32Base, pui8Dest + (8*ui32BlkCount) ,
-                             ui32ByteCount);
+        //
+        // Read the data registers.
+        //
+        DESDataReadNonBlocking(ui32Base, pui8Dest + (8*ui32BlkCount),
+                               ui32ByteCount);
     }
 
 
@@ -590,7 +590,7 @@ DESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
 uint32_t
 DESIntStatus(uint32_t ui32Base, bool bMasked)
 {
-   uint32_t ui32IntStatus;
+    uint32_t ui32IntStatus;
     //
     // Check the arguments.
     //

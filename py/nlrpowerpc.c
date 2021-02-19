@@ -71,7 +71,7 @@ unsigned int nlr_push(nlr_buf_t *nlr) {
         :
         : "r" (&nlr->regs), "r" (nlr)
         :
-        );
+    );
 
     return 0;
 }
@@ -113,7 +113,7 @@ NORETURN void nlr_jump(void *val) {
         :
         : "r" (&top->regs)
         :
-        );
+    );
 
     MP_UNREACHABLE;
 }

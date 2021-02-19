@@ -34,38 +34,38 @@
 
 int32_t spi_bdev_ioctl(spi_bdev_t *bdev, uint32_t op, uint32_t arg) {
     switch (op) {
-        case BDEV_IOCTL_INIT:
-            bdev->spiflash.config = (const mp_spiflash_config_t *)arg;
-            mp_spiflash_init(&bdev->spiflash);
-            bdev->flash_tick_counter_last_write = 0;
-            return 0;
+    case BDEV_IOCTL_INIT:
+        bdev->spiflash.config = (const mp_spiflash_config_t *)arg;
+        mp_spiflash_init(&bdev->spiflash);
+        bdev->flash_tick_counter_last_write = 0;
+        return 0;
 
-        case BDEV_IOCTL_IRQ_HANDLER:
-            #if MICROPY_HW_SPIFLASH_ENABLE_CACHE
-            if ((bdev->spiflash.flags & 1) && HAL_GetTick() - bdev->flash_tick_counter_last_write >= 1000) {
-                mp_spiflash_cache_flush(&bdev->spiflash);
-                led_state(PYB_LED_RED, 0); // indicate a clean cache with LED off
-            }
-            #endif
-            return 0;
-
-        case BDEV_IOCTL_SYNC:
-            #if MICROPY_HW_SPIFLASH_ENABLE_CACHE
-            if (bdev->spiflash.flags & 1) {
-                uint32_t basepri = raise_irq_pri(IRQ_PRI_FLASH); // prevent cache flushing and USB access
-                mp_spiflash_cache_flush(&bdev->spiflash);
-                led_state(PYB_LED_RED, 0); // indicate a clean cache with LED off
-                restore_irq_pri(basepri);
-            }
-            #endif
-            return 0;
-
-        case BDEV_IOCTL_BLOCK_ERASE: {
-            uint32_t basepri = raise_irq_pri(IRQ_PRI_FLASH); // prevent cache flushing and USB access
-            mp_spiflash_erase_block(&bdev->spiflash, arg * MP_SPIFLASH_ERASE_BLOCK_SIZE);
-            restore_irq_pri(basepri);
-            return 0;
+    case BDEV_IOCTL_IRQ_HANDLER:
+#if MICROPY_HW_SPIFLASH_ENABLE_CACHE
+        if ((bdev->spiflash.flags & 1) && HAL_GetTick() - bdev->flash_tick_counter_last_write >= 1000) {
+            mp_spiflash_cache_flush(&bdev->spiflash);
+            led_state(PYB_LED_RED, 0); // indicate a clean cache with LED off
         }
+#endif
+        return 0;
+
+    case BDEV_IOCTL_SYNC:
+#if MICROPY_HW_SPIFLASH_ENABLE_CACHE
+        if (bdev->spiflash.flags & 1) {
+            uint32_t basepri = raise_irq_pri(IRQ_PRI_FLASH); // prevent cache flushing and USB access
+            mp_spiflash_cache_flush(&bdev->spiflash);
+            led_state(PYB_LED_RED, 0); // indicate a clean cache with LED off
+            restore_irq_pri(basepri);
+        }
+#endif
+        return 0;
+
+    case BDEV_IOCTL_BLOCK_ERASE: {
+        uint32_t basepri = raise_irq_pri(IRQ_PRI_FLASH); // prevent cache flushing and USB access
+        mp_spiflash_erase_block(&bdev->spiflash, arg * MP_SPIFLASH_ERASE_BLOCK_SIZE);
+        restore_irq_pri(basepri);
+        return 0;
+    }
     }
     return -MP_EINVAL;
 }

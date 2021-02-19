@@ -122,22 +122,22 @@ MP_DEFINE_CONST_DICT(mp_machine_spi_locals_dict, machine_spi_locals_dict_table);
 // Implementation of soft SPI
 
 STATIC uint32_t baudrate_from_delay_half(uint32_t delay_half) {
-    #ifdef MICROPY_HW_SOFTSPI_MIN_DELAY
+#ifdef MICROPY_HW_SOFTSPI_MIN_DELAY
     if (delay_half == MICROPY_HW_SOFTSPI_MIN_DELAY) {
         return MICROPY_HW_SOFTSPI_MAX_BAUDRATE;
     } else
-    #endif
+#endif
     {
         return 500000 / delay_half;
     }
 }
 
 STATIC uint32_t baudrate_to_delay_half(uint32_t baudrate) {
-    #ifdef MICROPY_HW_SOFTSPI_MIN_DELAY
+#ifdef MICROPY_HW_SOFTSPI_MIN_DELAY
     if (baudrate >= MICROPY_HW_SOFTSPI_MAX_BAUDRATE) {
         return MICROPY_HW_SOFTSPI_MIN_DELAY;
     } else
-    #endif
+#endif
     {
         uint32_t delay_half = 500000 / baudrate;
         // round delay_half up so that: actual_baudrate <= requested_baudrate
@@ -151,9 +151,9 @@ STATIC uint32_t baudrate_to_delay_half(uint32_t baudrate) {
 STATIC void mp_machine_soft_spi_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     mp_machine_soft_spi_obj_t *self = MP_OBJ_TO_PTR(self_in);
     mp_printf(print, "SoftSPI(baudrate=%u, polarity=%u, phase=%u,"
-        " sck=" MP_HAL_PIN_FMT ", mosi=" MP_HAL_PIN_FMT ", miso=" MP_HAL_PIN_FMT ")",
-        baudrate_from_delay_half(self->spi.delay_half), self->spi.polarity, self->spi.phase,
-        mp_hal_pin_name(self->spi.sck), mp_hal_pin_name(self->spi.mosi), mp_hal_pin_name(self->spi.miso));
+              " sck=" MP_HAL_PIN_FMT ", mosi=" MP_HAL_PIN_FMT ", miso=" MP_HAL_PIN_FMT ")",
+              baudrate_from_delay_half(self->spi.delay_half), self->spi.polarity, self->spi.phase,
+              mp_hal_pin_name(self->spi.sck), mp_hal_pin_name(self->spi.mosi), mp_hal_pin_name(self->spi.miso));
 }
 
 STATIC mp_obj_t mp_machine_soft_spi_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *all_args) {
@@ -186,8 +186,8 @@ STATIC mp_obj_t mp_machine_soft_spi_make_new(const mp_obj_type_t *type, size_t n
         mp_raise_ValueError(MP_ERROR_TEXT("firstbit must be MSB"));
     }
     if (args[ARG_sck].u_obj == MP_OBJ_NULL
-        || args[ARG_mosi].u_obj == MP_OBJ_NULL
-        || args[ARG_miso].u_obj == MP_OBJ_NULL) {
+            || args[ARG_mosi].u_obj == MP_OBJ_NULL
+            || args[ARG_miso].u_obj == MP_OBJ_NULL) {
         mp_raise_ValueError(MP_ERROR_TEXT("must specify all of sck/mosi/miso"));
     }
     self->spi.sck = mp_hal_get_pin_obj(args[ARG_sck].u_obj);

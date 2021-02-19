@@ -328,15 +328,15 @@ STATIC const mp_obj_type_t uhashlib_md5_type = {
 
 STATIC const mp_rom_map_elem_t mp_module_uhashlib_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_uhashlib) },
-    #if MICROPY_PY_UHASHLIB_SHA256
+#if MICROPY_PY_UHASHLIB_SHA256
     { MP_ROM_QSTR(MP_QSTR_sha256), MP_ROM_PTR(&uhashlib_sha256_type) },
-    #endif
-    #if MICROPY_PY_UHASHLIB_SHA1
+#endif
+#if MICROPY_PY_UHASHLIB_SHA1
     { MP_ROM_QSTR(MP_QSTR_sha1), MP_ROM_PTR(&uhashlib_sha1_type) },
-    #endif
-    #if MICROPY_PY_UHASHLIB_MD5
+#endif
+#if MICROPY_PY_UHASHLIB_MD5
     { MP_ROM_QSTR(MP_QSTR_md5), MP_ROM_PTR(&uhashlib_md5_type) },
-    #endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(mp_module_uhashlib_globals, mp_module_uhashlib_globals_table);

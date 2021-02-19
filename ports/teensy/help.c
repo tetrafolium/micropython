@@ -66,4 +66,4 @@ const char teensy_help_text[] =
     "  CTRL-D        -- on a blank line, do a soft reset of the board\n"
     "\n"
     "For further help on a specific object, type help(obj)\n"
-;
+    ;

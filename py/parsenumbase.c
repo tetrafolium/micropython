@@ -62,7 +62,7 @@ size_t mp_parse_num_base(const char *str, size_t len, int *base) {
         }
     } else {
         p--;
-    no_prefix:
+no_prefix:
         if (*base == 0) {
             *base = 10;
         }

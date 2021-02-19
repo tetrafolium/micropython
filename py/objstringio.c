@@ -113,50 +113,50 @@ STATIC mp_uint_t stringio_ioctl(mp_obj_t o_in, mp_uint_t request, uintptr_t arg,
     (void)errcode;
     mp_obj_stringio_t *o = MP_OBJ_TO_PTR(o_in);
     switch (request) {
-        case MP_STREAM_SEEK: {
-            struct mp_stream_seek_t *s = (struct mp_stream_seek_t *)arg;
-            mp_uint_t ref = 0;
-            switch (s->whence) {
-                case MP_SEEK_CUR:
-                    ref = o->pos;
-                    break;
-                case MP_SEEK_END:
-                    ref = o->vstr->len;
-                    break;
-            }
-            mp_uint_t new_pos = ref + s->offset;
-
-            // For MP_SEEK_SET, offset is unsigned
-            if (s->whence != MP_SEEK_SET && s->offset < 0) {
-                if (new_pos > ref) {
-                    // Negative offset from SEEK_CUR or SEEK_END went past 0.
-                    // CPython sets position to 0, POSIX returns an EINVAL error
-                    new_pos = 0;
-                }
-            } else if (new_pos < ref) {
-                // positive offset went beyond the limit of mp_uint_t
-                *errcode = MP_EINVAL;  // replace with MP_EOVERFLOW when defined
-                return MP_STREAM_ERROR;
-            }
-            s->offset = o->pos = new_pos;
-            return 0;
+    case MP_STREAM_SEEK: {
+        struct mp_stream_seek_t *s = (struct mp_stream_seek_t *)arg;
+        mp_uint_t ref = 0;
+        switch (s->whence) {
+        case MP_SEEK_CUR:
+            ref = o->pos;
+            break;
+        case MP_SEEK_END:
+            ref = o->vstr->len;
+            break;
         }
-        case MP_STREAM_FLUSH:
-            return 0;
-        case MP_STREAM_CLOSE:
-            #if MICROPY_CPYTHON_COMPAT
-            vstr_free(o->vstr);
-            o->vstr = NULL;
-            #else
-            vstr_clear(o->vstr);
-            o->vstr->alloc = 0;
-            o->vstr->len = 0;
-            o->pos = 0;
-            #endif
-            return 0;
-        default:
-            *errcode = MP_EINVAL;
+        mp_uint_t new_pos = ref + s->offset;
+
+        // For MP_SEEK_SET, offset is unsigned
+        if (s->whence != MP_SEEK_SET && s->offset < 0) {
+            if (new_pos > ref) {
+                // Negative offset from SEEK_CUR or SEEK_END went past 0.
+                // CPython sets position to 0, POSIX returns an EINVAL error
+                new_pos = 0;
+            }
+        } else if (new_pos < ref) {
+            // positive offset went beyond the limit of mp_uint_t
+            *errcode = MP_EINVAL;  // replace with MP_EOVERFLOW when defined
             return MP_STREAM_ERROR;
+        }
+        s->offset = o->pos = new_pos;
+        return 0;
+    }
+    case MP_STREAM_FLUSH:
+        return 0;
+    case MP_STREAM_CLOSE:
+#if MICROPY_CPYTHON_COMPAT
+        vstr_free(o->vstr);
+        o->vstr = NULL;
+#else
+        vstr_clear(o->vstr);
+        o->vstr->alloc = 0;
+        o->vstr->len = 0;
+        o->pos = 0;
+#endif
+        return 0;
+    default:
+        *errcode = MP_EINVAL;
+        return MP_STREAM_ERROR;
     }
 }
 

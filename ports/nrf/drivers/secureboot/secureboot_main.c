@@ -46,7 +46,7 @@
 #define PERIPHERAL_ID_GET(base_addr) (((uint32_t)(base_addr) >> 12) & 0xFF)
 
 #if !defined(__ARM_FEATURE_CMSE)
-    #pragma warning "CMSE not enabled"
+#pragma warning "CMSE not enabled"
 #endif
 
 static void configure_flash(void) {
@@ -184,11 +184,13 @@ int main(void) {
     jump_to_non_secure();
 
     while (1) {
-	;
+        ;
     }
 
     return 0;
 }
 
-void _start(void) {main();}
+void _start(void) {
+    main();
+}
 

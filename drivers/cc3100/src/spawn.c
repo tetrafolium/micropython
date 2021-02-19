@@ -1,35 +1,35 @@
 /*
  * spawn.c - CC31xx/CC32xx Host Driver Implementation
  *
- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
- * 
- * 
- *  Redistribution and use in source and binary forms, with or without 
- *  modification, are permitted provided that the following conditions 
+ * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
  *  are met:
  *
- *    Redistributions of source code must retain the above copyright 
+ *    Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  *
  *    Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the 
- *    documentation and/or other materials provided with the   
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
  *    distribution.
  *
  *    Neither the name of Texas Instruments Incorporated nor the names of
  *    its contributors may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
- *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
- *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
 */
@@ -48,31 +48,31 @@
 
 typedef struct _SlInternalSpawnEntry_t
 {
-	_SlSpawnEntryFunc_t 		        pEntry;
-	void* 						        pValue;
+    _SlSpawnEntryFunc_t 		        pEntry;
+    void* 						        pValue;
     struct _SlInternalSpawnEntry_t*     pNext;
-}_SlInternalSpawnEntry_t;
+} _SlInternalSpawnEntry_t;
 
 typedef struct
 {
-	_SlInternalSpawnEntry_t     SpawnEntries[_SL_MAX_INTERNAL_SPAWN_ENTRIES];
+    _SlInternalSpawnEntry_t     SpawnEntries[_SL_MAX_INTERNAL_SPAWN_ENTRIES];
     _SlInternalSpawnEntry_t*    pFree;
     _SlInternalSpawnEntry_t*    pWaitForExe;
     _SlInternalSpawnEntry_t*    pLastInWaitList;
     _SlSyncObj_t                SyncObj;
     _SlLockObj_t                LockObj;
-}_SlInternalSpawnCB_t;
+} _SlInternalSpawnCB_t;
 
 _SlInternalSpawnCB_t g_SlInternalSpawnCB;
 
 
-void _SlInternalSpawnTaskEntry() 
+void _SlInternalSpawnTaskEntry()
 {
     _i16                         i;
     _SlInternalSpawnEntry_t*    pEntry;
     _u8                         LastEntry;
 
-    /* create and lock the locking object. lock in order to avoid race condition 
+    /* create and lock the locking object. lock in order to avoid race condition
         on the first creation */
     sl_LockObjCreate(&g_SlInternalSpawnCB.LockObj,"SlSpawnProtect");
     sl_LockObjLock(&g_SlInternalSpawnCB.LockObj,SL_OS_NO_WAIT);
@@ -110,8 +110,8 @@ void _SlInternalSpawnTaskEntry()
             pEntry = g_SlInternalSpawnCB.pWaitForExe;
             if ( NULL == pEntry )
             {
-               _SlDrvObjUnLock(&g_SlInternalSpawnCB.LockObj);
-               break;
+                _SlDrvObjUnLock(&g_SlInternalSpawnCB.LockObj);
+                break;
             }
             g_SlInternalSpawnCB.pWaitForExe = pEntry->pNext;
             if (pEntry == g_SlInternalSpawnCB.pLastInWaitList)
@@ -130,7 +130,7 @@ void _SlInternalSpawnTaskEntry()
                 /* free the entry */
 
                 _SlDrvObjLockWaitForever(&g_SlInternalSpawnCB.LockObj);
-                
+
                 pEntry->pNext = g_SlInternalSpawnCB.pFree;
                 g_SlInternalSpawnCB.pFree = pEntry;
 
@@ -145,12 +145,12 @@ void _SlInternalSpawnTaskEntry()
 
             }
 
-        }while (!LastEntry);
+        } while (!LastEntry);
     }
 }
 
 
-_i16 _SlInternalSpawn(_SlSpawnEntryFunc_t pEntry , void* pValue , _u32 flags)
+_i16 _SlInternalSpawn(_SlSpawnEntryFunc_t pEntry, void* pValue, _u32 flags)
 {
     _i16                         Res = 0;
     _SlInternalSpawnEntry_t*    pSpawnEntry;
@@ -182,7 +182,7 @@ _i16 _SlInternalSpawn(_SlSpawnEntryFunc_t pEntry , void* pValue , _u32 flags)
         }
 
         _SlDrvObjUnLock(&g_SlInternalSpawnCB.LockObj);
-        
+
         /* this sync is called after releasing the lock object to avoid unnecessary context switches */
         _SlDrvSyncObjSignal(&g_SlInternalSpawnCB.SyncObj);
     }

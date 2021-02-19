@@ -282,15 +282,15 @@ IntRegister(unsigned long ulInterrupt, void (*pfnHandler)(void))
 void
 IntUnregister(unsigned long ulInterrupt)
 {
-  unsigned long *ulNvicTbl;
+    unsigned long *ulNvicTbl;
 
-  //
-  // Check the arguments.
-  //
-  ASSERT(ulInterrupt < NUM_INTERRUPTS);
+    //
+    // Check the arguments.
+    //
+    ASSERT(ulInterrupt < NUM_INTERRUPTS);
 
-  ulNvicTbl = (unsigned long *)HWREG(NVIC_VTABLE);
-  ulNvicTbl[ulInterrupt]= (unsigned long)IntDefaultHandler;
+    ulNvicTbl = (unsigned long *)HWREG(NVIC_VTABLE);
+    ulNvicTbl[ulInterrupt]= (unsigned long)IntDefaultHandler;
 }
 
 //*****************************************************************************

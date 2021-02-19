@@ -25,9 +25,9 @@
  */
 
 
- /******************************************************************************
- IMPORTS
- ******************************************************************************/
+/******************************************************************************
+IMPORTS
+******************************************************************************/
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -97,7 +97,7 @@ void HAL_SystemInit (void) {
 
 void HAL_SystemDeInit (void) {
 }
- 
+
 void HAL_IncrementTick(void) {
     HAL_tickCount++;
 }
@@ -123,16 +123,16 @@ void mp_hal_delay_ms(mp_uint_t delay) {
     // only if we are not within interrupt context and interrupts are enabled
     if ((HAL_NVIC_INT_CTRL_REG & HAL_VECTACTIVE_MASK) == 0 && query_irq() == IRQ_STATE_ENABLED) {
         MP_THREAD_GIL_EXIT();
-        #ifdef USE_FREERTOS
-            vTaskDelay (delay / portTICK_PERIOD_MS);
-        #else
-            uint32_t start = HAL_tickCount;
-            // wraparound of tick is taken care of by 2's complement arithmetic.
-            while (HAL_tickCount - start < delay) {
-                // enter sleep mode, waiting for (at least) the SysTick interrupt.
-                __WFI();
-            }
-        #endif
+#ifdef USE_FREERTOS
+        vTaskDelay (delay / portTICK_PERIOD_MS);
+#else
+        uint32_t start = HAL_tickCount;
+        // wraparound of tick is taken care of by 2's complement arithmetic.
+        while (HAL_tickCount - start < delay) {
+            // enter sleep mode, waiting for (at least) the SysTick interrupt.
+            __WFI();
+        }
+#endif
         MP_THREAD_GIL_ENTER();
     } else {
         for (int ms = 0; ms < delay; ms++) {

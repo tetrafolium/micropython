@@ -99,15 +99,15 @@ static inline int fp_isless1(float x) {
 #endif
 
 static const FPTYPE g_pos_pow[] = {
-    #if FPDECEXP > 32
+#if FPDECEXP > 32
     MICROPY_FLOAT_CONST(1e256), MICROPY_FLOAT_CONST(1e128), MICROPY_FLOAT_CONST(1e64),
-    #endif
+#endif
     MICROPY_FLOAT_CONST(1e32), MICROPY_FLOAT_CONST(1e16), MICROPY_FLOAT_CONST(1e8), MICROPY_FLOAT_CONST(1e4), MICROPY_FLOAT_CONST(1e2), MICROPY_FLOAT_CONST(1e1)
 };
 static const FPTYPE g_neg_pow[] = {
-    #if FPDECEXP > 32
+#if FPDECEXP > 32
     MICROPY_FLOAT_CONST(1e-256), MICROPY_FLOAT_CONST(1e-128), MICROPY_FLOAT_CONST(1e-64),
-    #endif
+#endif
     MICROPY_FLOAT_CONST(1e-32), MICROPY_FLOAT_CONST(1e-16), MICROPY_FLOAT_CONST(1e-8), MICROPY_FLOAT_CONST(1e-4), MICROPY_FLOAT_CONST(1e-2), MICROPY_FLOAT_CONST(1e-1)
 };
 
@@ -152,7 +152,7 @@ int mp_format_float(FPTYPE f, char *buf, size_t buf_size, char fmt, int prec, ch
             *s++ = 'N' ^ uc;
             *s++ = 'A' ^ uc;
             *s++ = 'N' ^ uc;
-        ret:
+ret:
             *s = '\0';
             return s - buf;
         }

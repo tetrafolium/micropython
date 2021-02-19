@@ -272,23 +272,23 @@ I2CSlaveAddressSet(uint32_t ui32Base, uint8_t ui8AddrNum, uint8_t ui8SlaveAddr)
     //
     switch(ui8AddrNum)
     {
-        //
-        // Set up the primary slave address.
-        //
-        case 0:
-        {
-            HWREG(ui32Base + I2C_O_SOAR) = ui8SlaveAddr;
-            break;
-        }
+    //
+    // Set up the primary slave address.
+    //
+    case 0:
+    {
+        HWREG(ui32Base + I2C_O_SOAR) = ui8SlaveAddr;
+        break;
+    }
 
-        //
-        // Set up and enable the secondary slave address.
-        //
-        case 1:
-        {
-            HWREG(ui32Base + I2C_O_SOAR2) = I2C_SOAR2_OAR2EN | ui8SlaveAddr;
-            break;
-        }
+    //
+    // Set up and enable the secondary slave address.
+    //
+    case 1:
+    {
+        HWREG(ui32Base + I2C_O_SOAR2) = I2C_SOAR2_OAR2EN | ui8SlaveAddr;
+        break;
+    }
     }
 }
 

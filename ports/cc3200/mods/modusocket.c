@@ -364,7 +364,8 @@ typedef struct {
 STATIC const mp_obj_type_t socket_type;
 STATIC OsiLockObj_t modusocket_LockObj;
 STATIC modusocket_sock_t modusocket_sockets[MOD_NETWORK_MAX_SOCKETS] = {{.sd = -1}, {.sd = -1}, {.sd = -1}, {.sd = -1}, {.sd = -1},
-                                                                        {.sd = -1}, {.sd = -1}, {.sd = -1}, {.sd = -1}, {.sd = -1}};
+    {.sd = -1}, {.sd = -1}, {.sd = -1}, {.sd = -1}, {.sd = -1}
+};
 
 /******************************************************************************
  DEFINE PUBLIC FUNCTIONS

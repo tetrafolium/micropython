@@ -52,10 +52,10 @@ typedef struct _socket_obj_t {
     mp_obj_base_t base;
     int ctx;
 
-    #define STATE_NEW 0
-    #define STATE_CONNECTING 1
-    #define STATE_CONNECTED 2
-    #define STATE_PEER_CLOSED 3
+#define STATE_NEW 0
+#define STATE_CONNECTING 1
+#define STATE_CONNECTED 2
+#define STATE_PEER_CLOSED 3
     int8_t state;
 } socket_obj_t;
 
@@ -303,21 +303,21 @@ STATIC mp_uint_t sock_ioctl(mp_obj_t o_in, mp_uint_t request, uintptr_t arg, int
     socket_obj_t *socket = o_in;
     (void)arg;
     switch (request) {
-        case MP_STREAM_CLOSE:
-            if (socket->ctx != -1) {
-                int res = zsock_close(socket->ctx);
-                RAISE_SOCK_ERRNO(res);
-                if (res == -1) {
-                    *errcode = errno;
-                    return MP_STREAM_ERROR;
-                }
-                socket->ctx = -1;
+    case MP_STREAM_CLOSE:
+        if (socket->ctx != -1) {
+            int res = zsock_close(socket->ctx);
+            RAISE_SOCK_ERRNO(res);
+            if (res == -1) {
+                *errcode = errno;
+                return MP_STREAM_ERROR;
             }
-            return 0;
+            socket->ctx = -1;
+        }
+        return 0;
 
-        default:
-            *errcode = MP_EINVAL;
-            return MP_STREAM_ERROR;
+    default:
+        *errcode = MP_EINVAL;
+        return MP_STREAM_ERROR;
     }
 }
 

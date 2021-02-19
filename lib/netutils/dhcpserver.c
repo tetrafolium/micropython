@@ -189,7 +189,7 @@ static void dhcp_server_process(void *arg, struct udp_pcb *upcb, struct pbuf *p,
     // This is around 548 bytes
     dhcp_msg_t dhcp_msg;
 
-    #define DHCP_MIN_SIZE (240 + 3)
+#define DHCP_MIN_SIZE (240 + 3)
     if (p->tot_len < DHCP_MIN_SIZE) {
         goto ignore_request;
     }
@@ -206,73 +206,73 @@ static void dhcp_server_process(void *arg, struct udp_pcb *upcb, struct pbuf *p,
     opt += 4; // assume magic cookie: 99, 130, 83, 99
 
     switch (opt[2]) {
-        case DHCPDISCOVER: {
-            int yi = DHCPS_MAX_IP;
-            for (int i = 0; i < DHCPS_MAX_IP; ++i) {
-                if (memcmp(d->lease[i].mac, dhcp_msg.chaddr, MAC_LEN) == 0) {
-                    // MAC match, use this IP address
-                    yi = i;
-                    break;
-                }
-                if (yi == DHCPS_MAX_IP) {
-                    // Look for a free IP address
-                    if (memcmp(d->lease[i].mac, "\x00\x00\x00\x00\x00\x00", MAC_LEN) == 0) {
-                        // IP available
-                        yi = i;
-                    }
-                    uint32_t expiry = d->lease[i].expiry << 16 | 0xffff;
-                    if ((int32_t)(expiry - mp_hal_ticks_ms()) < 0) {
-                        // IP expired, reuse it
-                        memset(d->lease[i].mac, 0, MAC_LEN);
-                        yi = i;
-                    }
-                }
+    case DHCPDISCOVER: {
+        int yi = DHCPS_MAX_IP;
+        for (int i = 0; i < DHCPS_MAX_IP; ++i) {
+            if (memcmp(d->lease[i].mac, dhcp_msg.chaddr, MAC_LEN) == 0) {
+                // MAC match, use this IP address
+                yi = i;
+                break;
             }
             if (yi == DHCPS_MAX_IP) {
-                // No more IP addresses left
-                goto ignore_request;
+                // Look for a free IP address
+                if (memcmp(d->lease[i].mac, "\x00\x00\x00\x00\x00\x00", MAC_LEN) == 0) {
+                    // IP available
+                    yi = i;
+                }
+                uint32_t expiry = d->lease[i].expiry << 16 | 0xffff;
+                if ((int32_t)(expiry - mp_hal_ticks_ms()) < 0) {
+                    // IP expired, reuse it
+                    memset(d->lease[i].mac, 0, MAC_LEN);
+                    yi = i;
+                }
             }
-            dhcp_msg.yiaddr[3] = DHCPS_BASE_IP + yi;
-            opt_write_u8(&opt, DHCP_OPT_MSG_TYPE, DHCPOFFER);
-            break;
         }
-
-        case DHCPREQUEST: {
-            uint8_t *o = opt_find(opt, DHCP_OPT_REQUESTED_IP);
-            if (o == NULL) {
-                // Should be NACK
-                goto ignore_request;
-            }
-            if (memcmp(o + 2, &d->ip.addr, 3) != 0) {
-                // Should be NACK
-                goto ignore_request;
-            }
-            uint8_t yi = o[5] - DHCPS_BASE_IP;
-            if (yi >= DHCPS_MAX_IP) {
-                // Should be NACK
-                goto ignore_request;
-            }
-            if (memcmp(d->lease[yi].mac, dhcp_msg.chaddr, MAC_LEN) == 0) {
-                // MAC match, ok to use this IP address
-            } else if (memcmp(d->lease[yi].mac, "\x00\x00\x00\x00\x00\x00", MAC_LEN) == 0) {
-                // IP unused, ok to use this IP address
-                memcpy(d->lease[yi].mac, dhcp_msg.chaddr, MAC_LEN);
-            } else {
-                // IP already in use
-                // Should be NACK
-                goto ignore_request;
-            }
-            d->lease[yi].expiry = (mp_hal_ticks_ms() + DEFAULT_LEASE_TIME_S * 1000) >> 16;
-            dhcp_msg.yiaddr[3] = DHCPS_BASE_IP + yi;
-            opt_write_u8(&opt, DHCP_OPT_MSG_TYPE, DHCPACK);
-            printf("DHCPS: client connected: MAC=%02x:%02x:%02x:%02x:%02x:%02x IP=%u.%u.%u.%u\n",
-                dhcp_msg.chaddr[0], dhcp_msg.chaddr[1], dhcp_msg.chaddr[2], dhcp_msg.chaddr[3], dhcp_msg.chaddr[4], dhcp_msg.chaddr[5],
-                dhcp_msg.yiaddr[0], dhcp_msg.yiaddr[1], dhcp_msg.yiaddr[2], dhcp_msg.yiaddr[3]);
-            break;
-        }
-
-        default:
+        if (yi == DHCPS_MAX_IP) {
+            // No more IP addresses left
             goto ignore_request;
+        }
+        dhcp_msg.yiaddr[3] = DHCPS_BASE_IP + yi;
+        opt_write_u8(&opt, DHCP_OPT_MSG_TYPE, DHCPOFFER);
+        break;
+    }
+
+    case DHCPREQUEST: {
+        uint8_t *o = opt_find(opt, DHCP_OPT_REQUESTED_IP);
+        if (o == NULL) {
+            // Should be NACK
+            goto ignore_request;
+        }
+        if (memcmp(o + 2, &d->ip.addr, 3) != 0) {
+            // Should be NACK
+            goto ignore_request;
+        }
+        uint8_t yi = o[5] - DHCPS_BASE_IP;
+        if (yi >= DHCPS_MAX_IP) {
+            // Should be NACK
+            goto ignore_request;
+        }
+        if (memcmp(d->lease[yi].mac, dhcp_msg.chaddr, MAC_LEN) == 0) {
+            // MAC match, ok to use this IP address
+        } else if (memcmp(d->lease[yi].mac, "\x00\x00\x00\x00\x00\x00", MAC_LEN) == 0) {
+            // IP unused, ok to use this IP address
+            memcpy(d->lease[yi].mac, dhcp_msg.chaddr, MAC_LEN);
+        } else {
+            // IP already in use
+            // Should be NACK
+            goto ignore_request;
+        }
+        d->lease[yi].expiry = (mp_hal_ticks_ms() + DEFAULT_LEASE_TIME_S * 1000) >> 16;
+        dhcp_msg.yiaddr[3] = DHCPS_BASE_IP + yi;
+        opt_write_u8(&opt, DHCP_OPT_MSG_TYPE, DHCPACK);
+        printf("DHCPS: client connected: MAC=%02x:%02x:%02x:%02x:%02x:%02x IP=%u.%u.%u.%u\n",
+               dhcp_msg.chaddr[0], dhcp_msg.chaddr[1], dhcp_msg.chaddr[2], dhcp_msg.chaddr[3], dhcp_msg.chaddr[4], dhcp_msg.chaddr[5],
+               dhcp_msg.yiaddr[0], dhcp_msg.yiaddr[1], dhcp_msg.yiaddr[2], dhcp_msg.yiaddr[3]);
+        break;
+    }
+
+    default:
+        goto ignore_request;
     }
 
     opt_write_n(&opt, DHCP_OPT_SERVER_ID, 4, &d->ip.addr);

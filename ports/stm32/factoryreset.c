@@ -48,16 +48,16 @@ static const char fresh_boot_py[] =
     "#pyb.usb_mode('VCP+MSC') # act as a serial and a storage device\r\n"
     "#pyb.usb_mode('VCP+HID') # act as a serial device and a mouse\r\n"
 #endif
-;
+    ;
 
 static const char fresh_main_py[] =
     "# main.py -- put your code here!\r\n"
-;
+    ;
 
 #if MICROPY_HW_ENABLE_USB
 static const char fresh_pybcdc_inf[] =
 #include "genhdr/pybcdc_inf.h"
-;
+    ;
 
 static const char fresh_readme_txt[] =
     "This is a MicroPython board\r\n"
@@ -72,7 +72,7 @@ static const char fresh_readme_txt[] =
     " - Linux: use the command: screen /dev/ttyACM0\r\n"
     "\r\n"
     "Please visit http://micropython.org/help/ for further help.\r\n"
-;
+    ;
 #endif
 
 typedef struct _factory_file_t {
@@ -84,10 +84,10 @@ typedef struct _factory_file_t {
 static const factory_file_t factory_files[] = {
     {"boot.py", sizeof(fresh_boot_py) - 1, fresh_boot_py},
     {"main.py", sizeof(fresh_main_py) - 1, fresh_main_py},
-    #if MICROPY_HW_ENABLE_USB
+#if MICROPY_HW_ENABLE_USB
     {"pybcdc.inf", sizeof(fresh_pybcdc_inf) - 1, fresh_pybcdc_inf},
     {"README.txt", sizeof(fresh_readme_txt) - 1, fresh_readme_txt},
-    #endif
+#endif
 };
 
 MP_WEAK void factory_reset_make_files(FATFS *fatfs) {

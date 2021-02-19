@@ -59,10 +59,10 @@ extern "C"
 typedef struct _PRCM_PeripheralRegs_
 {
 
-unsigned char ulClkReg;
-unsigned char ulRstReg;
+    unsigned char ulClkReg;
+    unsigned char ulRstReg;
 
-}PRCM_PeriphRegs_t;
+} PRCM_PeriphRegs_t;
 
 //*****************************************************************************
 // Values that can be passed to PRCMPeripheralEnable() and
@@ -189,8 +189,8 @@ unsigned char ulRstReg;
 #define PRCM_SSPI                 0x00000013
 #define PRCM_I2CA0                0x00000014
 // Note : PRCM_ADC is a dummy define for pinmux utility code generation
-// PRCM_ADC should never be used in any user code. 
-#define PRCM_ADC                  0x000000FF 
+// PRCM_ADC should never be used in any user code.
+#define PRCM_ADC                  0x000000FF
 
 //*****************************************************************************
 // User bits in the PRCM persistent registers
@@ -242,7 +242,7 @@ extern void PRCMHibernateEnter(void);
 extern void PRCMHibernateWakeupSourceEnable(unsigned long ulHIBWakupSrc);
 extern unsigned long PRCMHibernateWakeupCauseGet(void);
 extern void PRCMHibernateWakeUpGPIOSelect(unsigned long ulMultiGPIOBitMap,
-                                          unsigned long ulType);
+        unsigned long ulType);
 extern void PRCMHibernateWakeupSourceDisable(unsigned long ulHIBWakupSrc);
 extern void PRCMHibernateIntervalSet(unsigned long long ullTicks);
 

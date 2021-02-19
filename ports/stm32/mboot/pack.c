@@ -256,7 +256,7 @@ int mboot_pack_write(uint32_t addr, const uint8_t *src8, size_t len) {
     const size_t fw_len = firmware_chunk_buf.header.length;
     const uint8_t *sig = &firmware_chunk_buf.data[0] + fw_len;
     if (hydro_sign_verify(sig, &firmware_chunk_buf, sizeof(firmware_chunk_buf.header) + fw_len,
-        MBOOT_PACK_HYDRO_CONTEXT, mboot_pack_sign_public_key) != 0) {
+                          MBOOT_PACK_HYDRO_CONTEXT, mboot_pack_sign_public_key) != 0) {
         // Signature failed
         dfu_context.status = DFU_STATUS_ERROR_VERIFY;
         dfu_context.error = MBOOT_ERROR_STR_INVALID_SIG_IDX;
@@ -271,7 +271,7 @@ int mboot_pack_write(uint32_t addr, const uint8_t *src8, size_t len) {
     } else if (firmware_chunk_buf.header.format == MBOOT_PACK_CHUNK_FULL_SIG) {
         return mboot_pack_handle_full_sig();
     } else if (firmware_chunk_buf.header.format == MBOOT_PACK_CHUNK_FW_RAW
-        || firmware_chunk_buf.header.format == MBOOT_PACK_CHUNK_FW_GZIP) {
+               || firmware_chunk_buf.header.format == MBOOT_PACK_CHUNK_FW_GZIP) {
         return mboot_pack_handle_firmware();
     } else {
         // Unsupported contents.

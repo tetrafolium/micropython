@@ -75,9 +75,10 @@ typedef struct {
  DECLARE PRIVATE DATA
  ******************************************************************************/
 STATIC pyb_adc_channel_obj_t pyb_adc_channel_obj[PYB_ADC_NUM_CHANNELS] = { {.pin = &pin_GP2, .channel = ADC_CH_0, .id = 0, .enabled = false},
-                                                                           {.pin = &pin_GP3, .channel = ADC_CH_1, .id = 1, .enabled = false},
-                                                                           {.pin = &pin_GP4, .channel = ADC_CH_2, .id = 2, .enabled = false},
-                                                                           {.pin = &pin_GP5, .channel = ADC_CH_3, .id = 3, .enabled = false} };
+    {.pin = &pin_GP3, .channel = ADC_CH_1, .id = 1, .enabled = false},
+    {.pin = &pin_GP4, .channel = ADC_CH_2, .id = 2, .enabled = false},
+    {.pin = &pin_GP5, .channel = ADC_CH_3, .id = 3, .enabled = false}
+};
 STATIC pyb_adc_obj_t pyb_adc_obj = {.enabled = false};
 
 STATIC const mp_obj_type_t pyb_adc_channel_type;

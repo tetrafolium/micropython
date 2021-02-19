@@ -135,10 +135,10 @@ STATIC int spi_find(mp_obj_t id) {
         // given a string id
         const char *port = mp_obj_str_get_str(id);
         if (0) {
-        #ifdef MICROPY_HW_SPI0_NAME
+#ifdef MICROPY_HW_SPI0_NAME
         } else if (strcmp(port, MICROPY_HW_SPI0_NAME) == 0) {
             return 1;
-        #endif
+#endif
         }
         mp_raise_ValueError(MP_ERROR_TEXT("SPI doesn't exist"));
     } else {
@@ -281,8 +281,8 @@ STATIC mp_obj_t machine_hard_spi_make_new(mp_arg_val_t *args) {
 
     // here we would check the sck/mosi/miso pins and configure them
     if (args[ARG_NEW_sck].u_obj != MP_OBJ_NULL
-        && args[ARG_NEW_mosi].u_obj != MP_OBJ_NULL
-        && args[ARG_NEW_miso].u_obj != MP_OBJ_NULL) {
+            && args[ARG_NEW_mosi].u_obj != MP_OBJ_NULL
+            && args[ARG_NEW_miso].u_obj != MP_OBJ_NULL) {
 
         self->p_config->sck_pin  = mp_hal_get_pin_obj(args[ARG_NEW_sck].u_obj)->pin;
         self->p_config->mosi_pin = mp_hal_get_pin_obj(args[ARG_NEW_mosi].u_obj)->pin;
@@ -347,7 +347,7 @@ STATIC void machine_hard_spi_init(mp_obj_t self_in, mp_arg_val_t *args) {
             // Second clock edge
             self->p_config->mode = NRF_SPI_MODE_1;
         }
-    // Active low
+        // Active low
     } else {
         if (args[ARG_INIT_phase].u_int == 0) {
             // First clock edge

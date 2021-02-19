@@ -36,9 +36,9 @@
 #include "adc.h"
 
 #if NRF51
-    #include "nrfx_adc.h"
+#include "nrfx_adc.h"
 #else
-    #include "nrfx_saadc.h"
+#include "nrfx_saadc.h"
 #endif
 
 typedef struct _machine_adc_obj_t {
@@ -94,7 +94,7 @@ STATIC int adc_find(mp_obj_t id) {
     }
 
     if (adc_idx >= 0 && adc_idx < MP_ARRAY_SIZE(machine_adc_obj)
-        && machine_adc_obj[adc_idx].id != (uint8_t)-1) {
+            && machine_adc_obj[adc_idx].id != (uint8_t)-1) {
         return adc_idx;
     }
     mp_raise_ValueError(MP_ERROR_TEXT("ADC doesn't exist"));
@@ -127,20 +127,20 @@ STATIC mp_obj_t machine_adc_make_new(const mp_obj_type_t *type, size_t n_args, s
 
 #if defined(NRF52_SERIES)
     const nrfx_saadc_channel_t config = {                                                           \
-        .channel_config =
-        {
-            .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
-            .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
-            .gain       = NRF_SAADC_GAIN1_4,
-            .reference  = NRF_SAADC_REFERENCE_VDD4,
-            .acq_time   = NRF_SAADC_ACQTIME_3US,
-            .mode       = NRF_SAADC_MODE_SINGLE_ENDED,
-            .burst      = NRF_SAADC_BURST_DISABLED,
-        },
-        .pin_p          = (nrf_saadc_input_t)(1 + self->id), // pin_p=0 is AIN0, pin_p=8 is AIN7
-        .pin_n          = NRF_SAADC_INPUT_DISABLED,
-        .channel_index  = self->id,
-    };
+                                                                                                    .channel_config =
+    {
+        .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
+        .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
+        .gain       = NRF_SAADC_GAIN1_4,
+        .reference  = NRF_SAADC_REFERENCE_VDD4,
+        .acq_time   = NRF_SAADC_ACQTIME_3US,
+        .mode       = NRF_SAADC_MODE_SINGLE_ENDED,
+        .burst      = NRF_SAADC_BURST_DISABLED,
+    },
+    .pin_p          = (nrf_saadc_input_t)(1 + self->id), // pin_p=0 is AIN0, pin_p=8 is AIN7
+    .pin_n          = NRF_SAADC_INPUT_DISABLED,
+    .channel_index  = self->id,
+                                        };
     nrfx_saadc_channels_config(&config, 1);
 #endif
 
@@ -175,12 +175,12 @@ int16_t machine_adc_value_read(machine_adc_obj_t * adc_obj) {
 STATIC mp_obj_t machine_adc_read_u16(mp_obj_t self_in) {
     machine_adc_obj_t *self = self_in;
     int16_t raw = machine_adc_value_read(self);
-    #if defined(NRF52_SERIES)
+#if defined(NRF52_SERIES)
     // raw is signed but the channel is in single-ended mode and this method cannot return negative values
     if (raw < 0) {
         raw = 0;
     }
-    #endif
+#endif
     // raw is an 8-bit value
     return MP_OBJ_NEW_SMALL_INT(raw << 8 | raw);
 }
@@ -255,20 +255,20 @@ mp_obj_t machine_adc_battery_level(void) {
     nrf_saadc_value_t value = 0;
 
     const nrfx_saadc_channel_t config = {                                                           \
-        .channel_config =
-        {
-            .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
-            .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
-            .gain       = NRF_SAADC_GAIN1_6,
-            .reference  = NRF_SAADC_REFERENCE_INTERNAL,
-            .acq_time   = NRF_SAADC_ACQTIME_3US,
-            .mode       = NRF_SAADC_MODE_SINGLE_ENDED,
-            .burst      = NRF_SAADC_BURST_DISABLED,
-        },
-        .pin_p          = NRF_SAADC_INPUT_VDD,
-        .pin_n          = NRF_SAADC_INPUT_DISABLED,
-        .channel_index  = 0,
-    };
+                                                                                                    .channel_config =
+    {
+        .resistor_p = NRF_SAADC_RESISTOR_DISABLED,
+        .resistor_n = NRF_SAADC_RESISTOR_DISABLED,
+        .gain       = NRF_SAADC_GAIN1_6,
+        .reference  = NRF_SAADC_REFERENCE_INTERNAL,
+        .acq_time   = NRF_SAADC_ACQTIME_3US,
+        .mode       = NRF_SAADC_MODE_SINGLE_ENDED,
+        .burst      = NRF_SAADC_BURST_DISABLED,
+    },
+    .pin_p          = NRF_SAADC_INPUT_VDD,
+    .pin_n          = NRF_SAADC_INPUT_DISABLED,
+    .channel_index  = 0,
+                                        };
     nrfx_saadc_channels_config(&config, 1);
 
     nrfx_saadc_simple_mode_set((1 << 0), NRF_SAADC_RESOLUTION_8BIT, NRF_SAADC_INPUT_DISABLED, NULL);

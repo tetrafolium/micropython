@@ -279,7 +279,7 @@ CRCDataProcess(uint32_t ui32Base, void *puiDataIn,
         //
         // The CRC is operating in 32-bit mode, so loop through the input data.
         //
-    	pui32DataIn = (uint32_t *)puiDataIn;
+        pui32DataIn = (uint32_t *)puiDataIn;
         while(ui32DataLength--)
         {
             //

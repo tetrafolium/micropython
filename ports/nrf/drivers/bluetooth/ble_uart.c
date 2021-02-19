@@ -161,7 +161,7 @@ void mp_hal_stdout_tx_strn_cooked(const char *str, mp_uint_t len) {
 uintptr_t mp_hal_stdio_poll(uintptr_t poll_flags) {
     uintptr_t ret = 0;
     if ((poll_flags & MP_STREAM_POLL_RD) && ble_uart_enabled()
-        && !isBufferEmpty(mp_rx_ring_buffer)) {
+            && !isBufferEmpty(mp_rx_ring_buffer)) {
         ret |= MP_STREAM_POLL_RD;
     }
     return ret;
@@ -191,13 +191,13 @@ STATIC void gatts_event_handler(mp_obj_t self_in, uint16_t event_id, uint16_t at
             m_cccd_enabled = true;
         } else if (ble_uart_char_rx.handle == attr_handle) {
             for (uint16_t i = 0; i < length; i++) {
-                #if MICROPY_KBD_EXCEPTION
+#if MICROPY_KBD_EXCEPTION
                 if (data[i] == mp_interrupt_char) {
                     mp_keyboard_interrupt();
                     m_rx_ring_buffer.start = 0;
                     m_rx_ring_buffer.end = 0;
                 } else
-                #endif
+#endif
                 {
                     bufferWrite(mp_rx_ring_buffer, data[i]);
                 }
@@ -265,7 +265,8 @@ void ble_uart_init0(void) {
     // for now point eddystone URL to https://goo.gl/F7fZ69 => https://aykevl.nl/apps/nus/
     static uint8_t eddystone_url_data[27] = {0x2, 0x1, 0x6,
                                              0x3, 0x3, 0xaa, 0xfe,
-                                             19, 0x16, 0xaa, 0xfe, 0x10, 0xee, 0x3, 'g', 'o', 'o', '.', 'g', 'l', '/', 'F', '7', 'f', 'Z', '6', '9'};
+                                             19, 0x16, 0xaa, 0xfe, 0x10, 0xee, 0x3, 'g', 'o', 'o', '.', 'g', 'l', '/', 'F', '7', 'f', 'Z', '6', '9'
+                                            };
     // eddystone url adv data
     m_adv_data_eddystone_url.p_data      = eddystone_url_data;
     m_adv_data_eddystone_url.data_len    = sizeof(eddystone_url_data);

@@ -68,18 +68,18 @@ STATIC const mp_rom_map_elem_t mp_module_time_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_zephyr) },
     { MP_ROM_QSTR(MP_QSTR_is_preempt_thread), MP_ROM_PTR(&mod_is_preempt_thread_obj) },
     { MP_ROM_QSTR(MP_QSTR_current_tid), MP_ROM_PTR(&mod_current_tid_obj) },
-    #ifdef CONFIG_THREAD_ANALYZER
+#ifdef CONFIG_THREAD_ANALYZER
     { MP_ROM_QSTR(MP_QSTR_thread_analyze), MP_ROM_PTR(&mod_thread_analyze_obj) },
-    #endif
-    #ifdef CONFIG_SHELL_BACKEND_SERIAL
+#endif
+#ifdef CONFIG_SHELL_BACKEND_SERIAL
     { MP_ROM_QSTR(MP_QSTR_shell_exec), MP_ROM_PTR(&mod_shell_exec_obj) },
-    #endif
-    #ifdef CONFIG_DISK_ACCESS
+#endif
+#ifdef CONFIG_DISK_ACCESS
     { MP_ROM_QSTR(MP_QSTR_DiskAccess), MP_ROM_PTR(&zephyr_disk_access_type) },
-    #endif
-    #ifdef CONFIG_FLASH_MAP
+#endif
+#ifdef CONFIG_FLASH_MAP
     { MP_ROM_QSTR(MP_QSTR_FlashArea), MP_ROM_PTR(&zephyr_flash_area_type) },
-    #endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(mp_module_time_globals, mp_module_time_globals_table);

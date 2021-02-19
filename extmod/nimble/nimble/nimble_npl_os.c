@@ -94,10 +94,10 @@ STATIC void m_free_bluetooth(void *ptr) {
         MP_STATE_PORT(bluetooth_nimble_memory) = NULL;
     }
     m_free(alloc
-    #if MICROPY_MALLOC_USES_ALLOCATED_SIZE
+#if MICROPY_MALLOC_USES_ALLOCATED_SIZE
            , alloc->size
-    #endif
-    );
+#endif
+          );
 }
 
 // Check if a nimble ptr is tracked.

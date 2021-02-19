@@ -85,13 +85,13 @@ STATIC NORETURN void mbedtls_raise_error(int err) {
         mp_raise_OSError(-err);
     }
 
-    #if defined(MBEDTLS_ERROR_C)
+#if defined(MBEDTLS_ERROR_C)
     // Including mbedtls_strerror takes about 1.5KB due to the error strings.
     // MBEDTLS_ERROR_C is the define used by mbedtls to conditionally include mbedtls_strerror.
     // It is set/unset in the MBEDTLS_CONFIG_FILE which is defined in the Makefile.
 
     // Try to allocate memory for the message
-    #define ERR_STR_MAX 80  // mbedtls_strerror truncates if it doesn't fit
+#define ERR_STR_MAX 80  // mbedtls_strerror truncates if it doesn't fit
     mp_obj_str_t *o_str = m_new_obj_maybe(mp_obj_str_t);
     byte *o_str_buf = m_new_maybe(byte, ERR_STR_MAX);
     if (o_str == NULL || o_str_buf == NULL) {
@@ -110,10 +110,10 @@ STATIC NORETURN void mbedtls_raise_error(int err) {
     // raise
     mp_obj_t args[2] = { MP_OBJ_NEW_SMALL_INT(err), MP_OBJ_FROM_PTR(o_str)};
     nlr_raise(mp_obj_exception_make_new(&mp_type_OSError, 2, 0, args));
-    #else
+#else
     // mbedtls is compiled without error strings so we simply return the err number
     mp_raise_OSError(err); // err is typically a large negative number
-    #endif
+#endif
 }
 
 STATIC int _mbedtls_ssl_send(void *ctx, const byte *buf, size_t len) {
@@ -155,11 +155,11 @@ STATIC mp_obj_ssl_socket_t *socket_new(mp_obj_t sock, struct ssl_args *args) {
     // Verify the socket object has the full stream protocol
     mp_get_stream_raise(sock, MP_STREAM_OP_READ | MP_STREAM_OP_WRITE | MP_STREAM_OP_IOCTL);
 
-    #if MICROPY_PY_USSL_FINALISER
+#if MICROPY_PY_USSL_FINALISER
     mp_obj_ssl_socket_t *o = m_new_obj_with_finaliser(mp_obj_ssl_socket_t);
-    #else
+#else
     mp_obj_ssl_socket_t *o = m_new_obj(mp_obj_ssl_socket_t);
-    #endif
+#endif
     o->base.type = &ussl_socket_type;
     o->sock = sock;
 
@@ -170,10 +170,10 @@ STATIC mp_obj_ssl_socket_t *socket_new(mp_obj_t sock, struct ssl_args *args) {
     mbedtls_x509_crt_init(&o->cert);
     mbedtls_pk_init(&o->pkey);
     mbedtls_ctr_drbg_init(&o->ctr_drbg);
-    #ifdef MBEDTLS_DEBUG_C
+#ifdef MBEDTLS_DEBUG_C
     // Debug level (0-4)
     mbedtls_debug_set_threshold(0);
-    #endif
+#endif
 
     mbedtls_entropy_init(&o->entropy);
     const byte seed[] = "upy";
@@ -183,18 +183,18 @@ STATIC mp_obj_ssl_socket_t *socket_new(mp_obj_t sock, struct ssl_args *args) {
     }
 
     ret = mbedtls_ssl_config_defaults(&o->conf,
-        args->server_side.u_bool ? MBEDTLS_SSL_IS_SERVER : MBEDTLS_SSL_IS_CLIENT,
-        MBEDTLS_SSL_TRANSPORT_STREAM,
-        MBEDTLS_SSL_PRESET_DEFAULT);
+                                      args->server_side.u_bool ? MBEDTLS_SSL_IS_SERVER : MBEDTLS_SSL_IS_CLIENT,
+                                      MBEDTLS_SSL_TRANSPORT_STREAM,
+                                      MBEDTLS_SSL_PRESET_DEFAULT);
     if (ret != 0) {
         goto cleanup;
     }
 
     mbedtls_ssl_conf_authmode(&o->conf, MBEDTLS_SSL_VERIFY_NONE);
     mbedtls_ssl_conf_rng(&o->conf, mbedtls_ctr_drbg_random, &o->ctr_drbg);
-    #ifdef MBEDTLS_DEBUG_C
+#ifdef MBEDTLS_DEBUG_C
     mbedtls_ssl_conf_dbg(&o->conf, mbedtls_debug, NULL);
-    #endif
+#endif
 
     ret = mbedtls_ssl_setup(&o->ssl, &o->conf);
     if (ret != 0) {
@@ -359,9 +359,9 @@ STATIC const mp_rom_map_elem_t ussl_socket_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_write), MP_ROM_PTR(&mp_stream_write_obj) },
     { MP_ROM_QSTR(MP_QSTR_setblocking), MP_ROM_PTR(&socket_setblocking_obj) },
     { MP_ROM_QSTR(MP_QSTR_close), MP_ROM_PTR(&mp_stream_close_obj) },
-    #if MICROPY_PY_USSL_FINALISER
+#if MICROPY_PY_USSL_FINALISER
     { MP_ROM_QSTR(MP_QSTR___del__), MP_ROM_PTR(&mp_stream_close_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_getpeercert), MP_ROM_PTR(&mod_ssl_getpeercert_obj) },
 };
 
@@ -399,7 +399,7 @@ STATIC mp_obj_t mod_ssl_wrap_socket(size_t n_args, const mp_obj_t *pos_args, mp_
 
     struct ssl_args args;
     mp_arg_parse_all(n_args - 1, pos_args + 1, kw_args,
-        MP_ARRAY_SIZE(allowed_args), allowed_args, (mp_arg_val_t *)&args);
+                     MP_ARRAY_SIZE(allowed_args), allowed_args, (mp_arg_val_t *)&args);
 
     return MP_OBJ_FROM_PTR(socket_new(sock, &args));
 }

@@ -78,7 +78,7 @@ static const char *_compilecode(const char *re, ByteProg *prog, int sizecode)
                 EMIT(PC++, 2 * sub);
                 prog->len++;
             } else {
-                    re += 2;
+                re += 2;
             }
 
             re = _compilecode(re + 1, prog, sizecode);
@@ -168,7 +168,7 @@ static const char *_compilecode(const char *re, ByteProg *prog, int sizecode)
 int re1_5_sizecode(const char *re)
 {
     ByteProg dummyprog = {
-         // Save 0, Save 1, Match; more bytes for "search" (vs "match") prefix code
+        // Save 0, Save 1, Match; more bytes for "search" (vs "match") prefix code
         .bytelen = 5 + NON_ANCHORED_PREFIX
     };
 

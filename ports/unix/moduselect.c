@@ -301,9 +301,9 @@ STATIC const mp_rom_map_elem_t poll_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_modify), MP_ROM_PTR(&poll_modify_obj) },
     { MP_ROM_QSTR(MP_QSTR_poll), MP_ROM_PTR(&poll_poll_obj) },
     { MP_ROM_QSTR(MP_QSTR_ipoll), MP_ROM_PTR(&poll_ipoll_obj) },
-    #if DEBUG
+#if DEBUG
     { MP_ROM_QSTR(MP_QSTR_dump), MP_ROM_PTR(&poll_dump_obj) },
-    #endif
+#endif
 };
 STATIC MP_DEFINE_CONST_DICT(poll_locals_dict, poll_locals_dict_table);
 

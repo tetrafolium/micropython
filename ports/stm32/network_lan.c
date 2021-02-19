@@ -45,12 +45,12 @@ STATIC void network_lan_print(const mp_print_t *print, mp_obj_t self_in, mp_prin
     struct netif *netif = eth_netif(self->eth);
     int status = eth_link_status(self->eth);
     mp_printf(print, "<ETH %u %u.%u.%u.%u>",
-        status,
-        netif->ip_addr.addr & 0xff,
-        netif->ip_addr.addr >> 8 & 0xff,
-        netif->ip_addr.addr >> 16 & 0xff,
-        netif->ip_addr.addr >> 24
-        );
+              status,
+              netif->ip_addr.addr & 0xff,
+              netif->ip_addr.addr >> 8 & 0xff,
+              netif->ip_addr.addr >> 16 & 0xff,
+              netif->ip_addr.addr >> 24
+             );
 }
 
 STATIC mp_obj_t network_lan_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args) {
@@ -114,11 +114,11 @@ STATIC mp_obj_t network_lan_config(size_t n_args, const mp_obj_t *args, mp_map_t
         }
 
         switch (mp_obj_str_get_qstr(args[1])) {
-            case MP_QSTR_mac: {
-                return mp_obj_new_bytes(&eth_netif(self->eth)->hwaddr[0], 6);
-            }
-            default:
-                mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
+        case MP_QSTR_mac: {
+            return mp_obj_new_bytes(&eth_netif(self->eth)->hwaddr[0], 6);
+        }
+        default:
+            mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
         }
     } else {
         // Set config value(s)
@@ -130,12 +130,12 @@ STATIC mp_obj_t network_lan_config(size_t n_args, const mp_obj_t *args, mp_map_t
             if (MP_MAP_SLOT_IS_FILLED(kwargs, i)) {
                 mp_map_elem_t *e = &kwargs->table[i];
                 switch (mp_obj_str_get_qstr(e->key)) {
-                    case MP_QSTR_trace: {
-                        eth_set_trace(self->eth, mp_obj_get_int(e->value));
-                        break;
-                    }
-                    default:
-                        mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
+                case MP_QSTR_trace: {
+                    eth_set_trace(self->eth, mp_obj_get_int(e->value));
+                    break;
+                }
+                default:
+                    mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
                 }
             }
         }

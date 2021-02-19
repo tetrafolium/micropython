@@ -55,40 +55,40 @@ typedef struct {
 } usbd_cdc_state_t;
 
 typedef struct _USBD_STORAGE {
-  int8_t (* Init) (uint8_t lun);
-  int    (* Inquiry) (uint8_t lun, const uint8_t *params, uint8_t *data_out);
-  int8_t (* GetCapacity) (uint8_t lun, uint32_t *block_num, uint16_t *block_size);
-  int8_t (* IsReady) (uint8_t lun);
-  int8_t (* IsWriteProtected) (uint8_t lun);
-  int8_t (* StartStopUnit)(uint8_t lun, uint8_t started);
-  int8_t (* PreventAllowMediumRemoval)(uint8_t lun, uint8_t param0);
-  int8_t (* Read) (uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
-  int8_t (* Write)(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
-  int8_t (* GetMaxLun)(void);
+    int8_t (* Init) (uint8_t lun);
+    int    (* Inquiry) (uint8_t lun, const uint8_t *params, uint8_t *data_out);
+    int8_t (* GetCapacity) (uint8_t lun, uint32_t *block_num, uint16_t *block_size);
+    int8_t (* IsReady) (uint8_t lun);
+    int8_t (* IsWriteProtected) (uint8_t lun);
+    int8_t (* StartStopUnit)(uint8_t lun, uint8_t started);
+    int8_t (* PreventAllowMediumRemoval)(uint8_t lun, uint8_t param0);
+    int8_t (* Read) (uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
+    int8_t (* Write)(uint8_t lun, uint8_t *buf, uint32_t blk_addr, uint16_t blk_len);
+    int8_t (* GetMaxLun)(void);
 } USBD_StorageTypeDef;
 
 typedef struct {
-  uint32_t                 max_lun;   
-  uint32_t                 interface; 
-  uint8_t                  bot_state;
-  uint8_t                  bot_status;  
-  uint16_t                 bot_data_length;
-  uint8_t                  bot_data[MSC_MEDIA_PACKET];  
-  USBD_MSC_BOT_CBWTypeDef  cbw;
-  USBD_MSC_BOT_CSWTypeDef  csw;
-  
-  USBD_SCSI_SenseTypeDef   scsi_sense [SENSE_LIST_DEEPTH];
-  uint8_t                  scsi_sense_head;
-  uint8_t                  scsi_sense_tail;
-  
-  uint16_t                 scsi_blk_size[USBD_MSC_MAX_LUN];
-  uint32_t                 scsi_blk_nbr[USBD_MSC_MAX_LUN];
-  
-  uint32_t                 scsi_blk_addr_in_blks;
-  uint32_t                 scsi_blk_len;
+    uint32_t                 max_lun;
+    uint32_t                 interface;
+    uint8_t                  bot_state;
+    uint8_t                  bot_status;
+    uint16_t                 bot_data_length;
+    uint8_t                  bot_data[MSC_MEDIA_PACKET];
+    USBD_MSC_BOT_CBWTypeDef  cbw;
+    USBD_MSC_BOT_CSWTypeDef  csw;
 
-  // operations of the underlying block device
-  USBD_StorageTypeDef *bdev_ops;
+    USBD_SCSI_SenseTypeDef   scsi_sense [SENSE_LIST_DEEPTH];
+    uint8_t                  scsi_sense_head;
+    uint8_t                  scsi_sense_tail;
+
+    uint16_t                 scsi_blk_size[USBD_MSC_MAX_LUN];
+    uint32_t                 scsi_blk_nbr[USBD_MSC_MAX_LUN];
+
+    uint32_t                 scsi_blk_addr_in_blks;
+    uint32_t                 scsi_blk_len;
+
+    // operations of the underlying block device
+    USBD_StorageTypeDef *bdev_ops;
 } USBD_MSC_BOT_HandleTypeDef;
 
 typedef enum {
@@ -115,9 +115,9 @@ typedef struct _usbd_cdc_msc_hid_state_t {
     uint8_t usbd_mode;
     uint16_t usbd_config_desc_size;
 
-    #if MICROPY_HW_USB_MSC
+#if MICROPY_HW_USB_MSC
     USBD_MSC_BOT_HandleTypeDef MSC_BOT_ClassData;
-    #endif
+#endif
 
     // RAM to hold the current descriptors, which we configure on the fly
     __ALIGN_BEGIN uint8_t usbd_device_desc[USB_LEN_DEV_DESC] __ALIGN_END;
@@ -125,9 +125,9 @@ typedef struct _usbd_cdc_msc_hid_state_t {
     __ALIGN_BEGIN uint8_t usbd_config_desc[MAX_TEMPLATE_CONFIG_DESC_SIZE] __ALIGN_END;
 
     usbd_cdc_state_t *cdc[MICROPY_HW_USB_CDC_NUM];
-    #if MICROPY_HW_USB_HID
+#if MICROPY_HW_USB_HID
     usbd_hid_state_t *hid;
-    #endif
+#endif
 } usbd_cdc_msc_hid_state_t;
 
 extern const uint8_t USBD_MSC_Mode_Sense6_Data[4];
@@ -146,22 +146,22 @@ extern const uint8_t USBD_HID_KEYBOARD_ReportDesc[USBD_HID_KEYBOARD_REPORT_DESC_
 extern const USBD_ClassTypeDef USBD_CDC_MSC_HID;
 
 static inline uint32_t usbd_msc_max_packet(USBD_HandleTypeDef *pdev) {
-    #if USBD_SUPPORT_HS_MODE
+#if USBD_SUPPORT_HS_MODE
     if (pdev->dev_speed == USBD_SPEED_HIGH) {
         return MSC_HS_MAX_PACKET;
     } else
-    #endif
+#endif
     {
         return MSC_FS_MAX_PACKET;
     }
 }
 
 static inline uint32_t usbd_cdc_max_packet(USBD_HandleTypeDef *pdev) {
-    #if USBD_SUPPORT_HS_MODE
+#if USBD_SUPPORT_HS_MODE
     if (pdev->dev_speed == USBD_SPEED_HIGH) {
         return CDC_DATA_HS_MAX_PACKET_SIZE;
     } else
-    #endif
+#endif
     {
         return CDC_DATA_FS_MAX_PACKET_SIZE;
     }

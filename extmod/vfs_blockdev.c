@@ -119,22 +119,22 @@ mp_obj_t mp_vfs_blockdev_ioctl(mp_vfs_blockdev_t *self, uintptr_t cmd, uintptr_t
     } else {
         // Old protocol with sync and count
         switch (cmd) {
-            case MP_BLOCKDEV_IOCTL_SYNC:
-                if (self->u.old.sync[0] != MP_OBJ_NULL) {
-                    mp_call_method_n_kw(0, 0, self->u.old.sync);
-                }
-                break;
+        case MP_BLOCKDEV_IOCTL_SYNC:
+            if (self->u.old.sync[0] != MP_OBJ_NULL) {
+                mp_call_method_n_kw(0, 0, self->u.old.sync);
+            }
+            break;
 
-            case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
-                return mp_call_method_n_kw(0, 0, self->u.old.count);
+        case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
+            return mp_call_method_n_kw(0, 0, self->u.old.count);
 
-            case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
-                // Old protocol has fixed sector size of 512 bytes
-                break;
+        case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
+            // Old protocol has fixed sector size of 512 bytes
+            break;
 
-            case MP_BLOCKDEV_IOCTL_INIT:
-                // Old protocol doesn't have init
-                break;
+        case MP_BLOCKDEV_IOCTL_INIT:
+            // Old protocol doesn't have init
+            break;
         }
         return mp_const_none;
     }

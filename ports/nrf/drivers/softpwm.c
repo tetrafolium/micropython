@@ -194,7 +194,7 @@ static void pwm_set_period_ticks(int32_t ticks) {
 
 int pwm_set_period_us(int32_t us) {
     if ((us < 256) ||
-        (us > 1000000)) {
+            (us > 1000000)) {
         return -1;
     }
     pwm_set_period_ticks(us/MICROSECONDS_PER_TICK);

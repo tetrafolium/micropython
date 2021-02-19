@@ -1,35 +1,35 @@
 /*
  * fs.h - CC31xx/CC32xx Host Driver Implementation
  *
- * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
- * 
- * 
- *  Redistribution and use in source and binary forms, with or without 
- *  modification, are permitted provided that the following conditions 
+ * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
  *  are met:
  *
- *    Redistributions of source code must retain the above copyright 
+ *    Redistributions of source code must retain the above copyright
  *    notice, this list of conditions and the following disclaimer.
  *
  *    Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the 
- *    documentation and/or other materials provided with the   
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
  *    distribution.
  *
  *    Neither the name of Texas Instruments Incorporated nor the names of
  *    its contributors may be used to endorse or promote products derived
  *    from this software without specific prior written permission.
  *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
  *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
- *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
- *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
- *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
  *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
  *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
- *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
- *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
 */
@@ -39,7 +39,7 @@
 /*****************************************************************************/
 
 #include "simplelink.h"
-    
+
 #ifndef __FS_H__
 #define __FS_H__
 
@@ -154,7 +154,7 @@ extern "C" {
 /*  Open for Write (in case file exist) */
 #define FS_MODE_OPEN_WRITE                                    _FS_MODE(_FS_MODE_OPEN_WRITE,0,0,0)
 /* Open for Creating a new file */
-#define FS_MODE_OPEN_CREATE(maxSizeInBytes,accessModeFlags)   _sl_GetCreateFsMode(maxSizeInBytes,accessModeFlags)        
+#define FS_MODE_OPEN_CREATE(maxSizeInBytes,accessModeFlags)   _sl_GetCreateFsMode(maxSizeInBytes,accessModeFlags)
 
 /*****************************************************************************/
 /* Structure/Enum declarations                                               */
@@ -165,36 +165,36 @@ typedef struct
     _u32  FileLen;
     _u32  AllocatedLen;
     _u32  Token[4];
-}SlFsFileInfo_t;
+} SlFsFileInfo_t;
 
 typedef enum
 {
-       _FS_MODE_OPEN_READ            = 0,
-       _FS_MODE_OPEN_WRITE,
-       _FS_MODE_OPEN_CREATE,
-       _FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST
-}SlFsFileOpenAccessType_e;
+    _FS_MODE_OPEN_READ            = 0,
+    _FS_MODE_OPEN_WRITE,
+    _FS_MODE_OPEN_CREATE,
+    _FS_MODE_OPEN_WRITE_CREATE_IF_NOT_EXIST
+} SlFsFileOpenAccessType_e;
 
 typedef enum
 {
-   _FS_FILE_OPEN_FLAG_COMMIT  =  0x1,           /* MIRROR - for fail safe */
-   _FS_FILE_OPEN_FLAG_SECURE  =  0x2,           /* SECURE */
-   _FS_FILE_OPEN_FLAG_NO_SIGNATURE_TEST = 0x4,  /* Relevant to secure file only  */
-   _FS_FILE_OPEN_FLAG_STATIC  =           0x8,  /*  Relevant to secure file only */
-   _FS_FILE_OPEN_FLAG_VENDOR  =           0x10, /*  Relevant to secure file only */
-   _FS_FILE_PUBLIC_WRITE=                 0x20, /* Relevant to secure file only, the file can be opened for write without Token */
-   _FS_FILE_PUBLIC_READ =                 0x40  /* Relevant to secure file only, the file can be opened for read without Token  */
-}SlFileOpenFlags_e;
+    _FS_FILE_OPEN_FLAG_COMMIT  =  0x1,           /* MIRROR - for fail safe */
+    _FS_FILE_OPEN_FLAG_SECURE  =  0x2,           /* SECURE */
+    _FS_FILE_OPEN_FLAG_NO_SIGNATURE_TEST = 0x4,  /* Relevant to secure file only  */
+    _FS_FILE_OPEN_FLAG_STATIC  =           0x8,  /*  Relevant to secure file only */
+    _FS_FILE_OPEN_FLAG_VENDOR  =           0x10, /*  Relevant to secure file only */
+    _FS_FILE_PUBLIC_WRITE=                 0x20, /* Relevant to secure file only, the file can be opened for write without Token */
+    _FS_FILE_PUBLIC_READ =                 0x40  /* Relevant to secure file only, the file can be opened for read without Token  */
+} SlFileOpenFlags_e;
 
 typedef enum
 {
-       _FS_MODE_SIZE_GRAN_256B    = 0,   /*  MAX_SIZE = 64K  */
-       _FS_MODE_SIZE_GRAN_1KB,           /*  MAX_SIZE = 256K */
-       _FS_MODE_SIZE_GRAN_4KB,           /*  MAX_SZIE = 1M   */
-       _FS_MODE_SIZE_GRAN_16KB,          /*  MAX_SIZE = 4M   */
-       _FS_MODE_SIZE_GRAN_64KB,          /*  MAX_SIZE = 16M  */
-       _FS_MAX_MODE_SIZE_GRAN
-}_SlFsFileOpenMaxSizeGran_e;
+    _FS_MODE_SIZE_GRAN_256B    = 0,   /*  MAX_SIZE = 64K  */
+    _FS_MODE_SIZE_GRAN_1KB,           /*  MAX_SIZE = 256K */
+    _FS_MODE_SIZE_GRAN_4KB,           /*  MAX_SZIE = 1M   */
+    _FS_MODE_SIZE_GRAN_16KB,          /*  MAX_SIZE = 4M   */
+    _FS_MODE_SIZE_GRAN_64KB,          /*  MAX_SIZE = 16M  */
+    _FS_MAX_MODE_SIZE_GRAN
+} _SlFsFileOpenMaxSizeGran_e;
 
 /*****************************************************************************/
 /* Internal Function prototypes                                              */
@@ -207,12 +207,12 @@ _u32 _sl_GetCreateFsMode(_u32 maxSizeInBytes,_u32 accessFlags);
 
 /*!
     \brief open file for read or write from/to storage device
-    
-    \param[in]      pFileName                  File Name buffer pointer  
+
+    \param[in]      pFileName                  File Name buffer pointer
     \param[in]      AccessModeAndMaxSize       Options: As described below
     \param[in]      pToken                     Reserved for future use. Use NULL for this field
-    \param[out]     pFileHandle      Pointing on the file and used for read and write commands to the file     
-     
+    \param[out]     pFileHandle      Pointing on the file and used for read and write commands to the file
+
      AccessModeAndMaxSize possible input                                                                        \n
      FS_MODE_OPEN_READ                                        - Read a file                                                                  \n
      FS_MODE_OPEN_WRITE                                       - Open for write for an existing file                                          \n
@@ -220,11 +220,11 @@ _u32 _sl_GetCreateFsMode(_u32 maxSizeInBytes,_u32 accessFlags);
                                                                 For optimal FS size, use max size in 4K-512 bytes steps (e.g. 3584,7680,117760)  \n
                                                                 Several access modes bits can be combined together from SlFileOpenFlags_e enum
 
-    \return         On success, zero is returned. On error, an error code is returned    
-    
-    \sa             sl_FsRead sl_FsWrite sl_FsClose       
-    \note           belongs to \ref basic_api       
-    \warning        
+    \return         On success, zero is returned. On error, an error code is returned
+
+    \sa             sl_FsRead sl_FsWrite sl_FsClose
+    \note           belongs to \ref basic_api
+    \warning
     \par            Example:
     \code
        char*           DeviceFileName = "MyFile.txt";
@@ -263,20 +263,20 @@ _i32 sl_FsOpen(const _u8 *pFileName,const _u32 AccessModeAndMaxSize,_u32 *pToken
 
 /*!
     \brief close file in storage device
-    
-    \param[in]      FileHdl                 Pointer to the file (assigned from sl_FsOpen) 
+
+    \param[in]      FileHdl                 Pointer to the file (assigned from sl_FsOpen)
     \param[in]      pCeritificateFileName   Reserved for future use. Use NULL.
     \param[in]      pSignature              Reserved for future use. Use NULL.
     \param[in]      SignatureLen            Reserved for future use. Use 0.
-                    
 
-    \return         On success, zero is returned.  On error, an error code is returned   
-    
-    \sa             sl_FsRead sl_FsWrite sl_FsOpen        
+
+    \return         On success, zero is returned.  On error, an error code is returned
+
+    \sa             sl_FsRead sl_FsWrite sl_FsOpen
     \note           Call the fs_Close  with signature = 'A' signature len = 1 for activating an abort action
     \warning
     \par            Example:
-    \code            
+    \code
     sl_FsClose(FileHandle,0,0,0);
     \endcode
 */
@@ -286,41 +286,41 @@ _i16 sl_FsClose(const _i32 FileHdl,const _u8* pCeritificateFileName,const _u8* p
 
 /*!
     \brief Read block of data from a file in storage device
-    
-    \param[in]      FileHdl Pointer to the file (assigned from sl_FsOpen)    
+
+    \param[in]      FileHdl Pointer to the file (assigned from sl_FsOpen)
     \param[in]      Offset  Offset to specific read block
     \param[out]     pData   Pointer for the received data
     \param[in]      Len     Length of the received data
-     
-    \return         On success, returns the number of read bytes. On error, negative number is returned    
-    
-    \sa             sl_FsClose sl_FsWrite sl_FsOpen        
-    \note           belongs to \ref basic_api       
-    \warning     
+
+    \return         On success, returns the number of read bytes. On error, negative number is returned
+
+    \sa             sl_FsClose sl_FsWrite sl_FsOpen
+    \note           belongs to \ref basic_api
+    \warning
     \par            Example:
-    \code    
+    \code
     Status = sl_FsRead(FileHandle, 0, &readBuff[0], readSize);
     \endcode
 */
 #if _SL_INCLUDE_FUNC(sl_FsRead)
-_i32 sl_FsRead(const _i32 FileHdl,_u32 Offset ,_u8*  pData,_u32 Len);
+_i32 sl_FsRead(const _i32 FileHdl,_u32 Offset,_u8*  pData,_u32 Len);
 #endif
 
 /*!
     \brief write block of data to a file in storage device
-    
-    \param[in]      FileHdl  Pointer to the file (assigned from sl_FsOpen)  
+
+    \param[in]      FileHdl  Pointer to the file (assigned from sl_FsOpen)
     \param[in]      Offset   Offset to specific block to be written
     \param[in]      pData    Pointer the transmitted data to the storage device
     \param[in]      Len      Length of the transmitted data
-     
+
     \return         On success, returns the number of written bytes.  On error, an error code is returned
-    
-    \sa                     
-    \note           belongs to \ref basic_api       
-    \warning     
+
+    \sa
+    \note           belongs to \ref basic_api
+    \warning
     \par            Example:
-    \code    
+    \code
     Status = sl_FsWrite(FileHandle, 0, &buff[0], readSize);
     \endcode
 */
@@ -330,18 +330,18 @@ _i32 sl_FsWrite(const _i32 FileHdl,_u32 Offset,_u8*  pData,_u32 Len);
 
 /*!
     \brief get info on a file
-    
+
     \param[in]      pFileName    File name
     \param[in]      Token        Reserved for future use. Use 0
-    \param[out]     pFsFileInfo Returns the File's Information: flags,file size, allocated size and Tokens 
-     
-    \return         On success, zero is returned.   On error, an error code is returned    
-    
-    \sa             sl_FsOpen        
-    \note           belongs to \ref basic_api       
-    \warning        
+    \param[out]     pFsFileInfo Returns the File's Information: flags,file size, allocated size and Tokens
+
+    \return         On success, zero is returned.   On error, an error code is returned
+
+    \sa             sl_FsOpen
+    \note           belongs to \ref basic_api
+    \warning
     \par            Example:
-    \code    
+    \code
     Status = sl_FsGetInfo("FileName.html",0,&FsFileInfo);
     \endcode
 */
@@ -351,16 +351,16 @@ _i16 sl_FsGetInfo(const _u8 *pFileName,const _u32 Token,SlFsFileInfo_t* pFsFileI
 
 /*!
     \brief Delete specific file from a storage or all files from a storage (format)
-    
-    \param[in]      pFileName    File Name 
+
+    \param[in]      pFileName    File Name
     \param[in]      Token        Reserved for future use. Use 0
-    \return         On success, zero is returned.  On error, an error code is returned    
-    
-    \sa                     
-    \note           belongs to \ref basic_api       
-    \warning     
+    \return         On success, zero is returned.  On error, an error code is returned
+
+    \sa
+    \note           belongs to \ref basic_api
+    \warning
     \par            Example:
-    \code    
+    \code
     Status = sl_FsDel("FileName.html",0);
     \endcode
 */

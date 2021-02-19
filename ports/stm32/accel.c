@@ -82,18 +82,18 @@
 #endif
 
 void accel_init(void) {
-    #if MICROPY_HW_HAS_MMA7660
+#if MICROPY_HW_HAS_MMA7660
     // PB5 is connected to AVDD; pull high to enable MMA accel device
     mp_hal_pin_low(MICROPY_HW_MMA_AVDD_PIN); // turn off AVDD
     mp_hal_pin_output(MICROPY_HW_MMA_AVDD_PIN);
-    #endif
+#endif
 }
 
 STATIC void accel_start(void) {
     // start the I2C bus in master mode
     i2c_init(I2C1, MICROPY_HW_I2C1_SCL, MICROPY_HW_I2C1_SDA, 400000, I2C_TIMEOUT_MS);
 
-    #if MICROPY_HW_HAS_MMA7660
+#if MICROPY_HW_HAS_MMA7660
 
     // turn off AVDD, wait 30ms, turn on AVDD, wait 30ms again
     mp_hal_pin_low(MICROPY_HW_MMA_AVDD_PIN); // turn off
@@ -120,7 +120,7 @@ STATIC void accel_start(void) {
     // wait for MMA to become active
     mp_hal_delay_ms(30);
 
-    #elif MICROPY_HW_HAS_KXTJ3
+#elif MICROPY_HW_HAS_KXTJ3
 
     // readout WHO_AM_I register to check KXTJ3 device presence
     uint8_t data[2] = { ACCEL_REG_WHO_AM_I };
@@ -139,7 +139,7 @@ STATIC void accel_start(void) {
     data[1] = 0x04;
     i2c_writeto(I2C1, ACCEL_ADDR, data, 2, true);
 
-    #endif
+#endif
 }
 
 /******************************************************************************/
@@ -208,15 +208,15 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(pyb_accel_z_obj, pyb_accel_z);
 /// \method tilt()
 /// Get the tilt register.
 STATIC mp_obj_t pyb_accel_tilt(mp_obj_t self_in) {
-    #if MICROPY_HW_HAS_MMA7660
+#if MICROPY_HW_HAS_MMA7660
     uint8_t data[1] = { ACCEL_REG_TILT };
     i2c_writeto(I2C1, ACCEL_ADDR, data, 1, false);
     i2c_readfrom(I2C1, ACCEL_ADDR, data, 1, true);
     return mp_obj_new_int(data[0]);
-    #elif MICROPY_HW_HAS_KXTJ3
+#elif MICROPY_HW_HAS_KXTJ3
     /// No tilt like register with KXTJ3 accelerometer
     return 0;
-    #endif
+#endif
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(pyb_accel_tilt_obj, pyb_accel_tilt);
 
@@ -227,13 +227,13 @@ STATIC mp_obj_t pyb_accel_filtered_xyz(mp_obj_t self_in) {
 
     memmove(self->buf, self->buf + NUM_AXIS, NUM_AXIS * (FILT_DEPTH - 1) * sizeof(int16_t));
 
-    #if MICROPY_HW_HAS_MMA7660
+#if MICROPY_HW_HAS_MMA7660
     const size_t DATA_SIZE = NUM_AXIS;
     const size_t DATA_STRIDE = 1;
-    #elif MICROPY_HW_HAS_KXTJ3
+#elif MICROPY_HW_HAS_KXTJ3
     const size_t DATA_SIZE = 5;
     const size_t DATA_STRIDE = 2;
-    #endif
+#endif
     uint8_t data[DATA_SIZE];
     data[0] = ACCEL_REG_X;
     i2c_writeto(I2C1, ACCEL_ADDR, data, 1, false);

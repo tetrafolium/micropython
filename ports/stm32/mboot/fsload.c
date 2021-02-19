@@ -128,7 +128,7 @@ static int fsload_program_file(bool write_to_flash) {
         uint32_t elem_addr = get_le32(buf);
         uint32_t elem_size = get_le32(buf + 4);
 
-        #if !MBOOT_ENABLE_PACKING
+#if !MBOOT_ENABLE_PACKING
         // Erase flash before writing
         if (write_to_flash) {
             uint32_t addr = elem_addr;
@@ -139,7 +139,7 @@ static int fsload_program_file(bool write_to_flash) {
                 }
             }
         }
-        #endif
+#endif
 
         // Read element data and possibly write to flash
         for (uint32_t s = elem_size; s;) {
@@ -238,40 +238,40 @@ int fsload_process(void) {
             uint32_t byte_len = get_le32(&elem[6]);
             int ret;
             union {
-                #if MBOOT_VFS_FAT
+#if MBOOT_VFS_FAT
                 vfs_fat_context_t fat;
-                #endif
-                #if MBOOT_VFS_LFS1
+#endif
+#if MBOOT_VFS_LFS1
                 vfs_lfs1_context_t lfs1;
-                #endif
-                #if MBOOT_VFS_LFS2
+#endif
+#if MBOOT_VFS_LFS2
                 vfs_lfs2_context_t lfs2;
-                #endif
+#endif
             } ctx;
             const stream_methods_t *methods;
-            #if MBOOT_VFS_FAT
+#if MBOOT_VFS_FAT
             if (elem[1] == ELEM_MOUNT_FAT) {
                 (void)block_size;
                 ret = vfs_fat_mount(&ctx.fat, base_addr, byte_len);
                 methods = &vfs_fat_stream_methods;
             } else
-            #endif
-            #if MBOOT_VFS_LFS1
-            if (elem[1] == ELEM_MOUNT_LFS1) {
-                ret = vfs_lfs1_mount(&ctx.lfs1, base_addr, byte_len, block_size);
-                methods = &vfs_lfs1_stream_methods;
-            } else
-            #endif
-            #if MBOOT_VFS_LFS2
-            if (elem[1] == ELEM_MOUNT_LFS2) {
-                ret = vfs_lfs2_mount(&ctx.lfs2, base_addr, byte_len, block_size);
-                methods = &vfs_lfs2_stream_methods;
-            } else
-            #endif
-            {
-                // Unknown filesystem type
-                return -MBOOT_ERRNO_FSLOAD_INVALID_MOUNT;
-            }
+#endif
+#if MBOOT_VFS_LFS1
+                if (elem[1] == ELEM_MOUNT_LFS1) {
+                    ret = vfs_lfs1_mount(&ctx.lfs1, base_addr, byte_len, block_size);
+                    methods = &vfs_lfs1_stream_methods;
+                } else
+#endif
+#if MBOOT_VFS_LFS2
+                    if (elem[1] == ELEM_MOUNT_LFS2) {
+                        ret = vfs_lfs2_mount(&ctx.lfs2, base_addr, byte_len, block_size);
+                        methods = &vfs_lfs2_stream_methods;
+                    } else
+#endif
+                    {
+                        // Unknown filesystem type
+                        return -MBOOT_ERRNO_FSLOAD_INVALID_MOUNT;
+                    }
 
             if (ret == 0) {
                 ret = fsload_validate_and_program_file(&ctx, methods, fname);

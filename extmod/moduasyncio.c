@@ -61,7 +61,7 @@ STATIC mp_int_t ticks_diff(mp_obj_t t1_in, mp_obj_t t0_in) {
     mp_uint_t t0 = MP_OBJ_SMALL_INT_VALUE(t0_in);
     mp_uint_t t1 = MP_OBJ_SMALL_INT_VALUE(t1_in);
     mp_int_t diff = ((t1 - t0 + MICROPY_PY_UTIME_TICKS_PERIOD / 2) & (MICROPY_PY_UTIME_TICKS_PERIOD - 1))
-        - MICROPY_PY_UTIME_TICKS_PERIOD / 2;
+                    - MICROPY_PY_UTIME_TICKS_PERIOD / 2;
     return diff;
 }
 

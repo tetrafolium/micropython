@@ -55,7 +55,7 @@ typedef struct
     uint32_t    DIVO0       :1;
     uint32_t                :6;
 
-}_CFSR_t;
+} _CFSR_t;
 
 
 typedef struct
@@ -67,7 +67,7 @@ typedef struct
     uint32_t    VECT        :1;
     uint32_t                :1;
 
-}_HFSR_t;
+} _HFSR_t;
 
 
 #endif /* FAULT_REGISTERS_H_ */

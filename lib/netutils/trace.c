@@ -44,14 +44,14 @@ static void dump_hex_bytes(const mp_print_t *print, size_t len, const uint8_t *b
 static const char *ethertype_str(uint16_t type) {
     // A value between 0x0000 - 0x05dc (inclusive) indicates a length, not type
     switch (type) {
-        case 0x0800:
-            return "IPv4";
-        case 0x0806:
-            return "ARP";
-        case 0x86dd:
-            return "IPv6";
-        default:
-            return NULL;
+    case 0x0800:
+        return "IPv4";
+    case 0x0806:
+        return "ARP";
+    case 0x86dd:
+        return "IPv6";
+    default:
+        return NULL;
     }
 }
 
@@ -73,8 +73,8 @@ void netutils_ethernet_trace(const mp_print_t *print, size_t len, const uint8_t 
             // IPv4 packet
             len = get_be16(buf + 2);
             mp_printf(print, " srcip=%u.%u.%u.%u dstip=%u.%u.%u.%u",
-                buf[12], buf[13], buf[14], buf[15],
-                buf[16], buf[17], buf[18], buf[19]);
+                      buf[12], buf[13], buf[14], buf[15],
+                      buf[16], buf[17], buf[18], buf[19]);
             uint8_t prot = buf[9];
             buf += 20;
             len -= 20;
@@ -87,7 +87,7 @@ void netutils_ethernet_trace(const mp_print_t *print, size_t len, const uint8_t 
                 uint16_t dataoff_flags = get_be16(buf + 12);
                 uint16_t winsz = get_be16(buf + 14);
                 mp_printf(print, " TCP srcport=%u dstport=%u seqnum=%u acknum=%u dataoff=%u flags=%x winsz=%u",
-                    srcport, dstport, (unsigned)seqnum, (unsigned)acknum, dataoff_flags >> 12, dataoff_flags & 0x1ff, winsz);
+                          srcport, dstport, (unsigned)seqnum, (unsigned)acknum, dataoff_flags >> 12, dataoff_flags & 0x1ff, winsz);
                 buf += 20;
                 len -= 20;
                 if (dataoff_flags >> 12 > 5) {
@@ -117,30 +117,30 @@ void netutils_ethernet_trace(const mp_print_t *print, size_t len, const uint8_t 
                     buf += n;
                     mp_printf(print, " opts:");
                     switch (buf[6]) {
-                        case 1:
-                            mp_printf(print, " DISCOVER");
-                            break;
-                        case 2:
-                            mp_printf(print, " OFFER");
-                            break;
-                        case 3:
-                            mp_printf(print, " REQUEST");
-                            break;
-                        case 4:
-                            mp_printf(print, " DECLINE");
-                            break;
-                        case 5:
-                            mp_printf(print, " ACK");
-                            break;
-                        case 6:
-                            mp_printf(print, " NACK");
-                            break;
-                        case 7:
-                            mp_printf(print, " RELEASE");
-                            break;
-                        case 8:
-                            mp_printf(print, " INFORM");
-                            break;
+                    case 1:
+                        mp_printf(print, " DISCOVER");
+                        break;
+                    case 2:
+                        mp_printf(print, " OFFER");
+                        break;
+                    case 3:
+                        mp_printf(print, " REQUEST");
+                        break;
+                    case 4:
+                        mp_printf(print, " DECLINE");
+                        break;
+                    case 5:
+                        mp_printf(print, " ACK");
+                        break;
+                    case 6:
+                        mp_printf(print, " NACK");
+                        break;
+                    case 7:
+                        mp_printf(print, " RELEASE");
+                        break;
+                    case 8:
+                        mp_printf(print, " INFORM");
+                        break;
                     }
                 }
             } else {

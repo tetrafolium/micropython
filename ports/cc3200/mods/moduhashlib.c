@@ -126,7 +126,7 @@ STATIC mp_obj_t hash_make_new(mp_obj_t type_in, size_t n_args, size_t n_kw, cons
     if (self->base.type->name == MP_QSTR_sha1) {
         self->algo = SHAMD5_ALGO_SHA1;
         self->h_size = 20;
-    } else /* if (self->base.type->name == MP_QSTR_sha256) */ {
+    } else { /* if (self->base.type->name == MP_QSTR_sha256) */
         self->algo = SHAMD5_ALGO_SHA256;
         self->h_size = 32;
     } /* else {

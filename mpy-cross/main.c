@@ -67,9 +67,9 @@ STATIC int compile_and_save(const char *file, const char *output_file, const cha
             source_name = qstr_from_str(source_file);
         }
 
-        #if MICROPY_PY___FILE__
+#if MICROPY_PY___FILE__
         mp_store_global(MP_QSTR___file__, MP_OBJ_NEW_QSTR(source_name));
-        #endif
+#endif
 
         mp_parse_tree_t parse_tree = mp_parse(lex, MP_PARSE_FILE_INPUT);
         mp_raw_code_t *rc = mp_compile_to_raw_code(&parse_tree, source_name, false);
@@ -112,15 +112,15 @@ STATIC int usage(char **argv) {
         "-march=<arch> : set architecture for native emitter; x86, x64, armv6, armv7m, armv7em, armv7emsp, armv7emdp, xtensa, xtensawin\n"
         "\n"
         "Implementation specific options:\n", argv[0]
-        );
+    );
     int impl_opts_cnt = 0;
     printf(
-        #if MICROPY_EMIT_NATIVE
+#if MICROPY_EMIT_NATIVE
         "  emit={bytecode,native,viper} -- set the default code emitter\n"
-        #else
+#else
         "  emit=bytecode -- set the default code emitter\n"
-        #endif
-        );
+#endif
+    );
     impl_opts_cnt++;
     printf(
         "  heapsize=<n> -- set the heap size for the GC (default %ld)\n"
@@ -144,12 +144,12 @@ STATIC void pre_process_options(int argc, char **argv) {
                 }
                 if (strcmp(argv[a + 1], "emit=bytecode") == 0) {
                     emit_opt = MP_EMIT_OPT_BYTECODE;
-                #if MICROPY_EMIT_NATIVE
+#if MICROPY_EMIT_NATIVE
                 } else if (strcmp(argv[a + 1], "emit=native") == 0) {
                     emit_opt = MP_EMIT_OPT_NATIVE_PYTHON;
                 } else if (strcmp(argv[a + 1], "emit=viper") == 0) {
                     emit_opt = MP_EMIT_OPT_VIPER;
-                #endif
+#endif
                 } else if (strncmp(argv[a + 1], "heapsize=", sizeof("heapsize=") - 1) == 0) {
                     char *end;
                     heap_size = strtol(argv[a + 1] + sizeof("heapsize=") - 1, &end, 0);
@@ -190,36 +190,36 @@ MP_NOINLINE int main_(int argc, char **argv) {
     gc_init(heap, heap + heap_size);
 
     mp_init();
-    #ifdef _WIN32
+#ifdef _WIN32
     set_fmode_binary();
-    #endif
+#endif
     mp_obj_list_init(mp_sys_path, 0);
     mp_obj_list_init(mp_sys_argv, 0);
 
-    #if MICROPY_EMIT_NATIVE
+#if MICROPY_EMIT_NATIVE
     // Set default emitter options
     MP_STATE_VM(default_emit_opt) = emit_opt;
-    #else
+#else
     (void)emit_opt;
-    #endif
+#endif
 
     // set default compiler configuration
     mp_dynamic_compiler.small_int_bits = 31;
     mp_dynamic_compiler.opt_cache_map_lookup_in_bytecode = 0;
     mp_dynamic_compiler.py_builtins_str_unicode = 1;
-    #if defined(__i386__)
+#if defined(__i386__)
     mp_dynamic_compiler.native_arch = MP_NATIVE_ARCH_X86;
     mp_dynamic_compiler.nlr_buf_num_regs = MICROPY_NLR_NUM_REGS_X86;
-    #elif defined(__x86_64__)
+#elif defined(__x86_64__)
     mp_dynamic_compiler.native_arch = MP_NATIVE_ARCH_X64;
     mp_dynamic_compiler.nlr_buf_num_regs = MAX(MICROPY_NLR_NUM_REGS_X64, MICROPY_NLR_NUM_REGS_X64_WIN);
-    #elif defined(__arm__) && !defined(__thumb2__)
+#elif defined(__arm__) && !defined(__thumb2__)
     mp_dynamic_compiler.native_arch = MP_NATIVE_ARCH_ARMV6;
     mp_dynamic_compiler.nlr_buf_num_regs = MICROPY_NLR_NUM_REGS_ARM_THUMB_FP;
-    #else
+#else
     mp_dynamic_compiler.native_arch = MP_NATIVE_ARCH_NONE;
     mp_dynamic_compiler.nlr_buf_num_regs = 0;
-    #endif
+#endif
 
     const char *input_file = NULL;
     const char *output_file = NULL;
@@ -232,7 +232,7 @@ MP_NOINLINE int main_(int argc, char **argv) {
                 a += 1;
             } else if (strcmp(argv[a], "--version") == 0) {
                 printf("MicroPython " MICROPY_GIT_TAG " on " MICROPY_BUILD_DATE
-                    "; mpy-cross emitting mpy v" MP_STRINGIFY(MPY_VERSION) "\n");
+                       "; mpy-cross emitting mpy v" MP_STRINGIFY(MPY_VERSION) "\n");
                 return 0;
             } else if (strcmp(argv[a], "-v") == 0) {
                 mp_verbose_flag++;
@@ -241,7 +241,8 @@ MP_NOINLINE int main_(int argc, char **argv) {
                     MP_STATE_VM(mp_optimise_value) = argv[a][2] & 0xf;
                 } else {
                     MP_STATE_VM(mp_optimise_value) = 0;
-                    for (char *p = argv[a] + 1; *p && *p == 'O'; p++, MP_STATE_VM(mp_optimise_value)++) {;
+                    for (char *p = argv[a] + 1; *p && *p == 'O'; p++, MP_STATE_VM(mp_optimise_value)++) {
+                        ;
                     }
                 }
             } else if (strcmp(argv[a], "-o") == 0) {
@@ -323,11 +324,11 @@ MP_NOINLINE int main_(int argc, char **argv) {
 
     int ret = compile_and_save(input_file, output_file, source_file);
 
-    #if MICROPY_PY_MICROPYTHON_MEM_INFO
+#if MICROPY_PY_MICROPYTHON_MEM_INFO
     if (mp_verbose_flag) {
         mp_micropython_mem_info(0, NULL);
     }
-    #endif
+#endif
 
     mp_deinit();
 

@@ -45,7 +45,7 @@ STATIC void adv_event_handler(mp_obj_t self_in, uint16_t event_id, ble_drv_adv_d
     vstr_init(&vstr, 17);
 
     vstr_printf(&vstr, ""HEX2_FMT":"HEX2_FMT":"HEX2_FMT":" \
-                         HEX2_FMT":"HEX2_FMT":"HEX2_FMT"",
+                HEX2_FMT":"HEX2_FMT":"HEX2_FMT"",
                 data->p_peer_addr[5], data->p_peer_addr[4], data->p_peer_addr[3],
                 data->p_peer_addr[2], data->p_peer_addr[1], data->p_peer_addr[0]);
 

@@ -174,18 +174,18 @@ void mp_spiflash_init(mp_spiflash_t *self) {
     // Ensure SPI flash is out of sleep mode
     mp_spiflash_deepsleep_internal(self, 0);
 
-    #if defined(CHECK_DEVID)
+#if defined(CHECK_DEVID)
     // Validate device id
     uint32_t devid = mp_spiflash_read_cmd(self, CMD_RD_DEVID, 3);
     if (devid != CHECK_DEVID) {
         return 0;
     }
-    #endif
+#endif
 
     if (self->config->bus_kind == MP_SPIFLASH_BUS_QSPI) {
         // Set QE bit
         uint32_t data = (mp_spiflash_read_cmd(self, CMD_RDSR, 1) & 0xff)
-            | (mp_spiflash_read_cmd(self, CMD_RDCR, 1) & 0xff) << 8;
+                        | (mp_spiflash_read_cmd(self, CMD_RDCR, 1) & 0xff) << 8;
         if (!(data & (QSPI_QE_MASK << 8))) {
             data |= QSPI_QE_MASK << 8;
             mp_spiflash_write_cmd(self, CMD_WREN);
@@ -330,7 +330,7 @@ void mp_spiflash_cached_read(mp_spiflash_t *self, uint32_t addr, size_t len, uin
 }
 
 STATIC void mp_spiflash_cache_flush_internal(mp_spiflash_t *self) {
-    #if USE_WR_DELAY
+#if USE_WR_DELAY
     if (!(self->flags & 1)) {
         return;
     }
@@ -353,7 +353,7 @@ STATIC void mp_spiflash_cache_flush_internal(mp_spiflash_t *self) {
             return;
         }
     }
-    #endif
+#endif
 }
 
 void mp_spiflash_cache_flush(mp_spiflash_t *self) {
@@ -387,15 +387,15 @@ STATIC int mp_spiflash_cached_write_part(mp_spiflash_t *self, uint32_t addr, siz
 
     if (cache->block != sec) {
         // Read sector
-        #if USE_WR_DELAY
+#if USE_WR_DELAY
         if (cache->block != 0xffffffff) {
             mp_spiflash_cache_flush_internal(self);
         }
-        #endif
+#endif
         mp_spiflash_read_data(self, addr, SECTOR_SIZE, cache->buf);
     }
 
-    #if USE_WR_DELAY
+#if USE_WR_DELAY
 
     cache->block = sec;
     // Just copy to buffer
@@ -403,7 +403,7 @@ STATIC int mp_spiflash_cached_write_part(mp_spiflash_t *self, uint32_t addr, siz
     // And mark dirty
     self->flags |= 1;
 
-    #else
+#else
 
     uint32_t dirty = 0;
     for (size_t i = 0; i < len; ++i) {
@@ -436,7 +436,7 @@ STATIC int mp_spiflash_cached_write_part(mp_spiflash_t *self, uint32_t addr, siz
         }
     }
 
-    #endif
+#endif
 
     return 0; // success
 }

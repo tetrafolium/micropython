@@ -58,7 +58,7 @@ void SysTick_Handler(void) {
         pendsv_schedule_dispatch(PENDSV_DISPATCH_SOFT_TIMER, soft_timer_handler);
     }
 
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     if (pyb_thread_enabled) {
         if (pyb_thread_cur->timeslice == 0) {
             if (pyb_thread_cur->run_next != pyb_thread_cur) {
@@ -68,7 +68,7 @@ void SysTick_Handler(void) {
             --pyb_thread_cur->timeslice;
         }
     }
-    #endif
+#endif
 }
 
 // We provide our own version of HAL_Delay that calls __WFI while waiting,

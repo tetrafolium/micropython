@@ -100,7 +100,7 @@ STATIC mp_obj_t mod_ujson_load(mp_obj_t stream_obj) {
     mp_obj_t stack_key = MP_OBJ_NULL;
     S_NEXT(s);
     for (;;) {
-    cont:
+cont:
         if (S_END(s)) {
             break;
         }
@@ -109,140 +109,140 @@ STATIC mp_obj_t mod_ujson_load(mp_obj_t stream_obj) {
         byte cur = S_CUR(s);
         S_NEXT(s);
         switch (cur) {
-            case ',':
-            case ':':
-            case ' ':
-            case '\t':
-            case '\n':
-            case '\r':
-                goto cont;
-            case 'n':
-                if (S_CUR(s) == 'u' && S_NEXT(s) == 'l' && S_NEXT(s) == 'l') {
-                    S_NEXT(s);
-                    next = mp_const_none;
-                } else {
-                    goto fail;
-                }
-                break;
-            case 'f':
-                if (S_CUR(s) == 'a' && S_NEXT(s) == 'l' && S_NEXT(s) == 's' && S_NEXT(s) == 'e') {
-                    S_NEXT(s);
-                    next = mp_const_false;
-                } else {
-                    goto fail;
-                }
-                break;
-            case 't':
-                if (S_CUR(s) == 'r' && S_NEXT(s) == 'u' && S_NEXT(s) == 'e') {
-                    S_NEXT(s);
-                    next = mp_const_true;
-                } else {
-                    goto fail;
-                }
-                break;
-            case '"':
-                vstr_reset(&vstr);
-                for (; !S_END(s) && S_CUR(s) != '"';) {
-                    byte c = S_CUR(s);
-                    if (c == '\\') {
-                        c = S_NEXT(s);
-                        switch (c) {
-                            case 'b':
-                                c = 0x08;
-                                break;
-                            case 'f':
-                                c = 0x0c;
-                                break;
-                            case 'n':
-                                c = 0x0a;
-                                break;
-                            case 'r':
-                                c = 0x0d;
-                                break;
-                            case 't':
-                                c = 0x09;
-                                break;
-                            case 'u': {
-                                mp_uint_t num = 0;
-                                for (int i = 0; i < 4; i++) {
-                                    c = (S_NEXT(s) | 0x20) - '0';
-                                    if (c > 9) {
-                                        c -= ('a' - ('9' + 1));
-                                    }
-                                    num = (num << 4) | c;
-                                }
-                                vstr_add_char(&vstr, num);
-                                goto str_cont;
+        case ',':
+        case ':':
+        case ' ':
+        case '\t':
+        case '\n':
+        case '\r':
+            goto cont;
+        case 'n':
+            if (S_CUR(s) == 'u' && S_NEXT(s) == 'l' && S_NEXT(s) == 'l') {
+                S_NEXT(s);
+                next = mp_const_none;
+            } else {
+                goto fail;
+            }
+            break;
+        case 'f':
+            if (S_CUR(s) == 'a' && S_NEXT(s) == 'l' && S_NEXT(s) == 's' && S_NEXT(s) == 'e') {
+                S_NEXT(s);
+                next = mp_const_false;
+            } else {
+                goto fail;
+            }
+            break;
+        case 't':
+            if (S_CUR(s) == 'r' && S_NEXT(s) == 'u' && S_NEXT(s) == 'e') {
+                S_NEXT(s);
+                next = mp_const_true;
+            } else {
+                goto fail;
+            }
+            break;
+        case '"':
+            vstr_reset(&vstr);
+            for (; !S_END(s) && S_CUR(s) != '"';) {
+                byte c = S_CUR(s);
+                if (c == '\\') {
+                    c = S_NEXT(s);
+                    switch (c) {
+                    case 'b':
+                        c = 0x08;
+                        break;
+                    case 'f':
+                        c = 0x0c;
+                        break;
+                    case 'n':
+                        c = 0x0a;
+                        break;
+                    case 'r':
+                        c = 0x0d;
+                        break;
+                    case 't':
+                        c = 0x09;
+                        break;
+                    case 'u': {
+                        mp_uint_t num = 0;
+                        for (int i = 0; i < 4; i++) {
+                            c = (S_NEXT(s) | 0x20) - '0';
+                            if (c > 9) {
+                                c -= ('a' - ('9' + 1));
                             }
+                            num = (num << 4) | c;
                         }
+                        vstr_add_char(&vstr, num);
+                        goto str_cont;
                     }
-                    vstr_add_byte(&vstr, c);
-                str_cont:
-                    S_NEXT(s);
+                    }
                 }
-                if (S_END(s)) {
-                    goto fail;
+                vstr_add_byte(&vstr, c);
+str_cont:
+                S_NEXT(s);
+            }
+            if (S_END(s)) {
+                goto fail;
+            }
+            S_NEXT(s);
+            next = mp_obj_new_str(vstr.buf, vstr.len);
+            break;
+        case '-':
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9': {
+            bool flt = false;
+            vstr_reset(&vstr);
+            for (;;) {
+                vstr_add_byte(&vstr, cur);
+                cur = S_CUR(s);
+                if (cur == '.' || cur == 'E' || cur == 'e') {
+                    flt = true;
+                } else if (cur == '+' || cur == '-' || unichar_isdigit(cur)) {
+                    // pass
+                } else {
+                    break;
                 }
                 S_NEXT(s);
-                next = mp_obj_new_str(vstr.buf, vstr.len);
-                break;
-            case '-':
-            case '0':
-            case '1':
-            case '2':
-            case '3':
-            case '4':
-            case '5':
-            case '6':
-            case '7':
-            case '8':
-            case '9': {
-                bool flt = false;
-                vstr_reset(&vstr);
-                for (;;) {
-                    vstr_add_byte(&vstr, cur);
-                    cur = S_CUR(s);
-                    if (cur == '.' || cur == 'E' || cur == 'e') {
-                        flt = true;
-                    } else if (cur == '+' || cur == '-' || unichar_isdigit(cur)) {
-                        // pass
-                    } else {
-                        break;
-                    }
-                    S_NEXT(s);
-                }
-                if (flt) {
-                    next = mp_parse_num_decimal(vstr.buf, vstr.len, false, false, NULL);
-                } else {
-                    next = mp_parse_num_integer(vstr.buf, vstr.len, 10, NULL);
-                }
-                break;
             }
-            case '[':
-                next = mp_obj_new_list(0, NULL);
-                enter = true;
-                break;
-            case '{':
-                next = mp_obj_new_dict(0);
-                enter = true;
-                break;
-            case '}':
-            case ']': {
-                if (stack_top == MP_OBJ_NULL) {
-                    // no object at all
-                    goto fail;
-                }
-                if (stack.len == 0) {
-                    // finished; compound object
-                    goto success;
-                }
-                stack.len -= 1;
-                stack_top = stack.items[stack.len];
-                stack_top_type = mp_obj_get_type(stack_top);
-                goto cont;
+            if (flt) {
+                next = mp_parse_num_decimal(vstr.buf, vstr.len, false, false, NULL);
+            } else {
+                next = mp_parse_num_integer(vstr.buf, vstr.len, 10, NULL);
             }
-            default:
+            break;
+        }
+        case '[':
+            next = mp_obj_new_list(0, NULL);
+            enter = true;
+            break;
+        case '{':
+            next = mp_obj_new_dict(0);
+            enter = true;
+            break;
+        case '}':
+        case ']': {
+            if (stack_top == MP_OBJ_NULL) {
+                // no object at all
                 goto fail;
+            }
+            if (stack.len == 0) {
+                // finished; compound object
+                goto success;
+            }
+            stack.len -= 1;
+            stack_top = stack.items[stack.len];
+            stack_top_type = mp_obj_get_type(stack_top);
+            goto cont;
+        }
+        default:
+            goto fail;
         }
         if (stack_top == MP_OBJ_NULL) {
             stack_top = next;

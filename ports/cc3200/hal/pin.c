@@ -54,12 +54,12 @@
 //*****************************************************************************
 static const unsigned long g_ulPinToPadMap[64] =
 {
-	10,11,12,13,14,15,16,17,255,255,18,
-	19,20,21,22,23,24,40,28,29,25,255,
-	255,255,255,255,255,255,255,255,255,255,255,
-	255,255,255,255,255,255,255,255,255,255,255,
-	31,255,255,255,255,0,255,32,30,255,1,
-	255,2,3,4,5,6,7,8,9
+    10,11,12,13,14,15,16,17,255,255,18,
+    19,20,21,22,23,24,40,28,29,25,255,
+    255,255,255,255,255,255,255,255,255,255,255,
+    255,255,255,255,255,255,255,255,255,255,255,
+    31,255,255,255,255,0,255,32,30,255,1,
+    255,2,3,4,5,6,7,8,9
 };
 
 
@@ -81,22 +81,22 @@ static const unsigned long g_ulPinToPadMap[64] =
 void PinModeSet(unsigned long ulPin,unsigned long ulPinMode)
 {
 
-  unsigned long ulPad;
+    unsigned long ulPad;
 
-  //
-  // Get the corresponding Pad
-  //
-  ulPad = g_ulPinToPadMap[ulPin & 0x3F];
+    //
+    // Get the corresponding Pad
+    //
+    ulPad = g_ulPinToPadMap[ulPin & 0x3F];
 
-  //
-  // Calculate the register address
-  //
-  ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
+    //
+    // Calculate the register address
+    //
+    ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
 
-  //
-  // Set the mode.
-  //
-  HWREG(ulPad) = (((HWREG(ulPad) & ~PAD_MODE_MASK) |  ulPinMode) & ~(3<<10));
+    //
+    // Set the mode.
+    //
+    HWREG(ulPad) = (((HWREG(ulPad) & ~PAD_MODE_MASK) |  ulPinMode) & ~(3<<10));
 
 }
 
@@ -114,24 +114,24 @@ void PinModeSet(unsigned long ulPin,unsigned long ulPinMode)
 unsigned long PinModeGet(unsigned long ulPin)
 {
 
-  unsigned long ulPad;
+    unsigned long ulPad;
 
 
-  //
-  // Get the corresponding Pad
-  //
-  ulPad = g_ulPinToPadMap[ulPin & 0x3F];
+    //
+    // Get the corresponding Pad
+    //
+    ulPad = g_ulPinToPadMap[ulPin & 0x3F];
 
 
-  //
-  // Calculate the register address
-  //
-  ulPad = ((ulPad << 2) + PAD_CONFIG_BASE) ;
+    //
+    // Calculate the register address
+    //
+    ulPad = ((ulPad << 2) + PAD_CONFIG_BASE) ;
 
-  //
-  // return the mode.
-  //
-  return (HWREG(ulPad) & PAD_MODE_MASK);
+    //
+    // return the mode.
+    //
+    return (HWREG(ulPad) & PAD_MODE_MASK);
 
 }
 
@@ -163,22 +163,22 @@ unsigned long PinModeGet(unsigned long ulPin)
 //*****************************************************************************
 void PinDirModeSet(unsigned long ulPin, unsigned long ulPinIO)
 {
-  unsigned long ulPad;
+    unsigned long ulPad;
 
-  //
-  // Get the corresponding Pad
-  //
-  ulPad = g_ulPinToPadMap[ulPin & 0x3F];
+    //
+    // Get the corresponding Pad
+    //
+    ulPad = g_ulPinToPadMap[ulPin & 0x3F];
 
-  //
-  // Calculate the register address
-  //
-  ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
+    //
+    // Calculate the register address
+    //
+    ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
 
-  //
-  // Set the direction
-  //
-  HWREG(ulPad) = ((HWREG(ulPad) & ~0xC00) | ulPinIO);
+    //
+    // Set the direction
+    //
+    HWREG(ulPad) = ((HWREG(ulPad) & ~0xC00) | ulPinIO);
 }
 
 //*****************************************************************************
@@ -198,22 +198,22 @@ void PinDirModeSet(unsigned long ulPin, unsigned long ulPinIO)
 //*****************************************************************************
 unsigned long PinDirModeGet(unsigned long ulPin)
 {
-  unsigned long ulPad;
+    unsigned long ulPad;
 
-  //
-  // Get the corresponding Pad
-  //
-  ulPad = g_ulPinToPadMap[ulPin & 0x3F];
+    //
+    // Get the corresponding Pad
+    //
+    ulPad = g_ulPinToPadMap[ulPin & 0x3F];
 
-  //
-  // Calculate the register address
-  //
-  ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
+    //
+    // Calculate the register address
+    //
+    ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
 
-  //
-  // Return the direction
-  //
-  return ((HWREG(ulPad) & 0xC00));
+    //
+    // Return the direction
+    //
+    return ((HWREG(ulPad) & 0xC00));
 }
 
 //*****************************************************************************
@@ -233,33 +233,33 @@ unsigned long PinDirModeGet(unsigned long ulPin)
 //
 //*****************************************************************************
 void PinConfigGet(unsigned long ulPin,unsigned long  *pulPinStrength,
-	       					unsigned long *pulPinType)
+                  unsigned long *pulPinType)
 {
 
-  unsigned long ulPad;
+    unsigned long ulPad;
 
 
-  //
-  // Get the corresponding Pad
-  //
-  ulPad = g_ulPinToPadMap[ulPin & 0x3F];
+    //
+    // Get the corresponding Pad
+    //
+    ulPad = g_ulPinToPadMap[ulPin & 0x3F];
 
 
-  //
-  // Calculate the register address
-  //
-  ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
+    //
+    // Calculate the register address
+    //
+    ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
 
 
-  //
-  // Get the type
-  //
-  *pulPinType = (HWREG(ulPad) & PAD_TYPE_MASK);
+    //
+    // Get the type
+    //
+    *pulPinType = (HWREG(ulPad) & PAD_TYPE_MASK);
 
-  //
-  // Get the output drive strength
-  //
-  *pulPinStrength = (HWREG(ulPad) & PAD_STRENGTH_MASK);
+    //
+    // Get the output drive strength
+    //
+    *pulPinStrength = (HWREG(ulPad) & PAD_STRENGTH_MASK);
 
 }
 
@@ -297,55 +297,55 @@ void PinConfigGet(unsigned long ulPin,unsigned long  *pulPinStrength,
 //
 //*****************************************************************************
 void PinConfigSet(unsigned long ulPin,unsigned long  ulPinStrength,
-						unsigned long ulPinType)
+                  unsigned long ulPinType)
 {
 
-  unsigned long ulPad;
-
-  //
-  // Get the corresponding Pad
-  //
-  ulPad = g_ulPinToPadMap[ulPin & 0x3F];
-
-  //
-  // Write the register
-  //
-  if(ulPinType == PIN_TYPE_ANALOG)
-  {
-    //
-    // Isolate the input
-    //
-    HWREG(0x4402E144) |= ((0x80 << ulPad) & (0x1E << 8));
+    unsigned long ulPad;
 
     //
-    // Calculate the register address
+    // Get the corresponding Pad
     //
-    ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
+    ulPad = g_ulPinToPadMap[ulPin & 0x3F];
 
     //
-    // Isolate the output
+    // Write the register
     //
-    HWREG(ulPad) = 0xC00;
+    if(ulPinType == PIN_TYPE_ANALOG)
+    {
+        //
+        // Isolate the input
+        //
+        HWREG(0x4402E144) |= ((0x80 << ulPad) & (0x1E << 8));
 
-  }
-  else
-  {
-    //
-    // Enable the input
-    //
-    HWREG(0x4402E144) &= ~((0x80 << ulPad) & (0x1E << 8));
+        //
+        // Calculate the register address
+        //
+        ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
 
-    //
-    // Calculate the register address
-    //
-    ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
+        //
+        // Isolate the output
+        //
+        HWREG(ulPad) = 0xC00;
 
-    //
-    // Write the configuration
-    //
-    HWREG(ulPad) = ((HWREG(ulPad) & ~(PAD_STRENGTH_MASK | PAD_TYPE_MASK)) |
-		  		(ulPinStrength | ulPinType ));
-  }
+    }
+    else
+    {
+        //
+        // Enable the input
+        //
+        HWREG(0x4402E144) &= ~((0x80 << ulPad) & (0x1E << 8));
+
+        //
+        // Calculate the register address
+        //
+        ulPad = ((ulPad << 2) + PAD_CONFIG_BASE);
+
+        //
+        // Write the configuration
+        //
+        HWREG(ulPad) = ((HWREG(ulPad) & ~(PAD_STRENGTH_MASK | PAD_TYPE_MASK)) |
+                        (ulPinStrength | ulPinType ));
+    }
 
 
 }
@@ -578,11 +578,11 @@ void PinTypeGPIO(unsigned long ulPin,unsigned long ulPinMode,tBoolean bOpenDrain
     //
     if(bOpenDrain)
     {
-            PinConfigSet(ulPin, PIN_STRENGTH_2MA, PIN_TYPE_OD);
+        PinConfigSet(ulPin, PIN_STRENGTH_2MA, PIN_TYPE_OD);
     }
     else
     {
-            PinConfigSet(ulPin, PIN_STRENGTH_2MA, PIN_TYPE_STD);
+        PinConfigSet(ulPin, PIN_STRENGTH_2MA, PIN_TYPE_STD);
     }
 
     //
@@ -612,10 +612,10 @@ void PinTypeGPIO(unsigned long ulPin,unsigned long ulPinMode,tBoolean bOpenDrain
 //*****************************************************************************
 void PinTypeADC(unsigned long ulPin,unsigned long ulPinMode)
 {
-  //
-  // Configure the Pin
-  //
-  PinConfigSet(ulPin,PIN_STRENGTH_2MA,PIN_TYPE_ANALOG);
+    //
+    // Configure the Pin
+    //
+    PinConfigSet(ulPin,PIN_STRENGTH_2MA,PIN_TYPE_ANALOG);
 }
 
 //*****************************************************************************
@@ -638,15 +638,15 @@ void PinTypeADC(unsigned long ulPin,unsigned long ulPinMode)
 //*****************************************************************************
 void PinTypeSDHost(unsigned long ulPin,unsigned long ulPinMode)
 {
-  //
-  // Set pin mode
-  //
-  PinModeSet(ulPin,ulPinMode);
+    //
+    // Set pin mode
+    //
+    PinModeSet(ulPin,ulPinMode);
 
-  //
-  // Configure the Pin
-  //
-  PinConfigSet(ulPin,PIN_STRENGTH_2MA,PIN_TYPE_STD);
+    //
+    // Configure the Pin
+    //
+    PinConfigSet(ulPin,PIN_STRENGTH_2MA,PIN_TYPE_STD);
 
 }
 
