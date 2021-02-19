@@ -13,7 +13,9 @@ if usys.byteorder != "little":
 desc = {
     "ptr": (uctypes.PTR | 0, uctypes.UINT8),
     "ptr16": (uctypes.PTR | 0, uctypes.UINT16),
-    "ptr2": (uctypes.PTR | 0, {"b": uctypes.UINT8 | 0}),
+    "ptr2": (uctypes.PTR | 0, {
+        "b": uctypes.UINT8 | 0
+    }),
 }
 
 bytes = b"01"

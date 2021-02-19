@@ -1,5 +1,6 @@
 # test errors from bad operations (unary, binary, etc)
 
+
 def test_exc(code, exc):
     try:
         exec(code)

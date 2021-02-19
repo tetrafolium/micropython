@@ -37,9 +37,15 @@ SITES = [
     "google.com",
     "www.google.com",
     "api.telegram.org",
-    {"host": "api.pushbullet.com", "sni": True},
+    {
+        "host": "api.pushbullet.com",
+        "sni": True
+    },
     # "w9rybpfril.execute-api.ap-southeast-2.amazonaws.com",
-    {"host": "w9rybpfril.execute-api.ap-southeast-2.amazonaws.com", "sni": True},
+    {
+        "host": "w9rybpfril.execute-api.ap-southeast-2.amazonaws.com",
+        "sni": True
+    },
 ]
 
 

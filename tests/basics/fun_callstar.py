@@ -1,12 +1,13 @@
 # function calls with *pos
 
+
 def foo(a, b, c):
     print(a, b, c)
 
 
 foo(*(1, 2, 3))
 foo(1, *(2, 3))
-foo(1, 2, *(3,))
+foo(1, 2, *(3, ))
 foo(1, 2, 3, *())
 
 # Another sequence type
@@ -38,7 +39,7 @@ class A:
 a = A()
 a.foo(*(1, 2, 3))
 a.foo(1, *(2, 3))
-a.foo(1, 2, *(3,))
+a.foo(1, 2, *(3, ))
 a.foo(1, 2, 3, *())
 
 # Another sequence type

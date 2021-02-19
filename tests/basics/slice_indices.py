@@ -1,5 +1,6 @@
 # Test builtin slice indices resolution
 
+
 # A class that returns an item key
 class A:
     def __getitem__(self, idx):

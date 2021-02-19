@@ -35,8 +35,9 @@ class BLEUART:
         self._ble = ble
         self._ble.active(True)
         self._ble.irq(self._irq)
-        ((self._tx_handle, self._rx_handle),
-         ) = self._ble.gatts_register_services((_UART_SERVICE,))
+        ((self._tx_handle,
+          self._rx_handle), ) = self._ble.gatts_register_services(
+              (_UART_SERVICE, ))
         # Increase the size of the rx buffer and enable append mode.
         self._ble.gatts_set_buffer(self._rx_handle, rxbuf, True)
         self._connections = set()

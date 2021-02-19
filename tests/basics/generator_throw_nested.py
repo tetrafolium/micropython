@@ -1,6 +1,7 @@
 # Tests that the correct nested exception handler is used when
 # throwing into a generator (previously failed on native emitter).
 
+
 def gen():
     try:
         yield 1

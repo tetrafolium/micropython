@@ -15,7 +15,6 @@ import sys
 import multiprocessing
 import multiprocessing.dummy
 
-
 # Extract MP_QSTR_FOO macros.
 _MODE_QSTR = "qstr"
 
@@ -59,8 +58,10 @@ def preprocess():
             (args.cxxflags, cxxsources),
         ):
             batch_size = (len(sources) + cpus - 1) // cpus
-            chunks = [sources[i: i + batch_size]
-                      for i in range(0, len(sources), batch_size or 1)]
+            chunks = [
+                sources[i:i + batch_size]
+                for i in range(0, len(sources), batch_size or 1)
+            ]
             for output in p.imap(pp(flags), chunks):
                 out_file.write(output)
 

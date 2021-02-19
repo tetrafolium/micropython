@@ -1,5 +1,6 @@
 # Subclass from 2 bases explicitly subclasses from object
 
+
 class Base1(object):
     pass
 

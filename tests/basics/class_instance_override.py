@@ -1,5 +1,6 @@
 # test that we can override a class method with an instance method
 
+
 class A:
     def foo(self):
         return 1

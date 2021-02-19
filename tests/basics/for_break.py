@@ -1,6 +1,7 @@
 # Testcase for break in a for [within bunch of other code]
 # https://github.com/micropython/micropython/issues/635
 
+
 def foo():
     seq = [1, 2, 3]
     v = 100

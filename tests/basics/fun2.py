@@ -1,5 +1,6 @@
 # calling a function from a function
 
+
 def f(x):
     print(x + 1)
 

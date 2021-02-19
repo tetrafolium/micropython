@@ -49,10 +49,10 @@ else:
 if True:
     print('a')
 
-if (1,):
+if (1, ):
     print('a')
 
-if not (1,):
+if not (1, ):
     print('a')
 else:
     print('b')
@@ -67,7 +67,7 @@ def f(t1, t2, f1):
         print(1)
     if ():
         print(1)
-    if (1,):
+    if (1, ):
         print(1)
     if (1, 2):
         print(1)

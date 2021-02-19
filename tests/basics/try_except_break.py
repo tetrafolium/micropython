@@ -24,10 +24,12 @@ while True:
                                                                                     try:
                                                                                         try:
                                                                                             print(
-                                                                                                2)
+                                                                                                2
+                                                                                            )
                                                                                             break
                                                                                             print(
-                                                                                                3)
+                                                                                                3
+                                                                                            )
                                                                                         except:
                                                                                             pass
                                                                                     except:

@@ -16,7 +16,7 @@ if "foo":
 
 if not ():
     print("Empty tuple")
-if ("",):
+if ("", ):
     print("Non-empty tuple")
 
 if not []:

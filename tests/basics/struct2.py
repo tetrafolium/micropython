@@ -42,7 +42,7 @@ except:
     print('Exception')
 
 try:
-    struct.pack('z', (b'1',))
+    struct.pack('z', (b'1', ))
 except:
     print('Exception')
 

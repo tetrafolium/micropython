@@ -33,16 +33,15 @@ def run_tests(pyb, test_dict):
                 # run on PC
                 try:
                     output_mupy = subprocess.check_output(
-                        [MICROPYTHON, "-X", "emit=bytecode", test_file[0]]
-                    )
+                        [MICROPYTHON, "-X", "emit=bytecode", test_file[0]])
                 except subprocess.CalledProcessError:
                     output_mupy = b"CRASH"
             else:
                 # run on pyboard
                 pyb.enter_raw_repl()
                 try:
-                    output_mupy = pyb.execfile(
-                        test_file).replace(b"\r\n", b"\n")
+                    output_mupy = pyb.execfile(test_file).replace(
+                        b"\r\n", b"\n")
                 except pyboard.PyboardError:
                     output_mupy = b"CRASH"
 
@@ -68,7 +67,8 @@ def run_tests(pyb, test_dict):
 def main():
     cmd_parser = argparse.ArgumentParser(
         description="Run tests for MicroPython.")
-    cmd_parser.add_argument("--pyboard", action="store_true",
+    cmd_parser.add_argument("--pyboard",
+                            action="store_true",
                             help="run the tests on the pyboard")
     cmd_parser.add_argument("files", nargs="*", help="input test files")
     args = cmd_parser.parse_args()
@@ -85,15 +85,13 @@ def main():
     if len(args.files) == 0:
         if pyb is None:
             # run PC tests
-            test_dirs = ("internal_bench",)
+            test_dirs = ("internal_bench", )
         else:
             # run pyboard tests
             test_dirs = ("basics", "float", "pyb")
-        tests = sorted(
-            test_file
-            for test_files in (glob("{}/*.py".format(dir)) for dir in test_dirs)
-            for test_file in test_files
-        )
+        tests = sorted(test_file for test_files in (glob("{}/*.py".format(dir))
+                                                    for dir in test_dirs)
+                       for test_file in test_files)
     else:
         # tests explicitly given
         tests = sorted(args.files)

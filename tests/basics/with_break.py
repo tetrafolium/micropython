@@ -1,5 +1,4 @@
 class CtxMgr:
-
     def __enter__(self):
         print("__enter__")
         return self

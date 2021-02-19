@@ -32,7 +32,13 @@ _uart_baud_table = {
 
 
 class LCD160CR:
-    def __init__(self, connect=None, *, pwr=None, i2c=None, spi=None, i2c_addr=98):
+    def __init__(self,
+                 connect=None,
+                 *,
+                 pwr=None,
+                 i2c=None,
+                 spi=None,
+                 i2c_addr=98):
         if connect in ("X", "Y", "XY", "YX"):
             i = connect[-1]
             j = connect[0]
@@ -44,7 +50,8 @@ class LCD160CR:
         else:
             if pwr is None or i2c is None or spi is None:
                 raise ValueError(
-                    'must specify valid "connect" or all of "pwr", "i2c" and "spi"')
+                    'must specify valid "connect" or all of "pwr", "i2c" and "spi"'
+                )
 
         if pwr is None:
             pwr = machine.Pin(y, machine.Pin.OUT)
@@ -186,8 +193,8 @@ class LCD160CR:
                         if c[3] < c[1]:
                             c[0], c[2] = c[2], c[0]
                             c[1], c[3] = c[3], c[1]
-                        c[2] += ((h - 1 - c[3]) * (c[2] - c[0])
-                                 ) // (c[3] - c[1])
+                        c[2] += ((h - 1 - c[3]) *
+                                 (c[2] - c[0])) // (c[3] - c[1])
                         c[3] = h - 1
                 else:
                     if c[0] == c[2]:
@@ -284,15 +291,15 @@ class LCD160CR:
             # split line if more than 254 bytes needed
             buflen = (w + 1) // 2
             line = bytearray(2 * buflen + 1)
-            line2 = memoryview(line)[: 2 * (w - buflen) + 1]
+            line2 = memoryview(line)[:2 * (w - buflen) + 1]
         for i in range(min(len(buf) // (2 * w), h)):
             ix = i * w * 2
             self.get_line(x, y + i, line)
-            buf[ix: ix + len(line) - 1] = memoryview(line)[1:]
+            buf[ix:ix + len(line) - 1] = memoryview(line)[1:]
             ix += len(line) - 1
             if line2:
                 self.get_line(x + buflen, y + i, line2)
-                buf[ix: ix + len(line2) - 1] = memoryview(line2)[1:]
+                buf[ix:ix + len(line2) - 1] = memoryview(line2)[1:]
                 ix += len(line2) - 1
 
     def screen_load(self, buf):
@@ -302,7 +309,7 @@ class LCD160CR:
         ar = memoryview(buf)
         while n < len(buf):
             if len(buf) - n >= 0x200:
-                self._send(ar[n: n + 0x200])
+                self._send(ar[n:n + 0x200])
                 n += 0x200
             else:
                 self._send(ar[n:])
@@ -416,8 +423,8 @@ class LCD160CR:
     #### TOUCH COMMANDS ####
 
     def touch_config(self, calib=False, save=False, irq=None):
-        self._fcmd2("<BBBB", 0x7A, (irq is not None) <<
-                    2 | save << 1 | calib, bool(irq) << 7)
+        self._fcmd2("<BBBB", 0x7A, (irq is not None) << 2 | save << 1 | calib,
+                    bool(irq) << 7)
 
     def is_touched(self):
         self._send(b"\x02T")
@@ -434,10 +441,8 @@ class LCD160CR:
     #### ADVANCED COMMANDS ####
 
     def set_spi_win(self, x, y, w, h):
-        pack_into(
-            "<BBBHHHHHHHH", self.buf19, 0, 2, 0x55, 10, x, y, x +
-            w - 1, y + h - 1, 0, 0, 0, 0xFFFF
-        )
+        pack_into("<BBBHHHHHHHH", self.buf19, 0, 2, 0x55, 10, x, y, x + w - 1,
+                  y + h - 1, 0, 0, 0, 0xFFFF)
         self._send(self.buf19)
 
     def fast_spi(self, flush=True):
@@ -452,9 +457,18 @@ class LCD160CR:
     def set_scroll(self, on):
         self._fcmd2("<BBB", 0x15, on)
 
-    def set_scroll_win(self, win, x=-1, y=0, w=0, h=0, vec=0, pat=0, fill=0x07E0, color=0):
-        pack_into("<BBBHHHHHHHH", self.buf19, 0, 2, 0x55,
-                  win, x, y, w, h, vec, pat, fill, color)
+    def set_scroll_win(self,
+                       win,
+                       x=-1,
+                       y=0,
+                       w=0,
+                       h=0,
+                       vec=0,
+                       pat=0,
+                       fill=0x07E0,
+                       color=0):
+        pack_into("<BBBHHHHHHHH", self.buf19, 0, 2, 0x55, win, x, y, w, h, vec,
+                  pat, fill, color)
         self._send(self.buf19)
 
     def set_scroll_win_param(self, win, param, value):

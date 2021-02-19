@@ -34,14 +34,13 @@ print(
         r"def\s+([a-zA-Z_][a-zA-Z_0-9]*)\s*\(\s*\):",
         "static PyObject*\npy_\\1(void){\n  return;\n}\n",
         "\n\ndef myfunc():\n\ndef myfunc1():\n\ndef myfunc2():",
-    )
-)
+    ))
 
 print(
-    re.compile("(calzino) (blu|bianco|verde) e (scarpa) (blu|bianco|verde)").sub(
-        r"\g<1> colore \2 con \g<3> colore \4? ...", "calzino blu e scarpa verde"
-    )
-)
+    re.compile(
+        "(calzino) (blu|bianco|verde) e (scarpa) (blu|bianco|verde)").sub(
+            r"\g<1> colore \2 con \g<3> colore \4? ...",
+            "calzino blu e scarpa verde"))
 
 # \g immediately followed by another \g
 print(re.sub("(abc)", r"\g<1>\g<1>", "abc"))

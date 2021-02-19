@@ -1,8 +1,10 @@
 # test async def
 
+
 def dec(f):
     print('decorator')
     return f
+
 
 # test definition with a decorator
 
@@ -10,6 +12,7 @@ def dec(f):
 @dec
 async def foo():
     print('foo')
+
 
 coro = foo()
 try:

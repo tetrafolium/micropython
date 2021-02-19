@@ -16,36 +16,30 @@ test("@micropython.viper\ndef f() -> 1: pass")
 test("@micropython.viper\ndef f(x:unknown_type): pass")
 
 # local used before type known
-test(
-    """
+test("""
 @micropython.viper
 def f():
     print(x)
     x = 1
-"""
-)
+""")
 
 # type mismatch storing to local
-test(
-    """
+test("""
 @micropython.viper
 def f():
     x = 1
     y = []
     x = y
-"""
-)
+""")
 
 # can't implicitly convert type to bool
-test(
-    """
+test("""
 @micropython.viper
 def f():
     x = ptr(0)
     if x:
         pass
-"""
-)
+""")
 
 # incorrect return type
 test("@micropython.viper\ndef f() -> int: return []")

@@ -42,7 +42,7 @@ n_finished = 0
 
 # spawn threads
 for i in range(n_thread):
-    _thread.start_new_thread(thread_entry, (10000,))
+    _thread.start_new_thread(thread_entry, (10000, ))
 
 # wait for threads to finish
 while n_finished < n_thread:

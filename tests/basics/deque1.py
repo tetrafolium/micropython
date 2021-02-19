@@ -7,7 +7,6 @@ except ImportError:
     print("SKIP")
     raise SystemExit
 
-
 d = deque((), 2)
 print(len(d))
 print(bool(d))

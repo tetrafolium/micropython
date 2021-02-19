@@ -6,7 +6,6 @@ import time
 import os
 import hashlib
 
-
 I2C_CMD_ECHO = 1
 I2C_CMD_GETID = 2
 I2C_CMD_GETCAPS = 3
@@ -92,18 +91,18 @@ class Bootloader:
         return pages
 
     def pageerase(self, addr):
-        self.i2c.writeto(self.addr, struct.pack(
-            "<BI", I2C_CMD_PAGEERASE, addr))
+        self.i2c.writeto(self.addr, struct.pack("<BI", I2C_CMD_PAGEERASE,
+                                                addr))
         self.wait_empty_response()
 
     def setrdaddr(self, addr):
-        self.i2c.writeto(self.addr, struct.pack(
-            "<BI", I2C_CMD_SETRDADDR, addr))
+        self.i2c.writeto(self.addr, struct.pack("<BI", I2C_CMD_SETRDADDR,
+                                                addr))
         self.wait_empty_response()
 
     def setwraddr(self, addr):
-        self.i2c.writeto(self.addr, struct.pack(
-            "<BI", I2C_CMD_SETWRADDR, addr))
+        self.i2c.writeto(self.addr, struct.pack("<BI", I2C_CMD_SETWRADDR,
+                                                addr))
         self.wait_empty_response()
 
     def read(self, n):
@@ -144,8 +143,8 @@ class Bootloader:
                         # found page
                         if not page_erased[i]:
                             print(
-                                "\r% 3u%% erase 0x%08x"
-                                % (100 * (addr - start_addr) // fsize, addr),
+                                "\r% 3u%% erase 0x%08x" %
+                                (100 * (addr - start_addr) // fsize, addr),
                                 end="",
                             )
                             self.pageerase(addr)
@@ -169,7 +168,8 @@ class Bootloader:
                 ntotal = addr - start_addr
                 if ntotal % 2048 == 0 or ntotal == fsize:
                     print("\r% 3u%% % 7u bytes   " %
-                          (100 * ntotal // fsize, ntotal), end="")
+                          (100 * ntotal // fsize, ntotal),
+                          end="")
             t1 = time.ticks_ms()
         print()
         print("rate: %.2f KiB/sec" % (1024 * ntotal / (t1 - t0) / 1000))

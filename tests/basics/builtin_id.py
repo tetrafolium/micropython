@@ -7,7 +7,8 @@ l = [1, 2]
 print(id(l) == id(l))
 
 
-def f(): return None
+def f():
+    return None
 
 
 print(id(f) == id(f))

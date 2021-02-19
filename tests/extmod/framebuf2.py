@@ -9,8 +9,8 @@ def printbuf():
     print("--8<--")
     for y in range(h):
         for x in range(w):
-            print("%u" %
-                  ((buf[(x + y * w) // 4] >> ((x & 3) << 1)) & 3), end="")
+            print("%u" % ((buf[(x + y * w) // 4] >> ((x & 3) << 1)) & 3),
+                  end="")
         print()
     print("-->8--")
 

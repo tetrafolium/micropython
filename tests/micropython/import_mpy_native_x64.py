@@ -11,7 +11,7 @@ except (ImportError, AttributeError):
     print("SKIP")
     raise SystemExit
 
-if not (usys.platform == "linux" and usys.maxsize > 2 ** 32):
+if not (usys.platform == "linux" and usys.maxsize > 2**32):
     print("SKIP")
     raise SystemExit
 
@@ -23,7 +23,7 @@ class UserFile(uio.IOBase):
 
     def readinto(self, buf):
         n = min(len(buf), len(self.data) - self.pos)
-        buf[:n] = self.data[self.pos: self.pos + n]
+        buf[:n] = self.data[self.pos:self.pos + n]
         self.pos += n
         return n
 
@@ -54,25 +54,22 @@ class UserFS:
 # fmt: off
 user_files = {
     # bad architecture
-    '/mod0.mpy': b'M\x05\xff\x00\x10',
+    '/mod0.mpy':
+    b'M\x05\xff\x00\x10',
 
     # test loading of viper and asm
     '/mod1.mpy': (
         b'M\x05\x0b\x1f\x20'  # header
-
         b'\x20'  # n bytes, bytecode
         b'\x00\x08\x02m\x02m'  # prelude
         b'\x51'  # LOAD_CONST_NONE
         b'\x63'  # RETURN_VALUE
-
         b'\x00\x02'  # n_obj, n_raw_code
-
         b'\x22'  # n bytes, viper code
         b'\x00\x00\x00\x00\x00\x00'  # dummy machine code
         b'\x00\x00'  # qstr0
         b'\x01\x0c\x0aprint'  # n_qstr, qstr0
         b'\x00\x00\x00'  # scope_flags, n_obj, n_raw_code
-
         b'\x23'  # n bytes, asm code
         b'\x00\x00\x00\x00\x00\x00\x00\x00'  # dummy machine code
         b'\x00\x00\x00'  # scope_flags, n_pos_args, type_sig
@@ -81,14 +78,11 @@ user_files = {
     # test loading viper with additional scope flags and relocation
     '/mod2.mpy': (
         b'M\x05\x0b\x1f\x20'  # header
-
         b'\x20'  # n bytes, bytecode
         b'\x00\x08\x02m\x02m'  # prelude
         b'\x51'  # LOAD_CONST_NONE
         b'\x63'  # RETURN_VALUE
-
         b'\x00\x01'  # n_obj, n_raw_code
-
         b'\x12'  # n bytes(=4), viper code
         b'\x00\x00\x00\x00'  # dummy machine code
         b'\x00'  # n_qstr

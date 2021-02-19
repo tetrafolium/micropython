@@ -69,6 +69,7 @@ def bm_setup(params):
             state = benchmark(params[1])
 
     def result():
-        return params[0] * params[1], "Point(%.4f, %.4f, %.4f)" % (state.x, state.y, state.z)
+        return params[0] * params[1], "Point(%.4f, %.4f, %.4f)" % (
+            state.x, state.y, state.z)
 
     return run, result

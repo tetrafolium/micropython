@@ -26,7 +26,7 @@ def test_fmt(conv, fill, alignment, sign, prefix, width, precision, type, arg):
         fmt += precision
     fmt += type
     fmt += '}'
-    test(fmt,  arg)
+    test(fmt, arg)
     if fill == '0' and alignment == '=':
         fmt = '{:'
         fmt += sign
@@ -50,8 +50,8 @@ if int_tests:
                     for sign in ('', '+', '-', ' '):
                         for prefix in ('', '#'):
                             for num in int_nums:
-                                test_fmt('', fill, alignment, sign,
-                                         prefix, width, '', type, num)
+                                test_fmt('', fill, alignment, sign, prefix,
+                                         width, '', type, num)
 
 if char_tests:
     for width in ('', '1', '2'):
@@ -64,6 +64,7 @@ if str_tests:
         for width in ('', '1', '4', '10'):
             for alignment in ('', '<', '>', '^'):
                 for fill in ('', ' ', '0', '@'):
-                    for str in ('', 'a', 'bcd', 'This is a test with a longer string'):
-                        test_fmt(conv, fill, alignment, '',
-                                 '', width, '', 's', str)
+                    for str in ('', 'a', 'bcd',
+                                'This is a test with a longer string'):
+                        test_fmt(conv, fill, alignment, '', '', width, '', 's',
+                                 str)

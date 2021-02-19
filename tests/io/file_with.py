@@ -11,7 +11,6 @@ except:
     # close file.
     print("can't read file after with")
 
-
 # Regression test: test that exception in with initialization properly
 # thrown and doesn't crash.
 try:

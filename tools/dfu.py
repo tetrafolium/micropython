@@ -35,11 +35,13 @@ def parse(file, dump_images=False):
     data = open(file, "rb").read()
     crc = compute_crc(data[:-4])
     prefix, data = consume("<5sBIB", data, "signature version size targets")
-    print("%(signature)s v%(version)d, image size: %(size)d, targets: %(targets)d" % prefix)
+    print(
+        "%(signature)s v%(version)d, image size: %(size)d, targets: %(targets)d"
+        % prefix)
     for t in range(prefix["targets"]):
         tprefix, data = consume(
-            "<6sBI255s2I", data, "signature altsetting named name size elements"
-        )
+            "<6sBI255s2I", data,
+            "signature altsetting named name size elements")
         tprefix["num"] = t
         if tprefix["named"]:
             tprefix["name"] = cstring(tprefix["name"])
@@ -47,14 +49,14 @@ def parse(file, dump_images=False):
             tprefix["name"] = ""
         print(
             '%(signature)s %(num)d, alt setting: %(altsetting)s, name: "%(name)s", size: %(size)d, elements: %(elements)d'
-            % tprefix
-        )
+            % tprefix)
         tsize = tprefix["size"]
         target, data = data[:tsize], data[tsize:]
         for e in range(tprefix["elements"]):
             eprefix, target = consume("<2I", target, "address size")
             eprefix["num"] = e
-            print("  %(num)d, address: 0x%(address)08x, size: %(size)d" % eprefix)
+            print("  %(num)d, address: 0x%(address)08x, size: %(size)d" %
+                  eprefix)
             esize = eprefix["size"]
             image, target = target[:esize], target[esize:]
             if dump_images:
@@ -63,12 +65,11 @@ def parse(file, dump_images=False):
                 print('    DUMPED IMAGE TO "%s"' % out)
         if len(target):
             print("target %d: PARSE ERROR" % t)
-    suffix = named(struct.unpack(
-        "<4H3sBI", data[:16]), "device product vendor dfu ufd len crc")
+    suffix = named(struct.unpack("<4H3sBI", data[:16]),
+                   "device product vendor dfu ufd len crc")
     print(
         "usb: %(vendor)04x:%(product)04x, device: 0x%(device)04x, dfu: 0x%(dfu)04x, %(ufd)s, %(len)d, 0x%(crc)08x"
-        % suffix
-    )
+        % suffix)
     if crc != suffix["crc"]:
         print("CRC ERROR: computed crc32 is 0x%08x" % crc)
     data = data[16:]
@@ -85,15 +86,13 @@ def build(file, targets, device=DEFAULT_DEVICE):
             pad = (8 - len(image["data"]) % 8) % 8
             image["data"] = image["data"] + bytes(bytearray(8)[0:pad])
             #
-            tdata += struct.pack("<2I", image["address"],
-                                 len(image["data"])) + image["data"]
-        tdata = (
-            struct.pack("<6sBI255s2I", b"Target", 0, 1, b"ST...",
-                        len(tdata), len(target)) + tdata
-        )
+            tdata += struct.pack("<2I", image["address"], len(
+                image["data"])) + image["data"]
+        tdata = (struct.pack("<6sBI255s2I", b"Target", 0, 1, b"ST...",
+                             len(tdata), len(target)) + tdata)
         data += tdata
-    data = struct.pack("<5sBIB", b"DfuSe", 1, len(
-        data) + 11, len(targets)) + data
+    data = struct.pack("<5sBIB", b"DfuSe", 1,
+                       len(data) + 11, len(targets)) + data
     v, d = map(lambda x: int(x, 0) & 0xFFFF, device.split(":", 1))
     data += struct.pack("<4H3sB", 0, d, v, 0x011A, b"UFD", 16)
     crc = compute_crc(data)
@@ -148,8 +147,10 @@ if __name__ == "__main__":
             if not os.path.isfile(binfile):
                 print("Unreadable file '%s'." % binfile)
                 sys.exit(1)
-            target.append(
-                {"address": address, "data": open(binfile, "rb").read()})
+            target.append({
+                "address": address,
+                "data": open(binfile, "rb").read()
+            })
         outfile = args[0]
         device = DEFAULT_DEVICE
         if options.device:

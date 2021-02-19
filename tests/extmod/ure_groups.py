@@ -16,7 +16,6 @@ except AttributeError:
     print("SKIP")
     raise SystemExit
 
-
 m = re.match(r"(([0-9]*)([a-z]*)[0-9]*)", "1234hello567")
 print(m.groups())
 

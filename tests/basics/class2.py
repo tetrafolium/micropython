@@ -1,5 +1,6 @@
 # class with __init__
 
+
 class C1:
     def __init__(self):
         self.x = 1

@@ -1,5 +1,6 @@
 # test builtin hash function, on generators
 
+
 def gen():
     yield
 

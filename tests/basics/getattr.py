@@ -1,5 +1,6 @@
 # test __getattr__
 
+
 class A:
     def __init__(self, d):
         self.d = d

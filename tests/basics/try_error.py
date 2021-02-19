@@ -11,7 +11,7 @@ except TypeError:
 try:
     try:
         a
-    except (1,):
+    except (1, ):
         pass
 except TypeError:
     print("TypeError")

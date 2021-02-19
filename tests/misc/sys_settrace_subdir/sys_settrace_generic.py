@@ -37,7 +37,9 @@ def test_listcomp():
 
 # lambda
 def test_lambda():
-    def func_obj_1(a, b): return a + b
+    def func_obj_1(a, b):
+        return a + b
+
     print(func_obj_1(10, 20))
 
 

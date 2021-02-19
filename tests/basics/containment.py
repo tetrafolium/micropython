@@ -10,7 +10,7 @@ for needle in [haystack[i:] for i in range(len(haystack))]:
     print(needle, "not in", haystack, "::", needle not in haystack)
     print(haystack, "in", needle, "::", haystack in needle)
     print(haystack, "not in", needle, "::", haystack not in needle)
-for needle in [haystack[:i+1] for i in range(len(haystack))]:
+for needle in [haystack[:i + 1] for i in range(len(haystack))]:
     print(needle, "in", haystack, "::", needle in haystack)
     print(needle, "not in", haystack, "::", needle not in haystack)
     print(haystack, "in", needle, "::", haystack in needle)

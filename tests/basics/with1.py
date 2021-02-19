@@ -1,5 +1,4 @@
 class CtxMgr:
-
     def __enter__(self):
         print("__enter__")
         return self
@@ -19,7 +18,6 @@ except ValueError:
 
 
 class CtxMgr2:
-
     def __enter__(self):
         print("__enter__")
         return self
@@ -35,7 +33,6 @@ try:
     print("No ValueError2")
 except ValueError:
     print("ValueError2")
-
 
 # These recursive try-finally tests are attempt to get some interpretation
 # of last phrase in http://docs.python.org/3.4/library/dis.html#opcode-WITH_CLEANUP

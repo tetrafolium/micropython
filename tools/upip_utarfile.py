@@ -34,7 +34,7 @@ class FileSection:
         if self.content_len == 0:
             return 0
         if len(buf) > self.content_len:
-            buf = memoryview(buf)[: self.content_len]
+            buf = memoryview(buf)[:self.content_len]
         sz = self.f.readinto(buf)
         self.content_len -= sz
         return sz
@@ -69,8 +69,8 @@ class TarFile:
         if not buf:
             return None
 
-        h = uctypes.struct(uctypes.addressof(
-            buf), TAR_HEADER, uctypes.LITTLE_ENDIAN)
+        h = uctypes.struct(uctypes.addressof(buf), TAR_HEADER,
+                           uctypes.LITTLE_ENDIAN)
 
         # Empty block means end of archive
         if h.name[0] == 0:

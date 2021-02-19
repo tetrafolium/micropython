@@ -27,31 +27,26 @@ def test():
                 secs = time.mktime(
                     (year, month, day, 14, 0, 0, 0, 0, 0)) + tzseconds
                 if secs != seconds:
-                    print(
-                        "mktime failed for %d-%02d-%02d got %d expected %d"
-                        % (year, month, day, secs, seconds)
-                    )
+                    print("mktime failed for %d-%02d-%02d got %d expected %d" %
+                          (year, month, day, secs, seconds))
                     return
                 tuple = time.localtime(seconds)
                 secs = time.mktime(tuple)
                 if secs != seconds:
                     print(
                         "localtime failed for %d-%02d-%02d got %d expected %d"
-                        % (year, month, day, secs, seconds)
-                    )
+                        % (year, month, day, secs, seconds))
                     return
                 seconds += 86400
                 if yday != tuple[7]:
                     print(
-                        "locatime for %d-%02d-%02d got yday %d, expecting %d"
-                        % (year, month, day, tuple[7], yday)
-                    )
+                        "locatime for %d-%02d-%02d got yday %d, expecting %d" %
+                        (year, month, day, tuple[7], yday))
                     return
                 if wday != tuple[6]:
                     print(
-                        "locatime for %d-%02d-%02d got wday %d, expecting %d"
-                        % (year, month, day, tuple[6], wday)
-                    )
+                        "locatime for %d-%02d-%02d got wday %d, expecting %d" %
+                        (year, month, day, tuple[6], wday))
                     return
                 yday += 1
                 wday = (wday + 1) % 7

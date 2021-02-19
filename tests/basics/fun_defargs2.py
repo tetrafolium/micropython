@@ -1,5 +1,6 @@
 # overriding default arguments
 
+
 def foo(a, b=3):
     print(a, b)
 

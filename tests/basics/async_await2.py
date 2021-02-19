@@ -6,7 +6,8 @@ except ImportError:
     import sys
 if sys.implementation.name == 'micropython':
     # uPy allows normal generators to be awaitables
-    def coroutine(f): return f
+    def coroutine(f):
+        return f
 else:
     import types
     coroutine = types.coroutine
@@ -23,6 +24,7 @@ def wait(value):
 async def f():
     x = await wait(1)**2
     print('x =', x)
+
 
 coro = f()
 print('return from send:', coro.send(None))

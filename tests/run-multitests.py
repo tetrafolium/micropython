@@ -96,17 +96,19 @@ class PyInstance:
         return script
 
     def run_file(self, filename, prepend="", append=""):
-        return self.run_script(self.prepare_script_from_file(filename, prepend, append))
+        return self.run_script(
+            self.prepare_script_from_file(filename, prepend, append))
 
     def start_file(self, filename, prepend="", append=""):
-        return self.start_script(self.prepare_script_from_file(filename, prepend, append))
+        return self.start_script(
+            self.prepare_script_from_file(filename, prepend, append))
 
 
 class PyInstanceSubProcess(PyInstance):
     def __init__(self, argv, env=None):
         self.argv = argv
-        self.env = {n: v for n, v in (i.split("=")
-                                      for i in env)} if env else None
+        self.env = {n: v
+                    for n, v in (i.split("=") for i in env)} if env else None
         self.popen = None
         self.finished = True
 
@@ -272,7 +274,8 @@ def run_test_on_instances(test_file, num_instances, instances):
                 time.sleep(0.1)
                 continue
             last_read_time = time.time()
-            if out is not None and not any(m in out for m in IGNORE_OUTPUT_MATCHES):
+            if out is not None and not any(m in out
+                                           for m in IGNORE_OUTPUT_MATCHES):
                 trace_instance_output(idx, out)
                 if out.startswith("SET "):
                     injected_globals += out[4:] + "\n"
@@ -304,13 +307,15 @@ def run_test_on_instances(test_file, num_instances, instances):
                 num_running += 1
                 out, err = instance.readline()
                 if out is None and err is None:
-                    if time.time() > last_read_time[idx] + INSTANCE_READ_TIMEOUT_S:
+                    if time.time(
+                    ) > last_read_time[idx] + INSTANCE_READ_TIMEOUT_S:
                         output[idx].append("TIMEOUT")
                         error = True
                     continue
                 num_output += 1
                 last_read_time[idx] = time.time()
-                if out is not None and not any(m in out for m in IGNORE_OUTPUT_MATCHES):
+                if out is not None and not any(m in out
+                                               for m in IGNORE_OUTPUT_MATCHES):
                     trace_instance_output(idx, out)
                     output[idx].append(out)
                 if err is not None:
@@ -373,8 +378,7 @@ def run_tests(test_files, instances_truth, instances_test):
             else:
                 # Run test on truth instances to get expected output
                 _, _, output_truth = run_test_on_instances(
-                    test_file, num_instances, instances_truth
-                )
+                    test_file, num_instances, instances_truth)
 
         if cmd_args.show_output:
             print("### TEST ###")
@@ -409,11 +413,11 @@ def run_tests(test_files, instances_truth, instances_test):
     print("{} tests passed".format(len(passed_tests)))
 
     if skipped_tests:
-        print("{} tests skipped: {}".format(
-            len(skipped_tests), " ".join(skipped_tests)))
+        print("{} tests skipped: {}".format(len(skipped_tests),
+                                            " ".join(skipped_tests)))
     if failed_tests:
-        print("{} tests failed: {}".format(
-            len(failed_tests), " ".join(failed_tests)))
+        print("{} tests failed: {}".format(len(failed_tests),
+                                           " ".join(failed_tests)))
 
     return not failed_tests
 
@@ -423,21 +427,26 @@ def main():
 
     cmd_parser = argparse.ArgumentParser(
         description="Run network tests for MicroPython")
-    cmd_parser.add_argument(
-        "-s", "--show-output", action="store_true", help="show test output after running"
-    )
-    cmd_parser.add_argument(
-        "-t", "--trace-output", action="store_true", help="trace test output while running"
-    )
-    cmd_parser.add_argument(
-        "-i", "--instance", action="append", default=[], help="instance(s) to run the tests on"
-    )
+    cmd_parser.add_argument("-s",
+                            "--show-output",
+                            action="store_true",
+                            help="show test output after running")
+    cmd_parser.add_argument("-t",
+                            "--trace-output",
+                            action="store_true",
+                            help="trace test output while running")
+    cmd_parser.add_argument("-i",
+                            "--instance",
+                            action="append",
+                            default=[],
+                            help="instance(s) to run the tests on")
     cmd_parser.add_argument(
         "-p",
         "--permutations",
         type=int,
         default=1,
-        help="repeat the test with this many permutations of the instance order",
+        help=
+        "repeat the test with this many permutations of the instance order",
     )
     cmd_parser.add_argument("files", nargs="+", help="input test files")
     cmd_args = cmd_parser.parse_args()
@@ -448,8 +457,9 @@ def main():
     test_files = prepare_test_file_list(cmd_args.files)
     max_instances = max(t[1] for t in test_files)
 
-    instances_truth = [PyInstanceSubProcess(
-        [PYTHON_TRUTH]) for _ in range(max_instances)]
+    instances_truth = [
+        PyInstanceSubProcess([PYTHON_TRUTH]) for _ in range(max_instances)
+    ]
 
     instances_test = []
     for i in cmd_args.instance:
@@ -475,12 +485,13 @@ def main():
 
     all_pass = True
     try:
-        for i, instances_test_permutation in enumerate(itertools.permutations(instances_test)):
+        for i, instances_test_permutation in enumerate(
+                itertools.permutations(instances_test)):
             if i >= cmd_args.permutations:
                 break
 
-            all_pass &= run_tests(
-                test_files, instances_truth, instances_test_permutation)
+            all_pass &= run_tests(test_files, instances_truth,
+                                  instances_test_permutation)
 
     finally:
         for i in instances_truth:

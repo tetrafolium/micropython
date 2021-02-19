@@ -9,7 +9,6 @@ except ImportError:
     print("SKIP")
     raise SystemExit
 
-
 # Initial sequence is not supported
 try:
     deque([1, 2, 3], 10)

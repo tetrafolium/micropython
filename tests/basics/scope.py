@@ -23,6 +23,7 @@ def f():
         nonlocal a
         nonlocal a, a  # should be able to redefine as nonlocal
         a = 2
+
     g()
     return a
 
@@ -39,7 +40,9 @@ def f():
         def h():
             nonlocal x
             return x
+
         return h
+
     return g
 
 
@@ -56,7 +59,9 @@ def f():
 
         def h():
             return x
+
         return h
+
     return g
 
 

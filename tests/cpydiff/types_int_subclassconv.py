@@ -7,7 +7,8 @@ workaround: Avoid subclassing builtin types unless really needed. Prefer https:/
 
 
 class A(int):
-    def __add__(self, other): return A(int(self) + other)
+    def __add__(self, other):
+        return A(int(self) + other)
 
 
 a = A(42)

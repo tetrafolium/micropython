@@ -21,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
 """ gen-cpydiff generates documentation which outlines operations that differ between MicroPython
     and CPython. This script is called by the docs Makefile for html and Latex and may be run
     manually using the command make gen-cpydiff. """
@@ -87,8 +86,8 @@ def readfiles():
             class_, desc, cause, workaround, code = [
                 x.rstrip() for x in list(filter(None, re.split(SPLIT, text)))
             ]
-            output = Output(test, class_, desc, cause,
-                            workaround, code, "", "", "")
+            output = Output(test, class_, desc, cause, workaround, code, "",
+                            "", "")
             files.append(output)
         except IndexError:
             print("Incorrect format in file " + TESTPATH + test)
@@ -119,8 +118,9 @@ def run_tests(tests):
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        output_cpy = [com.decode("utf8")
-                      for com in process.communicate(input_cpy)]
+        output_cpy = [
+            com.decode("utf8") for com in process.communicate(input_cpy)
+        ]
 
         process = subprocess.Popen(
             MICROPYTHON,
@@ -129,8 +129,9 @@ def run_tests(tests):
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        output_upy = [com.decode("utf8")
-                      for com in process.communicate(input_upy)]
+        output_upy = [
+            com.decode("utf8") for com in process.communicate(input_upy)
+        ]
 
         if output_cpy[0] == output_upy[0] and output_cpy[1] == output_upy[1]:
             status = "Supported"
@@ -184,8 +185,10 @@ def gen_table(contents):
     table = table_divider
     for i in range(len(ylengths)):
         row = [column[i] for column in contents]
-        row = [entry + "\n" * (ylengths[i] - len(entry.split("\n")))
-               for entry in row]
+        row = [
+            entry + "\n" * (ylengths[i] - len(entry.split("\n")))
+            for entry in row
+        ]
         row = [entry.split("\n") for entry in row]
         for j in range(ylengths[i]):
             k = 0
@@ -223,13 +226,15 @@ def gen_rst(results):
                     rst.write(HEADER)
                     rst.write(section[i] + "\n")
                     rst.write(RSTCHARS[0] * len(section[i]))
-                    rst.write(time.strftime(
-                        "\nGenerated %a %d %b %Y %X UTC\n\n", time.gmtime()))
+                    rst.write(
+                        time.strftime("\nGenerated %a %d %b %Y %X UTC\n\n",
+                                      time.gmtime()))
                     toctree.append(filename)
                 else:
                     rst.write(section[i] + "\n")
-                    rst.write(
-                        RSTCHARS[min(i, len(RSTCHARS) - 1)] * len(section[i]))
+                    rst.write(RSTCHARS[min(i,
+                                           len(RSTCHARS) - 1)] *
+                              len(section[i]))
                     rst.write("\n\n")
         class_ = section
         rst.write(".. _cpydiff_%s:\n\n" % output.name.rsplit(".", 1)[0])

@@ -9,7 +9,10 @@ except ImportError:
 buf = b"12345678abcd"
 struct = uctypes.struct(
     uctypes.addressof(buf),
-    {"f32": uctypes.UINT32 | 0, "f64": uctypes.UINT64 | 4},
+    {
+        "f32": uctypes.UINT32 | 0,
+        "f64": uctypes.UINT64 | 4
+    },
     uctypes.LITTLE_ENDIAN,
 )
 
@@ -33,7 +36,10 @@ print("=")
 buf = b"12345678abcd"
 struct = uctypes.struct(
     uctypes.addressof(buf),
-    {"f32": uctypes.UINT32 | 0, "f64": uctypes.UINT64 | 4},
+    {
+        "f32": uctypes.UINT32 | 0,
+        "f64": uctypes.UINT64 | 4
+    },
     uctypes.BIG_ENDIAN,
 )
 

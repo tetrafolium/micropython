@@ -31,14 +31,14 @@ SERVICE_UUID = bluetooth.UUID("A5A5A5A5-FFFF-9999-1111-5A5A5A5A5A5A")
 CHAR_UUID = bluetooth.UUID("00000000-1111-2222-3333-444444444444")
 CHAR = (
     CHAR_UUID,
-    bluetooth.FLAG_READ | bluetooth.FLAG_WRITE | bluetooth.FLAG_NOTIFY | bluetooth.FLAG_INDICATE,
+    bluetooth.FLAG_READ | bluetooth.FLAG_WRITE | bluetooth.FLAG_NOTIFY
+    | bluetooth.FLAG_INDICATE,
 )
 SERVICE = (
     SERVICE_UUID,
-    (CHAR,),
+    (CHAR, ),
 )
-SERVICES = (SERVICE,)
-
+SERVICES = (SERVICE, )
 
 waiting_events = {}
 log_file = None
@@ -125,7 +125,7 @@ def instance0():
     ble.active(1)
     ble.irq(irq)
     multitest.globals(BDADDR=ble.config("mac"))
-    ((char_handle,),) = ble.gatts_register_services(SERVICES)
+    ((char_handle, ), ) = ble.gatts_register_services(SERVICES)
     multitest.next()
     try:
         for repeat in range(2):
@@ -167,10 +167,10 @@ def instance1():
 
             # Discover characteristics.
             print("gattc_discover_characteristics")
-            ble.gattc_discover_characteristics(
-                conn_handle, start_handle, end_handle)
-            value_handle = wait_for_event(
-                _IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
+            ble.gattc_discover_characteristics(conn_handle, start_handle,
+                                               end_handle)
+            value_handle = wait_for_event(_IRQ_GATTC_CHARACTERISTIC_RESULT,
+                                          TIMEOUT_MS)
             wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
 
             for op in range(4):

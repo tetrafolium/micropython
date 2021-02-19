@@ -1,5 +1,6 @@
 # test function args, keyword only with default value
 
+
 # a single arg with a default
 def f1(*, a=1):
     print(a)

@@ -57,7 +57,7 @@ def main(src_path, dest_path):
                     b = src.read(4)
                     if not b:
                         break
-                    (v,) = struct.unpack("<I", b)
+                    (v, ) = struct.unpack("<I", b)
                     v ^= _OBFUSCATION_KEY
                     dest.write(struct.pack("<I", v))
                     sz += 4

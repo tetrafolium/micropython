@@ -28,7 +28,10 @@ S5 = {
     "b": uctypes.UINT32 | 4,
     "c": uctypes.UINT8 | 8,
     "d": uctypes.UINT32 | 0,
-    "sub": (4, {"b0": uctypes.UINT8 | 0, "b1": uctypes.UINT8 | 1}),
+    "sub": (4, {
+        "b0": uctypes.UINT8 | 0,
+        "b1": uctypes.UINT8 | 1
+    }),
 }
 
 assert uctypes.sizeof(S5) == 12
@@ -49,6 +52,9 @@ S7 = {
 assert uctypes.sizeof(S7) == 5
 
 S8 = {
-    "arr": (uctypes.ARRAY | 0, 3, {"a": uctypes.UINT32 | 0, "b": uctypes.UINT8 | 4}),
+    "arr": (uctypes.ARRAY | 0, 3, {
+        "a": uctypes.UINT32 | 0,
+        "b": uctypes.UINT8 | 4
+    }),
 }
 assert uctypes.sizeof(S8) == 24

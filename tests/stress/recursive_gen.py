@@ -1,5 +1,6 @@
 # test deeply recursive generators
 
+
 # simple "yield from" recursion
 def gen():
     yield from gen()

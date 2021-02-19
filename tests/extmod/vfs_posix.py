@@ -8,7 +8,6 @@ except (ImportError, AttributeError):
     print("SKIP")
     raise SystemExit
 
-
 # getcwd and chdir
 curdir = uos.getcwd()
 uos.chdir("/")

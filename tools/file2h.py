@@ -23,8 +23,8 @@ if __name__ == "__main__":
                     line_end = ending.replace("\r", "\\r").replace("\n", "\\n")
                     break
             if not line_end:
-                raise Exception(
-                    "Couldn't auto-detect line-ending of %s" % filename)
+                raise Exception("Couldn't auto-detect line-ending of %s" %
+                                filename)
         line = line.rstrip("\r\n")
         line = line.replace("\\", "\\\\")
         line = line.replace('"', '\\"')

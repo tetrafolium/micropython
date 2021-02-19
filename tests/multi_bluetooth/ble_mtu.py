@@ -45,9 +45,9 @@ CHAR = (
 )
 SERVICE = (
     SERVICE_UUID,
-    (CHAR,),
+    (CHAR, ),
 )
-SERVICES = (SERVICE,)
+SERVICES = (SERVICE, )
 
 waiting_events = {}
 
@@ -97,7 +97,7 @@ def wait_for_event(event, timeout_ms):
 # Acting in peripheral role.
 def instance0():
     multitest.globals(BDADDR=ble.config("mac"))
-    ((char_handle,),) = ble.gatts_register_services(SERVICES)
+    ((char_handle, ), ) = ble.gatts_register_services(SERVICES)
     ble.gatts_set_buffer(char_handle, 500, False)
     print("gap_advertise")
     ble.gap_advertise(20_000, b"\x02\x01\x06\x04\xffMPY")
@@ -176,8 +176,8 @@ def instance1():
 
             print("gattc_discover_characteristics")
             ble.gattc_discover_characteristics(conn_handle, 1, 65535)
-            value_handle = wait_for_event(
-                _IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
+            value_handle = wait_for_event(_IRQ_GATTC_CHARACTERISTIC_RESULT,
+                                          TIMEOUT_MS)
             wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
 
             # Write 20 more than the MTU to test truncation.

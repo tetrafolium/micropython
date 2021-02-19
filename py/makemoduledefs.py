@@ -12,9 +12,8 @@ import io
 import os
 import argparse
 
-
-pattern = re.compile(
-    r"[\n;]\s*MP_REGISTER_MODULE\((.*?),\s*(.*?),\s*(.*?)\);", flags=re.DOTALL)
+pattern = re.compile(r"[\n;]\s*MP_REGISTER_MODULE\((.*?),\s*(.*?),\s*(.*?)\);",
+                     flags=re.DOTALL)
 
 
 def find_c_file(obj_file, vpath):
@@ -65,21 +64,18 @@ def generate_module_table_header(modules):
     for module_name, obj_module, enabled_define in modules:
         mod_def = "MODULE_DEF_{}".format(module_name.upper())
         mod_defs.append(mod_def)
-        print(
-            (
-                "#if ({enabled_define})\n"
-                "    extern const struct _mp_obj_module_t {obj_module};\n"
-                "    #define {mod_def} {{ MP_ROM_QSTR({module_name}), MP_ROM_PTR(&{obj_module}) }},\n"
-                "#else\n"
-                "    #define {mod_def}\n"
-                "#endif\n"
-            ).format(
+        print((
+            "#if ({enabled_define})\n"
+            "    extern const struct _mp_obj_module_t {obj_module};\n"
+            "    #define {mod_def} {{ MP_ROM_QSTR({module_name}), MP_ROM_PTR(&{obj_module}) }},\n"
+            "#else\n"
+            "    #define {mod_def}\n"
+            "#endif\n").format(
                 module_name=module_name,
                 obj_module=obj_module,
                 enabled_define=enabled_define,
                 mod_def=mod_def,
-            )
-        )
+            ))
 
     print("\n#define MICROPY_REGISTERED_MODULES \\")
 
@@ -92,8 +88,9 @@ def generate_module_table_header(modules):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "--vpath", default=".", help="comma separated list of folders to search for c files in"
-    )
+        "--vpath",
+        default=".",
+        help="comma separated list of folders to search for c files in")
     parser.add_argument("files", nargs="*", help="list of c files to search")
     args = parser.parse_args()
 

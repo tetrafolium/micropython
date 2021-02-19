@@ -103,8 +103,8 @@ def instance1():
                 # assume value_handle is unchanged on the second.
                 print("gattc_discover_characteristics")
                 ble.gattc_discover_characteristics(conn_handle, 1, 65535)
-                value_handle = wait_for_event(
-                    _IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
+                value_handle = wait_for_event(_IRQ_GATTC_CHARACTERISTIC_RESULT,
+                                              TIMEOUT_MS)
                 wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
 
             # Read the peripheral's GAP device name.

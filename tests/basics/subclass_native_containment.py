@@ -1,5 +1,6 @@
 # test containment operator on subclass of a native type
 
+
 class mylist(list):
     pass
 

@@ -1,5 +1,4 @@
 class Cud():
-
     def __init__(self):
         #print("__init__ called")
         pass
@@ -118,7 +117,7 @@ cud2 // cud1
 cud1 += cud2
 cud1 -= cud2
 cud1 % 2
-cud1 ** 2
+cud1**2
 cud1 | cud2
 cud1 & cud2
 cud1 ^ cud2

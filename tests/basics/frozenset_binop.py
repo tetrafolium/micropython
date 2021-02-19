@@ -5,9 +5,14 @@ except NameError:
     raise SystemExit
 
 sets = [
-    frozenset(), frozenset({1}), frozenset(
-        {1, 2}), frozenset({1, 2, 3}), frozenset({2, 3}),
-    frozenset({2, 3, 5}), frozenset({5}), frozenset({7})
+    frozenset(),
+    frozenset({1}),
+    frozenset({1, 2}),
+    frozenset({1, 2, 3}),
+    frozenset({2, 3}),
+    frozenset({2, 3, 5}),
+    frozenset({5}),
+    frozenset({7})
 ]
 for s in sets:
     for t in sets:

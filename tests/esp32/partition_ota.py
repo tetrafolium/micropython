@@ -30,8 +30,7 @@ except:
     pass
 with open("boot.py", "w") as f:
     f.write("DEBUG=" + str(DEBUG))
-    f.write(
-        """
+    f.write("""
 import machine
 from esp32 import Partition
 cur = Partition(Partition.RUNNING)
@@ -80,21 +79,21 @@ elif STEP == 4:
     uos.rename("boot-orig.py", "boot.py")
     print("\\nSUCCESS!\\n\\x04\\x04")
 
-"""
-    )
+""")
 
 
 def copy_partition(src, dest):
     log("Partition copy: {} --> {}".format(src.info(), dest.info()))
     sz = src.info()[3]
     if dest.info()[3] != sz:
-        raise ValueError(
-            "Sizes don't match: {} vs {}".format(sz, dest.info()[3]))
+        raise ValueError("Sizes don't match: {} vs {}".format(
+            sz,
+            dest.info()[3]))
     addr = 0
     blk = bytearray(4096)
     while addr < sz:
         if sz - addr < 4096:
-            blk = blk[: sz - addr]
+            blk = blk[:sz - addr]
         if addr & 0xFFFF == 0:
             # need to show progress to run-tests else it times out
             print("   ... 0x{:06x}".format(addr))

@@ -22,7 +22,7 @@ class Vec:
         return Vec(self.x * rhs, self.y * rhs, self.z * rhs)
 
     def length(self):
-        return (self.x ** 2 + self.y ** 2 + self.z ** 2) ** 0.5
+        return (self.x**2 + self.y**2 + self.z**2)**0.5
 
     def normalise(self):
         l = self.length()
@@ -51,7 +51,8 @@ class View:
         self.zdir = zdir
 
     def calc_dir(self, dx, dy):
-        return (self.xdir * dx + self.ydir * dy + self.zdir * self.depth).normalise()
+        return (self.xdir * dx + self.ydir * dy +
+                self.zdir * self.depth).normalise()
 
 
 class Light:
@@ -87,12 +88,12 @@ class Sphere:
     def __init__(self, surface, centre, radius):
         self.surface = surface
         self.centre = centre
-        self.radsq = radius ** 2
+        self.radsq = radius**2
 
     def intersect(self, ray):
         v = self.centre - ray.p
         b = v.dot(ray.d)
-        det = b ** 2 - v.dot(v) + self.radsq
+        det = b**2 - v.dot(v) + self.radsq
         if det > 0:
             det **= 0.5
             t1 = b - det
@@ -180,17 +181,17 @@ def trace_ray(scene, ray, depth):
         if ndotl > 0:
             col += light_col * surf.diffuse * ndotl
         if ldotv > 0:
-            col += light_col * surf.specular * ldotv ** surf.spec_idx
+            col += light_col * surf.specular * ldotv**surf.spec_idx
 
     # Reflections
     if depth > 0 and surf.reflect > 0:
-        col += trace_ray(scene, Ray(point + reflected * EPS,
-                                    reflected), depth - 1) * surf.reflect
+        col += trace_ray(scene, Ray(point + reflected * EPS, reflected),
+                         depth - 1) * surf.reflect
 
     # Transparency
     if depth > 0 and surf.transp > 0:
-        col += trace_ray(scene, Ray(point + ray.d * EPS,
-                                    ray.d), depth - 1) * surf.transp
+        col += trace_ray(scene, Ray(point + ray.d * EPS, ray.d),
+                         depth - 1) * surf.transp
 
     return col
 
@@ -218,15 +219,15 @@ class Canvas:
 
     def write_ppm(self, filename):
         with open(filename, "wb") as f:
-            f.write(bytes("P6 %d %d 255\n" %
-                          (self.width, self.height), "ascii"))
+            f.write(
+                bytes("P6 %d %d 255\n" % (self.width, self.height), "ascii"))
             f.write(self.data)
 
 
 def main(w, h, d):
     canvas = Canvas(w, h)
-    view = View(32, 32, 64, Vec(0, 0, 50), Vec(
-        1, 0, 0), Vec(0, 1, 0), Vec(0, 0, -1))
+    view = View(32, 32, 64, Vec(0, 0, 50), Vec(1, 0, 0), Vec(0, 1, 0),
+                Vec(0, 0, -1))
     scene = Scene(
         0.5,
         Light(Vec(0, 8, 0), RGB(1, 1, 1), True),
@@ -259,4 +260,5 @@ bm_params = {
 
 
 def bm_setup(params):
-    return lambda: main(*params), lambda: (params[0] * params[1] * params[2], None)
+    return lambda: main(*params), lambda: (params[0] * params[1] * params[2],
+                                           None)

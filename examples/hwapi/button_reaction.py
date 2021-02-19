@@ -4,13 +4,11 @@ from hwconfig import LED, BUTTON
 
 # machine.time_pulse_us() function demo
 
-print(
-    """\
+print("""\
 Let's play an interesting game:
 You click button as fast as you can, and I tell you how slow you are.
 Ready? Cliiiiick!
-"""
-)
+""")
 
 while 1:
     delay = machine.time_pulse_us(BUTTON, 1, 10 * 1000 * 1000)

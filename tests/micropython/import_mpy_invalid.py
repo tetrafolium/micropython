@@ -19,7 +19,7 @@ class UserFile(uio.IOBase):
 
     def readinto(self, buf):
         n = min(len(buf), len(self.data) - self.pos)
-        buf[:n] = self.data[self.pos: self.pos + n]
+        buf[:n] = self.data[self.pos:self.pos + n]
         self.pos += n
         return n
 

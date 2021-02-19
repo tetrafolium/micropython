@@ -112,8 +112,8 @@ except:
 
 try:
     pin0_irq = pin0.irq(
-        trigger=Pin.IRQ_RISING, wake=machine.SLEEP
-    )  # GP16 can't wake up from DEEPSLEEP
+        trigger=Pin.IRQ_RISING,
+        wake=machine.SLEEP)  # GP16 can't wake up from DEEPSLEEP
 except:
     print("Exception")
 

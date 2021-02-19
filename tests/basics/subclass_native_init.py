@@ -1,5 +1,6 @@
 # test subclassing a native type and overriding __init__
 
+
 # overriding list.__init__()
 class L(list):
     def __init__(self, a, b):

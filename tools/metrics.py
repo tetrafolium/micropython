@@ -23,7 +23,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
 """
 This script is used to compute metrics, like code size, of the various ports.
 
@@ -61,16 +60,28 @@ class PortData:
 
 
 port_data = {
-    "b": PortData("bare-arm", "bare-arm", "build/firmware.elf"),
-    "m": PortData("minimal x86", "minimal", "build/firmware.elf"),
-    "u": PortData("unix x64", "unix", "micropython"),
-    "n": PortData("unix nanbox", "unix", "micropython-nanbox", "VARIANT=nanbox"),
-    "s": PortData("stm32", "stm32", "build-PYBV10/firmware.elf", "BOARD=PYBV10"),
-    "c": PortData("cc3200", "cc3200", "build/WIPY/release/application.axf", "BTARGET=application"),
-    "8": PortData("esp8266", "esp8266", "build-GENERIC/firmware.elf"),
-    "3": PortData("esp32", "esp32", "build-GENERIC/application.elf"),
-    "r": PortData("nrf", "nrf", "build-pca10040/firmware.elf"),
-    "d": PortData("samd", "samd", "build-ADAFRUIT_ITSYBITSY_M4_EXPRESS/firmware.elf"),
+    "b":
+    PortData("bare-arm", "bare-arm", "build/firmware.elf"),
+    "m":
+    PortData("minimal x86", "minimal", "build/firmware.elf"),
+    "u":
+    PortData("unix x64", "unix", "micropython"),
+    "n":
+    PortData("unix nanbox", "unix", "micropython-nanbox", "VARIANT=nanbox"),
+    "s":
+    PortData("stm32", "stm32", "build-PYBV10/firmware.elf", "BOARD=PYBV10"),
+    "c":
+    PortData("cc3200", "cc3200", "build/WIPY/release/application.axf",
+             "BTARGET=application"),
+    "8":
+    PortData("esp8266", "esp8266", "build-GENERIC/firmware.elf"),
+    "3":
+    PortData("esp32", "esp32", "build-GENERIC/application.elf"),
+    "r":
+    PortData("nrf", "nrf", "build-pca10040/firmware.elf"),
+    "d":
+    PortData("samd", "samd",
+             "build-ADAFRUIT_ITSYBITSY_M4_EXPRESS/firmware.elf"),
 }
 
 
@@ -132,8 +143,8 @@ def do_diff(args):
         error_threshold = int(args.pop(0))
 
     if len(args) != 2:
-        print(
-            "usage: %s diff [--error-threshold <x>] <out1> <out2>" % sys.argv[0])
+        print("usage: %s diff [--error-threshold <x>] <out1> <out2>" %
+              sys.argv[0])
         sys.exit(1)
 
     data1 = read_build_log(args[0])
@@ -182,8 +193,8 @@ def do_clean(args):
 
     print("CLEANING")
     for port in ports:
-        syscmd("make", "-C", "ports/{}".format(port.dir),
-               port.make_flags, "clean")
+        syscmd("make", "-C", "ports/{}".format(port.dir), port.make_flags,
+               "clean")
 
 
 def do_build(args):
@@ -197,8 +208,8 @@ def do_build(args):
 
     print("BUILDING PORTS")
     for port in ports:
-        syscmd("make", "-C", "ports/{}".format(port.dir),
-               MAKE_FLAGS, port.make_flags)
+        syscmd("make", "-C", "ports/{}".format(port.dir), MAKE_FLAGS,
+               port.make_flags)
 
     do_sizes(args)
 

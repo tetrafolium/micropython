@@ -1,12 +1,17 @@
 # test default args with lambda
 
-def f(x=1): return x
+
+def f(x=1):
+    return x
 
 
 print(f(), f(2), f(x=3))
 
 y = 'y'
-def f(x=y): return x
+
+
+def f(x=y):
+    return x
 
 
 print(f())

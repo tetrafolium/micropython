@@ -28,6 +28,7 @@ def foo():
 
 
 try:
+
     class myfunc(type(foo)):
         pass
 except TypeError:
@@ -35,6 +36,7 @@ except TypeError:
 
 # multiple bases with layout conflict
 try:
+
     class A(type, tuple):
         None
 except TypeError:

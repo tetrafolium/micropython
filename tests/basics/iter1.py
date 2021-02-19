@@ -1,5 +1,6 @@
 # test user defined iterators
 
+
 # this class is not iterable
 class NotIterable:
     pass

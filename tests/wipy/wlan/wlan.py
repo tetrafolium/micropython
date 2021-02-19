@@ -31,8 +31,11 @@ print(wifi.mode() == WLAN.AP)
 print(wifi.channel() == 1)
 print(wifi.auth() == None)
 print(wifi.antenna() == WLAN.INT_ANT)
-wifi = WLAN(0, mode=WLAN.AP, ssid="test-wlan",
-            auth=(WLAN.WPA, "123456abc"), channel=7)
+wifi = WLAN(0,
+            mode=WLAN.AP,
+            ssid="test-wlan",
+            auth=(WLAN.WPA, "123456abc"),
+            channel=7)
 print(wifi.mode() == WLAN.AP)
 print(wifi.channel() == 7)
 print(wifi.ssid() == "test-wlan")
@@ -86,11 +89,12 @@ wait_for_connection(wifi)
 wifi.ifconfig(config="dhcp")
 wait_for_connection(wifi)
 print("0.0.0.0" not in wifi.ifconfig())
-wifi.ifconfig(0, ("192.168.178.109", "255.255.255.0",
-                  "192.168.178.1", "8.8.8.8"))
+wifi.ifconfig(0,
+              ("192.168.178.109", "255.255.255.0", "192.168.178.1", "8.8.8.8"))
 wait_for_connection(wifi)
-print(wifi.ifconfig(0) == ("192.168.178.109",
-                           "255.255.255.0", "192.168.178.1", "8.8.8.8"))
+print(
+    wifi.ifconfig(0) == ("192.168.178.109", "255.255.255.0", "192.168.178.1",
+                         "8.8.8.8"))
 wait_for_connection(wifi)
 
 print(wifi.isconnected() == True)
@@ -105,8 +109,11 @@ wifi.disconnect()
 print(wifi.isconnected() == False)
 
 # test init again
-wifi.init(WLAN.AP, ssid="www.wipy.io", auth=None,
-          channel=5, antenna=WLAN.INT_ANT)
+wifi.init(WLAN.AP,
+          ssid="www.wipy.io",
+          auth=None,
+          channel=5,
+          antenna=WLAN.INT_ANT)
 print(wifi.mode() == WLAN.AP)
 
 # get the current instance without re-init

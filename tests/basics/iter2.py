@@ -1,5 +1,6 @@
 # user defined iterator used in something other than a for loop
 
+
 class MyStopIteration(StopIteration):
     pass
 

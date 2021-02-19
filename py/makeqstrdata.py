@@ -15,7 +15,10 @@ import sys
 import platform
 
 if platform.python_version_tuple()[0] == "2":
-    def bytes_cons(val, enc=None): return bytearray(val)
+
+    def bytes_cons(val, enc=None):
+        return bytearray(val)
+
     from htmlentitydefs import codepoint2name
 elif platform.python_version_tuple()[0] == "3":
     bytes_cons = bytes
@@ -334,11 +337,9 @@ def make_bytes(cfg_bytes_len, cfg_bytes_hash, qstr):
         print("qstr is too long:", qstr)
         assert False
     qlen_str = ("\\x%02x" * cfg_bytes_len) % tuple(
-        ((qlen >> (8 * i)) & 0xFF) for i in range(cfg_bytes_len)
-    )
+        ((qlen >> (8 * i)) & 0xFF) for i in range(cfg_bytes_len))
     qhash_str = ("\\x%02x" * cfg_bytes_hash) % tuple(
-        ((qhash >> (8 * i)) & 0xFF) for i in range(cfg_bytes_hash)
-    )
+        ((qhash >> (8 * i)) & 0xFF) for i in range(cfg_bytes_hash))
     return '(const byte*)"%s%s" "%s"' % (qhash_str, qlen_str, qdata)
 
 
@@ -352,10 +353,8 @@ def print_qstr_data(qcfgs, qstrs):
     print("")
 
     # add NULL qstr with no hash or data
-    print(
-        'QDEF(MP_QSTRnull, (const byte*)"%s%s" "")'
-        % ("\\x00" * cfg_bytes_hash, "\\x00" * cfg_bytes_len)
-    )
+    print('QDEF(MP_QSTRnull, (const byte*)"%s%s" "")' %
+          ("\\x00" * cfg_bytes_hash, "\\x00" * cfg_bytes_len))
 
     # go through each qstr and print it out
     for order, ident, qstr in sorted(qstrs.values(), key=lambda x: x[0]):

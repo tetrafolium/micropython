@@ -29,7 +29,6 @@ for i in a:
     s += i
 print(s)
 
-
 print(bytes("abc", "utf-8"))
 print(bytes("abc", "utf-8", "replace"))
 try:

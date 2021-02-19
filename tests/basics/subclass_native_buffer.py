@@ -1,5 +1,6 @@
 # test when we subclass a type with the buffer protocol
 
+
 class my_bytes(bytes):
     pass
 

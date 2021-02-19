@@ -1,5 +1,6 @@
 # locals referenced before assignment
 
+
 def f1():
     print(x)
     x = 1

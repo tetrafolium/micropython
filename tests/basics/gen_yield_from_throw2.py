@@ -1,5 +1,6 @@
 # outer generator ignores a thrown GeneratorExit (this is allowed)
 
+
 def gen():
     try:
         yield 123

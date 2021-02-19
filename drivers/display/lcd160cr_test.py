@@ -58,8 +58,8 @@ def test_features(lcd, orient=lcd160cr.PORTRAIT):
     lcd.erase()
 
     # create M-logo
-    mlogo = framebuf.FrameBuffer(
-        bytearray(17 * 17 * 2), 17, 17, framebuf.RGB565)
+    mlogo = framebuf.FrameBuffer(bytearray(17 * 17 * 2), 17, 17,
+                                 framebuf.RGB565)
     mlogo.fill(0)
     mlogo.fill_rect(1, 1, 15, 15, 0xFFFFFF)
     mlogo.vline(4, 4, 12, 0)
@@ -125,10 +125,8 @@ def test_features(lcd, orient=lcd160cr.PORTRAIT):
             lcd.set_pos(2, 0)
             lcd.set_font(1)
             t = rtc.datetime()
-            lcd.write(
-                "%4d-%02d-%02d %2d:%02d:%02d.%01d"
-                % (t[0], t[1], t[2], t[4], t[5], t[6], t[7] // 100000)
-            )
+            lcd.write("%4d-%02d-%02d %2d:%02d:%02d.%01d" %
+                      (t[0], t[1], t[2], t[4], t[5], t[6], t[7] // 100000))
 
         # compute the frame rate
         t1 = time.ticks_us()

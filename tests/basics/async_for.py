@@ -1,6 +1,7 @@
 # test basic async for execution
 # example taken from PEP0492
 
+
 class AsyncIteratorWrapper:
     def __init__(self, obj):
         print('init')
@@ -22,6 +23,7 @@ class AsyncIteratorWrapper:
 async def coro():
     async for letter in AsyncIteratorWrapper('abc'):
         print(letter)
+
 
 o = coro()
 try:

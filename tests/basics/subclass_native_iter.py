@@ -1,5 +1,6 @@
 # test subclassing a native type which can be iterated over
 
+
 class mymap(map):
     pass
 

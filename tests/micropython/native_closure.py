@@ -1,5 +1,6 @@
 # test native emitter can handle closures correctly
 
+
 # basic closure
 @micropython.native
 def f():

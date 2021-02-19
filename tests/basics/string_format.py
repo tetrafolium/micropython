@@ -1,5 +1,6 @@
 # basic functionality test for {} format string
 
+
 def test(fmt, *args):
     print('{:8s}'.format(fmt) + '>' + fmt.format(*args) + '<')
 
@@ -55,10 +56,10 @@ test("{:@<+6d}", -123)
 test("{:@<-6d}", 123)
 test("{:@<-6d}", -123)
 
-test("{:@>6d}",  -123)
-test("{:@<6d}",  -123)
-test("{:@=6d}",  -123)
-test("{:06d}",  -123)
+test("{:@>6d}", -123)
+test("{:@<6d}", -123)
+test("{:@=6d}", -123)
+test("{:06d}", -123)
 
 test("{:>20}", "foo")
 test("{:^20}", "foo")

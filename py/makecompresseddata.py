@@ -7,7 +7,6 @@ import sys
 import gzip
 import zlib
 
-
 _COMPRESSED_MARKER = 0xFF
 
 
@@ -15,9 +14,8 @@ def check_non_ascii(msg):
     for c in msg:
         if ord(c) >= 0x80:
             print(
-                'Unable to generate compressed data: message "{}" contains a non-ascii character "{}".'.format(
-                    msg, c
-                ),
+                'Unable to generate compressed data: message "{}" contains a non-ascii character "{}".'
+                .format(msg, c),
                 file=sys.stderr,
             )
             sys.exit(1)
@@ -75,7 +73,8 @@ def word_compression(error_strings):
                 result += word
         error_strings[line] = result.strip()
 
-    return "".join(w[:-1] + "\\{:03o}".format(0b10000000 | ord(w[-1])) for w in index)
+    return "".join(w[:-1] + "\\{:03o}".format(0b10000000 | ord(w[-1]))
+                   for w in index)
 
 
 # Replace chars in text with variable length bit sequence.
@@ -96,7 +95,7 @@ def huffman_compression(error_strings):
             n += 8 - (n % 8)
         result = ""
         for i in range(0, n, 8):
-            result += "\\{:03o}".format(int(b[i: i + 8], 2))
+            result += "\\{:03o}".format(int(b[i:i + 8], 2))
         if len(result) > len(line) * 4:
             result = line
         error_strings[line] = result
@@ -117,7 +116,7 @@ def ngram_compression(error_strings):
         if len(line) < N:
             continue
         for i in range(0, len(line) - N, N):
-            topn[line[i: i + N]] += 1
+            topn[line[i:i + N]] += 1
 
     def bytes_saved(item):
         w, n = item
@@ -131,7 +130,7 @@ def ngram_compression(error_strings):
     for line in error_strings.keys():
         result = ""
         for i in range(0, len(line) - N + 1, N):
-            word = line[i: i + N]
+            word = line[i:i + N]
             if word in index_lookup:
                 result += "\\{:03o}".format(0b10000000 | index_lookup[word])
             else:
@@ -159,7 +158,8 @@ def main(collected_path, fn):
             max_uncompressed_len = max(max_uncompressed_len, len(line))
 
     # So that objexcept.c can figure out how big the buffer needs to be.
-    print("#define MP_MAX_UNCOMPRESSED_TEXT_LEN ({})".format(max_uncompressed_len))
+    print("#define MP_MAX_UNCOMPRESSED_TEXT_LEN ({})".format(
+        max_uncompressed_len))
 
     # Run the compression.
     compressed_data = fn(error_strings)
@@ -186,7 +186,8 @@ def main(collected_path, fn):
     print("// Total input length:      {}".format(uncomp_len))
     print("// Total compressed length: {}".format(comp_len))
     print("// Total data length:       {}".format(data_len))
-    print("// Predicted saving:        {}".format(uncomp_len - comp_len - data_len))
+    print("// Predicted saving:        {}".format(uncomp_len - comp_len -
+                                                  data_len))
 
     # Somewhat meaningless comparison to zlib/gzip.
     all_input_bytes = "\\0".join(error_strings.keys()).encode()
@@ -194,13 +195,13 @@ def main(collected_path, fn):
     if hasattr(gzip, "compress"):
         gzip_len = len(gzip.compress(all_input_bytes)) + num_uses * 4
         print("// gzip length:             {}".format(gzip_len))
-        print(
-            "// Percentage of gzip:      {:.1f}%".format(100 * (comp_len + data_len) / gzip_len))
+        print("// Percentage of gzip:      {:.1f}%".format(
+            100 * (comp_len + data_len) / gzip_len))
     if hasattr(zlib, "compress"):
         zlib_len = len(zlib.compress(all_input_bytes)) + num_uses * 4
         print("// zlib length:             {}".format(zlib_len))
-        print(
-            "// Percentage of zlib:      {:.1f}%".format(100 * (comp_len + data_len) / zlib_len))
+        print("// Percentage of zlib:      {:.1f}%".format(
+            100 * (comp_len + data_len) / zlib_len))
 
 
 if __name__ == "__main__":

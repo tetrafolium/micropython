@@ -47,11 +47,11 @@ class Filesystem:
 
     def stat(self, path):
         print(self.id, "stat", path)
-        return (self.id,)
+        return (self.id, )
 
     def statvfs(self, path):
         print(self.id, "statvfs", path)
-        return (self.id,)
+        return (self.id, )
 
     def open(self, file, mode):
         print(self.id, "open", file, mode)

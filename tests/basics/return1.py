@@ -1,5 +1,6 @@
 # test return statement
 
+
 def f():
     return
 

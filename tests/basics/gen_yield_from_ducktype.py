@@ -1,5 +1,4 @@
 class MyGen:
-
     def __init__(self):
         self.v = 0
 
@@ -26,7 +25,6 @@ print(list(gen2()))
 
 
 class Incrementer:
-
     def __iter__(self):
         return self
 
@@ -63,7 +61,7 @@ class MyIter:
 def gen4():
     global ret
     ret = yield from MyIter()
-    1//0
+    1 // 0
 
 
 ret = None

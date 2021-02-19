@@ -1,5 +1,6 @@
 # test for native generators
 
+
 # simple generator with yield and return
 @micropython.native
 def gen1(x):

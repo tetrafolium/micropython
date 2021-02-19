@@ -34,7 +34,6 @@ import os
 import os.path
 import argparse
 
-
 UF2_MAGIC_START0 = 0x0A324655  # "UF2\n"
 UF2_MAGIC_START1 = 0x9E5D5157  # Randomly selected
 UF2_MAGIC_END = 0x0AB16F30  # Ditto
@@ -76,7 +75,7 @@ def convert_from_uf2(buf):
     outp = b""
     for blockno in range(numblocks):
         ptr = blockno * 512
-        block = buf[ptr: ptr + 512]
+        block = buf[ptr:ptr + 512]
         hd = struct.unpack(b"<IIIIIIII", block[0:32])
         if hd[0] != UF2_MAGIC_START0 or hd[1] != UF2_MAGIC_START1:
             print("Skipping block at " + ptr + "; bad magic")
@@ -101,7 +100,7 @@ def convert_from_uf2(buf):
         while padding > 0:
             padding -= 4
             outp += b"\x00\x00\x00\x00"
-        outp += block[32: 32 + datalen]
+        outp += block[32:32 + datalen]
         curraddr = newaddr + datalen
     return outp
 
@@ -125,7 +124,7 @@ def convert_to_uf2(file_content):
     outp = b""
     for blockno in range(numblocks):
         ptr = 256 * blockno
-        chunk = file_content[ptr: ptr + 256]
+        chunk = file_content[ptr:ptr + 256]
         flags = 0x0
         if familyid:
             flags |= 0x2000
@@ -188,7 +187,7 @@ def convert_from_hex_to_uf2(buf):
         i = 1
         rec = []
         while i < len(line) - 1:
-            rec.append(int(line[i: i + 2], 16))
+            rec.append(int(line[i:i + 2], 16))
             i += 2
         tp = rec[3]
         if tp == 4:
@@ -220,18 +219,16 @@ def convert_from_hex_to_uf2(buf):
 def get_drives():
     drives = []
     if sys.platform == "win32":
-        r = subprocess.check_output(
-            [
-                "wmic",
-                "PATH",
-                "Win32_LogicalDisk",
-                "get",
-                "DeviceID,",
-                "VolumeName,",
-                "FileSystem,",
-                "DriveType",
-            ]
-        )
+        r = subprocess.check_output([
+            "wmic",
+            "PATH",
+            "Win32_LogicalDisk",
+            "get",
+            "DeviceID,",
+            "VolumeName,",
+            "FileSystem,",
+            "DriveType",
+        ])
         for line in r.split("\n"):
             words = re.split("\s+", line)
             if len(words) >= 3 and words[1] == "2" and words[2] == "FAT":
@@ -282,9 +279,11 @@ def main():
 
     parser = argparse.ArgumentParser(
         description="Convert to UF2 or flash directly.")
-    parser.add_argument(
-        "input", metavar="INPUT", type=str, nargs="?", help="input file (HEX, BIN or UF2)"
-    )
+    parser.add_argument("input",
+                        metavar="INPUT",
+                        type=str,
+                        nargs="?",
+                        help="input file (HEX, BIN or UF2)")
     parser.add_argument(
         "-b",
         "--base",
@@ -299,13 +298,20 @@ def main():
         metavar="FILE",
         dest="output",
         type=str,
-        help='write output to named file; defaults to "flash.uf2" or "flash.bin" where sensible',
+        help=
+        'write output to named file; defaults to "flash.uf2" or "flash.bin" where sensible',
     )
-    parser.add_argument("-d", "--device", dest="device_path",
+    parser.add_argument("-d",
+                        "--device",
+                        dest="device_path",
                         help="select a device path to flash")
-    parser.add_argument("-l", "--list", action="store_true",
+    parser.add_argument("-l",
+                        "--list",
+                        action="store_true",
                         help="list connected devices")
-    parser.add_argument("-c", "--convert", action="store_true",
+    parser.add_argument("-c",
+                        "--convert",
+                        action="store_true",
                         help="do not flash, just convert")
     parser.add_argument(
         "-f",
@@ -315,9 +321,10 @@ def main():
         default="0x0",
         help="specify familyID - number or name (default: 0x0)",
     )
-    parser.add_argument(
-        "-C", "--carray", action="store_true", help="convert binary file to a C array, not UF2"
-    )
+    parser.add_argument("-C",
+                        "--carray",
+                        action="store_true",
+                        help="convert binary file to a C array, not UF2")
     args = parser.parse_args()
     appstartaddr = int(args.base, 0)
 
@@ -349,10 +356,8 @@ def main():
             ext = "h"
         else:
             outbuf = convert_to_uf2(inpbuf)
-        print(
-            "Converting to %s, output size: %d, start address: 0x%x"
-            % (ext, len(outbuf), appstartaddr)
-        )
+        print("Converting to %s, output size: %d, start address: 0x%x" %
+              (ext, len(outbuf), appstartaddr))
         if args.convert:
             drives = []
             if args.output == None:

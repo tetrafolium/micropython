@@ -13,7 +13,6 @@ except ImportError:
         print("SKIP")
         raise SystemExit
 
-
 poller = select.poll()
 
 s = socket.socket()

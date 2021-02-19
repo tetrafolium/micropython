@@ -22,11 +22,8 @@ async def http_get_headers(url):
         line = line.strip()
         if not line:
             break
-        if (
-            line.find(b"Date") == -1
-            and line.find(b"Modified") == -1
-            and line.find(b"Server") == -1
-        ):
+        if (line.find(b"Date") == -1 and line.find(b"Modified") == -1
+                and line.find(b"Server") == -1):
             print(line)
 
     print("close")

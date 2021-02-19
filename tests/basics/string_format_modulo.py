@@ -7,7 +7,7 @@ except TypeError:
 print("%%" % ())
 print("=%s=" % 1)
 print("=%s=%s=" % (1, 2))
-print("=%s=" % (1,))
+print("=%s=" % (1, ))
 print("=%s=" % [1, 2])
 
 print("=%s=" % "str")
@@ -46,7 +46,7 @@ print('%c' % True)
 # Should be able to print dicts; in this case they aren't used
 # to lookup keywords in formats like %(foo)s
 print('%s' % {})
-print('%s' % ({},))
+print('%s' % ({}, ))
 
 # Cases when "*" used and there's not enough values total
 try:
@@ -76,7 +76,7 @@ try:
 except TypeError:
     print('TypeError')
 try:
-    '%(foo)s' % ({},)
+    '%(foo)s' % ({}, )
 except TypeError:
     print('TypeError')
 

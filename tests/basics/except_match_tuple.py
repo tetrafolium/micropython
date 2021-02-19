@@ -2,7 +2,7 @@
 
 try:
     fail
-except (Exception,):
+except (Exception, ):
     print('except 1')
 
 try:

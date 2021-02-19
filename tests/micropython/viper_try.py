@@ -1,5 +1,6 @@
 # test try handling within a viper function
 
+
 # basic try-finally
 @micropython.viper
 def f():

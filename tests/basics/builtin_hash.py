@@ -3,7 +3,7 @@
 print(hash(False))
 print(hash(True))
 print({(): 1})  # hash tuple
-print({(1,): 1})  # hash non-empty tuple
+print({(1, ): 1})  # hash non-empty tuple
 print(hash in {hash: 1})  # hash function
 
 try:

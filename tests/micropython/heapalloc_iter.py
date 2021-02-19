@@ -37,8 +37,8 @@ ar = array.array("H", (123, 456))
 t = (1, 2, 3)
 l = [1, 2]
 d = {1: 2}
-s = set((1,))
-fs = frozenset((1,))
+s = set((1, ))
+fs = frozenset((1, ))
 g1 = (100 + x for x in range(2))
 g2 = gen_func()
 

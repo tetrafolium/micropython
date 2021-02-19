@@ -38,6 +38,7 @@ def custom_import(name, globals, locals, fromlist, level):
     class M:
         a = 1
         b = 2
+
     return M
 
 

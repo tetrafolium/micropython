@@ -4,11 +4,11 @@ print(sorted(d.keys()))
 print(sorted(d.values()))
 
 try:
-    dict(((1,),))
+    dict(((1, ), ))
 except ValueError:
     print("ValueError")
 
 try:
-    dict(((1, 2, 3),))
+    dict(((1, 2, 3), ))
 except ValueError:
     print("ValueError")

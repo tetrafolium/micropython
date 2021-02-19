@@ -1,5 +1,6 @@
 # test async with, escaped by a return
 
+
 class AContext:
     async def __aenter__(self):
         print('enter')
@@ -13,6 +14,7 @@ async def f1():
     async with AContext():
         print('body')
         return
+
 
 o = f1()
 try:
@@ -28,6 +30,7 @@ async def f2():
             return
     finally:
         print('finally')
+
 
 o = f2()
 try:
@@ -46,6 +49,7 @@ async def f3():
             print('finally inner')
     finally:
         print('finally outer')
+
 
 o = f3()
 try:

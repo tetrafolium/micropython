@@ -1,5 +1,6 @@
 # test multiple inheritance of user classes
 
+
 class A:
     def __init__(self, x):
         print('A init', x)

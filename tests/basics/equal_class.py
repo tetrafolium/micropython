@@ -1,5 +1,6 @@
 # test equality for classes/instances to other types
 
+
 class A:
     pass
 

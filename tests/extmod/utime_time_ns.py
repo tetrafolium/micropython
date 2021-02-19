@@ -9,7 +9,6 @@ except (ImportError, AttributeError):
     print("SKIP")
     raise SystemExit
 
-
 t0 = utime.time_ns()
 utime.sleep_us(5000)
 t1 = utime.time_ns()

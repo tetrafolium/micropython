@@ -7,7 +7,6 @@ import argparse
 import sys
 import csv
 
-
 SUPPORTED_AFS = {
     "UART": ("TX", "RX", "RTS", "CTS"),
     "SPI": ("CLK", "MOSI", "MISO", "CS0"),
@@ -34,7 +33,6 @@ def parse_port_pin(name_str):
 
 class AF:
     """Holds the description of an alternate function"""
-
     def __init__(self, name, idx, fn, unit, type):
         self.name = name
         self.idx = idx
@@ -45,16 +43,12 @@ class AF:
         self.type = type
 
     def print(self):
-        print(
-            "    AF({:16s}, {:4d}, {:8s}, {:4d}, {:8s}),    // {}".format(
-                self.name, self.idx, self.fn, self.unit, self.type, self.name
-            )
-        )
+        print("    AF({:16s}, {:4d}, {:8s}, {:4d}, {:8s}),    // {}".format(
+            self.name, self.idx, self.fn, self.unit, self.type, self.name))
 
 
 class Pin:
     """Holds the information associated with a pin."""
-
     def __init__(self, name, port, gpio_bit, pin_num):
         self.name = name
         self.port = port
@@ -74,7 +68,8 @@ class Pin:
                 af.print()
             print("};")
             print(
-                "pin_obj_t pin_{:4s} = PIN({:6s}, {:1d}, {:3d}, {:2d}, pin_{}_af, {});\n".format(
+                "pin_obj_t pin_{:4s} = PIN({:6s}, {:1d}, {:3d}, {:2d}, pin_{}_af, {});\n"
+                .format(
                     self.name,
                     self.name,
                     self.port,
@@ -82,14 +77,12 @@ class Pin:
                     self.pin_num,
                     self.name,
                     len(self.afs),
-                )
-            )
+                ))
         else:
             print(
-                "pin_obj_t pin_{:4s} = PIN({:6s}, {:1d}, {:3d}, {:2d}, NULL, 0);\n".format(
-                    self.name, self.name, self.port, self.gpio_bit, self.pin_num
-                )
-            )
+                "pin_obj_t pin_{:4s} = PIN({:6s}, {:1d}, {:3d}, {:2d}, NULL, 0);\n"
+                .format(self.name, self.name, self.port, self.gpio_bit,
+                        self.pin_num))
 
     def print_header(self, hdr_file):
         hdr_file.write("extern pin_obj_t pin_{:s};\n".format(self.name))
@@ -125,8 +118,7 @@ class Pins:
                 if not row[pin_col].isdigit():
                     raise ValueError(
                         "Invalid pin number {:s} in row {:s}".format(
-                            row[pin_col]), row
-                    )
+                            row[pin_col]), row)
                 # Pin numbers must start from 0 when used with the TI API
                 pin_num = int(row[pin_col]) - 1
                 pin = Pin(row[pinname_col], port_num, gpio_bit, pin_num)
@@ -140,7 +132,8 @@ class Pins:
                         if type_name in SUPPORTED_AFS[fn_name]:
                             unit_idx = af_splitted[0][-1]
                             pin.add_af(
-                                AF(af, af_idx, fn_name, int(unit_idx), type_name))
+                                AF(af, af_idx, fn_name, int(unit_idx),
+                                   type_name))
                     af_idx += 1
 
     def parse_board_file(self, filename, cpu_pin_col):
@@ -158,22 +151,17 @@ class Pins:
     def print_named(self, label, pins):
         print("")
         print(
-            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(
-                label)
-        )
+            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{"
+            .format(label))
         for pin in pins:
             if pin.board_pin:
                 print(
-                    "    {{ MP_ROM_QSTR(MP_QSTR_{:6s}), MP_ROM_PTR(&pin_{:6s}) }},".format(
-                        pin.name, pin.name
-                    )
-                )
+                    "    {{ MP_ROM_QSTR(MP_QSTR_{:6s}), MP_ROM_PTR(&pin_{:6s}) }},"
+                    .format(pin.name, pin.name))
         print("};")
         print(
-            "MP_DEFINE_CONST_DICT(pin_{:s}_pins_locals_dict, pin_{:s}_pins_locals_dict_table);".format(
-                label, label
-            )
-        )
+            "MP_DEFINE_CONST_DICT(pin_{:s}_pins_locals_dict, pin_{:s}_pins_locals_dict_table);"
+            .format(label, label))
 
     def print(self):
         for pin in self.board_pins:

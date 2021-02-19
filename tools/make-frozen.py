@@ -64,8 +64,12 @@ for f, st in modules:
     # to be able to read the resulting C code as ASCII when possible.
 
     data = bytearray(data)  # so Python2 extracts each byte as an integer
-    esc_dict = {ord("\n"): "\\n", ord("\r"): "\\r",
-                ord('"'): '\\"', ord("\\"): "\\\\"}
+    esc_dict = {
+        ord("\n"): "\\n",
+        ord("\r"): "\\r",
+        ord('"'): '\\"',
+        ord("\\"): "\\\\"
+    }
     chrs = ['"']
     break_str = False
     for c in data:

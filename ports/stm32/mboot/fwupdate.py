@@ -151,7 +151,8 @@ def update_mboot(filename):
     irq = machine.disable_irq()
     flash_unlock()
     flash_erase_sector(0)
-    if len(mboot_fw) > 16 * 1024 and not check_mem_erased(mboot_addr + 16 * 1024, 16 * 1024):
+    if len(mboot_fw) > 16 * 1024 and not check_mem_erased(
+            mboot_addr + 16 * 1024, 16 * 1024):
         flash_erase_sector(1)
     flash_write(mboot_addr, mboot_fw)
     flash_lock()
@@ -171,7 +172,12 @@ def _create_element(kind, body):
     return bytes([kind, len(body)]) + body
 
 
-def update_mpy(filename, fs_base, fs_len, fs_type=VFS_FAT, fs_blocksize=0, status_addr=None):
+def update_mpy(filename,
+               fs_base,
+               fs_len,
+               fs_type=VFS_FAT,
+               fs_blocksize=0,
+               status_addr=None):
     # Check firmware is of .dfu or .dfu.gz type
     try:
         with open(filename, "rb") as f:
@@ -189,13 +195,12 @@ def update_mpy(filename, fs_base, fs_len, fs_type=VFS_FAT, fs_blocksize=0, statu
     mount_point = 1
     elems = _create_element(
         _ELEM_TYPE_MOUNT,
-        struct.pack("<BBLLL", mount_point, fs_type,
-                    fs_base, fs_len, fs_blocksize),
+        struct.pack("<BBLLL", mount_point, fs_type, fs_base, fs_len,
+                    fs_blocksize),
     )
     elems += _create_element(
-        _ELEM_TYPE_FSLOAD, struct.pack(
-            "<B", mount_point) + bytes(filename, "ascii")
-    )
+        _ELEM_TYPE_FSLOAD,
+        struct.pack("<B", mount_point) + bytes(filename, "ascii"))
     if status_addr is not None:
         # mboot will write 0 to status_addr on succes, or a negative number on failure
         machine.mem32[status_addr] = 1

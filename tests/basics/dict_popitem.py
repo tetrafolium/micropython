@@ -7,7 +7,10 @@ a = d.popitem()
 print(len(d))
 els.append(a)
 try:
-    print(d.popitem(), "!!!",)
+    print(
+        d.popitem(),
+        "!!!",
+    )
 except KeyError:
     print("Raised KeyError")
 else:

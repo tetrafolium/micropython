@@ -18,9 +18,9 @@ class A:
     def meth(self):
         print('A.meth')
 
+
 # print(A.__new__)
 # print(A.__init__)
-
 
 a = A()
 a.meth()
@@ -51,9 +51,9 @@ class B:
 
 print("B inst:", B(1, 2))
 
-
 # Variation of the above, __new__ returns an instance of another class,
 # __init__ should not be called
+
 
 class Dummy:
     pass

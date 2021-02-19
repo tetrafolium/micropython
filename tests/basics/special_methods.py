@@ -1,5 +1,4 @@
 class Cud():
-
     def __init__(self):
         print("__init__ called")
 

@@ -20,33 +20,31 @@ class PIOASMError(Exception):
 
 
 class PIOASMEmit:
-    def __init__(
-        self,
-        *,
-        out_init=None,
-        set_init=None,
-        sideset_init=None,
-        in_shiftdir=0,
-        out_shiftdir=0,
-        autopush=False,
-        autopull=False,
-        push_thresh=32,
-        pull_thresh=32
-    ):
+    def __init__(self,
+                 *,
+                 out_init=None,
+                 set_init=None,
+                 sideset_init=None,
+                 in_shiftdir=0,
+                 out_shiftdir=0,
+                 autopush=False,
+                 autopull=False,
+                 push_thresh=32,
+                 pull_thresh=32):
         from array import array
 
         self.labels = {}
         execctrl = 0
-        shiftctrl = (
-            (pull_thresh & 0x1F) << 25
-            | (push_thresh & 0x1F) << 20
-            | out_shiftdir << 19
-            | in_shiftdir << 18
-            | autopull << 17
-            | autopush << 16
-        )
-        self.prog = [array("H"), -1, -1, execctrl, shiftctrl,
-                     out_init, set_init, sideset_init]
+        shiftctrl = ((pull_thresh & 0x1F) << 25
+                     | (push_thresh & 0x1F) << 20
+                     | out_shiftdir << 19
+                     | in_shiftdir << 18
+                     | autopull << 17
+                     | autopush << 16)
+        self.prog = [
+            array("H"), -1, -1, execctrl, shiftctrl, out_init, set_init,
+            sideset_init
+        ]
 
         self.wrap_used = False
 
@@ -86,7 +84,8 @@ class PIOASMEmit:
         self.num_sideset += 1
         if self.pass_ > 0:
             set_bit = 13 - self.sideset_count
-            self.prog[_PROG_DATA][-1] |= self.sideset_opt << 12 | value << set_bit
+            self.prog[_PROG_DATA][
+                -1] |= self.sideset_opt << 12 | value << set_bit
         return self
 
     def wrap_target(self):

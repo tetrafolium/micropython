@@ -17,8 +17,8 @@ def ffi_open(names):
     raise err
 
 
-libm = ffi_open(("libm.so", "libm.so.6", "libc.so.0",
-                 "libc.so.6", "libc.dylib"))
+libm = ffi_open(
+    ("libm.so", "libm.so.6", "libc.so.0", "libc.so.6", "libc.dylib"))
 
 # Some libc's implement tgammaf as header macro with tgamma(), so don't assume
 # it'll be in library.
@@ -28,6 +28,6 @@ except OSError:
     print("SKIP")
     raise SystemExit
 
-for fun in (tgammaf,):
+for fun in (tgammaf, ):
     for val in (0.5, 1, 1.0, 1.5, 4, 4.0):
         print("%.6f" % fun(val))

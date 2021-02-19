@@ -14,7 +14,7 @@ def thread_entry(n):
 thread_num = 0
 while thread_num < 500:
     try:
-        _thread.start_new_thread(thread_entry, (thread_num,))
+        _thread.start_new_thread(thread_entry, (thread_num, ))
         thread_num += 1
     except MemoryError:
         pass

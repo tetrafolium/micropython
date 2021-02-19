@@ -1,5 +1,6 @@
 # inheritance
 
+
 class A:
     def a():
         print('A.a() called')

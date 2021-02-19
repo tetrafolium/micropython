@@ -19,8 +19,8 @@ print("%.5g" % (i / 1.2))
 print("%.5g" % (i * 1.2j).imag)
 
 # negative power should produce float
-print("%.5g" % (i ** -1))
-print("%.5g" % ((2 + i - i) ** -3))
+print("%.5g" % (i**-1))
+print("%.5g" % ((2 + i - i)**-3))
 
 try:
     i / 0

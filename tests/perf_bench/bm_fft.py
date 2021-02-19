@@ -51,8 +51,9 @@ bm_params = {
 
 def bm_setup(params):
     state = None
-    signal = [math.cos(2 * math.pi * i / params[1]) +
-              0j for i in range(params[1])]
+    signal = [
+        math.cos(2 * math.pi * i / params[1]) + 0j for i in range(params[1])
+    ]
     fft = None
     fft_inv = None
 

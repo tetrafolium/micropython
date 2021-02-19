@@ -20,6 +20,7 @@ print("---")
 class Clist2(list, Base1):
     pass
 
+
 # Not compliant - should call list.__init__, but we don't have it
 #a = Clist2()
 # print(len(a))

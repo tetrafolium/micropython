@@ -1,8 +1,8 @@
 # Case 1: Immutable object (e.g. number-like)
 # __iadd__ should not be defined, will be emulated using __add__
 
-class A:
 
+class A:
     def __init__(self, v):
         self.v = v
 
@@ -25,7 +25,6 @@ print(b)
 
 
 class L:
-
     def __init__(self, v):
         self.v = v
 

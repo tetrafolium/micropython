@@ -1,7 +1,7 @@
 # builtin len
 
 print(len(()))
-print(len((1,)))
+print(len((1, )))
 print(len((1, 2)))
 
 print(len([]))

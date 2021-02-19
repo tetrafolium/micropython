@@ -45,7 +45,7 @@ _TEMP_CHAR = (
 )
 _ENV_SENSE_SERVICE = (
     _ENV_SENSE_UUID,
-    (_TEMP_CHAR,),
+    (_TEMP_CHAR, ),
 )
 
 # org.bluetooth.characteristic.gap.appearance.xml
@@ -87,9 +87,8 @@ class BLETemperatureCentral:
     def _irq(self, event, data):
         if event == _IRQ_SCAN_RESULT:
             addr_type, addr, adv_type, rssi, adv_data = data
-            if adv_type in (_ADV_IND, _ADV_DIRECT_IND) and _ENV_SENSE_UUID in decode_services(
-                adv_data
-            ):
+            if adv_type in (_ADV_IND, _ADV_DIRECT_IND
+                            ) and _ENV_SENSE_UUID in decode_services(adv_data):
                 # Found a potential device, remember it and stop scanning.
                 self._addr_type = addr_type
                 self._addr = bytes(
@@ -102,8 +101,8 @@ class BLETemperatureCentral:
             if self._scan_callback:
                 if self._addr:
                     # Found a device during the scan (and the scan was explicitly stopped).
-                    self._scan_callback(
-                        self._addr_type, self._addr, self._name)
+                    self._scan_callback(self._addr_type, self._addr,
+                                        self._name)
                     self._scan_callback = None
                 else:
                     # Scan timed out.
@@ -133,8 +132,7 @@ class BLETemperatureCentral:
             # Service query complete.
             if self._start_handle and self._end_handle:
                 self._ble.gattc_discover_characteristics(
-                    self._conn_handle, self._start_handle, self._end_handle
-                )
+                    self._conn_handle, self._start_handle, self._end_handle)
             else:
                 print("Failed to find environmental sensing service.")
 

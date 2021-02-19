@@ -59,7 +59,7 @@ except KeyError as er:
 
 # unsupported unary op
 try:
-    +{}
+    + {}
 except TypeError:
     print('TypeError')
 

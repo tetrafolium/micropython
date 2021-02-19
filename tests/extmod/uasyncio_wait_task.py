@@ -9,7 +9,6 @@ except ImportError:
         print("SKIP")
         raise SystemExit
 
-
 try:
     import utime
 
@@ -18,8 +17,11 @@ try:
 except:
     import time
 
-    def ticks(): return int(time.time() * 1000)
-    def ticks_diff(t1, t0): return t1 - t0
+    def ticks():
+        return int(time.time() * 1000)
+
+    def ticks_diff(t1, t0):
+        return t1 - t0
 
 
 async def task(t):

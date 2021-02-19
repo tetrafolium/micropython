@@ -17,7 +17,8 @@ def escape(s):
         "\\": "\\\\",
         '"': '\\"',
     }
-    return '""\n"{}"'.format("".join([lookup[x] if x in lookup else x for x in s]))
+    return '""\n"{}"'.format("".join(
+        [lookup[x] if x in lookup else x for x in s]))
 
 
 def chew_filename(t):
@@ -33,16 +34,14 @@ def script_to_map(test_file):
     return r
 
 
-test_function = (
-    "void {name}(void* data) {{\n"
-    "  static const char pystr[] = {script};\n"
-    "  static const char exp[] = {output};\n"
-    '  printf("\\n");\n'
-    "  upytest_set_expected_output(exp, sizeof(exp) - 1);\n"
-    "  upytest_execute_test(pystr);\n"
-    '  printf("result: ");\n'
-    "}}"
-)
+test_function = ("void {name}(void* data) {{\n"
+                 "  static const char pystr[] = {script};\n"
+                 "  static const char exp[] = {output};\n"
+                 '  printf("\\n");\n'
+                 "  upytest_set_expected_output(exp, sizeof(exp) - 1);\n"
+                 "  upytest_execute_test(pystr);\n"
+                 '  printf("result: ");\n'
+                 "}}")
 
 testcase_struct = "struct testcase_t {name}_tests[] = {{\n{body}\n  END_OF_TESTCASES\n}};"
 testcase_member = '  {{ "{desc}", {func}, TT_ENABLED_, 0, 0 }},'
@@ -106,25 +105,29 @@ output = []
 tests = []
 
 argparser = argparse.ArgumentParser(
-    description="Convert native MicroPython tests to tinytest/upytesthelper C code"
-)
-argparser.add_argument("--stdin", action="store_true",
+    description=
+    "Convert native MicroPython tests to tinytest/upytesthelper C code")
+argparser.add_argument("--stdin",
+                       action="store_true",
                        help="read list of tests from stdin")
 args = argparser.parse_args()
 
 if not args.stdin:
     for group in test_dirs:
-        tests += [test for test in glob("{}/*.py".format(group))
-                  if test not in exclude_tests]
+        tests += [
+            test for test in glob("{}/*.py".format(group))
+            if test not in exclude_tests
+        ]
 else:
     for l in sys.stdin:
         tests.append(l.rstrip())
 
 output.extend([test_function.format(**script_to_map(test)) for test in tests])
-testcase_members = [testcase_member.format(
-    **chew_filename(test)) for test in tests]
-output.append(testcase_struct.format(
-    name="", body="\n".join(testcase_members)))
+testcase_members = [
+    testcase_member.format(**chew_filename(test)) for test in tests
+]
+output.append(testcase_struct.format(name="",
+                                     body="\n".join(testcase_members)))
 
 testgroup_members = [testgroup_member.format(name=group) for group in [""]]
 
