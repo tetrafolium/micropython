@@ -137,7 +137,7 @@ inspecode:
       # ----------
 
     uncrustify:
-      auto-fix: true                  # avoid break pipeline
+      # auto-fix: true                # disabled to avoid break pipeline
       thresholds: {num-issues: 999}   # Failed / Segmentation fault (core dumped)
 
     # understand:
