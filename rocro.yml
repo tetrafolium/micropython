@@ -18,10 +18,10 @@ inspecode:
     clang-format:
     - ignore: 'ports/'
       auto-fix: true
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 491}
     - input: 'ports/'
       auto-fix: true
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 830}
 
     cpd:
       options:
@@ -34,8 +34,7 @@ inspecode:
       thresholds: {num-issues: 106}
 
     cpplint:
-    - thresholds: {num-issues: 999}
-    - options:
+      options:
         --filter:                   #  86633 issues without `--filter` option
           - -whitespace             #  77995 issues
           - -readability            #   3317 issues
@@ -43,11 +42,10 @@ inspecode:
           - -runtime                #   1731 issues
           - -build/include_subdir   #   1826 issues
           - -build/header_guard     #   1257 issues
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 507}
 
     flake8:
-    - thresholds: {num-issues: 999}
-    - options:
+      options:
         --ignore:   #  5212 issues without `--ignore` option
           - E501    #  1065 issues
           - F821    #   881 issues
@@ -63,7 +61,7 @@ inspecode:
           - E201    #   115 issues
           - E265    #   110 issues
           - E128    #   100 issues
-      thresholds: {num-issues: 999}
+      thresholds: {num-issues: 836}
 
     # fortify:
 
@@ -131,7 +129,11 @@ inspecode:
     scan-build:
       thresholds: {num-issues: 999}   # Failed / exit status: 2
       # ----------
-      # Makefile:19: *** The 'sphinx-build' command was not found. Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable to point to the full path of the 'sphinx-build' executable. Alternatively you can add the directory with the executable to your PATH. If you don't have Sphinx installed, grab it from http://sphinx-doc.org/.  Stop.
+      # Makefile:19: *** The 'sphinx-build' command was not found.
+      # Make sure you have Sphinx installed, then set the SPHINXBUILD environment variable
+      # to point to the full path of the 'sphinx-build' executable.
+      # Alternatively you can add the directory with the executable to your PATH.
+      # If you don't have Sphinx installed, grab it from http://sphinx-doc.org/.  Stop.
       # ----------
 
     uncrustify:
@@ -141,6 +143,13 @@ inspecode:
     # understand:
 
     unused:
+    - ignore: '**/*.py'
+      options:
+        - --single-occurrence
+        - --all-likelihoods
+      machine: {cpu: 0.75}    # default is 0.5 ... timeout in default settings
+      thresholds: {num-issues: 999}
+    - input: '**/*.py'
       options:
         - --single-occurrence
         - --all-likelihoods
