@@ -142,19 +142,19 @@ inspecode:
 
     # understand:
 
-    unused:
-    - ignore: '**/*.py'
-      options:
-        - --single-occurrence
-        - --all-likelihoods
-      machine: {cpu: 0.75}    # default is 0.5 ... timeout in default settings
-      thresholds: {num-issues: 999}
-    - input: '**/*.py'
-      options:
-        - --single-occurrence
-        - --all-likelihoods
-      machine: {cpu: 0.75}    # default is 0.5 ... timeout in default settings
-      thresholds: {num-issues: 999}
+    # unused:
+    # - ignore: '**/*.py'
+    #   options:
+    #     - --single-occurrence
+    #     - --all-likelihoods
+    #   machine: {cpu: 0.75}    # default is 0.5 ... timeout in default settings
+    #   thresholds: {num-issues: 999}
+    # - input: '**/*.py'
+    #   options:
+    #     - --single-occurrence
+    #     - --all-likelihoods
+    #   machine: {cpu: 0.75}    # default is 0.5 ... timeout in default settings
+    #   thresholds: {num-issues: 999}
 
     yapf:
       auto-fix: true
