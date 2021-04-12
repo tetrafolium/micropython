@@ -221,15 +221,15 @@ void ResetISR(void)
         //
         __asm volatile
         (
-                "ldr     r0, =_stack        \n"
-                "ldr     r1, =_estack       \n"
-                "mov     r2, #0x55555555    \n"
-        ".thumb_func                        \n"
-        "fill_loop:                         \n"
-                "cmp     r0, r1             \n"
-                "it      lt                 \n"
-                "strlt   r2, [r0], #4       \n"
-                "blt     fill_loop          \n"
+            "ldr     r0, =_stack        \n"
+            "ldr     r1, =_estack       \n"
+            "mov     r2, #0x55555555    \n"
+            ".thumb_func                        \n"
+            "fill_loop:                         \n"
+            "cmp     r0, r1             \n"
+            "it      lt                 \n"
+            "strlt   r2, [r0], #4       \n"
+            "blt     fill_loop          \n"
         );
     }
 #endif
@@ -239,9 +239,9 @@ void ResetISR(void)
         // and write this value to the msp register
         __asm volatile
         (
-                "ldr r0, =_text             \n"
-                "ldr r0, [r0]               \n"
-                "msr msp, r0                \n"
+            "ldr r0, =_text             \n"
+            "ldr r0, [r0]               \n"
+            "msr msp, r0                \n"
         );
     }
 
@@ -251,15 +251,15 @@ void ResetISR(void)
         //
         __asm volatile
         (
-                "ldr     r0, =_bss      \n"
-                "ldr     r1, =_ebss     \n"
-                "mov     r2, #0         \n"
-        ".thumb_func                    \n"
-        "zero_loop:                     \n"
-                "cmp     r0, r1         \n"
-                "it      lt             \n"
-                "strlt   r2, [r0], #4   \n"
-                "blt     zero_loop      \n"
+            "ldr     r0, =_bss      \n"
+            "ldr     r1, =_ebss     \n"
+            "mov     r2, #0         \n"
+            ".thumb_func                    \n"
+            "zero_loop:                     \n"
+            "cmp     r0, r1         \n"
+            "it      lt             \n"
+            "strlt   r2, [r0], #4   \n"
+            "blt     zero_loop      \n"
         );
     }
 
@@ -303,24 +303,24 @@ static void NmiSR(void)
 
 static void FaultISR(void)
 {
-        /*
-         * Get the appropriate stack pointer, depending on our mode,
-         * and use it as the parameter to the C handler. This function
-         * will never return
-         */
+    /*
+     * Get the appropriate stack pointer, depending on our mode,
+     * and use it as the parameter to the C handler. This function
+     * will never return
+     */
 
-        __asm volatile
-        (
-                "movs   r0, #4  \n"
-                "mov    r1, lr  \n"
-                "tst    r0, r1  \n"
-                "beq    _msp    \n"
-                "mrs    r0, psp \n"
-                "b      HardFault_HandlerC      \n"
+    __asm volatile
+    (
+        "movs   r0, #4  \n"
+        "mov    r1, lr  \n"
+        "tst    r0, r1  \n"
+        "beq    _msp    \n"
+        "mrs    r0, psp \n"
+        "b      HardFault_HandlerC      \n"
         "_msp:  \n"
-                "mrs    r0, msp \n"
-                "b      HardFault_HandlerC      \n"
-        ) ;
+        "mrs    r0, msp \n"
+        "b      HardFault_HandlerC      \n"
+    ) ;
 }
 
 //***********************************************************************************

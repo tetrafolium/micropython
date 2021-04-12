@@ -99,42 +99,42 @@ STATIC const mp_obj_type_t ffivar_type;
 
 STATIC ffi_type *char2ffi_type(char c) {
     switch (c) {
-        case 'b':
-            return &ffi_type_schar;
-        case 'B':
-            return &ffi_type_uchar;
-        case 'h':
-            return &ffi_type_sshort;
-        case 'H':
-            return &ffi_type_ushort;
-        case 'i':
-            return &ffi_type_sint;
-        case 'I':
-            return &ffi_type_uint;
-        case 'l':
-            return &ffi_type_slong;
-        case 'L':
-            return &ffi_type_ulong;
-        case 'q':
-            return &ffi_type_sint64;
-        case 'Q':
-            return &ffi_type_uint64;
-        #if MICROPY_PY_BUILTINS_FLOAT
-        case 'f':
-            return &ffi_type_float;
-        case 'd':
-            return &ffi_type_double;
-        #endif
-        case 'O': // mp_obj_t
-        case 'C': // (*)()
-        case 'P': // const void*
-        case 'p': // void*
-        case 's':
-            return &ffi_type_pointer;
-        case 'v':
-            return &ffi_type_void;
-        default:
-            return NULL;
+    case 'b':
+        return &ffi_type_schar;
+    case 'B':
+        return &ffi_type_uchar;
+    case 'h':
+        return &ffi_type_sshort;
+    case 'H':
+        return &ffi_type_ushort;
+    case 'i':
+        return &ffi_type_sint;
+    case 'I':
+        return &ffi_type_uint;
+    case 'l':
+        return &ffi_type_slong;
+    case 'L':
+        return &ffi_type_ulong;
+    case 'q':
+        return &ffi_type_sint64;
+    case 'Q':
+        return &ffi_type_uint64;
+#if MICROPY_PY_BUILTINS_FLOAT
+    case 'f':
+        return &ffi_type_float;
+    case 'd':
+        return &ffi_type_double;
+#endif
+    case 'O': // mp_obj_t
+    case 'C': // (*)()
+    case 'P': // const void*
+    case 'p': // void*
+    case 's':
+        return &ffi_type_pointer;
+    case 'v':
+        return &ffi_type_void;
+    default:
+        return NULL;
     }
 }
 
@@ -153,31 +153,32 @@ STATIC ffi_type *get_ffi_type(mp_obj_t o_in) {
 
 STATIC mp_obj_t return_ffi_value(ffi_arg val, char type) {
     switch (type) {
-        case 's': {
-            const char *s = (const char *)(intptr_t)val;
-            if (!s) {
-                return mp_const_none;
-            }
-            return mp_obj_new_str(s, strlen(s));
-        }
-        case 'v':
+    case 's': {
+        const char *s = (const char *)(intptr_t)val;
+        if (!s) {
             return mp_const_none;
-        #if MICROPY_PY_BUILTINS_FLOAT
-        case 'f': {
-            union { ffi_arg ffi;
-                    float flt;
-            } val_union = { .ffi = val };
-            return mp_obj_new_float_from_f(val_union.flt);
         }
-        case 'd': {
-            double *p = (double *)&val;
-            return mp_obj_new_float_from_d(*p);
-        }
-        #endif
-        case 'O':
-            return (mp_obj_t)(intptr_t)val;
-        default:
-            return mp_obj_new_int(val);
+        return mp_obj_new_str(s, strlen(s));
+    }
+    case 'v':
+        return mp_const_none;
+#if MICROPY_PY_BUILTINS_FLOAT
+    case 'f': {
+        union {
+            ffi_arg ffi;
+            float flt;
+        } val_union = { .ffi = val };
+        return mp_obj_new_float_from_f(val_union.flt);
+    }
+    case 'd': {
+        double *p = (double *)&val;
+        return mp_obj_new_float_from_d(*p);
+    }
+#endif
+    case 'O':
+        return (mp_obj_t)(intptr_t)val;
+    default:
+        return mp_obj_new_int(val);
     }
 }
 
@@ -375,14 +376,14 @@ STATIC mp_obj_t ffifunc_call(mp_obj_t self_in, size_t n_args, size_t n_kw, const
         mp_obj_t a = args[i];
         if (*argtype == 'O') {
             values[i] = (ffi_arg)(intptr_t)a;
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         } else if (*argtype == 'f') {
             float *p = (float *)&values[i];
             *p = mp_obj_get_float_to_f(a);
         } else if (*argtype == 'd') {
             double *p = (double *)&values[i];
             *p = mp_obj_get_float_to_d(a);
-        #endif
+#endif
         } else if (a == mp_const_none) {
             values[i] = 0;
         } else if (mp_obj_is_int(a)) {
@@ -411,13 +412,13 @@ STATIC mp_obj_t ffifunc_call(mp_obj_t self_in, size_t n_args, size_t n_kw, const
     // pointer to a memory location of the correct size.
     // TODO check if this needs to be done for other types which don't fit into
     // ffi_arg.
-    #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
     if (sizeof(ffi_arg) == 4 && self->rettype == 'd') {
         double retval;
         ffi_call(&self->cif, self->func, &retval, valueptrs);
         return mp_obj_new_float_from_d(retval);
     } else
-    #endif
+#endif
     {
         ffi_arg retval;
         ffi_call(&self->cif, self->func, &retval, valueptrs);

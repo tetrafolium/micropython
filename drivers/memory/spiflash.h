@@ -61,9 +61,9 @@ typedef struct _mp_spiflash_config_t {
             const mp_qspi_proto_t *proto;
         } u_qspi;
     } bus;
-    #if MICROPY_HW_SPIFLASH_ENABLE_CACHE
+#if MICROPY_HW_SPIFLASH_ENABLE_CACHE
     mp_spiflash_cache_t *cache; // can be NULL if cache functions not used
-    #endif
+#endif
 } mp_spiflash_config_t;
 
 typedef struct _mp_spiflash_t {

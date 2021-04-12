@@ -405,9 +405,9 @@ STATIC mp_obj_t peripheral_connect(mp_uint_t n_args, const mp_obj_t *pos_args, m
         ubluepy_service_obj_t * p_service = (ubluepy_service_obj_t *)services[num_services - 1];
 
         service_disc_retval = ble_drv_discover_services(self,
-                                                        self->conn_handle,
-                                                        p_service->end_handle + 1,
-                                                        disc_add_service);
+                              self->conn_handle,
+                              p_service->end_handle + 1,
+                              disc_add_service);
     }
 
     // For each service perform a characteristic discovery
@@ -418,10 +418,10 @@ STATIC mp_obj_t peripheral_connect(mp_uint_t n_args, const mp_obj_t *pos_args, m
     for (uint16_t s = 0; s < num_services; s++) {
         ubluepy_service_obj_t * p_service = (ubluepy_service_obj_t *)services[s];
         bool char_disc_retval = ble_drv_discover_characteristic(p_service,
-                                                                self->conn_handle,
-                                                                p_service->start_handle,
-                                                                p_service->end_handle,
-                                                                disc_add_char);
+                                self->conn_handle,
+                                p_service->start_handle,
+                                p_service->end_handle,
+                                disc_add_char);
         // continue discovery of characteristics ...
         while (char_disc_retval) {
             mp_obj_t * characteristics = NULL;
@@ -432,10 +432,10 @@ STATIC mp_obj_t peripheral_connect(mp_uint_t n_args, const mp_obj_t *pos_args, m
             uint16_t next_handle = p_char->handle + 1;
             if ((next_handle) < p_service->end_handle) {
                 char_disc_retval = ble_drv_discover_characteristic(p_service,
-                                                                   self->conn_handle,
-                                                                   next_handle,
-                                                                   p_service->end_handle,
-                                                                   disc_add_char);
+                                   self->conn_handle,
+                                   next_handle,
+                                   p_service->end_handle,
+                                   disc_add_char);
             } else {
                 break;
             }

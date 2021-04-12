@@ -23,23 +23,23 @@ typedef struct Subject Subject;
 
 struct Regexp
 {
-	int type;
-	int n;
-	int ch;
-	Regexp *left;
-	Regexp *right;
+    int type;
+    int n;
+    int ch;
+    Regexp *left;
+    Regexp *right;
 };
 
 enum	/* Regexp.type */
 {
-	Alt = 1,
-	Cat,
-	Lit,
-	Dot,
-	Paren,
-	Quest,
-	Star,
-	Plus,
+    Alt = 1,
+    Cat,
+    Lit,
+    Dot,
+    Paren,
+    Quest,
+    Star,
+    Plus,
 };
 
 Regexp *parse(char*);
@@ -55,51 +55,51 @@ void *mal(int);
 
 struct Prog
 {
-	Inst *start;
-	int len;
+    Inst *start;
+    int len;
 };
 
 struct ByteProg
 {
-	int bytelen;
-	int len;
-	int sub;
-	char insts[0];
+    int bytelen;
+    int len;
+    int sub;
+    char insts[0];
 };
 
 struct Inst
 {
-	int opcode;
-	int c;
-	int n;
-	Inst *x;
-	Inst *y;
-	int gen;	// global state, oooh!
+    int opcode;
+    int c;
+    int n;
+    Inst *x;
+    Inst *y;
+    int gen;	// global state, oooh!
 };
 
 enum	/* Inst.opcode */
 {
-	// Instructions which consume input bytes (and thus fail if none left)
-	CONSUMERS = 1,
-	Char = CONSUMERS,
-	Any,
-	Class,
-	ClassNot,
-	NamedClass,
+    // Instructions which consume input bytes (and thus fail if none left)
+    CONSUMERS = 1,
+    Char = CONSUMERS,
+    Any,
+    Class,
+    ClassNot,
+    NamedClass,
 
-	ASSERTS = 0x50,
-	Bol = ASSERTS,
-	Eol,
+    ASSERTS = 0x50,
+    Bol = ASSERTS,
+    Eol,
 
-	// Instructions which take relative offset as arg
-	JUMPS = 0x60,
-	Jmp = JUMPS,
-	Split,
-	RSplit,
+    // Instructions which take relative offset as arg
+    JUMPS = 0x60,
+    Jmp = JUMPS,
+    Split,
+    RSplit,
 
-	// Other (special) instructions
-	Save = 0x7e,
-	Match = 0x7f,
+    // Other (special) instructions
+    Save = 0x7e,
+    Match = 0x7f,
 };
 
 #define inst_is_consumer(inst) ((inst) < ASSERTS)
@@ -111,16 +111,16 @@ void printprog(Prog*);
 extern int gen;
 
 enum {
-	MAXSUB = 20
+    MAXSUB = 20
 };
 
 typedef struct Sub Sub;
 
 struct Sub
 {
-	int ref;
-	int nsub;
-	const char *sub[MAXSUB];
+    int ref;
+    int nsub;
+    const char *sub[MAXSUB];
 };
 
 Sub *newsub(int n);
@@ -130,8 +130,8 @@ Sub *update(Sub*, int, const char*);
 void decref(Sub*);
 
 struct Subject {
-	const char *begin;
-	const char *end;
+    const char *begin;
+    const char *end;
 };
 
 

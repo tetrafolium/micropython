@@ -312,13 +312,13 @@ STATIC mp_obj_t fat_vfs_stat(mp_obj_t vfs_in, mp_obj_t path_in) {
         mode |= MP_S_IFREG;
     }
     mp_int_t seconds = timeutils_seconds_since_epoch(
-        1980 + ((fno.fdate >> 9) & 0x7f),
-        (fno.fdate >> 5) & 0x0f,
-        fno.fdate & 0x1f,
-        (fno.ftime >> 11) & 0x1f,
-        (fno.ftime >> 5) & 0x3f,
-        2 * (fno.ftime & 0x1f)
-        );
+                           1980 + ((fno.fdate >> 9) & 0x7f),
+                           (fno.fdate >> 5) & 0x0f,
+                           fno.fdate & 0x1f,
+                           (fno.ftime >> 11) & 0x1f,
+                           (fno.ftime >> 5) & 0x3f,
+                           2 * (fno.ftime & 0x1f)
+                       );
     t->items[0] = MP_OBJ_NEW_SMALL_INT(mode); // st_mode
     t->items[1] = MP_OBJ_NEW_SMALL_INT(0); // st_ino
     t->items[2] = MP_OBJ_NEW_SMALL_INT(0); // st_dev
@@ -397,9 +397,9 @@ STATIC mp_obj_t vfs_fat_umount(mp_obj_t self_in) {
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(fat_vfs_umount_obj, vfs_fat_umount);
 
 STATIC const mp_rom_map_elem_t fat_vfs_locals_dict_table[] = {
-    #if _FS_REENTRANT
+#if _FS_REENTRANT
     { MP_ROM_QSTR(MP_QSTR___del__), MP_ROM_PTR(&fat_vfs_del_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_mkfs), MP_ROM_PTR(&fat_vfs_mkfs_obj) },
     { MP_ROM_QSTR(MP_QSTR_open), MP_ROM_PTR(&fat_vfs_open_obj) },
     { MP_ROM_QSTR(MP_QSTR_ilistdir), MP_ROM_PTR(&fat_vfs_ilistdir_obj) },

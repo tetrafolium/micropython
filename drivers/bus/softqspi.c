@@ -60,21 +60,21 @@ STATIC int mp_soft_qspi_ioctl(void *self_in, uint32_t cmd) {
     mp_soft_qspi_obj_t *self = (mp_soft_qspi_obj_t*)self_in;
 
     switch (cmd) {
-        case MP_QSPI_IOCTL_INIT:
-            mp_hal_pin_high(self->cs);
-            mp_hal_pin_output(self->cs);
+    case MP_QSPI_IOCTL_INIT:
+        mp_hal_pin_high(self->cs);
+        mp_hal_pin_output(self->cs);
 
-            // Configure pins
-            mp_hal_pin_write(self->clk, 0);
-            mp_hal_pin_output(self->clk);
-            //mp_hal_pin_write(self->clk, 1);
-            mp_hal_pin_output(self->io0);
-            mp_hal_pin_input(self->io1);
-            mp_hal_pin_write(self->io2, 1);
-            mp_hal_pin_output(self->io2);
-            mp_hal_pin_write(self->io3, 1);
-            mp_hal_pin_output(self->io3);
-            break;
+        // Configure pins
+        mp_hal_pin_write(self->clk, 0);
+        mp_hal_pin_output(self->clk);
+        //mp_hal_pin_write(self->clk, 1);
+        mp_hal_pin_output(self->io0);
+        mp_hal_pin_input(self->io1);
+        mp_hal_pin_write(self->io2, 1);
+        mp_hal_pin_output(self->io2);
+        mp_hal_pin_write(self->io3, 1);
+        mp_hal_pin_output(self->io3);
+        break;
     }
 
     return 0; // success

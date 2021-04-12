@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    usbh_hid_keybd.c 
+  * @file    usbh_hid_keybd.c
   * @author  MCD Application Team
   * @version V3.0.0
   * @date    18-February-2014
-  * @brief   This file contain the USAGE page codes              
+  * @brief   This file contain the USAGE page codes
   ******************************************************************************
   * @attention
   *
@@ -16,14 +16,14 @@
   *
   *        http://www.st.com/software_license_agreement_liberty_v2
   *
-  * Unless required by applicable law or agreed to in writing, software 
-  * distributed under the License is distributed on an "AS IS" BASIS, 
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   * See the License for the specific language governing permissions and
   * limitations under the License.
   *
   ******************************************************************************
-  */ 
+  */
 #ifndef _HID_USAGE_H_
 #define _HID_USAGE_H_
 
@@ -38,11 +38,11 @@
 /** @addtogroup USBH_HID_CLASS
   * @{
   */
-  
+
 /** @defgroup USBH_HID_USAGE
   * @brief This file is the Header file for USBH_HID_USAGE.c
   * @{
-  */ 
+  */
 
 
 /** @defgroup USBH_HID_USAGE_Exported_Types
@@ -169,23 +169,23 @@
 
 /**
   * @}
-  */ 
+  */
 
 #endif /* _HID_USAGE_H_ */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 
 /**
   * @}
-  */ 
+  */
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/

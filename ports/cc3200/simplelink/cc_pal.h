@@ -162,7 +162,7 @@ int spi_Write(Fd_t fd, unsigned char *pBuff, int len);
 					with the new one
     \warning
 */
-int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl , void* pValue);
+int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl, void* pValue);
 
 
 /*!

@@ -546,7 +546,7 @@ STATIC mp_obj_t machine_i2c_readfrom_mem(size_t n_args, const mp_obj_t *pos_args
     enum { ARG_addr, ARG_memaddr, ARG_n, ARG_addrsize };
     mp_arg_val_t args[MP_ARRAY_SIZE(machine_i2c_mem_allowed_args)];
     mp_arg_parse_all(n_args - 1, pos_args + 1, kw_args,
-        MP_ARRAY_SIZE(machine_i2c_mem_allowed_args), machine_i2c_mem_allowed_args, args);
+                     MP_ARRAY_SIZE(machine_i2c_mem_allowed_args), machine_i2c_mem_allowed_args, args);
 
     // create the buffer to store data into
     vstr_t vstr;
@@ -554,7 +554,7 @@ STATIC mp_obj_t machine_i2c_readfrom_mem(size_t n_args, const mp_obj_t *pos_args
 
     // do the transfer
     int ret = read_mem(pos_args[0], args[ARG_addr].u_int, args[ARG_memaddr].u_int,
-        args[ARG_addrsize].u_int, (uint8_t *)vstr.buf, vstr.len);
+                       args[ARG_addrsize].u_int, (uint8_t *)vstr.buf, vstr.len);
     if (ret < 0) {
         mp_raise_OSError(-ret);
     }
@@ -568,7 +568,7 @@ STATIC mp_obj_t machine_i2c_readfrom_mem_into(size_t n_args, const mp_obj_t *pos
     enum { ARG_addr, ARG_memaddr, ARG_buf, ARG_addrsize };
     mp_arg_val_t args[MP_ARRAY_SIZE(machine_i2c_mem_allowed_args)];
     mp_arg_parse_all(n_args - 1, pos_args + 1, kw_args,
-        MP_ARRAY_SIZE(machine_i2c_mem_allowed_args), machine_i2c_mem_allowed_args, args);
+                     MP_ARRAY_SIZE(machine_i2c_mem_allowed_args), machine_i2c_mem_allowed_args, args);
 
     // get the buffer to store data into
     mp_buffer_info_t bufinfo;
@@ -576,7 +576,7 @@ STATIC mp_obj_t machine_i2c_readfrom_mem_into(size_t n_args, const mp_obj_t *pos
 
     // do the transfer
     int ret = read_mem(pos_args[0], args[ARG_addr].u_int, args[ARG_memaddr].u_int,
-        args[ARG_addrsize].u_int, bufinfo.buf, bufinfo.len);
+                       args[ARG_addrsize].u_int, bufinfo.buf, bufinfo.len);
     if (ret < 0) {
         mp_raise_OSError(-ret);
     }
@@ -588,7 +588,7 @@ STATIC mp_obj_t machine_i2c_writeto_mem(size_t n_args, const mp_obj_t *pos_args,
     enum { ARG_addr, ARG_memaddr, ARG_buf, ARG_addrsize };
     mp_arg_val_t args[MP_ARRAY_SIZE(machine_i2c_mem_allowed_args)];
     mp_arg_parse_all(n_args - 1, pos_args + 1, kw_args,
-        MP_ARRAY_SIZE(machine_i2c_mem_allowed_args), machine_i2c_mem_allowed_args, args);
+                     MP_ARRAY_SIZE(machine_i2c_mem_allowed_args), machine_i2c_mem_allowed_args, args);
 
     // get the buffer to write the data from
     mp_buffer_info_t bufinfo;
@@ -596,7 +596,7 @@ STATIC mp_obj_t machine_i2c_writeto_mem(size_t n_args, const mp_obj_t *pos_args,
 
     // do the transfer
     int ret = write_mem(pos_args[0], args[ARG_addr].u_int, args[ARG_memaddr].u_int,
-        args[ARG_addrsize].u_int, bufinfo.buf, bufinfo.len);
+                        args[ARG_addrsize].u_int, bufinfo.buf, bufinfo.len);
     if (ret < 0) {
         mp_raise_OSError(-ret);
     }
@@ -634,7 +634,7 @@ MP_DEFINE_CONST_DICT(mp_machine_i2c_locals_dict, machine_i2c_locals_dict_table);
 STATIC void mp_machine_soft_i2c_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     mp_machine_soft_i2c_obj_t *self = MP_OBJ_TO_PTR(self_in);
     mp_printf(print, "SoftI2C(scl=" MP_HAL_PIN_FMT ", sda=" MP_HAL_PIN_FMT ", freq=%u)",
-        mp_hal_pin_name(self->scl), mp_hal_pin_name(self->sda), 500000 / self->us_delay);
+              mp_hal_pin_name(self->scl), mp_hal_pin_name(self->sda), 500000 / self->us_delay);
 }
 
 STATIC void mp_machine_soft_i2c_init(mp_obj_base_t *self_in, size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {

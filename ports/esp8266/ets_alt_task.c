@@ -48,7 +48,7 @@ static inline int prio2id(uint8_t prio) {
 #if DEBUG
 void dump_task(int prio, volatile struct task_entry *t) {
     printf("q for task %d: queue: %p, get ptr: %d, put ptr: %d, qlen: %d\n",
-        prio, t->queue, t->i_get, t->i_put, t->qlen);
+           prio, t->queue, t->i_get, t->i_put, t->qlen);
 }
 
 void dump_tasks(void) {
@@ -64,9 +64,9 @@ void dump_tasks(void) {
 bool ets_task(os_task_t task, uint8 prio, os_event_t *queue, uint8 qlen) {
     static unsigned cnt;
     printf("#%d ets_task(%p, %d, %p, %d)\n", cnt++, task, prio, queue, qlen);
-    #if USE_ETS_TASK
+#if USE_ETS_TASK
     return _ets_task(task, prio, queue, qlen);
-    #else
+#else
     int id = prio2id(prio);
     emu_tasks[id].task = task;
     emu_tasks[id].queue = queue;
@@ -74,14 +74,14 @@ bool ets_task(os_task_t task, uint8 prio, os_event_t *queue, uint8 qlen) {
     emu_tasks[id].i_get = 0;
     emu_tasks[id].i_put = 0;
     return true;
-    #endif
+#endif
 }
 
 bool ets_post(uint8 prio, os_signal_t sig, os_param_t param) {
 //    static unsigned cnt; printf("#%d ets_post(%d, %x, %x)\n", cnt++, prio, sig, param);
-    #if USE_ETS_TASK
+#if USE_ETS_TASK
     return _ets_post(prio, sig, param);
-    #else
+#else
     ets_intr_lock();
 
     const int id = prio2id(prio);
@@ -107,7 +107,7 @@ bool ets_post(uint8 prio, os_signal_t sig, os_param_t param) {
     ets_intr_unlock();
 
     return 0;
-    #endif
+#endif
 }
 
 int ets_loop_iter_disable = 0;
@@ -205,19 +205,19 @@ void ets_timer_init() {
 #endif
 
 bool ets_run(void) {
-    #if USE_ETS_TASK
-    #if SDK_BELOW_1_1_1
+#if USE_ETS_TASK
+#if SDK_BELOW_1_1_1
     ets_isr_attach(10, my_timer_isr, NULL);
-    #endif
+#endif
     _ets_run();
-    #else
+#else
 //    ets_timer_init();
     *(char *)0x3FFFC6FC = 0;
     ets_intr_lock();
     printf("ets_alt_task: ets_run\n");
-    #if DEBUG
+#if DEBUG
     dump_tasks();
-    #endif
+#endif
     ets_intr_unlock();
     while (1) {
         if (!ets_loop_iter()) {
@@ -230,7 +230,7 @@ bool ets_run(void) {
             ets_intr_unlock();
         }
     }
-    #endif
+#endif
 }
 
 void ets_set_idle_cb(void (*handler)(void *), void *arg) {

@@ -45,9 +45,9 @@ bool mp_bluetooth_hci_poll(void) {
     if (mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_STARTING || mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_ACTIVE || mp_bluetooth_btstack_state == MP_BLUETOOTH_BTSTACK_STATE_HALTING) {
         // Pretend like we're running in IRQ context (i.e. other things can't be running at the same time).
         mp_uint_t atomic_state = MICROPY_BEGIN_ATOMIC_SECTION();
-        #if MICROPY_BLUETOOTH_BTSTACK_H4
+#if MICROPY_BLUETOOTH_BTSTACK_H4
         mp_bluetooth_hci_poll_h4();
-        #endif
+#endif
         btstack_run_loop_embedded_execute_once();
         MICROPY_END_ATOMIC_SECTION(atomic_state);
 
@@ -84,13 +84,13 @@ void mp_bluetooth_btstack_port_init(void) {
 
     // hci_dump_open(NULL, HCI_DUMP_STDOUT);
 
-    #if MICROPY_BLUETOOTH_BTSTACK_H4
+#if MICROPY_BLUETOOTH_BTSTACK_H4
     mp_bluetooth_btstack_port_init_h4();
-    #endif
+#endif
 
-    #if MICROPY_BLUETOOTH_BTSTACK_USB
+#if MICROPY_BLUETOOTH_BTSTACK_USB
     mp_bluetooth_btstack_port_init_usb();
-    #endif
+#endif
 }
 
 #endif // MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_BTSTACK

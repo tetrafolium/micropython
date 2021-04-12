@@ -39,14 +39,14 @@ typedef enum {
 // define rules with a compile function
 #define DEF_RULE(rule, comp, kind, ...) PN_##rule,
 #define DEF_RULE_NC(rule, kind, ...)
-    #include "py/grammar.h"
+#include "py/grammar.h"
 #undef DEF_RULE
 #undef DEF_RULE_NC
     PN_const_object, // special node for a constant, generic Python object
 // define rules without a compile function
 #define DEF_RULE(rule, comp, kind, ...)
 #define DEF_RULE_NC(rule, kind, ...) PN_##rule,
-    #include "py/grammar.h"
+#include "py/grammar.h"
 #undef DEF_RULE
 #undef DEF_RULE_NC
 } pn_kind_t;
@@ -131,8 +131,9 @@ STATIC bool emit_inline_thumb_label(emit_inline_asm_t *emit, mp_uint_t label_num
     return true;
 }
 
-typedef struct _reg_name_t { byte reg;
-                             byte name[3];
+typedef struct _reg_name_t {
+    byte reg;
+    byte name[3];
 } reg_name_t;
 STATIC const reg_name_t reg_name_table[] = {
     {0, "r0\0"},
@@ -159,8 +160,9 @@ STATIC const reg_name_t reg_name_table[] = {
 };
 
 #define MAX_SPECIAL_REGISTER_NAME_LENGTH 7
-typedef struct _special_reg_name_t { byte reg;
-                                     char name[MAX_SPECIAL_REGISTER_NAME_LENGTH + 1];
+typedef struct _special_reg_name_t {
+    byte reg;
+    char name[MAX_SPECIAL_REGISTER_NAME_LENGTH + 1];
 } special_reg_name_t;
 STATIC const special_reg_name_t special_reg_name_table[] = {
     {5, "IPSR"},
@@ -183,13 +185,13 @@ STATIC mp_uint_t get_arg_reg(emit_inline_asm_t *emit, const char *op, mp_parse_n
     for (mp_uint_t i = 0; i < MP_ARRAY_SIZE(reg_name_table); i++) {
         const reg_name_t *r = &reg_name_table[i];
         if (reg_str[0] == r->name[0]
-            && reg_str[1] == r->name[1]
-            && reg_str[2] == r->name[2]
-            && (reg_str[2] == '\0' || reg_str[3] == '\0')) {
+                && reg_str[1] == r->name[1]
+                && reg_str[2] == r->name[2]
+                && (reg_str[2] == '\0' || reg_str[3] == '\0')) {
             if (r->reg > max_reg) {
                 emit_inline_thumb_error_exc(emit,
-                    mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
-                        MP_ERROR_TEXT("'%s' expects at most r%d"), op, max_reg));
+                                            mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
+                                                    MP_ERROR_TEXT("'%s' expects at most r%d"), op, max_reg));
                 return 0;
             } else {
                 return r->reg;
@@ -197,8 +199,8 @@ STATIC mp_uint_t get_arg_reg(emit_inline_asm_t *emit, const char *op, mp_parse_n
         }
     }
     emit_inline_thumb_error_exc(emit,
-        mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
-            MP_ERROR_TEXT("'%s' expects a register"), op));
+                                mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
+                                        MP_ERROR_TEXT("'%s' expects a register"), op));
     return 0;
 }
 
@@ -211,8 +213,8 @@ STATIC mp_uint_t get_arg_special_reg(emit_inline_asm_t *emit, const char *op, mp
         }
     }
     emit_inline_thumb_error_exc(emit,
-        mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
-            MP_ERROR_TEXT("'%s' expects a special register"), op));
+                                mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
+                                        MP_ERROR_TEXT("'%s' expects a special register"), op));
     return 0;
 }
 
@@ -230,8 +232,8 @@ STATIC mp_uint_t get_arg_vfpreg(emit_inline_asm_t *emit, const char *op, mp_pars
         }
         if (regno > 31) {
             emit_inline_thumb_error_exc(emit,
-                mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
-                    MP_ERROR_TEXT("'%s' expects at most r%d"), op, 31));
+                                        mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
+                                                MP_ERROR_TEXT("'%s' expects at most r%d"), op, 31));
             return 0;
         } else {
             return regno;
@@ -239,8 +241,8 @@ STATIC mp_uint_t get_arg_vfpreg(emit_inline_asm_t *emit, const char *op, mp_pars
     }
 malformed:
     emit_inline_thumb_error_exc(emit,
-        mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
-            MP_ERROR_TEXT("'%s' expects an FPU register"), op));
+                                mp_obj_new_exception_msg_varg(&mp_type_SyntaxError,
+                                        MP_ERROR_TEXT("'%s' expects an FPU register"), op));
     return 0;
 }
 #endif
@@ -351,8 +353,9 @@ STATIC int get_arg_label(emit_inline_asm_t *emit, const char *op, mp_parse_node_
     return 0;
 }
 
-typedef struct _cc_name_t { byte cc;
-                            byte name[2];
+typedef struct _cc_name_t {
+    byte cc;
+    byte name[2];
 } cc_name_t;
 STATIC const cc_name_t cc_name_table[] = {
     { ASM_THUMB_CC_EQ, "eq" },
@@ -371,8 +374,9 @@ STATIC const cc_name_t cc_name_table[] = {
     { ASM_THUMB_CC_LE, "le" },
 };
 
-typedef struct _format_4_op_t { byte op;
-                                char name[3];
+typedef struct _format_4_op_t {
+    byte op;
+    char name[3];
 } format_4_op_t;
 #define X(x) (((x) >> 4) & 0xff) // only need 1 byte to distinguish these ops
 STATIC const format_4_op_t format_4_op_table[] = {
@@ -395,8 +399,9 @@ STATIC const format_4_op_t format_4_op_table[] = {
 #undef X
 
 // name is actually a qstr, which should fit in 16 bits
-typedef struct _format_9_10_op_t { uint16_t op;
-                                   uint16_t name;
+typedef struct _format_9_10_op_t {
+    uint16_t op;
+    uint16_t name;
 } format_9_10_op_t;
 #define X(x) (x)
 STATIC const format_9_10_op_t format_9_10_op_table[] = {
@@ -411,8 +416,9 @@ STATIC const format_9_10_op_t format_9_10_op_table[] = {
 
 #if MICROPY_EMIT_INLINE_THUMB_FLOAT
 // actual opcodes are: 0xee00 | op.hi_nibble, 0x0a00 | op.lo_nibble
-typedef struct _format_vfp_op_t { byte op;
-                                  char name[3];
+typedef struct _format_vfp_op_t {
+    byte op;
+    char name[3];
 } format_vfp_op_t;
 STATIC const format_vfp_op_t format_vfp_op_table[] = {
     { 0x30, "add" },
@@ -439,19 +445,20 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
     size_t op_len;
     const char *op_str = (const char *)qstr_data(op, &op_len);
 
-    #if MICROPY_EMIT_INLINE_THUMB_FLOAT
+#if MICROPY_EMIT_INLINE_THUMB_FLOAT
     if (op_str[0] == 'v') {
         // floating point operations
         if (n_args == 2) {
             mp_uint_t op_code = 0x0ac0, op_code_hi;
             if (op == MP_QSTR_vcmp) {
                 op_code_hi = 0xeeb4;
-            op_vfp_twoargs:;
+op_vfp_twoargs:
+                ;
                 mp_uint_t vd = get_arg_vfpreg(emit, op_str, pn_args[0]);
                 mp_uint_t vm = get_arg_vfpreg(emit, op_str, pn_args[1]);
                 asm_thumb_op32(&emit->as,
-                    op_code_hi | ((vd & 1) << 6),
-                    op_code | ((vd & 0x1e) << 11) | ((vm & 1) << 5) | (vm & 0x1e) >> 1);
+                               op_code_hi | ((vd & 1) << 6),
+                               op_code | ((vd & 0x1e) << 11) | ((vm & 1) << 5) | (vm & 0x1e) >> 1);
             } else if (op == MP_QSTR_vsqrt) {
                 op_code_hi = 0xeeb1;
                 goto op_vfp_twoargs;
@@ -493,11 +500,12 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
                     r_arm = get_arg_reg(emit, op_str, pn_args[1], 15);
                 }
                 asm_thumb_op32(&emit->as,
-                    op_code_hi | ((vm & 0x1e) >> 1),
-                    0x0a10 | (r_arm << 12) | ((vm & 1) << 7));
+                               op_code_hi | ((vm & 0x1e) >> 1),
+                               0x0a10 | (r_arm << 12) | ((vm & 1) << 7));
             } else if (op == MP_QSTR_vldr) {
                 op_code_hi = 0xed90;
-            op_vldr_vstr:;
+op_vldr_vstr:
+                ;
                 mp_uint_t vd = get_arg_vfpreg(emit, op_str, pn_args[0]);
                 mp_parse_node_t pn_base, pn_offset;
                 if (get_arg_addr(emit, op_str, pn_args[1], &pn_base, &pn_offset)) {
@@ -505,8 +513,8 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
                     mp_uint_t i8;
                     i8 = get_arg_i(emit, op_str, pn_offset, 0x3fc) >> 2;
                     asm_thumb_op32(&emit->as,
-                        op_code_hi | rlo_base | ((vd & 1) << 6),
-                        0x0a00 | ((vd & 0x1e) << 11) | i8);
+                                   op_code_hi | rlo_base | ((vd & 1) << 6),
+                                   0x0a00 | ((vd & 0x1e) << 11) | i8);
                 }
             } else if (op == MP_QSTR_vstr) {
                 op_code_hi = 0xed80;
@@ -524,8 +532,8 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
                     mp_uint_t vn = get_arg_vfpreg(emit, op_str, pn_args[1]);
                     mp_uint_t vm = get_arg_vfpreg(emit, op_str, pn_args[2]);
                     asm_thumb_op32(&emit->as,
-                        op_code_hi | ((vd & 1) << 6) | (vn >> 1),
-                        op_code | (vm >> 1) | ((vm & 1) << 5) | ((vd & 0x1e) << 11) | ((vn & 1) << 7));
+                                   op_code_hi | ((vd & 1) << 6) | (vn >> 1),
+                                   op_code | (vm >> 1) | ((vm & 1) << 5) | ((vd & 0x1e) << 11) | ((vn & 1) << 7));
                     return;
                 }
             }
@@ -535,7 +543,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
         }
         return;
     }
-    #endif
+#endif
 
     if (n_args == 0) {
         if (op == MP_QSTR_nop) {
@@ -585,8 +593,8 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
             mp_uint_t cc = -1;
             for (mp_uint_t i = 0; i < MP_ARRAY_SIZE(cc_name_table); i++) {
                 if (arg_str[0] == cc_name_table[i].name[0]
-                    && arg_str[1] == cc_name_table[i].name[1]
-                    && arg_str[2] == '\0') {
+                        && arg_str[1] == cc_name_table[i].name[1]
+                        && arg_str[2] == '\0') {
                     cc = cc_name_table[i].cc;
                     break;
                 }
@@ -655,7 +663,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
                 op_code_hi = 0xfab0;
                 op_code = 0xf080;
                 mp_uint_t rd, rm;
-            op_clz_rbit:
+op_clz_rbit:
                 rd = get_arg_reg(emit, op_str, pn_args[0], 15);
                 rm = get_arg_reg(emit, op_str, pn_args[1], 15);
                 asm_thumb_op32(&emit->as, op_code_hi | rm, op_code | (rd << 8) | rm);
@@ -671,7 +679,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
                 if (op == MP_QSTR_and_) {
                     op_code = ASM_THUMB_FORMAT_4_AND;
                     mp_uint_t reg_dest, reg_src;
-                op_format_4:
+op_format_4:
                     reg_dest = get_arg_reg(emit, op_str, pn_args[0], 7);
                     reg_src = get_arg_reg(emit, op_str, pn_args[1], 7);
                     asm_thumb_format_4(&emit->as, op_code, reg_dest, reg_src);
@@ -692,7 +700,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
             if (op == MP_QSTR_mov) {
                 op_code = ASM_THUMB_FORMAT_3_MOV;
                 mp_uint_t rlo_dest, i8_src;
-            op_format_3:
+op_format_3:
                 rlo_dest = get_arg_reg(emit, op_str, pn_args[0], 7);
                 i8_src = get_arg_i(emit, op_str, pn_args[1], 0xff);
                 asm_thumb_format_3(&emit->as, op_code, rlo_dest, i8_src);
@@ -705,11 +713,11 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
             } else if (op == MP_QSTR_sub) {
                 op_code = ASM_THUMB_FORMAT_3_SUB;
                 goto op_format_3;
-            #if ARMV7M
+#if ARMV7M
             } else if (op == MP_QSTR_movw) {
                 op_code = ASM_THUMB_OP_MOVW;
                 mp_uint_t reg_dest;
-            op_movw_movt:
+op_movw_movt:
                 reg_dest = get_arg_reg(emit, op_str, pn_args[0], 15);
                 int i_src = get_arg_i(emit, op_str, pn_args[1], 0xffff);
                 asm_thumb_mov_reg_i16(&emit->as, op_code, reg_dest, i_src);
@@ -730,7 +738,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
                     mp_uint_t i8 = get_arg_i(emit, op_str, pn_offset, 0xff) >> 2;
                     asm_thumb_op32(&emit->as, 0xe850 | r_base, 0x0f00 | (r_dest << 12) | i8);
                 }
-            #endif
+#endif
             } else {
                 // search table for ldr/str instructions
                 for (mp_uint_t i = 0; i < MP_ARRAY_SIZE(format_9_10_op_table); i++) {
@@ -763,7 +771,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
         if (op == MP_QSTR_lsl) {
             op_code = ASM_THUMB_FORMAT_1_LSL;
             mp_uint_t rlo_dest, rlo_src, i5;
-        op_format_1:
+op_format_1:
             rlo_dest = get_arg_reg(emit, op_str, pn_args[0], 7);
             rlo_src = get_arg_reg(emit, op_str, pn_args[1], 7);
             i5 = get_arg_i(emit, op_str, pn_args[2], 0x1f);
@@ -777,7 +785,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
         } else if (op == MP_QSTR_add) {
             op_code = ASM_THUMB_FORMAT_2_ADD;
             mp_uint_t rlo_dest, rlo_src;
-        op_format_2:
+op_format_2:
             rlo_dest = get_arg_reg(emit, op_str, pn_args[0], 7);
             rlo_src = get_arg_reg(emit, op_str, pn_args[1], 7);
             int src_b;
@@ -792,7 +800,7 @@ STATIC void emit_inline_thumb_op(emit_inline_asm_t *emit, qstr op, mp_uint_t n_a
         } else if (ARMV7M && op == MP_QSTR_sdiv) {
             op_code = 0xfb90; // sdiv high part
             mp_uint_t rd, rn, rm;
-        op_sdiv_udiv:
+op_sdiv_udiv:
             rd = get_arg_reg(emit, op_str, pn_args[0], 15);
             rn = get_arg_reg(emit, op_str, pn_args[1], 15);
             rm = get_arg_reg(emit, op_str, pn_args[2], 15);
@@ -832,10 +840,10 @@ branch_not_in_range:
 }
 
 const emit_inline_asm_method_table_t emit_inline_thumb_method_table = {
-    #if MICROPY_DYNAMIC_COMPILER
+#if MICROPY_DYNAMIC_COMPILER
     emit_inline_thumb_new,
     emit_inline_thumb_free,
-    #endif
+#endif
 
     emit_inline_thumb_start_pass,
     emit_inline_thumb_end_pass,

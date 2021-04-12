@@ -99,7 +99,7 @@ STATIC mp_vfs_mount_t *lookup_path(mp_obj_t path_in, mp_obj_t *path_out) {
     mp_vfs_mount_t *vfs = mp_vfs_lookup_path(path, &p_out);
     if (vfs != MP_VFS_NONE && vfs != MP_VFS_ROOT) {
         *path_out = mp_obj_new_str_of_type(mp_obj_get_type(path_in),
-            (const byte *)p_out, strlen(p_out));
+                                           (const byte *)p_out, strlen(p_out));
     }
     return vfs;
 }
@@ -157,7 +157,7 @@ mp_import_stat_t mp_vfs_import_stat(const char *path) {
 }
 
 STATIC mp_obj_t mp_vfs_autodetect(mp_obj_t bdev_obj) {
-    #if MICROPY_VFS_LFS1 || MICROPY_VFS_LFS2
+#if MICROPY_VFS_LFS1 || MICROPY_VFS_LFS2
     nlr_buf_t nlr;
     if (nlr_push(&nlr) == 0) {
         // The superblock for littlefs is in both block 0 and 1, but block 0 may be erased
@@ -167,32 +167,32 @@ STATIC mp_obj_t mp_vfs_autodetect(mp_obj_t bdev_obj) {
         uint8_t buf[44];
         for (size_t block_num = 0; block_num <= 1; ++block_num) {
             mp_vfs_blockdev_read_ext(&blockdev, block_num, 8, sizeof(buf), buf);
-            #if MICROPY_VFS_LFS1
+#if MICROPY_VFS_LFS1
             if (memcmp(&buf[32], "littlefs", 8) == 0) {
                 // LFS1
                 mp_obj_t vfs = mp_type_vfs_lfs1.make_new(&mp_type_vfs_lfs1, 1, 0, &bdev_obj);
                 nlr_pop();
                 return vfs;
             }
-            #endif
-            #if MICROPY_VFS_LFS2
+#endif
+#if MICROPY_VFS_LFS2
             if (memcmp(&buf[0], "littlefs", 8) == 0) {
                 // LFS2
                 mp_obj_t vfs = mp_type_vfs_lfs2.make_new(&mp_type_vfs_lfs2, 1, 0, &bdev_obj);
                 nlr_pop();
                 return vfs;
             }
-            #endif
+#endif
         }
         nlr_pop();
     } else {
         // Ignore exception (eg block device doesn't support extended readblocks)
     }
-    #endif
+#endif
 
-    #if MICROPY_VFS_FAT
+#if MICROPY_VFS_FAT
     return mp_fat_vfs_type.make_new(&mp_fat_vfs_type, 1, 0, &bdev_obj);
-    #endif
+#endif
 
     // no filesystem found
     mp_raise_OSError(MP_ENODEV);
@@ -307,12 +307,12 @@ mp_obj_t mp_vfs_open(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args)
     mp_arg_val_t args[MP_ARRAY_SIZE(allowed_args)];
     mp_arg_parse_all(n_args, pos_args, kw_args, MP_ARRAY_SIZE(allowed_args), allowed_args, args);
 
-    #if MICROPY_VFS_POSIX
+#if MICROPY_VFS_POSIX
     // If the file is an integer then delegate straight to the POSIX handler
     if (mp_obj_is_small_int(args[ARG_file].u_obj)) {
         return mp_vfs_posix_file_open(&mp_type_textio, args[ARG_file].u_obj, args[ARG_mode].u_obj);
     }
-    #endif
+#endif
 
     mp_vfs_mount_t *vfs = lookup_path(args[ARG_file].u_obj, &args[ARG_file].u_obj);
     return mp_vfs_proxy_call(vfs, MP_QSTR_open, 2, (mp_obj_t *)&args);
@@ -395,8 +395,8 @@ STATIC mp_obj_t mp_vfs_ilistdir_it_iternext(mp_obj_t self_in) {
             // a mounted directory
             mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(3, NULL));
             t->items[0] = mp_obj_new_str_of_type(
-                self->is_str ? &mp_type_str : &mp_type_bytes,
-                (const byte *)vfs->str + 1, vfs->len - 1);
+                              self->is_str ? &mp_type_str : &mp_type_bytes,
+                              (const byte *)vfs->str + 1, vfs->len - 1);
             t->items[1] = MP_OBJ_NEW_SMALL_INT(MP_S_IFDIR);
             t->items[2] = MP_OBJ_NEW_SMALL_INT(0); // no inode number
             return MP_OBJ_FROM_PTR(t);

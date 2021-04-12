@@ -54,9 +54,9 @@ static void gc_collect_inner(int level) {
     }
 
     // trace root pointers from any threads
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     mp_thread_gc_others();
-    #endif
+#endif
 }
 
 void gc_collect(void) {

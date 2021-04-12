@@ -76,32 +76,32 @@
 #define UDMA_STAT_DMACHANS_M  0x001F0000  // Available uDMA Channels Minus 1
 #define UDMA_STAT_DMACHANS_S  16
 #define UDMA_STAT_STATE_M     0x000000F0  // Control State Machine Status
-                                            // 0x00000090 : UDMA_STAT_STATE_DONE
-                                            // : Done 0x00000000 :
-                                            // UDMA_STAT_STATE_IDLE : Idle
-                                            // 0x00000010 :
-                                            // UDMA_STAT_STATE_RD_CTRL : Reading
-                                            // channel controller data
-                                            // 0x00000030 :
-                                            // UDMA_STAT_STATE_RD_DSTENDP :
-                                            // Reading destination end pointer
-                                            // 0x00000040 :
-                                            // UDMA_STAT_STATE_RD_SRCDAT :
-                                            // Reading source data 0x00000020 :
-                                            // UDMA_STAT_STATE_RD_SRCENDP :
-                                            // Reading source end pointer
-                                            // 0x00000080 :
-                                            // UDMA_STAT_STATE_STALL : Stalled
-                                            // 0x000000A0 :
-                                            // UDMA_STAT_STATE_UNDEF : Undefined
-                                            // 0x00000060 : UDMA_STAT_STATE_WAIT
-                                            // : Waiting for uDMA request to
-                                            // clear 0x00000070 :
-                                            // UDMA_STAT_STATE_WR_CTRL : Writing
-                                            // channel controller data
-                                            // 0x00000050 :
-                                            // UDMA_STAT_STATE_WR_DSTDAT :
-                                            // Writing destination data
+// 0x00000090 : UDMA_STAT_STATE_DONE
+// : Done 0x00000000 :
+// UDMA_STAT_STATE_IDLE : Idle
+// 0x00000010 :
+// UDMA_STAT_STATE_RD_CTRL : Reading
+// channel controller data
+// 0x00000030 :
+// UDMA_STAT_STATE_RD_DSTENDP :
+// Reading destination end pointer
+// 0x00000040 :
+// UDMA_STAT_STATE_RD_SRCDAT :
+// Reading source data 0x00000020 :
+// UDMA_STAT_STATE_RD_SRCENDP :
+// Reading source end pointer
+// 0x00000080 :
+// UDMA_STAT_STATE_STALL : Stalled
+// 0x000000A0 :
+// UDMA_STAT_STATE_UNDEF : Undefined
+// 0x00000060 : UDMA_STAT_STATE_WAIT
+// : Waiting for uDMA request to
+// clear 0x00000070 :
+// UDMA_STAT_STATE_WR_CTRL : Writing
+// channel controller data
+// 0x00000050 :
+// UDMA_STAT_STATE_WR_DSTDAT :
+// Writing destination data
 #define UDMA_STAT_STATE_S     4
 #define UDMA_STAT_MASTEN        0x00000001  // Master Enable Status
 //******************************************************************************
@@ -123,7 +123,7 @@
 //
 //******************************************************************************
 #define UDMA_ALTBASE_ADDR_M   0xFFFFFFFF  // Alternate Channel Address
-                                            // Pointer
+// Pointer
 #define UDMA_ALTBASE_ADDR_S   0
 //******************************************************************************
 //

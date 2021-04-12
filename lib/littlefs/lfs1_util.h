@@ -95,10 +95,18 @@ static inline uint32_t lfs1_npw2(uint32_t a) {
     uint32_t r = 0;
     uint32_t s;
     a -= 1;
-    s = (a > 0xffff) << 4; a >>= s; r |= s;
-    s = (a > 0xff  ) << 3; a >>= s; r |= s;
-    s = (a > 0xf   ) << 2; a >>= s; r |= s;
-    s = (a > 0x3   ) << 1; a >>= s; r |= s;
+    s = (a > 0xffff) << 4;
+    a >>= s;
+    r |= s;
+    s = (a > 0xff  ) << 3;
+    a >>= s;
+    r |= s;
+    s = (a > 0xf   ) << 2;
+    a >>= s;
+    r |= s;
+    s = (a > 0x3   ) << 1;
+    a >>= s;
+    r |= s;
     return (r | (a >> 1)) + 1;
 #endif
 }

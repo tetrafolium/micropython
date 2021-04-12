@@ -114,13 +114,13 @@ struct lfs1_config {
     // Read a region in a block. Negative error codes are propogated
     // to the user.
     int (*read)(const struct lfs1_config *c, lfs1_block_t block,
-            lfs1_off_t off, void *buffer, lfs1_size_t size);
+                lfs1_off_t off, void *buffer, lfs1_size_t size);
 
     // Program a region in a block. The block must have previously
     // been erased. Negative error codes are propogated to the user.
     // May return LFS1_ERR_CORRUPT if the block should be considered bad.
     int (*prog)(const struct lfs1_config *c, lfs1_block_t block,
-            lfs1_off_t off, const void *buffer, lfs1_size_t size);
+                lfs1_off_t off, const void *buffer, lfs1_size_t size);
 
     // Erase a block. A block must be erased before being programmed.
     // The state of an erased block is undefined. Negative error codes
@@ -349,7 +349,7 @@ int lfs1_stat(lfs1_t *lfs1, const char *path, struct lfs1_info *info);
 //
 // Returns a negative error code on failure.
 int lfs1_file_open(lfs1_t *lfs1, lfs1_file_t *file,
-        const char *path, int flags);
+                   const char *path, int flags);
 
 // Open a file with extra configuration
 //
@@ -362,8 +362,8 @@ int lfs1_file_open(lfs1_t *lfs1, lfs1_file_t *file,
 //
 // Returns a negative error code on failure.
 int lfs1_file_opencfg(lfs1_t *lfs1, lfs1_file_t *file,
-        const char *path, int flags,
-        const struct lfs1_file_config *config);
+                      const char *path, int flags,
+                      const struct lfs1_file_config *config);
 
 // Close a file
 //
@@ -384,7 +384,7 @@ int lfs1_file_sync(lfs1_t *lfs1, lfs1_file_t *file);
 // Takes a buffer and size indicating where to store the read data.
 // Returns the number of bytes read, or a negative error code on failure.
 lfs1_ssize_t lfs1_file_read(lfs1_t *lfs1, lfs1_file_t *file,
-        void *buffer, lfs1_size_t size);
+                            void *buffer, lfs1_size_t size);
 
 // Write data to file
 //
@@ -393,14 +393,14 @@ lfs1_ssize_t lfs1_file_read(lfs1_t *lfs1, lfs1_file_t *file,
 //
 // Returns the number of bytes written, or a negative error code on failure.
 lfs1_ssize_t lfs1_file_write(lfs1_t *lfs1, lfs1_file_t *file,
-        const void *buffer, lfs1_size_t size);
+                             const void *buffer, lfs1_size_t size);
 
 // Change the position of the file
 //
 // The change in position is determined by the offset and whence flag.
 // Returns the old position of the file, or a negative error code on failure.
 lfs1_soff_t lfs1_file_seek(lfs1_t *lfs1, lfs1_file_t *file,
-        lfs1_soff_t off, int whence);
+                           lfs1_soff_t off, int whence);
 
 // Truncates the size of the file to the specified size
 //

@@ -214,7 +214,7 @@ STATIC mp_obj_t mp_math_isclose(size_t n_args, const mp_obj_t *pos_args, mp_map_
     const mp_float_t a = mp_obj_get_float(pos_args[0]);
     const mp_float_t b = mp_obj_get_float(pos_args[1]);
     const mp_float_t rel_tol = args[ARG_rel_tol].u_obj == MP_OBJ_NULL
-        ? (mp_float_t)1e-9 : mp_obj_get_float(args[ARG_rel_tol].u_obj);
+                               ? (mp_float_t)1e-9 : mp_obj_get_float(args[ARG_rel_tol].u_obj);
     const mp_float_t abs_tol = mp_obj_get_float(args[ARG_abs_tol].u_obj);
     if (rel_tol < (mp_float_t)0.0 || abs_tol < (mp_float_t)0.0) {
         math_error();
@@ -227,8 +227,8 @@ STATIC mp_obj_t mp_math_isclose(size_t n_args, const mp_obj_t *pos_args, mp_map_
         return mp_const_false;
     }
     if ((difference <= abs_tol) ||
-        (difference <= MICROPY_FLOAT_C_FUN(fabs)(rel_tol * a)) ||
-        (difference <= MICROPY_FLOAT_C_FUN(fabs)(rel_tol * b))) {
+            (difference <= MICROPY_FLOAT_C_FUN(fabs)(rel_tol * a)) ||
+            (difference <= MICROPY_FLOAT_C_FUN(fabs)(rel_tol * b))) {
         return mp_const_true;
     }
     return mp_const_false;
@@ -277,11 +277,11 @@ STATIC mp_obj_t mp_math_modf(mp_obj_t x_obj) {
     mp_float_t int_part = 0.0;
     mp_float_t x = mp_obj_get_float(x_obj);
     mp_float_t fractional_part = MICROPY_FLOAT_C_FUN(modf)(x, &int_part);
-    #if MICROPY_PY_MATH_MODF_FIX_NEGZERO
+#if MICROPY_PY_MATH_MODF_FIX_NEGZERO
     if (fractional_part == MICROPY_FLOAT_CONST(0.0)) {
         fractional_part = copysign(fractional_part, x);
     }
-    #endif
+#endif
     mp_obj_t tuple[2];
     tuple[0] = mp_obj_new_float(fractional_part);
     tuple[1] = mp_obj_new_float(int_part);
@@ -374,11 +374,11 @@ STATIC const mp_rom_map_elem_t mp_module_math_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_sqrt), MP_ROM_PTR(&mp_math_sqrt_obj) },
     { MP_ROM_QSTR(MP_QSTR_pow), MP_ROM_PTR(&mp_math_pow_obj) },
     { MP_ROM_QSTR(MP_QSTR_exp), MP_ROM_PTR(&mp_math_exp_obj) },
-    #if MICROPY_PY_MATH_SPECIAL_FUNCTIONS
+#if MICROPY_PY_MATH_SPECIAL_FUNCTIONS
     { MP_ROM_QSTR(MP_QSTR_expm1), MP_ROM_PTR(&mp_math_expm1_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_log), MP_ROM_PTR(&mp_math_log_obj) },
-    #if MICROPY_PY_MATH_SPECIAL_FUNCTIONS
+#if MICROPY_PY_MATH_SPECIAL_FUNCTIONS
     { MP_ROM_QSTR(MP_QSTR_log2), MP_ROM_PTR(&mp_math_log2_obj) },
     { MP_ROM_QSTR(MP_QSTR_log10), MP_ROM_PTR(&mp_math_log10_obj) },
     { MP_ROM_QSTR(MP_QSTR_cosh), MP_ROM_PTR(&mp_math_cosh_obj) },
@@ -387,7 +387,7 @@ STATIC const mp_rom_map_elem_t mp_module_math_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_acosh), MP_ROM_PTR(&mp_math_acosh_obj) },
     { MP_ROM_QSTR(MP_QSTR_asinh), MP_ROM_PTR(&mp_math_asinh_obj) },
     { MP_ROM_QSTR(MP_QSTR_atanh), MP_ROM_PTR(&mp_math_atanh_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_cos), MP_ROM_PTR(&mp_math_cos_obj) },
     { MP_ROM_QSTR(MP_QSTR_sin), MP_ROM_PTR(&mp_math_sin_obj) },
     { MP_ROM_QSTR(MP_QSTR_tan), MP_ROM_PTR(&mp_math_tan_obj) },
@@ -406,21 +406,21 @@ STATIC const mp_rom_map_elem_t mp_module_math_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_isfinite), MP_ROM_PTR(&mp_math_isfinite_obj) },
     { MP_ROM_QSTR(MP_QSTR_isinf), MP_ROM_PTR(&mp_math_isinf_obj) },
     { MP_ROM_QSTR(MP_QSTR_isnan), MP_ROM_PTR(&mp_math_isnan_obj) },
-    #if MICROPY_PY_MATH_ISCLOSE
+#if MICROPY_PY_MATH_ISCLOSE
     { MP_ROM_QSTR(MP_QSTR_isclose), MP_ROM_PTR(&mp_math_isclose_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_trunc), MP_ROM_PTR(&mp_math_trunc_obj) },
     { MP_ROM_QSTR(MP_QSTR_radians), MP_ROM_PTR(&mp_math_radians_obj) },
     { MP_ROM_QSTR(MP_QSTR_degrees), MP_ROM_PTR(&mp_math_degrees_obj) },
-    #if MICROPY_PY_MATH_FACTORIAL
+#if MICROPY_PY_MATH_FACTORIAL
     { MP_ROM_QSTR(MP_QSTR_factorial), MP_ROM_PTR(&mp_math_factorial_obj) },
-    #endif
-    #if MICROPY_PY_MATH_SPECIAL_FUNCTIONS
+#endif
+#if MICROPY_PY_MATH_SPECIAL_FUNCTIONS
     { MP_ROM_QSTR(MP_QSTR_erf), MP_ROM_PTR(&mp_math_erf_obj) },
     { MP_ROM_QSTR(MP_QSTR_erfc), MP_ROM_PTR(&mp_math_erfc_obj) },
     { MP_ROM_QSTR(MP_QSTR_gamma), MP_ROM_PTR(&mp_math_gamma_obj) },
     { MP_ROM_QSTR(MP_QSTR_lgamma), MP_ROM_PTR(&mp_math_lgamma_obj) },
-    #endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(mp_module_math_globals, mp_module_math_globals_table);

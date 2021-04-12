@@ -284,23 +284,23 @@ STATIC mp_obj_t framebuf_make_new(const mp_obj_type_t *type, size_t n_args, size
     }
 
     switch (o->format) {
-        case FRAMEBUF_MVLSB:
-        case FRAMEBUF_RGB565:
-            break;
-        case FRAMEBUF_MHLSB:
-        case FRAMEBUF_MHMSB:
-            o->stride = (o->stride + 7) & ~7;
-            break;
-        case FRAMEBUF_GS2_HMSB:
-            o->stride = (o->stride + 3) & ~3;
-            break;
-        case FRAMEBUF_GS4_HMSB:
-            o->stride = (o->stride + 1) & ~1;
-            break;
-        case FRAMEBUF_GS8:
-            break;
-        default:
-            mp_raise_ValueError(MP_ERROR_TEXT("invalid format"));
+    case FRAMEBUF_MVLSB:
+    case FRAMEBUF_RGB565:
+        break;
+    case FRAMEBUF_MHLSB:
+    case FRAMEBUF_MHMSB:
+        o->stride = (o->stride + 7) & ~7;
+        break;
+    case FRAMEBUF_GS2_HMSB:
+        o->stride = (o->stride + 3) & ~3;
+        break;
+    case FRAMEBUF_GS4_HMSB:
+        o->stride = (o->stride + 1) & ~1;
+        break;
+    case FRAMEBUF_GS8:
+        break;
+    default:
+        mp_raise_ValueError(MP_ERROR_TEXT("invalid format"));
     }
 
     return MP_OBJ_FROM_PTR(o);
@@ -497,7 +497,7 @@ STATIC mp_obj_t framebuf_blit(size_t n_args, const mp_obj_t *args) {
         (y >= self->height) ||
         (-x >= source->width) ||
         (-y >= source->height)
-        ) {
+    ) {
         // Out of bounds, no-op.
         return mp_const_none;
     }

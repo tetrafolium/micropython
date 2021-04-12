@@ -47,11 +47,11 @@ static size_t count_links(uint32_t *nb) {
 
 void *m_calloc_mbedtls(size_t nmemb, size_t size) {
     void **ptr = m_malloc0(nmemb * size + 2 * sizeof(uintptr_t));
-    #if DEBUG
+#if DEBUG
     uint32_t nb;
     size_t n = count_links(&nb);
     printf("mbed_alloc(%u, %u) -> (%u;%u) %p\n", nmemb, size, n, (uint)nb, ptr);
-    #endif
+#endif
     if (MP_STATE_PORT(mbedtls_memory) != NULL) {
         MP_STATE_PORT(mbedtls_memory)[0] = ptr;
     }
@@ -63,11 +63,11 @@ void *m_calloc_mbedtls(size_t nmemb, size_t size) {
 
 void m_free_mbedtls(void *ptr_in) {
     void **ptr = &((void**)ptr_in)[-2];
-    #if DEBUG
+#if DEBUG
     uint32_t nb;
     size_t n = count_links(&nb);
     printf("mbed_free(%p, [%p, %p], nbytes=%u, links=%u;%u)\n", ptr, ptr[0], ptr[1], gc_nbytes(ptr), n, (uint)nb);
-    #endif
+#endif
     if (ptr[1] != NULL) {
         ((void**)ptr[1])[0] = ptr[0];
     }

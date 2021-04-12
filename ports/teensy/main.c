@@ -121,7 +121,7 @@ static mp_obj_t pyb_info(void) {
         printf("  1=%u 2=%u m=%u\n", info.num_1block, info.num_2block, info.max_block);
     }
 
-    #if 0
+#if 0
     // free space on flash
     {
         DWORD nclst;
@@ -129,7 +129,7 @@ static mp_obj_t pyb_info(void) {
         f_getfree("0:", &nclst, &fatfs);
         printf("LFS free: %u bytes\n", (uint)(nclst * fatfs->csize * 512));
     }
-    #endif
+#endif
 
     return mp_const_none;
 }
@@ -248,7 +248,7 @@ int main(void) {
     // TODO: Put this in a more common initialization function.
     // Turn on STKALIGN which keeps the stack 8-byte aligned for interrupts
     // (per EABI)
-    #define SCB_CCR_STKALIGN (1 << 9)
+#define SCB_CCR_STKALIGN (1 << 9)
     SCB_CCR |= SCB_CCR_STKALIGN;
 
     mp_stack_ctrl_init();
@@ -276,7 +276,7 @@ soft_reset:
 
     pin_init0();
 
-    #if 0
+#if 0
     // add some functions to the python namespace
     {
         mp_store_name(MP_QSTR_help, mp_make_function_n(0, pyb_help));
@@ -297,23 +297,23 @@ soft_reset:
         mp_store_attr(m, MP_QSTR_Servo, mp_make_function_n(0, pyb_Servo));
         mp_store_name(MP_QSTR_pyb, m);
     }
-    #endif
+#endif
 
-    #if MICROPY_MODULE_FROZEN
+#if MICROPY_MODULE_FROZEN
     pyexec_frozen_module("boot.py");
-    #else
+#else
     if (!pyexec_file_if_exists("/boot.py")) {
         flash_error(4);
     }
-    #endif
+#endif
 
     // Turn bootup LED off
     led_state(PYB_LED_BUILTIN, 0);
 
     // run main script
-    #if MICROPY_MODULE_FROZEN
+#if MICROPY_MODULE_FROZEN
     pyexec_frozen_module("main.py");
-    #else
+#else
     {
         vstr_t *vstr = vstr_new(16);
         vstr_add_str(vstr, "/");
@@ -327,7 +327,7 @@ soft_reset:
         }
         vstr_free(vstr);
     }
-    #endif
+#endif
 
     // enter REPL
     // REPL mode can change, or it can request a soft reset

@@ -61,22 +61,22 @@ void machine_pin_deinit(void) {
 STATIC void gpio_callback_handler(const struct device *port, struct gpio_callback *cb, gpio_port_pins_t pins) {
     machine_pin_irq_obj_t *irq = CONTAINER_OF(cb, machine_pin_irq_obj_t, callback);
 
-    #if MICROPY_STACK_CHECK
+#if MICROPY_STACK_CHECK
     // This callback executes in an ISR context so the stack-limit check must be changed to
     // use the ISR stack for the duration of this function (so that hard IRQ callbacks work).
     char *orig_stack_top = MP_STATE_THREAD(stack_top);
     size_t orig_stack_limit = MP_STATE_THREAD(stack_limit);
     MP_STATE_THREAD(stack_top) = (void *)&irq;
     MP_STATE_THREAD(stack_limit) = CONFIG_ISR_STACK_SIZE - 512;
-    #endif
+#endif
 
     mp_irq_handler(&irq->base);
 
-    #if MICROPY_STACK_CHECK
+#if MICROPY_STACK_CHECK
     // Restore original stack-limit checking values.
     MP_STATE_THREAD(stack_top) = orig_stack_top;
     MP_STATE_THREAD(stack_limit) = orig_stack_limit;
-    #endif
+#endif
 }
 
 STATIC void machine_pin_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -252,12 +252,12 @@ STATIC mp_uint_t machine_pin_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_
     machine_pin_obj_t *self = self_in;
 
     switch (request) {
-        case MP_PIN_READ: {
-            return gpio_pin_get_raw(self->port, self->pin);
-        }
-        case MP_PIN_WRITE: {
-            return gpio_pin_set_raw(self->port, self->pin, arg);
-        }
+    case MP_PIN_READ: {
+        return gpio_pin_get_raw(self->port, self->pin);
+    }
+    case MP_PIN_WRITE: {
+        return gpio_pin_set_raw(self->port, self->pin, arg);
+    }
     }
     return -1;
 }

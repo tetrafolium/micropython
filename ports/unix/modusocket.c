@@ -128,25 +128,25 @@ STATIC mp_uint_t socket_ioctl(mp_obj_t o_in, mp_uint_t request, uintptr_t arg, i
     mp_obj_socket_t *self = MP_OBJ_TO_PTR(o_in);
     (void)arg;
     switch (request) {
-        case MP_STREAM_CLOSE:
-            // There's a POSIX drama regarding return value of close in general,
-            // and EINTR error in particular. See e.g.
-            // http://lwn.net/Articles/576478/
-            // http://austingroupbugs.net/view.php?id=529
-            // The rationale MicroPython follows is that close() just releases
-            // file descriptor. If you're interested to catch I/O errors before
-            // closing fd, fsync() it.
-            MP_THREAD_GIL_EXIT();
-            close(self->fd);
-            MP_THREAD_GIL_ENTER();
-            return 0;
+    case MP_STREAM_CLOSE:
+        // There's a POSIX drama regarding return value of close in general,
+        // and EINTR error in particular. See e.g.
+        // http://lwn.net/Articles/576478/
+        // http://austingroupbugs.net/view.php?id=529
+        // The rationale MicroPython follows is that close() just releases
+        // file descriptor. If you're interested to catch I/O errors before
+        // closing fd, fsync() it.
+        MP_THREAD_GIL_EXIT();
+        close(self->fd);
+        MP_THREAD_GIL_ENTER();
+        return 0;
 
-        case MP_STREAM_GET_FILENO:
-            return self->fd;
+    case MP_STREAM_GET_FILENO:
+        return self->fd;
 
-        default:
-            *errcode = MP_EINVAL;
-            return MP_STREAM_ERROR;
+    default:
+        *errcode = MP_EINVAL;
+        return MP_STREAM_ERROR;
     }
 }
 
@@ -267,7 +267,7 @@ STATIC mp_obj_t socket_recvfrom(size_t n_args, const mp_obj_t *args) {
     byte *buf = m_new(byte, sz);
     ssize_t out_sz;
     MP_HAL_RETRY_SYSCALL(out_sz, recvfrom(self->fd, buf, sz, flags, (struct sockaddr *)&addr, &addr_len),
-        mp_raise_OSError(err));
+                         mp_raise_OSError(err));
     mp_obj_t buf_o = mp_obj_new_str_of_type(&mp_type_bytes, buf, out_sz);
     m_del(char, buf, sz);
 
@@ -294,7 +294,7 @@ STATIC mp_obj_t socket_send(size_t n_args, const mp_obj_t *args) {
     mp_get_buffer_raise(args[1], &bufinfo, MP_BUFFER_READ);
     ssize_t out_sz;
     MP_HAL_RETRY_SYSCALL(out_sz, send(self->fd, bufinfo.buf, bufinfo.len, flags),
-        mp_raise_OSError(err));
+                         mp_raise_OSError(err));
     return MP_OBJ_NEW_SMALL_INT(out_sz);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(socket_send_obj, 2, 3, socket_send);
@@ -314,7 +314,7 @@ STATIC mp_obj_t socket_sendto(size_t n_args, const mp_obj_t *args) {
     mp_get_buffer_raise(dst_addr, &addr_bi, MP_BUFFER_READ);
     ssize_t out_sz;
     MP_HAL_RETRY_SYSCALL(out_sz, sendto(self->fd, bufinfo.buf, bufinfo.len, flags,
-        (struct sockaddr *)addr_bi.buf, addr_bi.len), mp_raise_OSError(err));
+                                        (struct sockaddr *)addr_bi.buf, addr_bi.len), mp_raise_OSError(err));
     return MP_OBJ_NEW_SMALL_INT(out_sz);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(socket_sendto_obj, 3, 4, socket_sendto);
@@ -376,14 +376,14 @@ STATIC mp_obj_t socket_settimeout(mp_obj_t self_in, mp_obj_t timeout_in) {
     // Timeout of None means no timeout, which in POSIX is signified with 0 timeout,
     // and that's how 'tv' is initialized above
     if (timeout_in != mp_const_none) {
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         mp_float_t val = mp_obj_get_float(timeout_in);
         mp_float_t ipart;
         tv.tv_usec = (time_t)MICROPY_FLOAT_C_FUN(round)(MICROPY_FLOAT_C_FUN(modf)(val, &ipart) * MICROPY_FLOAT_CONST(1000000.));
         tv.tv_sec = (suseconds_t)ipart;
-        #else
+#else
         tv.tv_sec = mp_obj_get_int(timeout_in);
-        #endif
+#endif
 
         // For SO_RCVTIMEO/SO_SNDTIMEO, zero timeout means infinity, but
         // for Python API it means non-blocking.
@@ -504,12 +504,12 @@ STATIC mp_obj_t mod_socket_inet_pton(mp_obj_t family_in, mp_obj_t addr_in) {
     }
     int binaddr_len = 0;
     switch (family) {
-        case AF_INET:
-            binaddr_len = sizeof(struct in_addr);
-            break;
-        case AF_INET6:
-            binaddr_len = sizeof(struct in6_addr);
-            break;
+    case AF_INET:
+        binaddr_len = sizeof(struct in_addr);
+        break;
+    case AF_INET6:
+        binaddr_len = sizeof(struct in6_addr);
+        break;
     }
     return mp_obj_new_bytes(binaddr, binaddr_len);
 }
@@ -544,8 +544,8 @@ STATIC mp_obj_t mod_socket_getaddrinfo(size_t n_args, const mp_obj_t *args) {
         snprintf(buf, sizeof(buf), "%u", port);
         serv = buf;
         hints.ai_flags = AI_NUMERICSERV;
-        #ifdef __UCLIBC_MAJOR__
-        #if __UCLIBC_MAJOR__ == 0 && (__UCLIBC_MINOR__ < 9 || (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 32))
+#ifdef __UCLIBC_MAJOR__
+#if __UCLIBC_MAJOR__ == 0 && (__UCLIBC_MINOR__ < 9 || (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 32))
 // "warning" requires -Wno-cpp which is a relatively new gcc option, so we choose not to use it.
 // #warning Working around uClibc bug with numeric service name
         // Older versions og uClibc have bugs when numeric ports in service
@@ -556,8 +556,8 @@ STATIC mp_obj_t mod_socket_getaddrinfo(size_t n_args, const mp_obj_t *args) {
         // Note that this is crude workaround, precluding UDP socket addresses
         // to be returned. TODO: set only if not set by Python args.
         hints.ai_socktype = SOCK_STREAM;
-        #endif
-        #endif
+#endif
+#endif
     } else {
         serv = mp_obj_str_get_str(args[1]);
     }
@@ -605,31 +605,31 @@ STATIC mp_obj_t mod_socket_sockaddr(mp_obj_t sockaddr_in) {
     mp_buffer_info_t bufinfo;
     mp_get_buffer_raise(sockaddr_in, &bufinfo, MP_BUFFER_READ);
     switch (((struct sockaddr *)bufinfo.buf)->sa_family) {
-        case AF_INET: {
-            struct sockaddr_in *sa = (struct sockaddr_in *)bufinfo.buf;
-            mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(3, NULL));
-            t->items[0] = MP_OBJ_NEW_SMALL_INT(AF_INET);
-            t->items[1] = mp_obj_new_bytes((byte *)&sa->sin_addr, sizeof(sa->sin_addr));
-            t->items[2] = MP_OBJ_NEW_SMALL_INT(ntohs(sa->sin_port));
-            return MP_OBJ_FROM_PTR(t);
-        }
-        case AF_INET6: {
-            struct sockaddr_in6 *sa = (struct sockaddr_in6 *)bufinfo.buf;
-            mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(5, NULL));
-            t->items[0] = MP_OBJ_NEW_SMALL_INT(AF_INET6);
-            t->items[1] = mp_obj_new_bytes((byte *)&sa->sin6_addr, sizeof(sa->sin6_addr));
-            t->items[2] = MP_OBJ_NEW_SMALL_INT(ntohs(sa->sin6_port));
-            t->items[3] = MP_OBJ_NEW_SMALL_INT(ntohl(sa->sin6_flowinfo));
-            t->items[4] = MP_OBJ_NEW_SMALL_INT(ntohl(sa->sin6_scope_id));
-            return MP_OBJ_FROM_PTR(t);
-        }
-        default: {
-            struct sockaddr *sa = (struct sockaddr *)bufinfo.buf;
-            mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(2, NULL));
-            t->items[0] = MP_OBJ_NEW_SMALL_INT(sa->sa_family);
-            t->items[1] = mp_obj_new_bytes((byte *)sa->sa_data, bufinfo.len - offsetof(struct sockaddr, sa_data));
-            return MP_OBJ_FROM_PTR(t);
-        }
+    case AF_INET: {
+        struct sockaddr_in *sa = (struct sockaddr_in *)bufinfo.buf;
+        mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(3, NULL));
+        t->items[0] = MP_OBJ_NEW_SMALL_INT(AF_INET);
+        t->items[1] = mp_obj_new_bytes((byte *)&sa->sin_addr, sizeof(sa->sin_addr));
+        t->items[2] = MP_OBJ_NEW_SMALL_INT(ntohs(sa->sin_port));
+        return MP_OBJ_FROM_PTR(t);
+    }
+    case AF_INET6: {
+        struct sockaddr_in6 *sa = (struct sockaddr_in6 *)bufinfo.buf;
+        mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(5, NULL));
+        t->items[0] = MP_OBJ_NEW_SMALL_INT(AF_INET6);
+        t->items[1] = mp_obj_new_bytes((byte *)&sa->sin6_addr, sizeof(sa->sin6_addr));
+        t->items[2] = MP_OBJ_NEW_SMALL_INT(ntohs(sa->sin6_port));
+        t->items[3] = MP_OBJ_NEW_SMALL_INT(ntohl(sa->sin6_flowinfo));
+        t->items[4] = MP_OBJ_NEW_SMALL_INT(ntohl(sa->sin6_scope_id));
+        return MP_OBJ_FROM_PTR(t);
+    }
+    default: {
+        struct sockaddr *sa = (struct sockaddr *)bufinfo.buf;
+        mp_obj_tuple_t *t = MP_OBJ_TO_PTR(mp_obj_new_tuple(2, NULL));
+        t->items[0] = MP_OBJ_NEW_SMALL_INT(sa->sa_family);
+        t->items[1] = mp_obj_new_bytes((byte *)sa->sa_data, bufinfo.len - offsetof(struct sockaddr, sa_data));
+        return MP_OBJ_FROM_PTR(t);
+    }
     }
     return mp_const_none;
 }

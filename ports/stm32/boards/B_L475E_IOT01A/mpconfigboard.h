@@ -28,7 +28,7 @@
 // USART3 config for internal use
 #define MICROPY_HW_UART3_TX     (pin_D8)
 #define MICROPY_HW_UART3_RX     (pin_D9)
-// USART4 config 
+// USART4 config
 #define MICROPY_HW_UART4_TX     (pin_A0)
 #define MICROPY_HW_UART4_RX     (pin_A1)
 // USART 1 is connected to the virtual com port on the ST-LINK

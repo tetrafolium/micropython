@@ -40,12 +40,12 @@
 
 STATIC void sighandler(int signum) {
     if (signum == SIGINT) {
-        #if MICROPY_ASYNC_KBD_INTR
-        #if MICROPY_PY_THREAD_GIL
+#if MICROPY_ASYNC_KBD_INTR
+#if MICROPY_PY_THREAD_GIL
         // Since signals can occur at any time, we may not be holding the GIL when
         // this callback is called, so it is not safe to raise an exception here
-        #error "MICROPY_ASYNC_KBD_INTR and MICROPY_PY_THREAD_GIL are not compatible"
-        #endif
+#error "MICROPY_ASYNC_KBD_INTR and MICROPY_PY_THREAD_GIL are not compatible"
+#endif
         mp_obj_exception_clear_traceback(MP_OBJ_FROM_PTR(&MP_STATE_VM(mp_kbd_exception)));
         sigset_t mask;
         sigemptyset(&mask);
@@ -53,13 +53,13 @@ STATIC void sighandler(int signum) {
         // normal exit. As we instead perform longjmp, unblock it manually.
         sigprocmask(SIG_SETMASK, &mask, NULL);
         nlr_raise(MP_OBJ_FROM_PTR(&MP_STATE_VM(mp_kbd_exception)));
-        #else
+#else
         if (MP_STATE_VM(mp_pending_exception) == MP_OBJ_FROM_PTR(&MP_STATE_VM(mp_kbd_exception))) {
             // this is the second time we are called, so die straight away
             exit(1);
         }
         mp_keyboard_interrupt();
-        #endif
+#endif
     }
 }
 #endif
@@ -67,23 +67,23 @@ STATIC void sighandler(int signum) {
 void mp_hal_set_interrupt_char(char c) {
     // configure terminal settings to (not) let ctrl-C through
     if (c == CHAR_CTRL_C) {
-        #ifndef _WIN32
+#ifndef _WIN32
         // enable signal handler
         struct sigaction sa;
         sa.sa_flags = 0;
         sa.sa_handler = sighandler;
         sigemptyset(&sa.sa_mask);
         sigaction(SIGINT, &sa, NULL);
-        #endif
+#endif
     } else {
-        #ifndef _WIN32
+#ifndef _WIN32
         // disable signal handler
         struct sigaction sa;
         sa.sa_flags = 0;
         sa.sa_handler = SIG_DFL;
         sigemptyset(&sa.sa_mask);
         sigaction(SIGINT, &sa, NULL);
-        #endif
+#endif
     }
 }
 
@@ -147,7 +147,7 @@ static int call_dupterm_read(size_t idx) {
 #endif
 
 int mp_hal_stdin_rx_chr(void) {
-    #if MICROPY_PY_OS_DUPTERM
+#if MICROPY_PY_OS_DUPTERM
     // TODO only support dupterm one slot at the moment
     if (MP_STATE_VM(dupterm_objs[0]) != MP_OBJ_NULL) {
         int c;
@@ -162,8 +162,9 @@ int mp_hal_stdin_rx_chr(void) {
         }
         return c;
     }
-main_term:;
-    #endif
+main_term:
+    ;
+#endif
 
     unsigned char c;
     ssize_t ret;
@@ -192,27 +193,27 @@ void mp_hal_stdout_tx_str(const char *str) {
 }
 
 mp_uint_t mp_hal_ticks_ms(void) {
-    #if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) && defined(_POSIX_MONOTONIC_CLOCK)
+#if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) && defined(_POSIX_MONOTONIC_CLOCK)
     struct timespec tv;
     clock_gettime(CLOCK_MONOTONIC, &tv);
     return tv.tv_sec * 1000 + tv.tv_nsec / 1000000;
-    #else
+#else
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return tv.tv_sec * 1000 + tv.tv_usec / 1000;
-    #endif
+#endif
 }
 
 mp_uint_t mp_hal_ticks_us(void) {
-    #if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) && defined(_POSIX_MONOTONIC_CLOCK)
+#if (defined(_POSIX_TIMERS) && _POSIX_TIMERS > 0) && defined(_POSIX_MONOTONIC_CLOCK)
     struct timespec tv;
     clock_gettime(CLOCK_MONOTONIC, &tv);
     return tv.tv_sec * 1000000 + tv.tv_nsec / 1000;
-    #else
+#else
     struct timeval tv;
     gettimeofday(&tv, NULL);
     return tv.tv_sec * 1000000 + tv.tv_usec;
-    #endif
+#endif
 }
 
 uint64_t mp_hal_time_ns(void) {
@@ -222,15 +223,15 @@ uint64_t mp_hal_time_ns(void) {
 }
 
 void mp_hal_delay_ms(mp_uint_t ms) {
-    #ifdef MICROPY_EVENT_POLL_HOOK
+#ifdef MICROPY_EVENT_POLL_HOOK
     mp_uint_t start = mp_hal_ticks_ms();
     while (mp_hal_ticks_ms() - start < ms) {
         // MICROPY_EVENT_POLL_HOOK does mp_hal_delay_us(500) (i.e. usleep(500)).
         MICROPY_EVENT_POLL_HOOK
     }
-    #else
+#else
     // TODO: POSIX et al. define usleep() as guaranteedly capable only of 1s sleep:
     // "The useconds argument shall be less than one million."
     usleep(ms * 1000);
-    #endif
+#endif
 }

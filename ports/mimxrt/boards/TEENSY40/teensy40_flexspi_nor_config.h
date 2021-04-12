@@ -179,7 +179,7 @@ typedef struct _FlexSPIConfig
     uint8_t configCmdEnable;   //!< [0x01c-0x01c] Configure command Enable Flag, 1 - Enable, 0 - Disable
     uint8_t configModeType[3]; //!< [0x01d-0x01f] Configure Mode Type, similar as deviceModeTpe
     flexspi_lut_seq_t
-        configCmdSeqs[3]; //!< [0x020-0x02b] Sequence info for Device Configuration command, similar as deviceModeSeq
+    configCmdSeqs[3]; //!< [0x020-0x02b] Sequence info for Device Configuration command, similar as deviceModeSeq
     uint32_t reserved1;   //!< [0x02c-0x02f] Reserved for future use
     uint32_t configCmdArgs[3];     //!< [0x030-0x03b] Arguments/Parameters for device Configuration commands
     uint32_t reserved2;            //!< [0x03c-0x03f] Reserved for future use

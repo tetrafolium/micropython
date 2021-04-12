@@ -207,59 +207,59 @@ STATIC mp_obj_t microbit_image_make_new(const mp_obj_type_t *type_in, mp_uint_t 
     mp_arg_check_num(n_args, n_kw, 0, 3, false);
 
     switch (n_args) {
-        case 0: {
-            greyscale_t *image = greyscale_new(5, 5);
+    case 0: {
+        greyscale_t *image = greyscale_new(5, 5);
+        greyscaleClear(image);
+        return image;
+    }
+
+    case 1: {
+        if (mp_obj_is_str(args[0])) {
+            // arg is a string object
+            size_t len;
+            const char *str = mp_obj_str_get_data(args[0], &len);
+            // make image from string
+            if (len == 1) {
+                /* For a single charater, return the font glyph */
+                return microbit_image_for_char(str[0]);
+            } else {
+                /* Otherwise parse the image description string */
+                return image_from_parsed_str(str, len);
+            }
+        } else {
+            mp_raise_TypeError(MP_ERROR_TEXT("Image(s) takes a string."));
+        }
+    }
+
+    case 2:
+    case 3: {
+        mp_int_t w = mp_obj_get_int(args[0]);
+        mp_int_t h = mp_obj_get_int(args[1]);
+        greyscale_t *image = greyscale_new(w, h);
+        if (n_args == 2) {
             greyscaleClear(image);
-            return image;
-        }
+        } else {
+            mp_buffer_info_t bufinfo;
+            mp_get_buffer_raise(args[2], &bufinfo, MP_BUFFER_READ);
 
-        case 1: {
-            if (mp_obj_is_str(args[0])) {
-                // arg is a string object
-                size_t len;
-                const char *str = mp_obj_str_get_data(args[0], &len);
-                // make image from string
-                if (len == 1) {
-                    /* For a single charater, return the font glyph */
-                    return microbit_image_for_char(str[0]);
-                } else {
-                    /* Otherwise parse the image description string */
-                    return image_from_parsed_str(str, len);
+            if (w < 0 || h < 0 || (size_t)(w * h) != bufinfo.len) {
+                mp_raise_ValueError(MP_ERROR_TEXT("image data is incorrect size"));
+            }
+            mp_int_t i = 0;
+            for (mp_int_t y = 0; y < h; y++) {
+                for (mp_int_t x = 0; x < w; ++x) {
+                    uint8_t val = min(((const uint8_t*)bufinfo.buf)[i], MAX_BRIGHTNESS);
+                    greyscaleSetPixelValue(image, x, y, val);
+                    ++i;
                 }
-            } else {
-                mp_raise_TypeError(MP_ERROR_TEXT("Image(s) takes a string."));
             }
         }
+        return image;
+    }
 
-        case 2:
-        case 3: {
-            mp_int_t w = mp_obj_get_int(args[0]);
-            mp_int_t h = mp_obj_get_int(args[1]);
-            greyscale_t *image = greyscale_new(w, h);
-            if (n_args == 2) {
-                greyscaleClear(image);
-            } else {
-                mp_buffer_info_t bufinfo;
-                mp_get_buffer_raise(args[2], &bufinfo, MP_BUFFER_READ);
-
-                if (w < 0 || h < 0 || (size_t)(w * h) != bufinfo.len) {
-                    mp_raise_ValueError(MP_ERROR_TEXT("image data is incorrect size"));
-                }
-                mp_int_t i = 0;
-                for (mp_int_t y = 0; y < h; y++) {
-                    for (mp_int_t x = 0; x < w; ++x) {
-                        uint8_t val = min(((const uint8_t*)bufinfo.buf)[i], MAX_BRIGHTNESS);
-                        greyscaleSetPixelValue(image, x, y, val);
-                        ++i;
-                    }
-                }
-            }
-            return image;
-        }
-
-        default: {
-            mp_raise_TypeError(MP_ERROR_TEXT("Image() takes 0 to 3 arguments"));
-        }
+    default: {
+        mp_raise_TypeError(MP_ERROR_TEXT("Image() takes 0 to 3 arguments"));
+    }
     }
 }
 
@@ -291,14 +291,22 @@ STATIC void image_blit(microbit_image_obj_t *src, greyscale_t *dest, mp_int_t x,
         return;
     }
     if (x > xdest) {
-        xstart = intersect_x0; xend = intersect_x1; xdel = 1;
+        xstart = intersect_x0;
+        xend = intersect_x1;
+        xdel = 1;
     } else {
-        xstart = intersect_x1-1; xend = intersect_x0-1; xdel = -1;
+        xstart = intersect_x1-1;
+        xend = intersect_x0-1;
+        xdel = -1;
     }
     if (y > ydest) {
-        ystart = intersect_y0; yend = intersect_y1; ydel = 1;
+        ystart = intersect_y0;
+        yend = intersect_y1;
+        ydel = 1;
     } else {
-        ystart = intersect_y1-1; yend = intersect_y0-1; ydel = -1;
+        ystart = intersect_y1-1;
+        yend = intersect_y0-1;
+        ydel = -1;
     }
     for (int i = xstart; i != xend; i += xdel) {
         for (int j = ystart; j != yend; j += ydel) {
@@ -890,9 +898,10 @@ static mp_obj_t string_image_facade_subscr(mp_obj_t self_in, mp_obj_t index_in, 
 static mp_obj_t facade_unary_op(mp_unary_op_t op, mp_obj_t self_in) {
     string_image_facade_t *self = (string_image_facade_t *)self_in;
     switch (op) {
-        case MP_UNARY_OP_LEN:
-            return mp_obj_len(self->string);
-        default: return MP_OBJ_NULL; // op not supported
+    case MP_UNARY_OP_LEN:
+        return mp_obj_len(self->string);
+    default:
+        return MP_OBJ_NULL; // op not supported
     }
 }
 

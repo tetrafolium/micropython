@@ -58,17 +58,17 @@ bool mp_repl_continue_with_input(const char *input) {
         || str_startswith_word(input, "with")
         || str_startswith_word(input, "def")
         || str_startswith_word(input, "class")
-        #if MICROPY_PY_ASYNC_AWAIT
+#if MICROPY_PY_ASYNC_AWAIT
         || str_startswith_word(input, "async")
-        #endif
-    ;
+#endif
+        ;
 
     // check for unmatched open bracket, quote or escape quote
-    #define Q_NONE (0)
-    #define Q_1_SINGLE (1)
-    #define Q_1_DOUBLE (2)
-    #define Q_3_SINGLE (3)
-    #define Q_3_DOUBLE (4)
+#define Q_NONE (0)
+#define Q_1_SINGLE (1)
+#define Q_1_DOUBLE (2)
+#define Q_3_SINGLE (3)
+#define Q_3_DOUBLE (4)
     int n_paren = 0;
     int n_brack = 0;
     int n_brace = 0;
@@ -95,26 +95,26 @@ bool mp_repl_continue_with_input(const char *input) {
             }
         } else if (in_quote == Q_NONE) {
             switch (*i) {
-                case '(':
-                    n_paren += 1;
-                    break;
-                case ')':
-                    n_paren -= 1;
-                    break;
-                case '[':
-                    n_brack += 1;
-                    break;
-                case ']':
-                    n_brack -= 1;
-                    break;
-                case '{':
-                    n_brace += 1;
-                    break;
-                case '}':
-                    n_brace -= 1;
-                    break;
-                default:
-                    break;
+            case '(':
+                n_paren += 1;
+                break;
+            case ')':
+                n_paren -= 1;
+                break;
+            case '[':
+                n_brack += 1;
+                break;
+            case ']':
+                n_brack -= 1;
+                break;
+            case '{':
+                n_brace += 1;
+                break;
+            case '}':
+                n_brace -= 1;
+                break;
+            default:
+                break;
             }
         }
     }
@@ -244,8 +244,8 @@ size_t mp_repl_autocomplete(const char *str, size_t len, const mp_print_t *print
 
             // multiple matches found, print them out
 
-            #define WORD_SLOT_LEN (16)
-            #define MAX_LINE_LEN  (4 * WORD_SLOT_LEN)
+#define WORD_SLOT_LEN (16)
+#define MAX_LINE_LEN  (4 * WORD_SLOT_LEN)
 
             int line_len = MAX_LINE_LEN; // force a newline for first word
             for (qstr q = q_first; q <= q_last; ++q) {

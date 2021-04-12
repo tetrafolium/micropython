@@ -46,7 +46,7 @@ STATIC mp_obj_t signal_make_new(const mp_obj_type_t *type, size_t n_args, size_t
     mp_obj_t pin;
     bool invert = false;
 
-    #if defined(MICROPY_PY_MACHINE_PIN_MAKE_NEW)
+#if defined(MICROPY_PY_MACHINE_PIN_MAKE_NEW)
     mp_pin_p_t *pin_p = NULL;
 
     if (n_args > 0 && mp_obj_is_obj(args[0])) {
@@ -91,8 +91,8 @@ STATIC mp_obj_t signal_make_new(const mp_obj_type_t *type, size_t n_args, size_t
 
         mp_local_free(pin_args);
     } else
-    #endif
-    // Otherwise there should be 1 or 2 args
+#endif
+        // Otherwise there should be 1 or 2 args
     {
         if (n_args == 1) {
             pin = args[0];
@@ -103,7 +103,7 @@ STATIC mp_obj_t signal_make_new(const mp_obj_type_t *type, size_t n_args, size_t
                 goto error;
             }
         } else {
-        error:
+error:
             mp_raise_TypeError(NULL);
         }
     }
@@ -120,13 +120,13 @@ STATIC mp_uint_t signal_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_t arg
     machine_signal_t *self = MP_OBJ_TO_PTR(self_in);
 
     switch (request) {
-        case MP_PIN_READ: {
-            return mp_virtual_pin_read(self->pin) ^ self->invert;
-        }
-        case MP_PIN_WRITE: {
-            mp_virtual_pin_write(self->pin, arg ^ self->invert);
-            return 0;
-        }
+    case MP_PIN_READ: {
+        return mp_virtual_pin_read(self->pin) ^ self->invert;
+    }
+    case MP_PIN_WRITE: {
+        mp_virtual_pin_write(self->pin, arg ^ self->invert);
+        return 0;
+    }
     }
     return -1;
 }

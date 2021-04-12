@@ -429,7 +429,7 @@ STATIC mp_obj_t pin_irq(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_ar
     if (n_args > 1 || kw_args->used != 0) {
         // configure irq
         extint_register_pin(self, args[ARG_trigger].u_int,
-            args[ARG_hard].u_bool, args[ARG_handler].u_obj);
+                            args[ARG_hard].u_bool, args[ARG_handler].u_obj);
     }
 
     // TODO should return an IRQ object
@@ -564,7 +564,7 @@ STATIC const mp_rom_map_elem_t pin_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_AF_OD),     MP_ROM_INT(GPIO_MODE_AF_OD) },
     { MP_ROM_QSTR(MP_QSTR_PULL_NONE), MP_ROM_INT(GPIO_NOPULL) },
 
-    #include "genhdr/pins_af_const.h"
+#include "genhdr/pins_af_const.h"
 };
 
 STATIC MP_DEFINE_CONST_DICT(pin_locals_dict, pin_locals_dict_table);
@@ -574,13 +574,13 @@ STATIC mp_uint_t pin_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_t arg, i
     pin_obj_t *self = MP_OBJ_TO_PTR(self_in);
 
     switch (request) {
-        case MP_PIN_READ: {
-            return mp_hal_pin_read(self);
-        }
-        case MP_PIN_WRITE: {
-            mp_hal_pin_write(self, arg);
-            return 0;
-        }
+    case MP_PIN_READ: {
+        return mp_hal_pin_read(self);
+    }
+    case MP_PIN_WRITE: {
+        mp_hal_pin_write(self, arg);
+        return 0;
+    }
     }
     return -1;
 }

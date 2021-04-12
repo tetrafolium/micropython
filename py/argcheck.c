@@ -38,40 +38,40 @@ void mp_arg_check_num_sig(size_t n_args, size_t n_kw, uint32_t sig) {
     size_t n_args_max = (sig >> 1) & 0xffff;
 
     if (n_kw && !takes_kw) {
-        #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
         mp_arg_error_terse_mismatch();
-        #else
+#else
         mp_raise_TypeError(MP_ERROR_TEXT("function doesn't take keyword arguments"));
-        #endif
+#endif
     }
 
     if (n_args_min == n_args_max) {
         if (n_args != n_args_min) {
-            #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
             mp_arg_error_terse_mismatch();
-            #else
+#else
             mp_raise_msg_varg(&mp_type_TypeError,
-                MP_ERROR_TEXT("function takes %d positional arguments but %d were given"),
-                n_args_min, n_args);
-            #endif
+                              MP_ERROR_TEXT("function takes %d positional arguments but %d were given"),
+                              n_args_min, n_args);
+#endif
         }
     } else {
         if (n_args < n_args_min) {
-            #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
             mp_arg_error_terse_mismatch();
-            #else
+#else
             mp_raise_msg_varg(&mp_type_TypeError,
-                MP_ERROR_TEXT("function missing %d required positional arguments"),
-                n_args_min - n_args);
-            #endif
+                              MP_ERROR_TEXT("function missing %d required positional arguments"),
+                              n_args_min - n_args);
+#endif
         } else if (n_args > n_args_max) {
-            #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
             mp_arg_error_terse_mismatch();
-            #else
+#else
             mp_raise_msg_varg(&mp_type_TypeError,
-                MP_ERROR_TEXT("function expected at most %d arguments, got %d"),
-                n_args_max, n_args);
-            #endif
+                              MP_ERROR_TEXT("function expected at most %d arguments, got %d"),
+                              n_args_max, n_args);
+#endif
         }
     }
 }
@@ -90,11 +90,11 @@ void mp_arg_parse_all(size_t n_pos, const mp_obj_t *pos, mp_map_t *kws, size_t n
             mp_map_elem_t *kw = mp_map_lookup(kws, MP_OBJ_NEW_QSTR(allowed[i].qst), MP_MAP_LOOKUP);
             if (kw == NULL) {
                 if (allowed[i].flags & MP_ARG_REQUIRED) {
-                    #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
                     mp_arg_error_terse_mismatch();
-                    #else
+#else
                     mp_raise_msg_varg(&mp_type_TypeError, MP_ERROR_TEXT("'%q' argument required"), allowed[i].qst);
-                    #endif
+#endif
                 }
                 out_vals[i] = allowed[i].defval;
                 continue;
@@ -113,21 +113,21 @@ void mp_arg_parse_all(size_t n_pos, const mp_obj_t *pos, mp_map_t *kws, size_t n
         }
     }
     if (pos_found < n_pos) {
-    extra_positional:
-        #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+extra_positional:
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
         mp_arg_error_terse_mismatch();
-        #else
+#else
         // TODO better error message
         mp_raise_TypeError(MP_ERROR_TEXT("extra positional arguments given"));
-        #endif
+#endif
     }
     if (kws_found < kws->used) {
-        #if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
+#if MICROPY_ERROR_REPORTING == MICROPY_ERROR_REPORTING_TERSE
         mp_arg_error_terse_mismatch();
-        #else
+#else
         // TODO better error message
         mp_raise_TypeError(MP_ERROR_TEXT("extra keyword arguments given"));
-        #endif
+#endif
     }
 }
 

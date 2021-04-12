@@ -162,13 +162,13 @@ struct lfs2_config {
     // Read a region in a block. Negative error codes are propogated
     // to the user.
     int (*read)(const struct lfs2_config *c, lfs2_block_t block,
-            lfs2_off_t off, void *buffer, lfs2_size_t size);
+                lfs2_off_t off, void *buffer, lfs2_size_t size);
 
     // Program a region in a block. The block must have previously
     // been erased. Negative error codes are propogated to the user.
     // May return LFS2_ERR_CORRUPT if the block should be considered bad.
     int (*prog)(const struct lfs2_config *c, lfs2_block_t block,
-            lfs2_off_t off, const void *buffer, lfs2_size_t size);
+                lfs2_off_t off, const void *buffer, lfs2_size_t size);
 
     // Erase a block. A block must be erased before being programmed.
     // The state of an erased block is undefined. Negative error codes
@@ -207,7 +207,7 @@ struct lfs2_config {
     // Number of erasable blocks on the device.
     lfs2_size_t block_count;
 
-    // Number of erase cycles before littlefs evicts metadata logs and moves 
+    // Number of erase cycles before littlefs evicts metadata logs and moves
     // the metadata to another block. Suggested values are in the
     // range 100-1000, with large values having better performance at the cost
     // of less consistent wear distribution.
@@ -481,7 +481,7 @@ int lfs2_stat(lfs2_t *lfs2, const char *path, struct lfs2_info *info);
 // of the size of the buffer. This can be used to dynamically allocate a buffer
 // or check for existance.
 lfs2_ssize_t lfs2_getattr(lfs2_t *lfs2, const char *path,
-        uint8_t type, void *buffer, lfs2_size_t size);
+                          uint8_t type, void *buffer, lfs2_size_t size);
 
 #ifndef LFS2_READONLY
 // Set custom attributes
@@ -492,7 +492,7 @@ lfs2_ssize_t lfs2_getattr(lfs2_t *lfs2, const char *path,
 //
 // Returns a negative error code on failure.
 int lfs2_setattr(lfs2_t *lfs2, const char *path,
-        uint8_t type, const void *buffer, lfs2_size_t size);
+                 uint8_t type, const void *buffer, lfs2_size_t size);
 #endif
 
 #ifndef LFS2_READONLY
@@ -514,7 +514,7 @@ int lfs2_removeattr(lfs2_t *lfs2, const char *path, uint8_t type);
 //
 // Returns a negative error code on failure.
 int lfs2_file_open(lfs2_t *lfs2, lfs2_file_t *file,
-        const char *path, int flags);
+                   const char *path, int flags);
 
 // Open a file with extra configuration
 //
@@ -527,8 +527,8 @@ int lfs2_file_open(lfs2_t *lfs2, lfs2_file_t *file,
 //
 // Returns a negative error code on failure.
 int lfs2_file_opencfg(lfs2_t *lfs2, lfs2_file_t *file,
-        const char *path, int flags,
-        const struct lfs2_file_config *config);
+                      const char *path, int flags,
+                      const struct lfs2_file_config *config);
 
 // Close a file
 //
@@ -549,7 +549,7 @@ int lfs2_file_sync(lfs2_t *lfs2, lfs2_file_t *file);
 // Takes a buffer and size indicating where to store the read data.
 // Returns the number of bytes read, or a negative error code on failure.
 lfs2_ssize_t lfs2_file_read(lfs2_t *lfs2, lfs2_file_t *file,
-        void *buffer, lfs2_size_t size);
+                            void *buffer, lfs2_size_t size);
 
 #ifndef LFS2_READONLY
 // Write data to file
@@ -559,7 +559,7 @@ lfs2_ssize_t lfs2_file_read(lfs2_t *lfs2, lfs2_file_t *file,
 //
 // Returns the number of bytes written, or a negative error code on failure.
 lfs2_ssize_t lfs2_file_write(lfs2_t *lfs2, lfs2_file_t *file,
-        const void *buffer, lfs2_size_t size);
+                             const void *buffer, lfs2_size_t size);
 #endif
 
 // Change the position of the file
@@ -567,7 +567,7 @@ lfs2_ssize_t lfs2_file_write(lfs2_t *lfs2, lfs2_file_t *file,
 // The change in position is determined by the offset and whence flag.
 // Returns the new position of the file, or a negative error code on failure.
 lfs2_soff_t lfs2_file_seek(lfs2_t *lfs2, lfs2_file_t *file,
-        lfs2_soff_t off, int whence);
+                           lfs2_soff_t off, int whence);
 
 #ifndef LFS2_READONLY
 // Truncates the size of the file to the specified size

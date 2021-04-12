@@ -174,10 +174,10 @@ void mp_hal_pin_open_drain(mp_hal_pin_obj_t pin_id) {
     ETS_GPIO_INTR_DISABLE();
     PIN_FUNC_SELECT(pin->periph, pin->func);
     GPIO_REG_WRITE(GPIO_PIN_ADDR(GPIO_ID_PIN(pin->phys_port)),
-        GPIO_REG_READ(GPIO_PIN_ADDR(GPIO_ID_PIN(pin->phys_port)))
-        | GPIO_PIN_PAD_DRIVER_SET(GPIO_PAD_DRIVER_ENABLE)); // open drain
+                   GPIO_REG_READ(GPIO_PIN_ADDR(GPIO_ID_PIN(pin->phys_port)))
+                   | GPIO_PIN_PAD_DRIVER_SET(GPIO_PAD_DRIVER_ENABLE)); // open drain
     GPIO_REG_WRITE(GPIO_ENABLE_ADDRESS,
-        GPIO_REG_READ(GPIO_ENABLE_ADDRESS) | (1 << pin->phys_port));
+                   GPIO_REG_READ(GPIO_ENABLE_ADDRESS) | (1 << pin->phys_port));
     ETS_GPIO_INTR_ENABLE();
 }
 
@@ -201,25 +201,25 @@ void pin_set(uint pin, int value) {
     uint32_t enable = 0;
     uint32_t disable = 0;
     switch (pin_mode[pin]) {
-        case GPIO_MODE_INPUT:
+    case GPIO_MODE_INPUT:
+        value = -1;
+        disable = 1;
+        break;
+
+    case GPIO_MODE_OUTPUT:
+        enable = 1;
+        break;
+
+    case GPIO_MODE_OPEN_DRAIN:
+        if (value == -1) {
+            return;
+        } else if (value == 0) {
+            enable = 1;
+        } else {
             value = -1;
             disable = 1;
-            break;
-
-        case GPIO_MODE_OUTPUT:
-            enable = 1;
-            break;
-
-        case GPIO_MODE_OPEN_DRAIN:
-            if (value == -1) {
-                return;
-            } else if (value == 0) {
-                enable = 1;
-            } else {
-                value = -1;
-                disable = 1;
-            }
-            break;
+        }
+        break;
     }
 
     enable <<= pin;
@@ -280,20 +280,20 @@ STATIC mp_obj_t pyb_pin_obj_init_helper(pyb_pin_obj_t *self, size_t n_args, cons
         }
     } else {
         PIN_FUNC_SELECT(self->periph, self->func);
-        #if 0
+#if 0
         // Removed in SDK 1.1.0
         if ((pull & GPIO_PULL_DOWN) == 0) {
             PIN_PULLDWN_DIS(self->periph);
         }
-        #endif
+#endif
         if ((pull & GPIO_PULL_UP) == 0) {
             PIN_PULLUP_DIS(self->periph);
         }
-        #if 0
+#if 0
         if ((pull & GPIO_PULL_DOWN) != 0) {
             PIN_PULLDWN_EN(self->periph);
         }
-        #endif
+#endif
         if ((pull & GPIO_PULL_UP) != 0) {
             PIN_PULLUP_EN(self->periph);
         }
@@ -413,13 +413,13 @@ STATIC mp_uint_t pin_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_t arg, i
     pyb_pin_obj_t *self = self_in;
 
     switch (request) {
-        case MP_PIN_READ: {
-            return pin_get(self->phys_port);
-        }
-        case MP_PIN_WRITE: {
-            pin_set(self->phys_port, arg);
-            return 0;
-        }
+    case MP_PIN_READ: {
+        return pin_get(self->phys_port);
+    }
+    case MP_PIN_WRITE: {
+        pin_set(self->phys_port, arg);
+        return 0;
+    }
     }
     return -1;
 }

@@ -63,8 +63,8 @@ STATIC void machine_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_pri
     uint32_t baudrate;
     uart_get_baudrate(self->uart_num, &baudrate);
     mp_printf(print, "UART(%u, baudrate=%u, bits=%u, parity=%s, stop=%u, tx=%d, rx=%d, rts=%d, cts=%d, txbuf=%u, rxbuf=%u, timeout=%u, timeout_char=%u",
-        self->uart_num, baudrate, self->bits, _parity_name[self->parity],
-        self->stop, self->tx, self->rx, self->rts, self->cts, self->txbuf, self->rxbuf, self->timeout, self->timeout_char);
+              self->uart_num, baudrate, self->bits, _parity_name[self->parity],
+              self->stop, self->tx, self->rx, self->rts, self->cts, self->txbuf, self->rxbuf, self->timeout, self->timeout_char);
     if (self->invert) {
         mp_printf(print, ", invert=");
         uint32_t invert_mask = self->invert;
@@ -168,27 +168,27 @@ STATIC void machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args, co
 
     // set data bits
     switch (args[ARG_bits].u_int) {
-        case 0:
-            break;
-        case 5:
-            uart_set_word_length(self->uart_num, UART_DATA_5_BITS);
-            self->bits = 5;
-            break;
-        case 6:
-            uart_set_word_length(self->uart_num, UART_DATA_6_BITS);
-            self->bits = 6;
-            break;
-        case 7:
-            uart_set_word_length(self->uart_num, UART_DATA_7_BITS);
-            self->bits = 7;
-            break;
-        case 8:
-            uart_set_word_length(self->uart_num, UART_DATA_8_BITS);
-            self->bits = 8;
-            break;
-        default:
-            mp_raise_ValueError(MP_ERROR_TEXT("invalid data bits"));
-            break;
+    case 0:
+        break;
+    case 5:
+        uart_set_word_length(self->uart_num, UART_DATA_5_BITS);
+        self->bits = 5;
+        break;
+    case 6:
+        uart_set_word_length(self->uart_num, UART_DATA_6_BITS);
+        self->bits = 6;
+        break;
+    case 7:
+        uart_set_word_length(self->uart_num, UART_DATA_7_BITS);
+        self->bits = 7;
+        break;
+    case 8:
+        uart_set_word_length(self->uart_num, UART_DATA_8_BITS);
+        self->bits = 8;
+        break;
+    default:
+        mp_raise_ValueError(MP_ERROR_TEXT("invalid data bits"));
+        break;
     }
 
     // set parity
@@ -210,20 +210,20 @@ STATIC void machine_uart_init_helper(machine_uart_obj_t *self, size_t n_args, co
 
     // set stop bits
     switch (args[ARG_stop].u_int) {
-        // FIXME: ESP32 also supports 1.5 stop bits
-        case 0:
-            break;
-        case 1:
-            uart_set_stop_bits(self->uart_num, UART_STOP_BITS_1);
-            self->stop = 1;
-            break;
-        case 2:
-            uart_set_stop_bits(self->uart_num, UART_STOP_BITS_2);
-            self->stop = 2;
-            break;
-        default:
-            mp_raise_ValueError(MP_ERROR_TEXT("invalid stop bits"));
-            break;
+    // FIXME: ESP32 also supports 1.5 stop bits
+    case 0:
+        break;
+    case 1:
+        uart_set_stop_bits(self->uart_num, UART_STOP_BITS_1);
+        self->stop = 1;
+        break;
+    case 2:
+        uart_set_stop_bits(self->uart_num, UART_STOP_BITS_2);
+        self->stop = 2;
+        break;
+    default:
+        mp_raise_ValueError(MP_ERROR_TEXT("invalid stop bits"));
+        break;
     }
 
     // set timeout
@@ -285,18 +285,18 @@ STATIC mp_obj_t machine_uart_make_new(const mp_obj_type_t *type, size_t n_args, 
     self->timeout_char = 0;
 
     switch (uart_num) {
-        case UART_NUM_0:
-            self->rx = UART_PIN_NO_CHANGE; // GPIO 3
-            self->tx = UART_PIN_NO_CHANGE; // GPIO 1
-            break;
-        case UART_NUM_1:
-            self->rx = 9;
-            self->tx = 10;
-            break;
-        case UART_NUM_2:
-            self->rx = 16;
-            self->tx = 17;
-            break;
+    case UART_NUM_0:
+        self->rx = UART_PIN_NO_CHANGE; // GPIO 3
+        self->tx = UART_PIN_NO_CHANGE; // GPIO 1
+        break;
+    case UART_NUM_1:
+        self->rx = 9;
+        self->tx = 10;
+        break;
+    case UART_NUM_2:
+        self->rx = 16;
+        self->tx = 17;
+        break;
     }
 
     // Remove any existing configuration

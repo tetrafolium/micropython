@@ -356,13 +356,13 @@ STATIC mp_uint_t pin_ioctl(mp_obj_t self_in, mp_uint_t request, uintptr_t arg, i
     machine_pin_obj_t *self = self_in;
 
     switch (request) {
-        case MP_PIN_READ: {
-            return gpio_get_level(self->id);
-        }
-        case MP_PIN_WRITE: {
-            gpio_set_level(self->id, arg);
-            return 0;
-        }
+    case MP_PIN_READ: {
+        return gpio_get_level(self->id);
+    }
+    case MP_PIN_WRITE: {
+        gpio_set_level(self->id, arg);
+        return 0;
+    }
     }
     return -1;
 }

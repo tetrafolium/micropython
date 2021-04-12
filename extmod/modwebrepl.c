@@ -136,12 +136,12 @@ STATIC void handle_op(mp_obj_webrepl_t *self) {
     // Handle operations not requiring opened file
 
     switch (self->hdr.type) {
-        case GET_VER: {
-            static const char ver[] = {MICROPY_VERSION_MAJOR, MICROPY_VERSION_MINOR, MICROPY_VERSION_MICRO};
-            write_webrepl(self->sock, ver, sizeof(ver));
-            self->hdr_to_recv = sizeof(struct webrepl_file);
-            return;
-        }
+    case GET_VER: {
+        static const char ver[] = {MICROPY_VERSION_MAJOR, MICROPY_VERSION_MINOR, MICROPY_VERSION_MICRO};
+        write_webrepl(self->sock, ver, sizeof(ver));
+        self->hdr_to_recv = sizeof(struct webrepl_file);
+        return;
+    }
     }
 
     // Handle operations requiring opened file
@@ -157,12 +157,12 @@ STATIC void handle_op(mp_obj_webrepl_t *self) {
 
     self->cur_file = mp_builtin_open(2, open_args, (mp_map_t *)&mp_const_empty_map);
 
-    #if 0
+#if 0
     struct mp_stream_seek_t seek = { .offset = self->hdr.offset, .whence = 0 };
     int err;
     mp_uint_t res = file_stream->ioctl(self->cur_file, MP_STREAM_SEEK, (uintptr_t)&seek, &err);
     assert(res != MP_STREAM_ERROR);
-    #endif
+#endif
 
     write_webrepl_resp(self->sock, 0);
 
@@ -246,9 +246,9 @@ STATIC mp_uint_t _webrepl_read(mp_obj_t self_in, void *buf, mp_uint_t size, int 
 
     if (self->data_to_recv != 0) {
         // Ports that don't have much available stack can make this filebuf static
-        #if MICROPY_PY_WEBREPL_STATIC_FILEBUF
+#if MICROPY_PY_WEBREPL_STATIC_FILEBUF
         static
-        #endif
+#endif
         byte filebuf[512];
         filebuf[0] = *(byte *)buf;
         mp_uint_t buf_sz = 1;
@@ -281,13 +281,13 @@ STATIC mp_uint_t _webrepl_read(mp_obj_t self_in, void *buf, mp_uint_t size, int 
 
         check_file_op_finished(self);
 
-        #ifdef MICROPY_PY_WEBREPL_DELAY
+#ifdef MICROPY_PY_WEBREPL_DELAY
         // Some platforms may have broken drivers and easily gets
         // overloaded with modest traffic WebREPL file transfers
         // generate. The basic workaround is a crude rate control
         // done in such way.
         mp_hal_delay_ms(MICROPY_PY_WEBREPL_DELAY);
-        #endif
+#endif
     }
 
     return -2;
@@ -307,14 +307,14 @@ STATIC mp_uint_t webrepl_ioctl(mp_obj_t o_in, mp_uint_t request, uintptr_t arg, 
     mp_obj_webrepl_t *self = MP_OBJ_TO_PTR(o_in);
     (void)arg;
     switch (request) {
-        case MP_STREAM_CLOSE:
-            // TODO: This is a place to do cleanup
-            mp_stream_close(self->sock);
-            return 0;
+    case MP_STREAM_CLOSE:
+        // TODO: This is a place to do cleanup
+        mp_stream_close(self->sock);
+        return 0;
 
-        default:
-            *errcode = MP_EINVAL;
-            return MP_STREAM_ERROR;
+    default:
+        *errcode = MP_EINVAL;
+        return MP_STREAM_ERROR;
     }
 }
 

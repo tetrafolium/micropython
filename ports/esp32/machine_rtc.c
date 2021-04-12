@@ -130,12 +130,12 @@ STATIC mp_obj_t machine_rtc_init(mp_obj_t self_in, mp_obj_t date) {
     mp_obj_t args[2] = {self_in, date};
     machine_rtc_datetime_helper(2, args);
 
-    #if MICROPY_HW_RTC_USER_MEM_MAX > 0
+#if MICROPY_HW_RTC_USER_MEM_MAX > 0
     if (rtc_user_mem_magic != MEM_MAGIC) {
         rtc_user_mem_magic = MEM_MAGIC;
         rtc_user_mem_len = 0;
     }
-    #endif
+#endif
 
     return mp_const_none;
 }
@@ -167,9 +167,9 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(machine_rtc_memory_obj, 1, 2, machine
 STATIC const mp_rom_map_elem_t machine_rtc_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_init), MP_ROM_PTR(&machine_rtc_init_obj) },
     { MP_ROM_QSTR(MP_QSTR_datetime), MP_ROM_PTR(&machine_rtc_datetime_obj) },
-    #if MICROPY_HW_RTC_USER_MEM_MAX > 0
+#if MICROPY_HW_RTC_USER_MEM_MAX > 0
     { MP_ROM_QSTR(MP_QSTR_memory), MP_ROM_PTR(&machine_rtc_memory_obj) },
-    #endif
+#endif
 };
 STATIC MP_DEFINE_CONST_DICT(machine_rtc_locals_dict, machine_rtc_locals_dict_table);
 

@@ -253,9 +253,11 @@ static inline bool mp_obj_is_obj(mp_const_obj_t o) {
 #define MP_OBJ_FROM_PTR(p) ((mp_obj_t)((uintptr_t)(p)))
 
 // rom object storage needs special handling to widen 32-bit pointer to 64-bits
-typedef union _mp_rom_obj_t { uint64_t u64;
-                              struct { const void *lo, *hi;
-                              } u32;
+typedef union _mp_rom_obj_t {
+    uint64_t u64;
+    struct {
+        const void *lo, *hi;
+    } u32;
 } mp_rom_obj_t;
 #define MP_ROM_INT(i) {MP_OBJ_NEW_SMALL_INT(i)}
 #define MP_ROM_QSTR(q) {MP_OBJ_NEW_QSTR(q)}
@@ -409,7 +411,8 @@ typedef struct _mp_map_t {
     size_t all_keys_are_qstrs : 1;
     size_t is_fixed : 1;    // if set, table is fixed/read-only and can't be modified
     size_t is_ordered : 1;  // if set, table is an ordered array, not a hash map
-    size_t used : (8 * sizeof(size_t) - 3);
+size_t used :
+    (8 * sizeof(size_t) - 3);
     size_t alloc;
     mp_map_elem_t *table;
 } mp_map_t;

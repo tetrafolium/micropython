@@ -176,10 +176,10 @@ STATIC mp_obj_t esp_status(size_t n_args, const mp_obj_t *args) {
     } else {
         // Get specific status parameter
         switch (mp_obj_str_get_qstr(args[1])) {
-            case MP_QSTR_rssi:
-                if (self->if_id == STATION_IF) {
-                    return MP_OBJ_NEW_SMALL_INT(wifi_station_get_rssi());
-                }
+        case MP_QSTR_rssi:
+            if (self->if_id == STATION_IF) {
+                return MP_OBJ_NEW_SMALL_INT(wifi_station_get_rssi());
+            }
         }
         mp_raise_ValueError(MP_ERROR_TEXT("unknown status param"));
     }
@@ -199,13 +199,13 @@ STATIC void esp_scan_cb(void *result, STATUS status) {
         if (nlr_push(&nlr) == 0) {
             for (struct bss_info *bs = result; bs; bs = STAILQ_NEXT(bs, next)) {
                 mp_obj_tuple_t *t = mp_obj_new_tuple(6, NULL);
-                #if 1
+#if 1
                 // struct bss_info::ssid_len is not documented in SDK API Guide,
                 // but is present in SDK headers since 1.4.0
                 t->items[0] = mp_obj_new_bytes(bs->ssid, bs->ssid_len);
-                #else
+#else
                 t->items[0] = mp_obj_new_bytes(bs->ssid, strlen((char *)bs->ssid));
-                #endif
+#endif
                 t->items[1] = mp_obj_new_bytes(bs->bssid, sizeof(bs->bssid));
                 t->items[2] = MP_OBJ_NEW_SMALL_INT(bs->channel);
                 t->items[3] = MP_OBJ_NEW_SMALL_INT(bs->rssi);
@@ -351,60 +351,60 @@ STATIC mp_obj_t esp_config(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs
 
         for (mp_uint_t i = 0; i < kwargs->alloc; i++) {
             if (mp_map_slot_is_filled(kwargs, i)) {
-                #define QS(x) (uintptr_t)MP_OBJ_NEW_QSTR(x)
+#define QS(x) (uintptr_t)MP_OBJ_NEW_QSTR(x)
                 switch ((uintptr_t)kwargs->table[i].key) {
-                    case QS(MP_QSTR_mac): {
-                        mp_buffer_info_t bufinfo;
-                        mp_get_buffer_raise(kwargs->table[i].value, &bufinfo, MP_BUFFER_READ);
-                        if (bufinfo.len != 6) {
-                            mp_raise_ValueError(MP_ERROR_TEXT("invalid buffer length"));
-                        }
-                        wifi_set_macaddr(self->if_id, bufinfo.buf);
-                        break;
+                case QS(MP_QSTR_mac): {
+                    mp_buffer_info_t bufinfo;
+                    mp_get_buffer_raise(kwargs->table[i].value, &bufinfo, MP_BUFFER_READ);
+                    if (bufinfo.len != 6) {
+                        mp_raise_ValueError(MP_ERROR_TEXT("invalid buffer length"));
                     }
-                    case QS(MP_QSTR_essid): {
-                        req_if = SOFTAP_IF;
-                        size_t len;
-                        const char *s = mp_obj_str_get_data(kwargs->table[i].value, &len);
-                        len = MIN(len, sizeof(cfg.ap.ssid));
-                        memcpy(cfg.ap.ssid, s, len);
-                        cfg.ap.ssid_len = len;
-                        break;
+                    wifi_set_macaddr(self->if_id, bufinfo.buf);
+                    break;
+                }
+                case QS(MP_QSTR_essid): {
+                    req_if = SOFTAP_IF;
+                    size_t len;
+                    const char *s = mp_obj_str_get_data(kwargs->table[i].value, &len);
+                    len = MIN(len, sizeof(cfg.ap.ssid));
+                    memcpy(cfg.ap.ssid, s, len);
+                    cfg.ap.ssid_len = len;
+                    break;
+                }
+                case QS(MP_QSTR_hidden): {
+                    req_if = SOFTAP_IF;
+                    cfg.ap.ssid_hidden = mp_obj_is_true(kwargs->table[i].value);
+                    break;
+                }
+                case QS(MP_QSTR_authmode): {
+                    req_if = SOFTAP_IF;
+                    cfg.ap.authmode = mp_obj_get_int(kwargs->table[i].value);
+                    break;
+                }
+                case QS(MP_QSTR_password): {
+                    req_if = SOFTAP_IF;
+                    size_t len;
+                    const char *s = mp_obj_str_get_data(kwargs->table[i].value, &len);
+                    len = MIN(len, sizeof(cfg.ap.password) - 1);
+                    memcpy(cfg.ap.password, s, len);
+                    cfg.ap.password[len] = 0;
+                    break;
+                }
+                case QS(MP_QSTR_channel): {
+                    req_if = SOFTAP_IF;
+                    cfg.ap.channel = mp_obj_get_int(kwargs->table[i].value);
+                    break;
+                }
+                case QS(MP_QSTR_dhcp_hostname): {
+                    req_if = STATION_IF;
+                    if (self->if_id == STATION_IF) {
+                        const char *s = mp_obj_str_get_str(kwargs->table[i].value);
+                        wifi_station_set_hostname((char *)s);
                     }
-                    case QS(MP_QSTR_hidden): {
-                        req_if = SOFTAP_IF;
-                        cfg.ap.ssid_hidden = mp_obj_is_true(kwargs->table[i].value);
-                        break;
-                    }
-                    case QS(MP_QSTR_authmode): {
-                        req_if = SOFTAP_IF;
-                        cfg.ap.authmode = mp_obj_get_int(kwargs->table[i].value);
-                        break;
-                    }
-                    case QS(MP_QSTR_password): {
-                        req_if = SOFTAP_IF;
-                        size_t len;
-                        const char *s = mp_obj_str_get_data(kwargs->table[i].value, &len);
-                        len = MIN(len, sizeof(cfg.ap.password) - 1);
-                        memcpy(cfg.ap.password, s, len);
-                        cfg.ap.password[len] = 0;
-                        break;
-                    }
-                    case QS(MP_QSTR_channel): {
-                        req_if = SOFTAP_IF;
-                        cfg.ap.channel = mp_obj_get_int(kwargs->table[i].value);
-                        break;
-                    }
-                    case QS(MP_QSTR_dhcp_hostname): {
-                        req_if = STATION_IF;
-                        if (self->if_id == STATION_IF) {
-                            const char *s = mp_obj_str_get_str(kwargs->table[i].value);
-                            wifi_station_set_hostname((char *)s);
-                        }
-                        break;
-                    }
-                    default:
-                        goto unknown;
+                    break;
+                }
+                default:
+                    goto unknown;
                 }
 #undef QS
             }
@@ -434,42 +434,42 @@ STATIC mp_obj_t esp_config(size_t n_args, const mp_obj_t *args, mp_map_t *kwargs
 
     qstr key = mp_obj_str_get_qstr(args[1]);
     switch (key) {
-        case MP_QSTR_mac: {
-            uint8_t mac[6];
-            wifi_get_macaddr(self->if_id, mac);
-            return mp_obj_new_bytes(mac, sizeof(mac));
+    case MP_QSTR_mac: {
+        uint8_t mac[6];
+        wifi_get_macaddr(self->if_id, mac);
+        return mp_obj_new_bytes(mac, sizeof(mac));
+    }
+    case MP_QSTR_essid:
+        if (self->if_id == STATION_IF) {
+            val = mp_obj_new_str((char *)cfg.sta.ssid, strlen((char *)cfg.sta.ssid));
+        } else {
+            val = mp_obj_new_str((char *)cfg.ap.ssid, cfg.ap.ssid_len);
         }
-        case MP_QSTR_essid:
-            if (self->if_id == STATION_IF) {
-                val = mp_obj_new_str((char *)cfg.sta.ssid, strlen((char *)cfg.sta.ssid));
-            } else {
-                val = mp_obj_new_str((char *)cfg.ap.ssid, cfg.ap.ssid_len);
-            }
-            break;
-        case MP_QSTR_hidden:
-            req_if = SOFTAP_IF;
-            val = mp_obj_new_bool(cfg.ap.ssid_hidden);
-            break;
-        case MP_QSTR_authmode:
-            req_if = SOFTAP_IF;
-            val = MP_OBJ_NEW_SMALL_INT(cfg.ap.authmode);
-            break;
-        case MP_QSTR_channel:
-            req_if = SOFTAP_IF;
-            val = MP_OBJ_NEW_SMALL_INT(cfg.ap.channel);
-            break;
-        case MP_QSTR_dhcp_hostname: {
-            req_if = STATION_IF;
-            char *s = wifi_station_get_hostname();
-            if (s == NULL) {
-                val = MP_OBJ_NEW_QSTR(MP_QSTR_);
-            } else {
-                val = mp_obj_new_str(s, strlen(s));
-            }
-            break;
+        break;
+    case MP_QSTR_hidden:
+        req_if = SOFTAP_IF;
+        val = mp_obj_new_bool(cfg.ap.ssid_hidden);
+        break;
+    case MP_QSTR_authmode:
+        req_if = SOFTAP_IF;
+        val = MP_OBJ_NEW_SMALL_INT(cfg.ap.authmode);
+        break;
+    case MP_QSTR_channel:
+        req_if = SOFTAP_IF;
+        val = MP_OBJ_NEW_SMALL_INT(cfg.ap.channel);
+        break;
+    case MP_QSTR_dhcp_hostname: {
+        req_if = STATION_IF;
+        char *s = wifi_station_get_hostname();
+        if (s == NULL) {
+            val = MP_OBJ_NEW_QSTR(MP_QSTR_);
+        } else {
+            val = mp_obj_new_str(s, strlen(s));
         }
-        default:
-            goto unknown;
+        break;
+    }
+    default:
+        goto unknown;
     }
 
     // We post-check interface requirements to save on code size
@@ -518,7 +518,7 @@ STATIC const mp_rom_map_elem_t mp_module_network_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_WLAN), MP_ROM_PTR(&get_wlan_obj) },
     { MP_ROM_QSTR(MP_QSTR_phy_mode), MP_ROM_PTR(&esp_phy_mode_obj) },
 
-    #if MODNETWORK_INCLUDE_CONSTANTS
+#if MODNETWORK_INCLUDE_CONSTANTS
     { MP_ROM_QSTR(MP_QSTR_STA_IF), MP_ROM_INT(STATION_IF)},
     { MP_ROM_QSTR(MP_QSTR_AP_IF), MP_ROM_INT(SOFTAP_IF)},
 
@@ -538,7 +538,7 @@ STATIC const mp_rom_map_elem_t mp_module_network_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_AUTH_WPA_PSK), MP_ROM_INT(AUTH_WPA_PSK) },
     { MP_ROM_QSTR(MP_QSTR_AUTH_WPA2_PSK), MP_ROM_INT(AUTH_WPA2_PSK) },
     { MP_ROM_QSTR(MP_QSTR_AUTH_WPA_WPA2_PSK), MP_ROM_INT(AUTH_WPA_WPA2_PSK) },
-    #endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(mp_module_network_globals, mp_module_network_globals_table);

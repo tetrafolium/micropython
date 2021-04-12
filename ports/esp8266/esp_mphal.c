@@ -71,14 +71,14 @@ int mp_hal_stdin_rx_chr(void) {
         if (c != -1) {
             return c;
         }
-        #if 0
+#if 0
         // Idles CPU but need more testing before enabling
         if (!ets_loop_iter()) {
             asm ("waiti 0");
         }
-        #else
+#else
         mp_hal_delay_us(1);
-        #endif
+#endif
     }
 }
 
@@ -154,9 +154,9 @@ void __assert_func(const char *file, int line, const char *func, const char *exp
 
 // May be called by uart0_rx_intr_handler.
 void MP_FASTCODE(mp_hal_signal_input)(void) {
-    #if MICROPY_REPL_EVENT_DRIVEN
+#if MICROPY_REPL_EVENT_DRIVEN
     system_os_post(UART_TASK_ID, 0, 0);
-    #endif
+#endif
 }
 
 STATIC void dupterm_task_handler(os_event_t *evt) {

@@ -56,7 +56,7 @@ void led_init(void) {
 
         // ALT mode for GPIO is always 5
         IOMUXC_SetPinMux(led_pin->muxRegister, 5U, 0, 0, led_pin->configRegister,
-            1U);                 // Software Input On Field: Input Path is determined by functionality
+                         1U);                 // Software Input On Field: Input Path is determined by functionality
         IOMUXC_SetPinConfig(led_pin->muxRegister, 5U, 0, 0, led_pin->configRegister, 0x10B0U);
         MICROPY_HW_LED_OFF(led_pin);
     }

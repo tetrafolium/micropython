@@ -87,12 +87,12 @@ static const void *const entry_table[256] = {
     [MP_BC_BUILD_LIST] = &&entry_MP_BC_BUILD_LIST,
     [MP_BC_BUILD_MAP] = &&entry_MP_BC_BUILD_MAP,
     [MP_BC_STORE_MAP] = &&entry_MP_BC_STORE_MAP,
-    #if MICROPY_PY_BUILTINS_SET
+#if MICROPY_PY_BUILTINS_SET
     [MP_BC_BUILD_SET] = &&entry_MP_BC_BUILD_SET,
-    #endif
-    #if MICROPY_PY_BUILTINS_SLICE
+#endif
+#if MICROPY_PY_BUILTINS_SLICE
     [MP_BC_BUILD_SLICE] = &&entry_MP_BC_BUILD_SLICE,
-    #endif
+#endif
     [MP_BC_STORE_COMP] = &&entry_MP_BC_STORE_COMP,
     [MP_BC_UNPACK_SEQUENCE] = &&entry_MP_BC_UNPACK_SEQUENCE,
     [MP_BC_UNPACK_EX] = &&entry_MP_BC_UNPACK_EX,

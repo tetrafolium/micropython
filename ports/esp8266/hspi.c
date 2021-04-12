@@ -117,11 +117,11 @@ void spi_clock(uint8_t spi_no, uint16_t prediv, uint8_t cntdiv) {
         WRITE_PERI_REG(SPI_CLOCK(spi_no), SPI_CLK_EQU_SYSCLK);
     } else {
         WRITE_PERI_REG(SPI_CLOCK(spi_no),
-            (((prediv - 1) & SPI_CLKDIV_PRE) << SPI_CLKDIV_PRE_S) |
-            (((cntdiv - 1) & SPI_CLKCNT_N) << SPI_CLKCNT_N_S) |
-            (((cntdiv >> 1) & SPI_CLKCNT_H) << SPI_CLKCNT_H_S) |
-            ((0 & SPI_CLKCNT_L) << SPI_CLKCNT_L_S)
-            );
+                       (((prediv - 1) & SPI_CLKDIV_PRE) << SPI_CLKDIV_PRE_S) |
+                       (((cntdiv - 1) & SPI_CLKCNT_N) << SPI_CLKCNT_N_S) |
+                       (((cntdiv >> 1) & SPI_CLKCNT_H) << SPI_CLKCNT_H_S) |
+                       ((0 & SPI_CLKCNT_L) << SPI_CLKCNT_L_S)
+                      );
     }
 }
 
@@ -185,9 +185,9 @@ Note: all data is assumed to be stored in the lower bits of the data variables
 (for anything <32 bits).
 */
 uint32_t spi_transaction(uint8_t spi_no, uint8_t cmd_bits, uint16_t cmd_data,
-    uint32_t addr_bits, uint32_t addr_data,
-    uint32_t dout_bits, uint32_t dout_data,
-    uint32_t din_bits, uint32_t dummy_bits) {
+                         uint32_t addr_bits, uint32_t addr_data,
+                         uint32_t dout_bits, uint32_t dout_data,
+                         uint32_t din_bits, uint32_t dummy_bits) {
     while (spi_busy(spi_no)) {
     }
     ;                             // Wait for SPI to be ready
@@ -195,7 +195,7 @@ uint32_t spi_transaction(uint8_t spi_no, uint8_t cmd_bits, uint16_t cmd_data,
 // Enable SPI Functions
     // Disable MOSI, MISO, ADDR, COMMAND, DUMMY in case previously set.
     CLEAR_PERI_REG_MASK(SPI_USER(spi_no), SPI_USR_MOSI | SPI_USR_MISO |
-        SPI_USR_COMMAND | SPI_USR_ADDR | SPI_USR_DUMMY);
+                        SPI_USR_COMMAND | SPI_USR_ADDR | SPI_USR_DUMMY);
 
     // Enable functions based on number of bits. 0 bits = disabled.
     // This is rather inefficient but allows for a very generic function.
@@ -213,14 +213,14 @@ uint32_t spi_transaction(uint8_t spi_no, uint8_t cmd_bits, uint16_t cmd_data,
 
 // Setup Bitlengths
     WRITE_PERI_REG(SPI_USER1(spi_no),
-        // Number of bits in Address
-        ((addr_bits - 1) & SPI_USR_ADDR_BITLEN) << SPI_USR_ADDR_BITLEN_S |
-            // Number of bits to Send
-                ((dout_bits - 1) & SPI_USR_MOSI_BITLEN) << SPI_USR_MOSI_BITLEN_S |
-            // Number of bits to receive
-                ((din_bits - 1) & SPI_USR_MISO_BITLEN) << SPI_USR_MISO_BITLEN_S |
-            // Number of Dummy bits to insert
-                ((dummy_bits - 1) & SPI_USR_DUMMY_CYCLELEN) << SPI_USR_DUMMY_CYCLELEN_S);
+                   // Number of bits in Address
+                   ((addr_bits - 1) & SPI_USR_ADDR_BITLEN) << SPI_USR_ADDR_BITLEN_S |
+                   // Number of bits to Send
+                   ((dout_bits - 1) & SPI_USR_MOSI_BITLEN) << SPI_USR_MOSI_BITLEN_S |
+                   // Number of bits to receive
+                   ((din_bits - 1) & SPI_USR_MISO_BITLEN) << SPI_USR_MISO_BITLEN_S |
+                   // Number of Dummy bits to insert
+                   ((dummy_bits - 1) & SPI_USR_DUMMY_CYCLELEN) << SPI_USR_DUMMY_CYCLELEN_S);
 
 // Setup Command Data
     if (cmd_bits) {
@@ -231,9 +231,9 @@ uint32_t spi_transaction(uint8_t spi_no, uint8_t cmd_bits, uint16_t cmd_data,
         // Swap byte order
         command = ((command >> 8) & 0xff) | ((command << 8) & 0xff00);
         WRITE_PERI_REG(SPI_USER2(spi_no), (
-            (((cmd_bits - 1) & SPI_USR_COMMAND_BITLEN) << SPI_USR_COMMAND_BITLEN_S) |
-            (command & SPI_USR_COMMAND_VALUE)
-            ));
+                           (((cmd_bits - 1) & SPI_USR_COMMAND_BITLEN) << SPI_USR_COMMAND_BITLEN_S) |
+                           (command & SPI_USR_COMMAND_VALUE)
+                       ));
     }
 
 // Setup Address Data
@@ -266,11 +266,11 @@ uint32_t spi_transaction(uint8_t spi_no, uint8_t cmd_bits, uint16_t cmd_data,
                 // The code below shifts it out as 0xA4 followed by 0xD as you
                 // might require.
                 WRITE_PERI_REG(SPI_W0(spi_no), (
-                    (0xFFFFFFFF << (dout_bits - dout_extra_bits) & dout_data)
-                        << (8 - dout_extra_bits) |
-                            ((0xFFFFFFFF >> (32 - (dout_bits - dout_extra_bits)))
-                        & dout_data)
-                    ));
+                                   (0xFFFFFFFF << (dout_bits - dout_extra_bits) & dout_data)
+                                   << (8 - dout_extra_bits) |
+                                   ((0xFFFFFFFF >> (32 - (dout_bits - dout_extra_bits)))
+                                    & dout_data)
+                               ));
             } else {
                 WRITE_PERI_REG(SPI_W0(spi_no), dout_data);
             }
@@ -312,14 +312,14 @@ inline void spi_tx8fast(uint8_t spi_no, uint8_t dout_data) {
 // Enable SPI Functions
     // Disable MOSI, MISO, ADDR, COMMAND, DUMMY in case previously set.
     CLEAR_PERI_REG_MASK(SPI_USER(spi_no), SPI_USR_MOSI | SPI_USR_MISO |
-        SPI_USR_COMMAND | SPI_USR_ADDR | SPI_USR_DUMMY);
+                        SPI_USR_COMMAND | SPI_USR_ADDR | SPI_USR_DUMMY);
 
 // Setup Bitlengths
     WRITE_PERI_REG(SPI_USER1(spi_no),
-        // Number of bits to Send
-        ((8 - 1) & SPI_USR_MOSI_BITLEN) << SPI_USR_MOSI_BITLEN_S |
-            // Number of bits to receive
-                ((8 - 1) & SPI_USR_MISO_BITLEN) << SPI_USR_MISO_BITLEN_S);
+                   // Number of bits to Send
+                   ((8 - 1) & SPI_USR_MOSI_BITLEN) << SPI_USR_MOSI_BITLEN_S |
+                   // Number of bits to receive
+                   ((8 - 1) & SPI_USR_MISO_BITLEN) << SPI_USR_MISO_BITLEN_S);
 
 
 // Setup DOUT data

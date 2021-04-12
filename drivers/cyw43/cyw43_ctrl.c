@@ -76,15 +76,15 @@ static inline void cyw43_delay_ms(uint32_t ms) {
 // Initialisation and polling
 
 void cyw43_init(cyw43_t *self) {
-    #ifdef pyb_pin_WL_HOST_WAKE
+#ifdef pyb_pin_WL_HOST_WAKE
     mp_hal_pin_config(pyb_pin_WL_HOST_WAKE, MP_HAL_PIN_MODE_INPUT, MP_HAL_PIN_PULL_NONE, 0);
-    #endif
+#endif
     mp_hal_pin_config(pyb_pin_WL_REG_ON, MP_HAL_PIN_MODE_OUTPUT, MP_HAL_PIN_PULL_NONE, 0);
     mp_hal_pin_low(pyb_pin_WL_REG_ON);
-    #ifdef pyb_pin_WL_RFSW_VDD
+#ifdef pyb_pin_WL_RFSW_VDD
     mp_hal_pin_config(pyb_pin_WL_RFSW_VDD, MP_HAL_PIN_MODE_OUTPUT, MP_HAL_PIN_PULL_NONE, 0); // RF-switch power
     mp_hal_pin_low(pyb_pin_WL_RFSW_VDD);
-    #endif
+#endif
 
     cyw43_ll_init(&self->cyw43_ll, self);
 
@@ -115,10 +115,10 @@ void cyw43_deinit(cyw43_t *self) {
     SDMMC1->MASK &= ~SDMMC_MASK_SDIOITIE;
     cyw43_poll = NULL;
 
-    #ifdef pyb_pin_WL_RFSW_VDD
+#ifdef pyb_pin_WL_RFSW_VDD
     // Turn the RF-switch off
     mp_hal_pin_low(pyb_pin_WL_RFSW_VDD);
-    #endif
+#endif
 
     // Power down the WL chip and the SDIO bus
     mp_hal_pin_low(pyb_pin_WL_REG_ON);
@@ -163,12 +163,12 @@ STATIC int cyw43_ensure_up(cyw43_t *self) {
     // Enable async events from low-level driver
     cyw43_sleep = CYW43_SLEEP_MAX;
     cyw43_poll = cyw43_poll_func;
-    #if USE_SDIOIT
+#if USE_SDIOIT
     SDMMC1->MASK |= SDMMC_MASK_SDIOITIE;
-    #else
+#else
     extern void extint_set(const pin_obj_t *pin, uint32_t mode);
     extint_set(pyb_pin_WL_HOST_WAKE, GPIO_MODE_IT_FALLING);
-    #endif
+#endif
 
     CYW_EXIT
 
@@ -203,35 +203,35 @@ STATIC void cyw43_poll_func(void) {
 
     if (cyw43_sleep == 0) {
         cyw43_ll_bus_sleep(&self->cyw43_ll, true);
-        #if !USE_SDIOIT
+#if !USE_SDIOIT
         sdio_deinit(); // save power while WLAN bus sleeps
-        #endif
+#endif
     }
 
-    #if USE_SDIOIT
+#if USE_SDIOIT
     SDMMC1->MASK |= SDMMC_MASK_SDIOITIE;
-    #endif
+#endif
 }
 
 /*******************************************************************************/
 // Callback interface to low-level driver
 
 int cyw43_cb_read_host_interrupt_pin(void *cb_data) {
-    #ifdef pyb_pin_WL_HOST_WAKE
+#ifdef pyb_pin_WL_HOST_WAKE
     return mp_hal_pin_read(pyb_pin_WL_HOST_WAKE);
-    #else
+#else
     return mp_hal_pin_read(pyb_pin_WL_SDIO_1);
-    #endif
+#endif
 }
 
 void cyw43_cb_ensure_awake(void *cb_data) {
     cyw43_sleep = CYW43_SLEEP_MAX;
-    #if !USE_SDIOIT
+#if !USE_SDIOIT
     if (__HAL_RCC_SDMMC1_IS_CLK_DISABLED()) {
         __HAL_RCC_SDMMC1_CLK_ENABLE(); // enable SDIO peripheral
         sdio_enable_high_speed_4bit();
     }
-    #endif
+#endif
 }
 
 STATIC const char *cyw43_async_event_name_table[89] = {
@@ -253,20 +253,20 @@ STATIC const char *cyw43_async_event_name_table[89] = {
 
 STATIC void cyw43_dump_async_event(const cyw43_async_event_t *ev) {
     printf("[% 8d] ASYNC(%04x,",
-        (int)mp_hal_ticks_ms(),
-        (unsigned int)ev->flags
-    );
+           (int)mp_hal_ticks_ms(),
+           (unsigned int)ev->flags
+          );
     if (ev->event_type < MP_ARRAY_SIZE(cyw43_async_event_name_table)
-        && cyw43_async_event_name_table[ev->event_type] != NULL) {
+            && cyw43_async_event_name_table[ev->event_type] != NULL) {
         printf("%s", cyw43_async_event_name_table[ev->event_type]);
     } else {
         printf("%u", (unsigned int)ev->event_type);
     }
     printf(",%u,%u,%u)\n",
-        (unsigned int)ev->status,
-        (unsigned int)ev->reason,
-        (unsigned int)ev->interface
-    );
+           (unsigned int)ev->status,
+           (unsigned int)ev->reason,
+           (unsigned int)ev->interface
+          );
 }
 
 void cyw43_cb_process_async_event(void *cb_data, const cyw43_async_event_t *ev) {
@@ -293,15 +293,15 @@ void cyw43_cb_process_async_event(void *cb_data, const cyw43_async_event_t *ev) 
         cyw43_tcpip_set_link_down(self, CYW43_ITF_STA);
         self->wifi_join_state = 0x0000;
 
-    /*
-    } else if (ev->event_type == CYW43_EV_DISASSOC_IND) {
-        if (ev->interface == CYW43_ITF_AP) {
-            // Station disassociated with our AP, let DHCP server know so it can free the IP address
-            dhcp_server_disassoc(&self->dhcp_server, buf + 24);
-        }
-    */
+        /*
+        } else if (ev->event_type == CYW43_EV_DISASSOC_IND) {
+            if (ev->interface == CYW43_ITF_AP) {
+                // Station disassociated with our AP, let DHCP server know so it can free the IP address
+                dhcp_server_disassoc(&self->dhcp_server, buf + 24);
+            }
+        */
 
-    // WiFi join events
+        // WiFi join events
     } else if (ev->event_type == CYW43_EV_PRUNE) {
         if (ev->status == 0 && ev->reason == 8) {
             // RSN mismatch, retry join with WPA auth
@@ -407,10 +407,10 @@ STATIC int cyw43_wifi_on(cyw43_t *self, uint32_t country) {
         return ret;
     }
 
-    #ifdef pyb_pin_WL_RFSW_VDD
+#ifdef pyb_pin_WL_RFSW_VDD
     // Turn the RF-switch on
     mp_hal_pin_high(pyb_pin_WL_RFSW_VDD);
-    #endif
+#endif
 
     CYW_ENTER
     ret = cyw43_ll_wifi_on(&self->cyw43_ll, country);

@@ -130,7 +130,7 @@ STATIC mp_obj_t vfs_posix_open(mp_obj_t self_in, mp_obj_t path_in, mp_obj_t mode
     mp_obj_vfs_posix_t *self = MP_OBJ_TO_PTR(self_in);
     const char *mode = mp_obj_str_get_str(mode_in);
     if (self->readonly
-        && (strchr(mode, 'w') != NULL || strchr(mode, 'a') != NULL || strchr(mode, '+') != NULL)) {
+            && (strchr(mode, 'w') != NULL || strchr(mode, 'a') != NULL || strchr(mode, '+') != NULL)) {
         mp_raise_OSError(MP_EROFS);
     }
     if (!mp_obj_is_small_int(path_in)) {
@@ -197,10 +197,10 @@ STATIC mp_obj_t vfs_posix_ilistdir_it_iternext(mp_obj_t self_in) {
             t->items[0] = mp_obj_new_bytes((const byte *)fn, strlen(fn));
         }
 
-        #ifdef _DIRENT_HAVE_D_TYPE
-        #ifdef DTTOIF
+#ifdef _DIRENT_HAVE_D_TYPE
+#ifdef DTTOIF
         t->items[1] = MP_OBJ_NEW_SMALL_INT(DTTOIF(dirent->d_type));
-        #else
+#else
         if (dirent->d_type == DT_DIR) {
             t->items[1] = MP_OBJ_NEW_SMALL_INT(MP_S_IFDIR);
         } else if (dirent->d_type == DT_REG) {
@@ -208,17 +208,17 @@ STATIC mp_obj_t vfs_posix_ilistdir_it_iternext(mp_obj_t self_in) {
         } else {
             t->items[1] = MP_OBJ_NEW_SMALL_INT(dirent->d_type);
         }
-        #endif
-        #else
+#endif
+#else
         // DT_UNKNOWN should have 0 value on any reasonable system
         t->items[1] = MP_OBJ_NEW_SMALL_INT(0);
-        #endif
+#endif
 
-        #ifdef _DIRENT_HAVE_D_INO
+#ifdef _DIRENT_HAVE_D_INO
         t->items[2] = MP_OBJ_NEW_SMALL_INT(dirent->d_ino);
-        #else
+#else
         t->items[2] = MP_OBJ_NEW_SMALL_INT(0);
-        #endif
+#endif
 
         return MP_OBJ_FROM_PTR(t);
     }

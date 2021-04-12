@@ -140,23 +140,23 @@ int readline_process_char(int c) {
         } else if (c == CHAR_CTRL_A) {
             // CTRL-A with non-empty line is go-to-start-of-line
             goto home_key;
-        #if MICROPY_REPL_EMACS_KEYS
+#if MICROPY_REPL_EMACS_KEYS
         } else if (c == CHAR_CTRL_B) {
             // CTRL-B with non-empty line is go-back-one-char
             goto left_arrow_key;
-        #endif
+#endif
         } else if (c == CHAR_CTRL_C) {
             // CTRL-C with non-empty line is cancel
             return c;
-        #if MICROPY_REPL_EMACS_KEYS
+#if MICROPY_REPL_EMACS_KEYS
         } else if (c == CHAR_CTRL_D) {
             // CTRL-D with non-empty line is delete-at-cursor
             goto delete_key;
-        #endif
+#endif
         } else if (c == CHAR_CTRL_E) {
             // CTRL-E is go-to-end-of-line
             goto end_key;
-        #if MICROPY_REPL_EMACS_KEYS
+#if MICROPY_REPL_EMACS_KEYS
         } else if (c == CHAR_CTRL_F) {
             // CTRL-F with non-empty line is go-forward-one-char
             goto right_arrow_key;
@@ -177,11 +177,11 @@ int readline_process_char(int c) {
             // set redraw parameters
             redraw_step_back = rl.cursor_pos - rl.orig_line_len;
             redraw_from_cursor = true;
-        #endif
-        #if MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
+#endif
+#if MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
         } else if (c == CHAR_CTRL_W) {
             goto backward_kill_word;
-        #endif
+#endif
         } else if (c == '\r') {
             // newline
             mp_hal_stdout_tx_str("\r\n");
@@ -194,7 +194,7 @@ int readline_process_char(int c) {
             // backspace/delete
             if (rl.cursor_pos > rl.orig_line_len) {
                 // work out how many chars to backspace
-                #if MICROPY_REPL_AUTO_INDENT
+#if MICROPY_REPL_AUTO_INDENT
                 int nspace = 0;
                 for (size_t i = rl.orig_line_len; i < rl.cursor_pos; i++) {
                     if (rl.line->buf[i] != ' ') {
@@ -208,9 +208,9 @@ int readline_process_char(int c) {
                 } else {
                     nspace = 4;
                 }
-                #else
+#else
                 int nspace = 1;
-                #endif
+#endif
 
                 // do the backspace
                 vstr_cut_out_bytes(rl.line, rl.cursor_pos - nspace, nspace);
@@ -218,7 +218,7 @@ int readline_process_char(int c) {
                 redraw_step_back = nspace;
                 redraw_from_cursor = true;
             }
-        #if MICROPY_HELPER_REPL
+#if MICROPY_HELPER_REPL
         } else if (c == 9) {
             // tab magic
             const char *compl_str;
@@ -239,7 +239,7 @@ int readline_process_char(int c) {
                 redraw_from_cursor = true;
                 redraw_step_forward = compl_len;
             }
-        #endif
+#endif
         } else if (32 <= c && c <= 126) {
             // printable character
             vstr_ins_char(rl.line, rl.cursor_pos, c);
@@ -249,46 +249,46 @@ int readline_process_char(int c) {
         }
     } else if (rl.escape_seq == ESEQ_ESC) {
         switch (c) {
-            case '[':
-                rl.escape_seq = ESEQ_ESC_BRACKET;
-                break;
-            case 'O':
-                rl.escape_seq = ESEQ_ESC_O;
-                break;
-            #if MICROPY_REPL_EMACS_WORDS_MOVE
-            case 'b':
+        case '[':
+            rl.escape_seq = ESEQ_ESC_BRACKET;
+            break;
+        case 'O':
+            rl.escape_seq = ESEQ_ESC_O;
+            break;
+#if MICROPY_REPL_EMACS_WORDS_MOVE
+        case 'b':
 #if MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
 backward_word:
 #endif
-                redraw_step_back = cursor_count_word(0);
-                rl.escape_seq = ESEQ_NONE;
-                break;
-            case 'f':
+            redraw_step_back = cursor_count_word(0);
+            rl.escape_seq = ESEQ_NONE;
+            break;
+        case 'f':
 #if MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
 forward_word:
 #endif
-                redraw_step_forward = cursor_count_word(1);
-                rl.escape_seq = ESEQ_NONE;
-                break;
-            case 'd':
-                vstr_cut_out_bytes(rl.line, rl.cursor_pos, cursor_count_word(1));
-                redraw_from_cursor = true;
-                rl.escape_seq = ESEQ_NONE;
-                break;
-            case 127:
+            redraw_step_forward = cursor_count_word(1);
+            rl.escape_seq = ESEQ_NONE;
+            break;
+        case 'd':
+            vstr_cut_out_bytes(rl.line, rl.cursor_pos, cursor_count_word(1));
+            redraw_from_cursor = true;
+            rl.escape_seq = ESEQ_NONE;
+            break;
+        case 127:
 #if MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
 backward_kill_word:
 #endif
-                redraw_step_back = cursor_count_word(0);
-                vstr_cut_out_bytes(rl.line, rl.cursor_pos - redraw_step_back, redraw_step_back);
-                redraw_from_cursor = true;
-                rl.escape_seq = ESEQ_NONE;
-                break;
-            #endif
-            default:
-                DEBUG_printf("(ESC %d)", c);
-                rl.escape_seq = ESEQ_NONE;
-                break;
+            redraw_step_back = cursor_count_word(0);
+            vstr_cut_out_bytes(rl.line, rl.cursor_pos - redraw_step_back, redraw_step_back);
+            redraw_from_cursor = true;
+            rl.escape_seq = ESEQ_NONE;
+            break;
+#endif
+        default:
+            DEBUG_printf("(ESC %d)", c);
+            rl.escape_seq = ESEQ_NONE;
+            break;
         }
     } else if (rl.escape_seq == ESEQ_ESC_BRACKET) {
         if ('0' <= c && c <= '9') {
@@ -376,7 +376,7 @@ delete_key:
             } else {
                 DEBUG_printf("(ESC [ %c %d)", rl.escape_seq_buf[0], c);
             }
-        #if MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
+#if MICROPY_REPL_EMACS_EXTRA_WORDS_MOVE
         } else if (c == ';' && rl.escape_seq_buf[0] == '1') {
             // ';' is used to separate parameters. so first parameter was '1',
             // that's used for sequences like ctrl+left, which we will try to parse.
@@ -393,20 +393,20 @@ delete_key:
         } else if (rl.escape_seq_buf[0] == '5' && c == 'D') {
             // ctrl+left
             goto backward_word;
-        #endif
+#endif
         } else {
             DEBUG_printf("(ESC [ %c %d)", rl.escape_seq_buf[0], c);
         }
         rl.escape_seq = ESEQ_NONE;
     } else if (rl.escape_seq == ESEQ_ESC_O) {
         switch (c) {
-            case 'H':
-                goto home_key;
-            case 'F':
-                goto end_key;
-            default:
-                DEBUG_printf("(ESC O %d)", c);
-                rl.escape_seq = ESEQ_NONE;
+        case 'H':
+            goto home_key;
+        case 'F':
+            goto end_key;
+        default:
+            DEBUG_printf("(ESC O %d)", c);
+            rl.escape_seq = ESEQ_NONE;
         }
     } else {
         rl.escape_seq = ESEQ_NONE;
@@ -487,9 +487,9 @@ void readline_note_newline(const char *prompt) {
     rl.cursor_pos = rl.orig_line_len;
     rl.prompt = prompt;
     mp_hal_stdout_tx_str(prompt);
-    #if MICROPY_REPL_AUTO_INDENT
+#if MICROPY_REPL_AUTO_INDENT
     readline_auto_indent();
-    #endif
+#endif
 }
 
 void readline_init(vstr_t *line, const char *prompt) {
@@ -501,9 +501,9 @@ void readline_init(vstr_t *line, const char *prompt) {
     rl.cursor_pos = rl.orig_line_len;
     rl.prompt = prompt;
     mp_hal_stdout_tx_str(prompt);
-    #if MICROPY_REPL_AUTO_INDENT
+#if MICROPY_REPL_AUTO_INDENT
     readline_auto_indent();
-    #endif
+#endif
 }
 
 int readline(vstr_t *line, const char *prompt) {
@@ -519,8 +519,8 @@ int readline(vstr_t *line, const char *prompt) {
 
 void readline_push_history(const char *line) {
     if (line[0] != '\0'
-        && (MP_STATE_PORT(readline_hist)[0] == NULL
-            || strcmp(MP_STATE_PORT(readline_hist)[0], line) != 0)) {
+            && (MP_STATE_PORT(readline_hist)[0] == NULL
+                || strcmp(MP_STATE_PORT(readline_hist)[0], line) != 0)) {
         // a line which is not empty and different from the last one
         // so update the history
         char *most_recent_hist = str_dup_maybe(line);

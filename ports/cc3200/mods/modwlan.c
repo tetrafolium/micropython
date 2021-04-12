@@ -54,32 +54,32 @@
  DEFINE TYPES
  ******************************************************************************/
 // Status bits - These are used to set/reset the corresponding bits in a given variable
-typedef enum{
+typedef enum {
     STATUS_BIT_NWP_INIT = 0,        // If this bit is set: Network Processor is
-                                    // powered up
+    // powered up
 
     STATUS_BIT_CONNECTION,          // If this bit is set: the device is connected to
-                                    // the AP or client is connected to device (AP)
+    // the AP or client is connected to device (AP)
 
     STATUS_BIT_IP_LEASED,           // If this bit is set: the device has leased IP to
-                                    // any connected client
+    // any connected client
 
     STATUS_BIT_IP_ACQUIRED,          // If this bit is set: the device has acquired an IP
 
     STATUS_BIT_SMARTCONFIG_START,   // If this bit is set: the SmartConfiguration
-                                    // process is started from SmartConfig app
+    // process is started from SmartConfig app
 
     STATUS_BIT_P2P_DEV_FOUND,       // If this bit is set: the device (P2P mode)
-                                    // found any p2p-device in scan
+    // found any p2p-device in scan
 
     STATUS_BIT_P2P_REQ_RECEIVED,    // If this bit is set: the device (P2P mode)
-                                    // found any p2p-negotiation request
+    // found any p2p-negotiation request
 
     STATUS_BIT_CONNECTION_FAILED,   // If this bit is set: the device(P2P mode)
-                                    // connection to client(or reverse way) is failed
+    // connection to client(or reverse way) is failed
 
     STATUS_BIT_PING_DONE            // If this bit is set: the device has completed
-                                    // the ping operation
+    // the ping operation
 } e_StatusBits;
 
 /******************************************************************************
@@ -115,19 +115,19 @@ typedef enum{
  DECLARE PRIVATE DATA
  ******************************************************************************/
 STATIC wlan_obj_t wlan_obj = {
-        .mode = -1,
-        .status = 0,
-        .ip = 0,
-        .auth = MICROPY_PORT_WLAN_AP_SECURITY,
-        .channel = MICROPY_PORT_WLAN_AP_CHANNEL,
-        .ssid = MICROPY_PORT_WLAN_AP_SSID,
-        .key = MICROPY_PORT_WLAN_AP_KEY,
-        .mac = {0},
-        //.ssid_o = {0},
-        //.bssid = {0},
-    #if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
-        .servers_enabled = false,
-    #endif
+    .mode = -1,
+    .status = 0,
+    .ip = 0,
+    .auth = MICROPY_PORT_WLAN_AP_SECURITY,
+    .channel = MICROPY_PORT_WLAN_AP_CHANNEL,
+    .ssid = MICROPY_PORT_WLAN_AP_SSID,
+    .key = MICROPY_PORT_WLAN_AP_KEY,
+    .mac = {0},
+    //.ssid_o = {0},
+    //.bssid = {0},
+#if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
+    .servers_enabled = false,
+#endif
 };
 
 STATIC const mp_irq_methods_t wlan_irq_methods;
@@ -161,7 +161,7 @@ STATIC void wlan_set_antenna (uint8_t antenna);
 #endif
 STATIC void wlan_sl_disconnect (void);
 STATIC modwlan_Status_t wlan_do_connect (const char* ssid, uint32_t ssid_len, const char* bssid, uint8_t sec,
-                                         const char* key, uint32_t key_len, int32_t timeout);
+        const char* key, uint32_t key_len, int32_t timeout);
 STATIC void wlan_get_sl_mac (void);
 STATIC void wlan_wep_key_unhexlify (const char *key, char *key_out);
 STATIC void wlan_lpds_irq_enable (mp_obj_t self_in);
@@ -184,62 +184,62 @@ void SimpleLinkWlanEventHandler(SlWlanEvent_t *pWlanEvent) {
 
     switch(pWlanEvent->Event)
     {
-        case SL_WLAN_CONNECT_EVENT:
-        {
-            //slWlanConnectAsyncResponse_t *pEventData = &pWlanEvent->EventData.STAandP2PModeWlanConnected;
-            // copy the new connection data
-            //memcpy(wlan_obj.bssid, pEventData->bssid, SL_BSSID_LENGTH);
-            //memcpy(wlan_obj.ssid_o, pEventData->ssid_name, pEventData->ssid_len);
-            //wlan_obj.ssid_o[pEventData->ssid_len] = '\0';
-            SET_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
-        #if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
-            // we must reset the servers in case that the last connection
-            // was lost without any notification being received
-            servers_reset();
-        #endif
-        }
-            break;
-        case SL_WLAN_DISCONNECT_EVENT:
-            CLR_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
-            CLR_STATUS_BIT(wlan_obj.status, STATUS_BIT_IP_ACQUIRED);
-        #if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
-            servers_reset();
-            servers_wlan_cycle_power();
-        #endif
-            break;
-        case SL_WLAN_STA_CONNECTED_EVENT:
-        {
-            //slPeerInfoAsyncResponse_t *pEventData = &pWlanEvent->EventData.APModeStaConnected;
-            // get the mac address and name of the connected device
-            //memcpy(wlan_obj.bssid, pEventData->mac, SL_BSSID_LENGTH);
-            //memcpy(wlan_obj.ssid_o, pEventData->go_peer_device_name, pEventData->go_peer_device_name_len);
-            //wlan_obj.ssid_o[pEventData->go_peer_device_name_len] = '\0';
-            SET_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
-        #if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
-            // we must reset the servers in case that the last connection
-            // was lost without any notification being received
-            servers_reset();
-        #endif
-        }
-            break;
-        case SL_WLAN_STA_DISCONNECTED_EVENT:
-            CLR_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
-        #if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
-            servers_reset();
-            servers_wlan_cycle_power();
-        #endif
-            break;
-        case SL_WLAN_P2P_DEV_FOUND_EVENT:
-            // TODO
-            break;
-        case SL_WLAN_P2P_NEG_REQ_RECEIVED_EVENT:
-            // TODO
-            break;
-        case SL_WLAN_CONNECTION_FAILED_EVENT:
-            // TODO
-            break;
-        default:
-            break;
+    case SL_WLAN_CONNECT_EVENT:
+    {
+        //slWlanConnectAsyncResponse_t *pEventData = &pWlanEvent->EventData.STAandP2PModeWlanConnected;
+        // copy the new connection data
+        //memcpy(wlan_obj.bssid, pEventData->bssid, SL_BSSID_LENGTH);
+        //memcpy(wlan_obj.ssid_o, pEventData->ssid_name, pEventData->ssid_len);
+        //wlan_obj.ssid_o[pEventData->ssid_len] = '\0';
+        SET_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
+#if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
+        // we must reset the servers in case that the last connection
+        // was lost without any notification being received
+        servers_reset();
+#endif
+    }
+    break;
+    case SL_WLAN_DISCONNECT_EVENT:
+        CLR_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
+        CLR_STATUS_BIT(wlan_obj.status, STATUS_BIT_IP_ACQUIRED);
+#if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
+        servers_reset();
+        servers_wlan_cycle_power();
+#endif
+        break;
+    case SL_WLAN_STA_CONNECTED_EVENT:
+    {
+        //slPeerInfoAsyncResponse_t *pEventData = &pWlanEvent->EventData.APModeStaConnected;
+        // get the mac address and name of the connected device
+        //memcpy(wlan_obj.bssid, pEventData->mac, SL_BSSID_LENGTH);
+        //memcpy(wlan_obj.ssid_o, pEventData->go_peer_device_name, pEventData->go_peer_device_name_len);
+        //wlan_obj.ssid_o[pEventData->go_peer_device_name_len] = '\0';
+        SET_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
+#if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
+        // we must reset the servers in case that the last connection
+        // was lost without any notification being received
+        servers_reset();
+#endif
+    }
+    break;
+    case SL_WLAN_STA_DISCONNECTED_EVENT:
+        CLR_STATUS_BIT(wlan_obj.status, STATUS_BIT_CONNECTION);
+#if (MICROPY_PORT_HAS_TELNET || MICROPY_PORT_HAS_FTP)
+        servers_reset();
+        servers_wlan_cycle_power();
+#endif
+        break;
+    case SL_WLAN_P2P_DEV_FOUND_EVENT:
+        // TODO
+        break;
+    case SL_WLAN_P2P_NEG_REQ_RECEIVED_EVENT:
+        // TODO
+        break;
+    case SL_WLAN_CONNECTION_FAILED_EVENT:
+        // TODO
+        break;
+    default:
+        break;
     }
 }
 
@@ -260,27 +260,27 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent) {
 
     switch(pNetAppEvent->Event)
     {
-        case SL_NETAPP_IPV4_IPACQUIRED_EVENT:
-        {
-            SlIpV4AcquiredAsync_t *pEventData = NULL;
+    case SL_NETAPP_IPV4_IPACQUIRED_EVENT:
+    {
+        SlIpV4AcquiredAsync_t *pEventData = NULL;
 
-            SET_STATUS_BIT(wlan_obj.status, STATUS_BIT_IP_ACQUIRED);
+        SET_STATUS_BIT(wlan_obj.status, STATUS_BIT_IP_ACQUIRED);
 
-            // Ip Acquired Event Data
-            pEventData = &pNetAppEvent->EventData.ipAcquiredV4;
+        // Ip Acquired Event Data
+        pEventData = &pNetAppEvent->EventData.ipAcquiredV4;
 
-            // Get the ip
-            wlan_obj.ip      = pEventData->ip;
-        }
-            break;
-        case SL_NETAPP_IPV6_IPACQUIRED_EVENT:
-            break;
-        case SL_NETAPP_IP_LEASED_EVENT:
-            break;
-        case SL_NETAPP_IP_RELEASED_EVENT:
-            break;
-        default:
-            break;
+        // Get the ip
+        wlan_obj.ip      = pEventData->ip;
+    }
+    break;
+    case SL_NETAPP_IPV6_IPACQUIRED_EVENT:
+        break;
+    case SL_NETAPP_IP_LEASED_EVENT:
+        break;
+    case SL_NETAPP_IP_RELEASED_EVENT:
+        break;
+    default:
+        break;
     }
 }
 
@@ -345,23 +345,23 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
         case SL_ECLOSE:
             break;
         default:
-          break;
+            break;
         }
         break;
     case SL_SOCKET_ASYNC_EVENT:
-         switch(pSock->socketAsyncEvent.SockAsyncData.type) {
-         case SSL_ACCEPT:
-             break;
-         case RX_FRAGMENTATION_TOO_BIG:
-             break;
-         case OTHER_SIDE_CLOSE_SSL_DATA_NOT_ENCRYPTED:
-             break;
-         default:
-             break;
-         }
+        switch(pSock->socketAsyncEvent.SockAsyncData.type) {
+        case SSL_ACCEPT:
+            break;
+        case RX_FRAGMENTATION_TOO_BIG:
+            break;
+        case OTHER_SIDE_CLOSE_SSL_DATA_NOT_ENCRYPTED:
+            break;
+        default:
+            break;
+        }
         break;
     default:
-      break;
+        break;
     }
 }
 
@@ -372,18 +372,18 @@ void SimpleLinkSockEventHandler(SlSockEvent_t *pSock) {
 __attribute__ ((section (".boot")))
 void wlan_pre_init (void) {
     // create the wlan lock
-    #ifdef SL_PLATFORM_MULTI_THREADED
+#ifdef SL_PLATFORM_MULTI_THREADED
     ASSERT(OSI_OK == sl_LockObjCreate(&wlan_LockObj, "WlanLock"));
-    #endif
+#endif
 }
 
 void wlan_first_start (void) {
     if (wlan_obj.mode < 0) {
         CLR_STATUS_BIT_ALL(wlan_obj.status);
         wlan_obj.mode = sl_Start(0, 0, 0);
-        #ifdef SL_PLATFORM_MULTI_THREADED
+#ifdef SL_PLATFORM_MULTI_THREADED
         sl_LockObjUnlock (&wlan_LockObj);
-        #endif
+#endif
     }
 
     // get the mac address
@@ -420,7 +420,7 @@ void wlan_sl_init (int8_t mode, const char *ssid, uint8_t ssid_len, uint8_t auth
 
     // Remove all 64 filters (8 * 8)
     _WlanRxFilterOperationCommandBuff_t  RxFilterIdMask;
-    memset ((void *)&RxFilterIdMask, 0 ,sizeof(RxFilterIdMask));
+    memset ((void *)&RxFilterIdMask, 0,sizeof(RxFilterIdMask));
     memset(RxFilterIdMask.FilterIdMask, 0xFF, 8);
     ASSERT_ON_ERROR(sl_WlanRxFilterSet(SL_REMOVE_RX_FILTER, (_u8 *)&RxFilterIdMask, sizeof(_WlanRxFilterOperationCommandBuff_t)));
 
@@ -492,9 +492,9 @@ void wlan_update(void) {
 
 void wlan_stop (uint32_t timeout) {
     wlan_servers_stop();
-    #ifdef SL_PLATFORM_MULTI_THREADED
+#ifdef SL_PLATFORM_MULTI_THREADED
     sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER);
-    #endif
+#endif
     sl_Stop(timeout);
     wlan_clear_data();
     wlan_obj.mode = -1;
@@ -550,15 +550,15 @@ STATIC void wlan_clear_data (void) {
 
 STATIC void wlan_reenable (SlWlanMode_t mode) {
     // stop and start again
-    #ifdef SL_PLATFORM_MULTI_THREADED
+#ifdef SL_PLATFORM_MULTI_THREADED
     sl_LockObjLock (&wlan_LockObj, SL_OS_WAIT_FOREVER);
-    #endif
+#endif
     sl_Stop(SL_STOP_TIMEOUT);
     wlan_clear_data();
     wlan_obj.mode = sl_Start(0, 0, 0);
-    #ifdef SL_PLATFORM_MULTI_THREADED
+#ifdef SL_PLATFORM_MULTI_THREADED
     sl_LockObjUnlock (&wlan_LockObj);
-    #endif
+#endif
     ASSERT (wlan_obj.mode == mode);
 }
 
@@ -691,7 +691,7 @@ STATIC void wlan_sl_disconnect (void) {
 }
 
 STATIC modwlan_Status_t wlan_do_connect (const char* ssid, uint32_t ssid_len, const char* bssid, uint8_t sec,
-                                         const char* key, uint32_t key_len, int32_t timeout) {
+        const char* key, uint32_t key_len, int32_t timeout) {
     SlSecParams_t secParams;
     secParams.Key = (_i8*)key;
     secParams.KeyLen = ((key != NULL) ? key_len : 0);
@@ -814,9 +814,9 @@ STATIC const mp_arg_t wlan_init_args[] = {
     { MP_QSTR_ssid,         MP_ARG_KW_ONLY  | MP_ARG_OBJ,  {.u_obj = MP_OBJ_NULL} },
     { MP_QSTR_auth,         MP_ARG_KW_ONLY  | MP_ARG_OBJ,  {.u_obj = mp_const_none} },
     { MP_QSTR_channel,      MP_ARG_KW_ONLY  | MP_ARG_INT,  {.u_int = 1} },
-    #if MICROPY_HW_ANTENNA_DIVERSITY
+#if MICROPY_HW_ANTENNA_DIVERSITY
     { MP_QSTR_antenna,      MP_ARG_KW_ONLY  | MP_ARG_INT,  {.u_int = ANTENNA_TYPE_INTERNAL} },
-    #endif
+#endif
 };
 STATIC mp_obj_t wlan_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *all_args) {
     // parse args
@@ -868,7 +868,7 @@ STATIC mp_obj_t wlan_scan(mp_obj_t self_in) {
 
     // trigger a new network scan
     uint32_t scanSeconds = MODWLAN_SCAN_PERIOD_S;
-    ASSERT_ON_ERROR(sl_WlanPolicySet(SL_POLICY_SCAN , MODWLAN_SL_SCAN_ENABLE, (_u8 *)&scanSeconds, sizeof(scanSeconds)));
+    ASSERT_ON_ERROR(sl_WlanPolicySet(SL_POLICY_SCAN, MODWLAN_SL_SCAN_ENABLE, (_u8 *)&scanSeconds, sizeof(scanSeconds)));
 
     // wait for the scan to complete
     mp_hal_delay_ms(MODWLAN_WAIT_FOR_SCAN_MS);
@@ -1004,10 +1004,10 @@ STATIC mp_obj_t wlan_ifconfig(size_t n_args, const mp_obj_t *pos_args, mp_map_t 
         sl_NetCfgGet(SL_IPV4_STA_P2P_CL_GET_INFO, &dhcpIsOn, &len, (uint8_t *)&ipV4);
 
         mp_obj_t ifconfig[4] = {
-                netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4, NETUTILS_LITTLE),
-                netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4Mask, NETUTILS_LITTLE),
-                netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4Gateway, NETUTILS_LITTLE),
-                netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4DnsServer, NETUTILS_LITTLE)
+            netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4, NETUTILS_LITTLE),
+            netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4Mask, NETUTILS_LITTLE),
+            netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4Gateway, NETUTILS_LITTLE),
+            netutils_format_ipv4_addr((uint8_t *)&ipV4.ipV4DnsServer, NETUTILS_LITTLE)
         };
         return mp_obj_new_tuple(4, ifconfig);
     } else { // set the configuration
@@ -1030,7 +1030,7 @@ STATIC mp_obj_t wlan_ifconfig(size_t n_args, const mp_obj_t *pos_args, mp_map_t 
                 dhcpParams.ipv4_addr_last  =  (ipV4.ipV4 & 0xFFFFFF00) + 254;   // last IP Address for allocation.
                 ASSERT_ON_ERROR(sl_NetAppStop(SL_NET_APP_DHCP_SERVER_ID));      // stop DHCP server before settings
                 ASSERT_ON_ERROR(sl_NetAppSet(SL_NET_APP_DHCP_SERVER_ID, NETAPP_SET_DHCP_SRV_BASIC_OPT,
-                                sizeof(SlNetAppDhcpServerBasicOpt_t), (_u8* )&dhcpParams));  // set parameters
+                                             sizeof(SlNetAppDhcpServerBasicOpt_t), (_u8* )&dhcpParams));  // set parameters
                 ASSERT_ON_ERROR(sl_NetAppStart(SL_NET_APP_DHCP_SERVER_ID));     // start DHCP server with new settings
             } else {
                 ASSERT_ON_ERROR(sl_NetCfgSet(SL_IPV4_STA_P2P_CL_STATIC_ENABLE, IPCONFIG_MODE_ENABLE_IPV4, sizeof(SlNetCfgIpV4Args_t), (_u8 *)&ipV4));
@@ -1135,11 +1135,11 @@ STATIC mp_obj_t wlan_antenna(size_t n_args, const mp_obj_t *args) {
     if (n_args == 1) {
         return mp_obj_new_int(self->antenna);
     } else {
-    #if MICROPY_HW_ANTENNA_DIVERSITY
+#if MICROPY_HW_ANTENNA_DIVERSITY
         uint8_t antenna  = mp_obj_get_int(args[1]);
         wlan_validate_antenna(antenna);
         wlan_set_antenna(antenna);
-    #endif
+#endif
         return mp_const_none;
     }
 }
@@ -1245,9 +1245,9 @@ STATIC mp_obj_t wlan_print_ver(void) {
     sl_DevGet(SL_DEVICE_GENERAL_CONFIGURATION, &config_opt, &config_len, (byte*)&ver);
     printf("NWP: %d.%d.%d.%d\n", (int)ver.NwpVersion[0], (int)ver.NwpVersion[1], (int)ver.NwpVersion[2], (int)ver.NwpVersion[3]);
     printf("MAC: %d.%d.%d.%d\n", (int)ver.ChipFwAndPhyVersion.FwVersion[0], (int)ver.ChipFwAndPhyVersion.FwVersion[1],
-                                 (int)ver.ChipFwAndPhyVersion.FwVersion[2], (int)ver.ChipFwAndPhyVersion.FwVersion[3]);
+           (int)ver.ChipFwAndPhyVersion.FwVersion[2], (int)ver.ChipFwAndPhyVersion.FwVersion[3]);
     printf("PHY: %d.%d.%d.%d\n", ver.ChipFwAndPhyVersion.PhyVersion[0], ver.ChipFwAndPhyVersion.PhyVersion[1],
-                                 ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
+           ver.ChipFwAndPhyVersion.PhyVersion[2], ver.ChipFwAndPhyVersion.PhyVersion[3]);
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_0(wlan_print_ver_fun_obj, wlan_print_ver);
@@ -1277,10 +1277,10 @@ STATIC const mp_rom_map_elem_t wlan_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_WEP),                 MP_ROM_INT(SL_SEC_TYPE_WEP) },
     { MP_ROM_QSTR(MP_QSTR_WPA),                 MP_ROM_INT(SL_SEC_TYPE_WPA_WPA2) },
     { MP_ROM_QSTR(MP_QSTR_WPA2),                MP_ROM_INT(SL_SEC_TYPE_WPA_WPA2) },
-    #if MICROPY_HW_ANTENNA_DIVERSITY
+#if MICROPY_HW_ANTENNA_DIVERSITY
     { MP_ROM_QSTR(MP_QSTR_INT_ANT),             MP_ROM_INT(ANTENNA_TYPE_INTERNAL) },
     { MP_ROM_QSTR(MP_QSTR_EXT_ANT),             MP_ROM_INT(ANTENNA_TYPE_EXTERNAL) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_ANY_EVENT),           MP_ROM_INT(MODWLAN_WIFI_EVENT_ANY) },
 };
 STATIC MP_DEFINE_CONST_DICT(wlan_locals_dict, wlan_locals_dict_table);

@@ -189,10 +189,10 @@ extern void AESDataWrite(uint32_t ui32Base, uint8_t *pui8Src,
                          uint8_t ui8Length);
 extern bool AESDataProcess(uint32_t ui32Base, uint8_t *pui8Src,
                            uint8_t *pui8Dest,
-               uint32_t ui32Length);
+                           uint32_t ui32Length);
 extern bool AESDataMAC(uint32_t ui32Base, uint8_t *pui8Src,
                        uint32_t ui32Length,
-            uint8_t *pui8Tag);
+                       uint8_t *pui8Tag);
 extern bool AESDataProcessAE(uint32_t ui32Base, uint8_t *pui8Src,
                              uint8_t *pui8Dest, uint32_t ui32Length,
                              uint8_t *pui8AuthSrc, uint32_t ui32AuthLength,

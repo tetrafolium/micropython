@@ -43,38 +43,38 @@
 //#define F_CPU 24000000
 
 #if (F_CPU == 168000000)
- #define F_BUS 56000000
- #define F_MEM 33600000
+#define F_BUS 56000000
+#define F_MEM 33600000
 #elif (F_CPU == 144000000)
- #define F_BUS 48000000
- #define F_MEM 28800000
+#define F_BUS 48000000
+#define F_MEM 28800000
 #elif (F_CPU == 120000000)
- #define F_BUS 60000000
- #define F_MEM 24000000
+#define F_BUS 60000000
+#define F_MEM 24000000
 #elif (F_CPU == 96000000)
- #define F_BUS 48000000
- #define F_MEM 24000000
+#define F_BUS 48000000
+#define F_MEM 24000000
 #elif (F_CPU == 72000000)
- #define F_BUS 36000000
- #define F_MEM 24000000
+#define F_BUS 36000000
+#define F_MEM 24000000
 #elif (F_CPU == 48000000)
- #define F_BUS 48000000
- #define F_MEM 24000000
+#define F_BUS 48000000
+#define F_MEM 24000000
 #elif (F_CPU == 24000000)
- #define F_BUS 24000000
- #define F_MEM 24000000
+#define F_BUS 24000000
+#define F_MEM 24000000
 #elif (F_CPU == 16000000)
- #define F_BUS 16000000
- #define F_MEM 16000000
+#define F_BUS 16000000
+#define F_MEM 16000000
 #elif (F_CPU == 8000000)
- #define F_BUS 8000000
- #define F_MEM 8000000
+#define F_BUS 8000000
+#define F_MEM 8000000
 #elif (F_CPU == 4000000)
- #define F_BUS 4000000
- #define F_MEM 4000000
+#define F_BUS 4000000
+#define F_MEM 4000000
 #elif (F_CPU == 2000000)
- #define F_BUS 2000000
- #define F_MEM 1000000
+#define F_BUS 2000000
+#define F_MEM 1000000
 #endif
 
 
@@ -1262,8 +1262,8 @@ extern "C" {
 #define VREF_SC_ICOMPEN			(uint8_t)0x20			// Second order curvature compensation enable
 #define VREF_SC_VREFST			(uint8_t)0x04			// Internal Voltage Reference stable flag
 #define VREF_SC_MODE_LV(n)		(uint8_t)(((n) & 3) << 0)	// Buffer Mode selection: 0=Bandgap on only
-									//  1=High power buffer mode,
-									//  2=Low-power buffer mode
+//  1=High power buffer mode,
+//  2=Low-power buffer mode
 
 // Chapter 34: Programmable Delay Block (PDB)
 #define PDB0_SC			*(volatile uint32_t *)0x40036000 // Status and Control Register
@@ -1675,23 +1675,23 @@ extern "C" {
 #define SPI0_RXFR2		*(volatile uint32_t *)0x4002C084 // DSPI Receive FIFO Registers
 #define SPI0_RXFR3		*(volatile uint32_t *)0x4002C088 // DSPI Receive FIFO Registers
 typedef struct {
-	volatile uint32_t	MCR;	// 0
-	volatile uint32_t	unused1;// 4
-	volatile uint32_t	TCR;	// 8
-	volatile uint32_t	CTAR0;	// c
-	volatile uint32_t	CTAR1;	// 10
-	volatile uint32_t	CTAR2;	// 14
-	volatile uint32_t	CTAR3;	// 18
-	volatile uint32_t	CTAR4;	// 1c
-	volatile uint32_t	CTAR5;	// 20
-	volatile uint32_t	CTAR6;	// 24
-	volatile uint32_t	CTAR7;	// 28
-	volatile uint32_t	SR;	// 2c
-	volatile uint32_t	RSER;	// 30
-	volatile uint32_t	PUSHR;	// 34
-	volatile uint32_t	POPR;	// 38
-	volatile uint32_t	TXFR[16]; // 3c
-	volatile uint32_t	RXFR[16]; // 7c
+    volatile uint32_t	MCR;	// 0
+    volatile uint32_t	unused1;// 4
+    volatile uint32_t	TCR;	// 8
+    volatile uint32_t	CTAR0;	// c
+    volatile uint32_t	CTAR1;	// 10
+    volatile uint32_t	CTAR2;	// 14
+    volatile uint32_t	CTAR3;	// 18
+    volatile uint32_t	CTAR4;	// 1c
+    volatile uint32_t	CTAR5;	// 20
+    volatile uint32_t	CTAR6;	// 24
+    volatile uint32_t	CTAR7;	// 28
+    volatile uint32_t	SR;	// 2c
+    volatile uint32_t	RSER;	// 30
+    volatile uint32_t	PUSHR;	// 34
+    volatile uint32_t	POPR;	// 38
+    volatile uint32_t	TXFR[16]; // 3c
+    volatile uint32_t	RXFR[16]; // 7c
 } SPI_t;
 #define SPI0		(*(SPI_t *)0x4002C000)
 

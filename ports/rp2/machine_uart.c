@@ -69,8 +69,8 @@ STATIC const char *_parity_name[] = {"None", "0", "1"};
 STATIC void machine_uart_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     machine_uart_obj_t *self = MP_OBJ_TO_PTR(self_in);
     mp_printf(print, "UART(%u, baudrate=%u, bits=%u, parity=%s, stop=%u, tx=%d, rx=%d)",
-        self->uart_id, self->baudrate, self->bits, _parity_name[self->parity],
-        self->stop, self->tx, self->rx);
+              self->uart_id, self->baudrate, self->bits, _parity_name[self->parity],
+              self->stop, self->tx, self->rx);
 }
 
 STATIC mp_obj_t machine_uart_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *all_args) {

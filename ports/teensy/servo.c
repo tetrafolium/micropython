@@ -108,9 +108,9 @@ static mp_obj_t servo_obj_angle(int n_args, const mp_obj_t *args) {
     if (n_args == 1) {
         // get
         float angle = map_uint_to_float(servo_ticks[self->servo_id],
-            usToTicks(self->min_usecs),
-            usToTicks(self->max_usecs),
-            0.0, 180.0);
+                                        usToTicks(self->min_usecs),
+                                        usToTicks(self->max_usecs),
+                                        0.0, 180.0);
         return mp_obj_new_float(angle);
     }
     // Set
@@ -122,9 +122,9 @@ static mp_obj_t servo_obj_angle(int n_args, const mp_obj_t *args) {
         angle = 180.0F;
     }
     servo_ticks[self->servo_id] = map_float_to_uint(angle,
-        0.0F, 180.0F,
-        usToTicks(self->min_usecs),
-        usToTicks(self->max_usecs));
+                                  0.0F, 180.0F,
+                                  usToTicks(self->min_usecs),
+                                  usToTicks(self->max_usecs));
     return mp_const_none;
 }
 

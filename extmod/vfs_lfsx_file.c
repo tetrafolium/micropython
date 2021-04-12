@@ -53,29 +53,29 @@ mp_obj_t MP_VFS_LFSx(file_open)(mp_obj_t self_in, mp_obj_t path_in, mp_obj_t mod
     for (; *mode_str; ++mode_str) {
         int new_flags = 0;
         switch (*mode_str) {
-            case 'r':
-                new_flags = LFSx_MACRO(_O_RDONLY);
-                break;
-            case 'w':
-                new_flags = LFSx_MACRO(_O_WRONLY) | LFSx_MACRO(_O_CREAT) | LFSx_MACRO(_O_TRUNC);
-                break;
-            case 'x':
-                new_flags = LFSx_MACRO(_O_WRONLY) | LFSx_MACRO(_O_CREAT) | LFSx_MACRO(_O_EXCL);
-                break;
-            case 'a':
-                new_flags = LFSx_MACRO(_O_WRONLY) | LFSx_MACRO(_O_CREAT) | LFSx_MACRO(_O_APPEND);
-                break;
-            case '+':
-                flags |= LFSx_MACRO(_O_RDWR);
-                break;
-            #if MICROPY_PY_IO_FILEIO
-            case 'b':
-                type = &MP_TYPE_VFS_LFSx_(_fileio);
-                break;
-            #endif
-            case 't':
-                type = &MP_TYPE_VFS_LFSx_(_textio);
-                break;
+        case 'r':
+            new_flags = LFSx_MACRO(_O_RDONLY);
+            break;
+        case 'w':
+            new_flags = LFSx_MACRO(_O_WRONLY) | LFSx_MACRO(_O_CREAT) | LFSx_MACRO(_O_TRUNC);
+            break;
+        case 'x':
+            new_flags = LFSx_MACRO(_O_WRONLY) | LFSx_MACRO(_O_CREAT) | LFSx_MACRO(_O_EXCL);
+            break;
+        case 'a':
+            new_flags = LFSx_MACRO(_O_WRONLY) | LFSx_MACRO(_O_CREAT) | LFSx_MACRO(_O_APPEND);
+            break;
+        case '+':
+            flags |= LFSx_MACRO(_O_RDWR);
+            break;
+#if MICROPY_PY_IO_FILEIO
+        case 'b':
+            type = &MP_TYPE_VFS_LFSx_(_fileio);
+            break;
+#endif
+        case 't':
+            type = &MP_TYPE_VFS_LFSx_(_textio);
+            break;
         }
         if (new_flags) {
             if (flags) {
@@ -88,20 +88,20 @@ mp_obj_t MP_VFS_LFSx(file_open)(mp_obj_t self_in, mp_obj_t path_in, mp_obj_t mod
         flags = LFSx_MACRO(_O_RDONLY);
     }
 
-    #if LFS_BUILD_VERSION == 1
+#if LFS_BUILD_VERSION == 1
     MP_OBJ_VFS_LFSx_FILE *o = m_new_obj_var_with_finaliser(MP_OBJ_VFS_LFSx_FILE, uint8_t, self->lfs.cfg->prog_size);
-    #else
+#else
     MP_OBJ_VFS_LFSx_FILE *o = m_new_obj_var_with_finaliser(MP_OBJ_VFS_LFSx_FILE, uint8_t, self->lfs.cfg->cache_size);
-    #endif
+#endif
     o->base.type = type;
     o->vfs = self;
-    #if !MICROPY_GC_CONSERVATIVE_CLEAR
+#if !MICROPY_GC_CONSERVATIVE_CLEAR
     memset(&o->file, 0, sizeof(o->file));
     memset(&o->cfg, 0, sizeof(o->cfg));
-    #endif
+#endif
     o->cfg.buffer = &o->file_buffer[0];
 
-    #if LFS_BUILD_VERSION == 2
+#if LFS_BUILD_VERSION == 2
     if (self->enable_mtime) {
         lfs_get_mtime(&o->mtime[0]);
         o->attrs[0].type = LFS_ATTR_MTIME;
@@ -110,7 +110,7 @@ mp_obj_t MP_VFS_LFSx(file_open)(mp_obj_t self_in, mp_obj_t path_in, mp_obj_t mod
         o->cfg.attrs = &o->attrs[0];
         o->cfg.attr_count = MP_ARRAY_SIZE(o->attrs);
     }
-    #endif
+#endif
 
     const char *path = MP_VFS_LFSx(make_path)(self, path_in);
     int ret = LFSx_API(file_opencfg)(&self->lfs, &o->file, path, flags, &o->cfg);
@@ -142,11 +142,11 @@ STATIC mp_uint_t MP_VFS_LFSx(file_read)(mp_obj_t self_in, void *buf, mp_uint_t s
 STATIC mp_uint_t MP_VFS_LFSx(file_write)(mp_obj_t self_in, const void *buf, mp_uint_t size, int *errcode) {
     MP_OBJ_VFS_LFSx_FILE *self = MP_OBJ_TO_PTR(self_in);
     MP_VFS_LFSx(check_open)(self);
-    #if LFS_BUILD_VERSION == 2
+#if LFS_BUILD_VERSION == 2
     if (self->vfs->enable_mtime) {
         lfs_get_mtime(&self->mtime[0]);
     }
-    #endif
+#endif
     LFSx_API(ssize_t) sz = LFSx_API(file_write)(&self->vfs->lfs, &self->file, buf, size);
     if (sz < 0) {
         *errcode = -sz;

@@ -106,9 +106,9 @@ int mp_bluetooth_hci_uart_init(uint32_t port, uint32_t baudrate) {
 
     DEBUG_printf("mp_bluetooth_hci_uart_init (stm32 rfcore)\n");
 
-    #if MICROPY_PY_BLUETOOTH_USE_SYNC_EVENTS
+#if MICROPY_PY_BLUETOOTH_USE_SYNC_EVENTS
     events_task_is_scheduled = false;
-    #endif
+#endif
 
     rfcore_ble_init();
     hci_uart_rx_buf_cur = 0;
@@ -184,9 +184,9 @@ MP_DEFINE_CONST_FUN_OBJ_1(mp_uart_interrupt_obj, mp_uart_interrupt);
 int mp_bluetooth_hci_uart_init(uint32_t port, uint32_t baudrate) {
     DEBUG_printf("mp_bluetooth_hci_uart_init (stm32)\n");
 
-    #if MICROPY_PY_BLUETOOTH_USE_SYNC_EVENTS
+#if MICROPY_PY_BLUETOOTH_USE_SYNC_EVENTS
     events_task_is_scheduled = false;
-    #endif
+#endif
 
     // bits (8), stop (1), parity (none) and flow (rts/cts) are assumed to match MYNEWT_VAL_BLE_HCI_UART_ constants in syscfg.h.
     mp_bluetooth_hci_uart_obj.base.type = &pyb_uart_type;

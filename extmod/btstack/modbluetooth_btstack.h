@@ -46,10 +46,10 @@ typedef struct _mp_bluetooth_btstack_root_pointers_t {
 
     btstack_linked_list_t pending_ops;
 
-    #if MICROPY_PY_BLUETOOTH_ENABLE_CENTRAL_MODE
+#if MICROPY_PY_BLUETOOTH_ENABLE_CENTRAL_MODE
     // Registration for notify/indicate events.
     gatt_client_notification_t notification;
-    #endif
+#endif
 } mp_bluetooth_btstack_root_pointers_t;
 
 enum {

@@ -122,10 +122,10 @@ STATIC void esp32_rmt_print(const mp_print_t *print, mp_obj_t self_in, mp_print_
     esp32_rmt_obj_t *self = MP_OBJ_TO_PTR(self_in);
     if (self->pin != -1) {
         mp_printf(print, "RMT(channel=%u, pin=%u, source_freq=%u, clock_div=%u",
-            self->channel_id, self->pin, APB_CLK_FREQ, self->clock_div);
+                  self->channel_id, self->pin, APB_CLK_FREQ, self->clock_div);
         if (self->carrier_freq > 0) {
             mp_printf(print, ", carrier_freq=%u, carrier_duty_percent=%u)",
-                self->carrier_freq, self->carrier_duty_percent);
+                      self->carrier_freq, self->carrier_duty_percent);
         } else {
             mp_printf(print, ")");
         }

@@ -36,9 +36,9 @@
 
 void gc_collect(void) {
     // get current time, in case we want to time the GC
-    #if 0
+#if 0
     uint32_t start = mp_hal_ticks_us();
-    #endif
+#endif
 
     // start the GC
     gc_collect_start();
@@ -47,14 +47,14 @@ void gc_collect(void) {
     gc_helper_collect_regs_and_stack();
 
     // trace root pointers from any threads
-    #if MICROPY_PY_THREAD
+#if MICROPY_PY_THREAD
     mp_thread_gc_others();
-    #endif
+#endif
 
     // end the GC
     gc_collect_end();
 
-    #if 0
+#if 0
     // print GC info
     uint32_t ticks = mp_hal_ticks_us() - start;
     gc_info_t info;
@@ -63,5 +63,5 @@ void gc_collect(void) {
     printf(" " UINT_FMT " total\n", info.total);
     printf(" " UINT_FMT " : " UINT_FMT "\n", info.used, info.free);
     printf(" 1=" UINT_FMT " 2=" UINT_FMT " m=" UINT_FMT "\n", info.num_1block, info.num_2block, info.max_block);
-    #endif
+#endif
 }

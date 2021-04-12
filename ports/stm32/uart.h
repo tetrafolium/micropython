@@ -78,7 +78,7 @@ void uart_init0(void);
 void uart_deinit_all(void);
 bool uart_exists(int uart_id);
 bool uart_init(pyb_uart_obj_t *uart_obj,
-    uint32_t baudrate, uint32_t bits, uint32_t parity, uint32_t stop, uint32_t flow);
+               uint32_t baudrate, uint32_t bits, uint32_t parity, uint32_t stop, uint32_t flow);
 void uart_irq_config(pyb_uart_obj_t *self, bool enable);
 void uart_set_rxbuf(pyb_uart_obj_t *self, size_t len, void *buf);
 void uart_deinit(pyb_uart_obj_t *uart_obj);
@@ -94,13 +94,13 @@ size_t uart_tx_data(pyb_uart_obj_t *self, const void *src_in, size_t num_chars, 
 void uart_tx_strn(pyb_uart_obj_t *uart_obj, const char *str, uint len);
 
 static inline bool uart_tx_avail(pyb_uart_obj_t *self) {
-    #if defined(STM32F4)
+#if defined(STM32F4)
     return self->uartx->SR & USART_SR_TXE;
-    #elif defined(STM32H7)
+#elif defined(STM32H7)
     return self->uartx->ISR & USART_ISR_TXE_TXFNF;
-    #else
+#else
     return self->uartx->ISR & USART_ISR_TXE;
-    #endif
+#endif
 }
 
 #endif // MICROPY_INCLUDED_STM32_UART_H

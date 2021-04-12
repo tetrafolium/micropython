@@ -71,14 +71,14 @@ STATIC mp_obj_t time_localtime(size_t n_args, const mp_obj_t *args) {
         // get the seconds from the RTC
         timeutils_seconds_since_2000_to_struct_time(pyb_rtc_get_seconds(), &tm);
         mp_obj_t tuple[8] = {
-                mp_obj_new_int(tm.tm_year),
-                mp_obj_new_int(tm.tm_mon),
-                mp_obj_new_int(tm.tm_mday),
-                mp_obj_new_int(tm.tm_hour),
-                mp_obj_new_int(tm.tm_min),
-                mp_obj_new_int(tm.tm_sec),
-                mp_obj_new_int(tm.tm_wday),
-                mp_obj_new_int(tm.tm_yday)
+            mp_obj_new_int(tm.tm_year),
+            mp_obj_new_int(tm.tm_mon),
+            mp_obj_new_int(tm.tm_mday),
+            mp_obj_new_int(tm.tm_hour),
+            mp_obj_new_int(tm.tm_min),
+            mp_obj_new_int(tm.tm_sec),
+            mp_obj_new_int(tm.tm_wday),
+            mp_obj_new_int(tm.tm_yday)
         };
         return mp_obj_new_tuple(8, tuple);
     } else {
@@ -112,7 +112,7 @@ STATIC mp_obj_t time_mktime(mp_obj_t tuple) {
     }
 
     return mp_obj_new_int_from_uint(timeutils_mktime(mp_obj_get_int(elem[0]), mp_obj_get_int(elem[1]), mp_obj_get_int(elem[2]),
-                                                     mp_obj_get_int(elem[3]), mp_obj_get_int(elem[4]), mp_obj_get_int(elem[5])));
+                                    mp_obj_get_int(elem[3]), mp_obj_get_int(elem[4]), mp_obj_get_int(elem[5])));
 }
 MP_DEFINE_CONST_FUN_OBJ_1(time_mktime_obj, time_mktime);
 

@@ -84,15 +84,15 @@ void mp_js_init(int heap_size) {
     int stack_dummy;
     stack_top = (char *)&stack_dummy;
 
-    #if MICROPY_ENABLE_GC
+#if MICROPY_ENABLE_GC
     char *heap = (char *)malloc(heap_size * sizeof(char));
     gc_init(heap, heap + heap_size);
-    #endif
+#endif
 
-    #if MICROPY_ENABLE_PYSTACK
+#if MICROPY_ENABLE_PYSTACK
     static mp_obj_t pystack[1024];
     mp_pystack_init(pystack, &pystack[MP_ARRAY_SIZE(pystack)]);
-    #endif
+#endif
 
     mp_init();
 

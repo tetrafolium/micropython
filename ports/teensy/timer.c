@@ -141,7 +141,7 @@ STATIC uint32_t compute_period(pyb_timer_obj_t *self) {
 STATIC uint32_t compute_pwm_value_from_percent(uint32_t period, mp_obj_t percent_in) {
     uint32_t cmp;
     if (0) {
-    #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
     } else if (mp_obj_is_type(percent_in, &mp_type_float)) {
         float percent = mp_obj_get_float(percent_in);
         if (percent <= 0.0) {
@@ -151,7 +151,7 @@ STATIC uint32_t compute_pwm_value_from_percent(uint32_t period, mp_obj_t percent
         } else {
             cmp = percent / 100.0 * ((float)period);
         }
-    #endif
+#endif
     } else {
         mp_int_t percent = mp_obj_get_int(percent_in);
         if (percent <= 0) {
@@ -167,7 +167,7 @@ STATIC uint32_t compute_pwm_value_from_percent(uint32_t period, mp_obj_t percent
 
 // Helper function to compute percentage from timer perion and PWM value.
 STATIC mp_obj_t compute_percent_from_pwm_value(uint32_t period, uint32_t cmp) {
-    #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
     float percent = (float)cmp * 100.0 / (float)period;
     if (cmp >= period) {
         percent = 100.0;
@@ -175,7 +175,7 @@ STATIC mp_obj_t compute_percent_from_pwm_value(uint32_t period, uint32_t cmp) {
         percent = (float)cmp * 100.0 / (float)period;
     }
     return mp_obj_new_float(percent);
-    #else
+#else
     mp_int_t percent;
     if (cmp >= period) {
         percent = 100;
@@ -183,7 +183,7 @@ STATIC mp_obj_t compute_percent_from_pwm_value(uint32_t period, uint32_t cmp) {
         percent = cmp * 100 / period;
     }
     return mp_obj_new_int(percent);
-    #endif
+#endif
 }
 
 STATIC void pyb_timer_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
@@ -193,10 +193,10 @@ STATIC void pyb_timer_print(const mp_print_t *print, mp_obj_t self_in, mp_print_
         mp_printf(print, "Timer(%u)", self->tim_id);
     } else {
         mp_printf(print, "Timer(%u, prescaler=%u, period=%u, mode=%s)",
-            self->tim_id,
-            1 << (self->ftm.Instance->SC & 7),
-                self->ftm.Instance->MOD & 0xffff,
-                self->ftm.Init.CounterMode == FTM_COUNTERMODE_UP ? "UP" : "CENTER");
+                  self->tim_id,
+                  1 << (self->ftm.Instance->SC & 7),
+                  self->ftm.Instance->MOD & 0xffff,
+                  self->ftm.Init.CounterMode == FTM_COUNTERMODE_UP ? "UP" : "CENTER");
     }
 }
 
@@ -319,20 +319,20 @@ STATIC mp_obj_t pyb_timer_make_new(const mp_obj_type_t *type, size_t n_args, siz
     tim->tim_id = mp_obj_get_int(args[0]);
 
     switch (tim->tim_id) {
-        case 0:
-            tim->ftm.Instance = FTM0;
-            tim->irqn = IRQ_FTM0;
-            break;
-        case 1:
-            tim->ftm.Instance = FTM1;
-            tim->irqn = IRQ_FTM1;
-            break;
-        case 2:
-            tim->ftm.Instance = FTM2;
-            tim->irqn = IRQ_FTM2;
-            break;
-        default:
-            mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Timer %d does not exist"), tim->tim_id);
+    case 0:
+        tim->ftm.Instance = FTM0;
+        tim->irqn = IRQ_FTM0;
+        break;
+    case 1:
+        tim->ftm.Instance = FTM1;
+        tim->irqn = IRQ_FTM1;
+        break;
+    case 2:
+        tim->ftm.Instance = FTM2;
+        tim->irqn = IRQ_FTM2;
+        break;
+    default:
+        mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Timer %d does not exist"), tim->tim_id);
     }
 
     if (n_args > 1 || n_kw > 0) {
@@ -533,75 +533,75 @@ STATIC mp_obj_t pyb_timer_channel(size_t n_args, const mp_obj_t *args, mp_map_t 
 
     switch (chan->mode) {
 
-        case CHANNEL_MODE_PWM_NORMAL:
-        case CHANNEL_MODE_PWM_INVERTED: {
-            FTM_OC_InitTypeDef oc_config;
-            oc_config.OCMode = channel_mode_info[chan->mode].oc_mode;
-            if (vals[3].u_obj != mp_const_none) {
-                // pulse width ratio given
-                uint32_t period = compute_period(self);
-                oc_config.Pulse = compute_pwm_value_from_percent(period, vals[3].u_obj);
-            } else {
-                // use absolute pulse width value (defaults to 0 if nothing given)
-                oc_config.Pulse = vals[2].u_int;
-            }
+    case CHANNEL_MODE_PWM_NORMAL:
+    case CHANNEL_MODE_PWM_INVERTED: {
+        FTM_OC_InitTypeDef oc_config;
+        oc_config.OCMode = channel_mode_info[chan->mode].oc_mode;
+        if (vals[3].u_obj != mp_const_none) {
+            // pulse width ratio given
+            uint32_t period = compute_period(self);
+            oc_config.Pulse = compute_pwm_value_from_percent(period, vals[3].u_obj);
+        } else {
+            // use absolute pulse width value (defaults to 0 if nothing given)
+            oc_config.Pulse = vals[2].u_int;
+        }
+        oc_config.OCPolarity = FTM_OCPOLARITY_HIGH;
+
+        HAL_FTM_PWM_ConfigChannel(&self->ftm, &oc_config, channel);
+        if (chan->callback == mp_const_none) {
+            HAL_FTM_PWM_Start(&self->ftm, channel);
+        } else {
+            HAL_FTM_PWM_Start_IT(&self->ftm, channel);
+        }
+        break;
+    }
+
+    case CHANNEL_MODE_OC_TIMING:
+    case CHANNEL_MODE_OC_ACTIVE:
+    case CHANNEL_MODE_OC_INACTIVE:
+    case CHANNEL_MODE_OC_TOGGLE: {
+        FTM_OC_InitTypeDef oc_config;
+        oc_config.OCMode = channel_mode_info[chan->mode].oc_mode;
+        oc_config.Pulse = vals[4].u_int;
+        oc_config.OCPolarity = vals[5].u_int;
+        if (oc_config.OCPolarity == 0xffffffff) {
             oc_config.OCPolarity = FTM_OCPOLARITY_HIGH;
-
-            HAL_FTM_PWM_ConfigChannel(&self->ftm, &oc_config, channel);
-            if (chan->callback == mp_const_none) {
-                HAL_FTM_PWM_Start(&self->ftm, channel);
-            } else {
-                HAL_FTM_PWM_Start_IT(&self->ftm, channel);
-            }
-            break;
         }
 
-        case CHANNEL_MODE_OC_TIMING:
-        case CHANNEL_MODE_OC_ACTIVE:
-        case CHANNEL_MODE_OC_INACTIVE:
-        case CHANNEL_MODE_OC_TOGGLE: {
-            FTM_OC_InitTypeDef oc_config;
-            oc_config.OCMode = channel_mode_info[chan->mode].oc_mode;
-            oc_config.Pulse = vals[4].u_int;
-            oc_config.OCPolarity = vals[5].u_int;
-            if (oc_config.OCPolarity == 0xffffffff) {
-                oc_config.OCPolarity = FTM_OCPOLARITY_HIGH;
-            }
+        if (!IS_FTM_OC_POLARITY(oc_config.OCPolarity)) {
+            mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Invalid polarity (%d)"), oc_config.OCPolarity);
+        }
+        HAL_FTM_OC_ConfigChannel(&self->ftm, &oc_config, channel);
+        if (chan->callback == mp_const_none) {
+            HAL_FTM_OC_Start(&self->ftm, channel);
+        } else {
+            HAL_FTM_OC_Start_IT(&self->ftm, channel);
+        }
+        break;
+    }
 
-            if (!IS_FTM_OC_POLARITY(oc_config.OCPolarity)) {
-                mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Invalid polarity (%d)"), oc_config.OCPolarity);
-            }
-            HAL_FTM_OC_ConfigChannel(&self->ftm, &oc_config, channel);
-            if (chan->callback == mp_const_none) {
-                HAL_FTM_OC_Start(&self->ftm, channel);
-            } else {
-                HAL_FTM_OC_Start_IT(&self->ftm, channel);
-            }
-            break;
+    case CHANNEL_MODE_IC: {
+        FTM_IC_InitTypeDef ic_config;
+
+        ic_config.ICPolarity = vals[5].u_int;
+        if (ic_config.ICPolarity == 0xffffffff) {
+            ic_config.ICPolarity = FTM_ICPOLARITY_RISING;
         }
 
-        case CHANNEL_MODE_IC: {
-            FTM_IC_InitTypeDef ic_config;
-
-            ic_config.ICPolarity = vals[5].u_int;
-            if (ic_config.ICPolarity == 0xffffffff) {
-                ic_config.ICPolarity = FTM_ICPOLARITY_RISING;
-            }
-
-            if (!IS_FTM_IC_POLARITY(ic_config.ICPolarity)) {
-                mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Invalid polarity (%d)"), ic_config.ICPolarity);
-            }
-            HAL_FTM_IC_ConfigChannel(&self->ftm, &ic_config, chan->channel);
-            if (chan->callback == mp_const_none) {
-                HAL_FTM_IC_Start(&self->ftm, channel);
-            } else {
-                HAL_FTM_IC_Start_IT(&self->ftm, channel);
-            }
-            break;
+        if (!IS_FTM_IC_POLARITY(ic_config.ICPolarity)) {
+            mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Invalid polarity (%d)"), ic_config.ICPolarity);
         }
+        HAL_FTM_IC_ConfigChannel(&self->ftm, &ic_config, chan->channel);
+        if (chan->callback == mp_const_none) {
+            HAL_FTM_IC_Start(&self->ftm, channel);
+        } else {
+            HAL_FTM_IC_Start_IT(&self->ftm, channel);
+        }
+        break;
+    }
 
-        default:
-            mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Invalid mode (%d)"), chan->mode);
+    default:
+        mp_raise_msg_varg(&mp_type_ValueError, MP_ERROR_TEXT("Invalid mode (%d)"), chan->mode);
     }
 
     return chan;
@@ -726,9 +726,9 @@ STATIC const mp_rom_map_elem_t pyb_timer_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_prescaler), MP_ROM_PTR(&pyb_timer_prescaler_obj) },
     { MP_ROM_QSTR(MP_QSTR_period), MP_ROM_PTR(&pyb_timer_period_obj) },
     { MP_ROM_QSTR(MP_QSTR_callback), MP_ROM_PTR(&pyb_timer_callback_obj) },
-    #if MICROPY_TIMER_REG
+#if MICROPY_TIMER_REG
     { MP_ROM_QSTR(MP_QSTR_reg), MP_ROM_PTR(&pyb_timer_reg_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_UP),              MP_ROM_INT(FTM_COUNTERMODE_UP) },
     { MP_ROM_QSTR(MP_QSTR_CENTER),          MP_ROM_INT(FTM_COUNTERMODE_CENTER) },
     { MP_ROM_QSTR(MP_QSTR_PWM),             MP_ROM_INT(CHANNEL_MODE_PWM_NORMAL) },
@@ -764,9 +764,9 @@ STATIC void pyb_timer_channel_print(const mp_print_t *print, mp_obj_t self_in, m
     pyb_timer_channel_obj_t *self = self_in;
 
     mp_printf(print, "TimerChannel(timer=%u, channel=%u, mode=%s)",
-        self->timer->tim_id,
-        self->channel,
-        qstr_str(channel_mode_info[self->mode].name));
+              self->timer->tim_id,
+              self->channel,
+              qstr_str(channel_mode_info[self->mode].name));
 }
 
 /// \method capture([value])
@@ -840,19 +840,19 @@ STATIC mp_obj_t pyb_timer_channel_callback(mp_obj_t self_in, mp_obj_t callback) 
         HAL_NVIC_EnableIRQ(self->timer->irqn);
         // start timer, so that it interrupts on overflow
         switch (self->mode) {
-            case CHANNEL_MODE_PWM_NORMAL:
-            case CHANNEL_MODE_PWM_INVERTED:
-                HAL_FTM_PWM_Start_IT(&self->timer->ftm, self->channel);
-                break;
-            case CHANNEL_MODE_OC_TIMING:
-            case CHANNEL_MODE_OC_ACTIVE:
-            case CHANNEL_MODE_OC_INACTIVE:
-            case CHANNEL_MODE_OC_TOGGLE:
-                HAL_FTM_OC_Start_IT(&self->timer->ftm, self->channel);
-                break;
-            case CHANNEL_MODE_IC:
-                HAL_FTM_IC_Start_IT(&self->timer->ftm, self->channel);
-                break;
+        case CHANNEL_MODE_PWM_NORMAL:
+        case CHANNEL_MODE_PWM_INVERTED:
+            HAL_FTM_PWM_Start_IT(&self->timer->ftm, self->channel);
+            break;
+        case CHANNEL_MODE_OC_TIMING:
+        case CHANNEL_MODE_OC_ACTIVE:
+        case CHANNEL_MODE_OC_INACTIVE:
+        case CHANNEL_MODE_OC_TOGGLE:
+            HAL_FTM_OC_Start_IT(&self->timer->ftm, self->channel);
+            break;
+        case CHANNEL_MODE_IC:
+            HAL_FTM_IC_Start_IT(&self->timer->ftm, self->channel);
+            break;
         }
     } else {
         mp_raise_ValueError(MP_ERROR_TEXT("callback must be None or a callable object"));
@@ -870,8 +870,8 @@ reg_t timer_channel_reg[] = {
 mp_obj_t pyb_timer_channel_reg(uint n_args, const mp_obj_t *args) {
     pyb_timer_channel_obj_t *self = args[0];
     return reg_cmd(&self->timer->ftm.Instance->channel[self->channel],
-        timer_channel_reg, MP_ARRAY_SIZE(timer_channel_reg),
-        n_args - 1, args + 1);
+                   timer_channel_reg, MP_ARRAY_SIZE(timer_channel_reg),
+                   n_args - 1, args + 1);
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(pyb_timer_channel_reg_obj, 1, 3, pyb_timer_channel_reg);
 #endif
@@ -883,9 +883,9 @@ STATIC const mp_rom_map_elem_t pyb_timer_channel_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_pulse_width_percent), MP_ROM_PTR(&pyb_timer_channel_pulse_width_percent_obj) },
     { MP_ROM_QSTR(MP_QSTR_capture), MP_ROM_PTR(&pyb_timer_channel_capture_compare_obj) },
     { MP_ROM_QSTR(MP_QSTR_compare), MP_ROM_PTR(&pyb_timer_channel_capture_compare_obj) },
-    #if MICROPY_TIMER_REG
+#if MICROPY_TIMER_REG
     { MP_ROM_QSTR(MP_QSTR_reg), MP_ROM_PTR(&pyb_timer_channel_reg_obj) },
-    #endif
+#endif
 };
 STATIC MP_DEFINE_CONST_DICT(pyb_timer_channel_locals_dict, pyb_timer_channel_locals_dict_table);
 
@@ -916,10 +916,10 @@ STATIC bool ftm_handle_irq_callback(pyb_timer_obj_t *self, mp_uint_t channel, mp
         self->callback = mp_const_none;
         if (channel == 0xffffffff) {
             printf("Uncaught exception in Timer(" UINT_FMT
-                ") interrupt handler\n", self->tim_id);
+                   ") interrupt handler\n", self->tim_id);
         } else {
             printf("Uncaught exception in Timer(" UINT_FMT ") channel "
-                UINT_FMT " interrupt handler\n", self->tim_id, channel);
+                   UINT_FMT " interrupt handler\n", self->tim_id, channel);
         }
         mp_obj_print_exception(&mp_plat_print, (mp_obj_t)nlr.ret_val);
     }
@@ -966,7 +966,7 @@ STATIC void ftm_irq_handler(uint tim_id) {
             } else {
                 __HAL_FTM_DISABLE_CH_IT(&self->ftm, chan->channel);
                 printf("No callback for Timer %d channel %u (now disabled)\n",
-                    self->tim_id, chan->channel);
+                       self->tim_id, chan->channel);
             }
         }
         chan = chan->next;
@@ -981,7 +981,7 @@ STATIC void ftm_irq_handler(uint tim_id) {
                     __HAL_FTM_CLEAR_CH_FLAG(&self->ftm, channel);
                     __HAL_FTM_DISABLE_CH_IT(&self->ftm, channel);
                     printf("Unhandled interrupt Timer %d channel %u (now disabled)\n",
-                        tim_id, channel);
+                           tim_id, channel);
                 }
             }
         }

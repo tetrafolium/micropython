@@ -83,15 +83,15 @@ extern void ADCDisable(unsigned long ulBase);
 extern void ADCChannelEnable(unsigned long ulBase,unsigned long ulChannel);
 extern void ADCChannelDisable(unsigned long ulBase,unsigned long ulChannel);
 extern void ADCIntRegister(unsigned long ulBase, unsigned long ulChannel,
-                    void (*pfnHandler)(void));
+                           void (*pfnHandler)(void));
 extern void ADCIntUnregister(unsigned long ulBase, unsigned long ulChannel);
 extern void ADCIntEnable(unsigned long ulBase, unsigned long ulChannel,
-                  unsigned long ulIntFlags);
+                         unsigned long ulIntFlags);
 extern void ADCIntDisable(unsigned long ulBase, unsigned long ulChannel,
-                  unsigned long ulIntFlags);
+                          unsigned long ulIntFlags);
 extern unsigned long ADCIntStatus(unsigned long ulBase,unsigned long ulChannel);
 extern void ADCIntClear(unsigned long ulBase, unsigned long ulChannel,
-                  unsigned long ulIntFlags);
+                        unsigned long ulIntFlags);
 extern void ADCDMAEnable(unsigned long ulBase, unsigned long ulChannel);
 extern void ADCDMADisable(unsigned long ulBase, unsigned long ulChannel);
 extern void ADCTimerConfig(unsigned long ulBase, unsigned long ulValue);
@@ -102,7 +102,7 @@ extern unsigned long ADCTimerValueGet(unsigned long ulBase);
 extern unsigned char ADCFIFOLvlGet(unsigned long ulBase,
                                    unsigned long ulChannel);
 extern unsigned long ADCFIFORead(unsigned long ulBase,
-                                   unsigned long ulChannel);
+                                 unsigned long ulChannel);
 
 //*****************************************************************************
 //

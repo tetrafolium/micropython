@@ -102,22 +102,22 @@ STATIC mp_obj_t zephyr_disk_access_ioctl(mp_obj_t self_in, mp_obj_t cmd_in, mp_o
     int ret;
 
     switch (cmd) {
-        case MP_BLOCKDEV_IOCTL_INIT:
-        case MP_BLOCKDEV_IOCTL_DEINIT:
-            return MP_OBJ_NEW_SMALL_INT(0);
+    case MP_BLOCKDEV_IOCTL_INIT:
+    case MP_BLOCKDEV_IOCTL_DEINIT:
+        return MP_OBJ_NEW_SMALL_INT(0);
 
-        case MP_BLOCKDEV_IOCTL_SYNC:
-            ret = disk_access_ioctl(self->pdrv, DISK_IOCTL_CTRL_SYNC, &buf);
-            return MP_OBJ_NEW_SMALL_INT(ret);
+    case MP_BLOCKDEV_IOCTL_SYNC:
+        ret = disk_access_ioctl(self->pdrv, DISK_IOCTL_CTRL_SYNC, &buf);
+        return MP_OBJ_NEW_SMALL_INT(ret);
 
-        case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
-            return MP_OBJ_NEW_SMALL_INT(self->block_count);
+    case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
+        return MP_OBJ_NEW_SMALL_INT(self->block_count);
 
-        case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
-            return MP_OBJ_NEW_SMALL_INT(self->block_size);
+    case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
+        return MP_OBJ_NEW_SMALL_INT(self->block_size);
 
-        default:
-            return MP_OBJ_NEW_SMALL_INT(-1);
+    default:
+        return MP_OBJ_NEW_SMALL_INT(-1);
     }
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_3(zephyr_disk_access_ioctl_obj, zephyr_disk_access_ioctl);
@@ -220,23 +220,23 @@ STATIC mp_obj_t zephyr_flash_area_ioctl(mp_obj_t self_in, mp_obj_t cmd_in, mp_ob
     int ret;
 
     switch (cmd) {
-        case MP_BLOCKDEV_IOCTL_INIT:
-        case MP_BLOCKDEV_IOCTL_DEINIT:
-        case MP_BLOCKDEV_IOCTL_SYNC:
-            return MP_OBJ_NEW_SMALL_INT(0);
+    case MP_BLOCKDEV_IOCTL_INIT:
+    case MP_BLOCKDEV_IOCTL_DEINIT:
+    case MP_BLOCKDEV_IOCTL_SYNC:
+        return MP_OBJ_NEW_SMALL_INT(0);
 
-        case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
-            return MP_OBJ_NEW_SMALL_INT(self->block_count);
+    case MP_BLOCKDEV_IOCTL_BLOCK_COUNT:
+        return MP_OBJ_NEW_SMALL_INT(self->block_count);
 
-        case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
-            return MP_OBJ_NEW_SMALL_INT(self->block_size);
+    case MP_BLOCKDEV_IOCTL_BLOCK_SIZE:
+        return MP_OBJ_NEW_SMALL_INT(self->block_size);
 
-        case MP_BLOCKDEV_IOCTL_BLOCK_ERASE:
-            ret = flash_area_erase(self->area, block_num * self->block_size, self->block_size);
-            return MP_OBJ_NEW_SMALL_INT(ret);
+    case MP_BLOCKDEV_IOCTL_BLOCK_ERASE:
+        ret = flash_area_erase(self->area, block_num * self->block_size, self->block_size);
+        return MP_OBJ_NEW_SMALL_INT(ret);
 
-        default:
-            return MP_OBJ_NEW_SMALL_INT(-1);
+    default:
+        return MP_OBJ_NEW_SMALL_INT(-1);
     }
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_3(zephyr_flash_area_ioctl_obj, zephyr_flash_area_ioctl);
@@ -245,9 +245,9 @@ STATIC const mp_rom_map_elem_t zephyr_flash_area_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_readblocks), MP_ROM_PTR(&zephyr_flash_area_readblocks_obj) },
     { MP_ROM_QSTR(MP_QSTR_writeblocks), MP_ROM_PTR(&zephyr_flash_area_writeblocks_obj) },
     { MP_ROM_QSTR(MP_QSTR_ioctl), MP_ROM_PTR(&zephyr_flash_area_ioctl_obj) },
-    #if FLASH_AREA_LABEL_EXISTS(storage)
+#if FLASH_AREA_LABEL_EXISTS(storage)
     { MP_ROM_QSTR(MP_QSTR_STORAGE), MP_ROM_INT(FLASH_AREA_ID(storage)) },
-    #endif
+#endif
 };
 STATIC MP_DEFINE_CONST_DICT(zephyr_flash_area_locals_dict, zephyr_flash_area_locals_dict_table);
 

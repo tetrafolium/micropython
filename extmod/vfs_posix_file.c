@@ -67,29 +67,29 @@ mp_obj_t mp_vfs_posix_file_open(const mp_obj_type_t *type, mp_obj_t file_in, mp_
     int mode_rw = 0, mode_x = 0;
     while (*mode_s) {
         switch (*mode_s++) {
-            case 'r':
-                mode_rw = O_RDONLY;
-                break;
-            case 'w':
-                mode_rw = O_WRONLY;
-                mode_x = O_CREAT | O_TRUNC;
-                break;
-            case 'a':
-                mode_rw = O_WRONLY;
-                mode_x = O_CREAT | O_APPEND;
-                break;
-            case '+':
-                mode_rw = O_RDWR;
-                break;
-                #if MICROPY_PY_IO_FILEIO
-            // If we don't have io.FileIO, then files are in text mode implicitly
-            case 'b':
-                type = &mp_type_vfs_posix_fileio;
-                break;
-            case 't':
-                type = &mp_type_vfs_posix_textio;
-                break;
-                #endif
+        case 'r':
+            mode_rw = O_RDONLY;
+            break;
+        case 'w':
+            mode_rw = O_WRONLY;
+            mode_x = O_CREAT | O_TRUNC;
+            break;
+        case 'a':
+            mode_rw = O_WRONLY;
+            mode_x = O_CREAT | O_APPEND;
+            break;
+        case '+':
+            mode_rw = O_RDWR;
+            break;
+#if MICROPY_PY_IO_FILEIO
+        // If we don't have io.FileIO, then files are in text mode implicitly
+        case 'b':
+            type = &mp_type_vfs_posix_fileio;
+            break;
+        case 't':
+            type = &mp_type_vfs_posix_textio;
+            break;
+#endif
         }
     }
 
@@ -147,12 +147,12 @@ STATIC mp_uint_t vfs_posix_file_read(mp_obj_t o_in, void *buf, mp_uint_t size, i
 STATIC mp_uint_t vfs_posix_file_write(mp_obj_t o_in, const void *buf, mp_uint_t size, int *errcode) {
     mp_obj_vfs_posix_file_t *o = MP_OBJ_TO_PTR(o_in);
     check_fd_is_open(o);
-    #if MICROPY_PY_OS_DUPTERM
+#if MICROPY_PY_OS_DUPTERM
     if (o->fd <= STDERR_FILENO) {
         mp_hal_stdout_tx_strn(buf, size);
         return size;
     }
-    #endif
+#endif
     ssize_t r;
     MP_HAL_RETRY_SYSCALL(r, write(o->fd, buf, size), {
         *errcode = err;
@@ -165,46 +165,46 @@ STATIC mp_uint_t vfs_posix_file_ioctl(mp_obj_t o_in, mp_uint_t request, uintptr_
     mp_obj_vfs_posix_file_t *o = MP_OBJ_TO_PTR(o_in);
     check_fd_is_open(o);
     switch (request) {
-        case MP_STREAM_FLUSH: {
-            int ret;
-            MP_HAL_RETRY_SYSCALL(ret, fsync(o->fd), {
-                if (err == EINVAL
+    case MP_STREAM_FLUSH: {
+        int ret;
+        MP_HAL_RETRY_SYSCALL(ret, fsync(o->fd), {
+            if (err == EINVAL
                     && (o->fd == STDIN_FILENO || o->fd == STDOUT_FILENO || o->fd == STDERR_FILENO)) {
-                    // fsync(stdin/stdout/stderr) may fail with EINVAL, but don't propagate that
-                    // error out.  Because data is not buffered by us, and stdin/out/err.flush()
-                    // should just be a no-op.
-                    return 0;
-                }
-                *errcode = err;
-                return MP_STREAM_ERROR;
-            });
-            return 0;
-        }
-        case MP_STREAM_SEEK: {
-            struct mp_stream_seek_t *s = (struct mp_stream_seek_t *)arg;
-            MP_THREAD_GIL_EXIT();
-            off_t off = lseek(o->fd, s->offset, s->whence);
-            MP_THREAD_GIL_ENTER();
-            if (off == (off_t)-1) {
-                *errcode = errno;
-                return MP_STREAM_ERROR;
+                // fsync(stdin/stdout/stderr) may fail with EINVAL, but don't propagate that
+                // error out.  Because data is not buffered by us, and stdin/out/err.flush()
+                // should just be a no-op.
+                return 0;
             }
-            s->offset = off;
-            return 0;
-        }
-        case MP_STREAM_CLOSE:
-            MP_THREAD_GIL_EXIT();
-            close(o->fd);
-            MP_THREAD_GIL_ENTER();
-            #ifdef MICROPY_CPYTHON_COMPAT
-            o->fd = -1;
-            #endif
-            return 0;
-        case MP_STREAM_GET_FILENO:
-            return o->fd;
-        default:
-            *errcode = EINVAL;
+            *errcode = err;
             return MP_STREAM_ERROR;
+        });
+        return 0;
+    }
+    case MP_STREAM_SEEK: {
+        struct mp_stream_seek_t *s = (struct mp_stream_seek_t *)arg;
+        MP_THREAD_GIL_EXIT();
+        off_t off = lseek(o->fd, s->offset, s->whence);
+        MP_THREAD_GIL_ENTER();
+        if (off == (off_t)-1) {
+            *errcode = errno;
+            return MP_STREAM_ERROR;
+        }
+        s->offset = off;
+        return 0;
+    }
+    case MP_STREAM_CLOSE:
+        MP_THREAD_GIL_EXIT();
+        close(o->fd);
+        MP_THREAD_GIL_ENTER();
+#ifdef MICROPY_CPYTHON_COMPAT
+        o->fd = -1;
+#endif
+        return 0;
+    case MP_STREAM_GET_FILENO:
+        return o->fd;
+    default:
+        *errcode = EINVAL;
+        return MP_STREAM_ERROR;
     }
 }
 

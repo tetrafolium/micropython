@@ -69,39 +69,39 @@ static const board_led_obj_t board_led_obj[] = {
     {{&board_led_type}, BOARD_LED_BLUE, MICROPY_HW_LED_BLUE, 0, MICROPY_HW_LED_PULLUP},
 #endif
 #if (MICROPY_HW_LED_COUNT >= 1)
-    {{&board_led_type}, BOARD_LED1, MICROPY_HW_LED1, 0,
-    #ifdef MICROPY_HW_LED1_PULLUP
+    {   {&board_led_type}, BOARD_LED1, MICROPY_HW_LED1, 0,
+#ifdef MICROPY_HW_LED1_PULLUP
         MICROPY_HW_LED1_PULLUP
-    #else
+#else
         MICROPY_HW_LED_PULLUP
-    #endif
+#endif
     },
 #endif
 #if (MICROPY_HW_LED_COUNT >= 2)
-    {{&board_led_type}, BOARD_LED2, MICROPY_HW_LED2, 0,
-    #ifdef MICROPY_HW_LED2_PULLUP
+    {   {&board_led_type}, BOARD_LED2, MICROPY_HW_LED2, 0,
+#ifdef MICROPY_HW_LED2_PULLUP
         MICROPY_HW_LED2_PULLUP
-    #else
+#else
         MICROPY_HW_LED_PULLUP
-    #endif
+#endif
     },
 #endif
 #if (MICROPY_HW_LED_COUNT >= 3)
-    {{&board_led_type}, BOARD_LED3, MICROPY_HW_LED3, 0,
-    #ifdef MICROPY_HW_LED3_PULLUP
+    {   {&board_led_type}, BOARD_LED3, MICROPY_HW_LED3, 0,
+#ifdef MICROPY_HW_LED3_PULLUP
         MICROPY_HW_LED3_PULLUP
-    #else
+#else
         MICROPY_HW_LED_PULLUP
-    #endif
+#endif
     },
 #endif
 #if (MICROPY_HW_LED_COUNT == 4)
-    {{&board_led_type}, BOARD_LED4, MICROPY_HW_LED4, 0,
-    #ifdef MICROPY_HW_LED4_PULLUP
+    {   {&board_led_type}, BOARD_LED4, MICROPY_HW_LED4, 0,
+#ifdef MICROPY_HW_LED4_PULLUP
         MICROPY_HW_LED4_PULLUP
-    #else
+#else
         MICROPY_HW_LED_PULLUP
-    #endif
+#endif
     },
 #endif
 };

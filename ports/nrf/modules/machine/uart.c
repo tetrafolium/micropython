@@ -126,11 +126,11 @@ STATIC void uart_event_handler(nrfx_uart_event_t const *p_event, void *p_context
     if (p_event->type == NRFX_UART_EVT_RX_DONE) {
         int chr = self->buf->rx_buf[0];
         nrfx_uart_rx(self->p_uart, &self->buf->rx_buf[0], 1);
-        #if !MICROPY_PY_BLE_NUS && MICROPY_KBD_EXCEPTION
+#if !MICROPY_PY_BLE_NUS && MICROPY_KBD_EXCEPTION
         if (chr == mp_interrupt_char) {
             mp_keyboard_interrupt();
         } else
-        #endif
+#endif
         {
             ringbuf_put((ringbuf_t*)&self->buf->rx_ringbuf, chr);
         }
@@ -302,10 +302,10 @@ STATIC const mp_rom_map_elem_t machine_hard_uart_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_sendbreak), MP_ROM_PTR(&machine_hard_uart_sendbreak_obj) },
 
     // class constants
-/*
-    { MP_ROM_QSTR(MP_QSTR_RTS), MP_ROM_INT(UART_HWCONTROL_RTS) },
-    { MP_ROM_QSTR(MP_QSTR_CTS), MP_ROM_INT(UART_HWCONTROL_CTS) },
-*/
+    /*
+        { MP_ROM_QSTR(MP_QSTR_RTS), MP_ROM_INT(UART_HWCONTROL_RTS) },
+        { MP_ROM_QSTR(MP_QSTR_CTS), MP_ROM_INT(UART_HWCONTROL_CTS) },
+    */
 };
 
 STATIC MP_DEFINE_CONST_DICT(machine_hard_uart_locals_dict, machine_hard_uart_locals_dict_table);

@@ -186,7 +186,7 @@ long ReadWlanInterruptPin(void)
 void WriteWlanPin(unsigned char val)
 {
     HAL_GPIO_WritePin(PIN_EN->gpio, PIN_EN->pin_mask,
-            (WLAN_ENABLE)? GPIO_PIN_SET:GPIO_PIN_RESET);
+                      (WLAN_ENABLE)? GPIO_PIN_SET:GPIO_PIN_RESET);
 }
 
 STATIC void SpiWriteDataSynchronous(unsigned char *data, unsigned short size)
@@ -205,7 +205,7 @@ STATIC void SpiReadDataSynchronous(unsigned char *data, unsigned short size)
     memset(data, READ, size);
     __disable_irq();
     if (HAL_SPI_TransmitReceive(SPI_HANDLE->spi, data, data, size, SPI_TIMEOUT) != HAL_OK) {
-       //BREAK();
+        //BREAK();
     }
     __enable_irq();
 }
@@ -246,7 +246,7 @@ long SpiWrite(unsigned char *pUserBuffer, unsigned short usLength)
 
     unsigned char ucPad = 0;
 
-    // Figure out the total length of the packet in order to figure out if there 
+    // Figure out the total length of the packet in order to figure out if there
     // is padding or not
     if(!(usLength & 0x0001)) {
         ucPad++;
@@ -362,37 +362,37 @@ STATIC long SpiReadDataCont(void)
     STREAM_TO_UINT8((char *)(evnt_buff + SPI_HEADER_SIZE), HCI_PACKET_TYPE_OFFSET, type);
 
     switch (type) {
-        case HCI_TYPE_DATA:{
-                // We need to read the rest of data..
-                STREAM_TO_UINT16((char *)(evnt_buff + SPI_HEADER_SIZE),
-                        HCI_DATA_LENGTH_OFFSET, data_to_recv);
-                if (!((HEADERS_SIZE_EVNT + data_to_recv) & 1)) {
-                    data_to_recv++;
-                }
+    case HCI_TYPE_DATA: {
+        // We need to read the rest of data..
+        STREAM_TO_UINT16((char *)(evnt_buff + SPI_HEADER_SIZE),
+                         HCI_DATA_LENGTH_OFFSET, data_to_recv);
+        if (!((HEADERS_SIZE_EVNT + data_to_recv) & 1)) {
+            data_to_recv++;
+        }
 
-                if (data_to_recv) {
-                    SpiReadDataSynchronous(evnt_buff + 10, data_to_recv);
-                }
-                break;
-            }
-        case HCI_TYPE_EVNT: {
-                // Calculate the rest length of the data
-                STREAM_TO_UINT8((char *)(evnt_buff + SPI_HEADER_SIZE),
+        if (data_to_recv) {
+            SpiReadDataSynchronous(evnt_buff + 10, data_to_recv);
+        }
+        break;
+    }
+    case HCI_TYPE_EVNT: {
+        // Calculate the rest length of the data
+        STREAM_TO_UINT8((char *)(evnt_buff + SPI_HEADER_SIZE),
                         HCI_EVENT_LENGTH_OFFSET, data_to_recv);
-                data_to_recv -= 1;
+        data_to_recv -= 1;
 
-                // Add padding byte if needed
-                if ((HEADERS_SIZE_EVNT + data_to_recv) & 1) {
-                    data_to_recv++;
-                }
+        // Add padding byte if needed
+        if ((HEADERS_SIZE_EVNT + data_to_recv) & 1) {
+            data_to_recv++;
+        }
 
-                if (data_to_recv) {
-                    SpiReadDataSynchronous(evnt_buff + 10, data_to_recv);
-                }
+        if (data_to_recv) {
+            SpiReadDataSynchronous(evnt_buff + 10, data_to_recv);
+        }
 
-                sSpiInformation.ulSpiState = eSPI_STATE_READ_EOT;
-                break;
-            }
+        sSpiInformation.ulSpiState = eSPI_STATE_READ_EOT;
+        break;
+    }
     }
 
     return 0;
@@ -411,33 +411,33 @@ STATIC void SSIContReadOperation(void)
 STATIC mp_obj_t irq_callback(mp_obj_t line) {
     DEBUG_printf("<< IRQ; state=%lu >>\n", sSpiInformation.ulSpiState);
     switch (sSpiInformation.ulSpiState) {
-        case eSPI_STATE_POWERUP:
-            /* This means IRQ line was low call a callback of HCI Layer to inform on event */
-            DEBUG_printf(" - POWERUP\n");
-            sSpiInformation.ulSpiState = eSPI_STATE_INITIALIZED;
-            break;
-        case eSPI_STATE_IDLE:
-            DEBUG_printf(" - IDLE\n");
-            sSpiInformation.ulSpiState = eSPI_STATE_READ_IRQ;
+    case eSPI_STATE_POWERUP:
+        /* This means IRQ line was low call a callback of HCI Layer to inform on event */
+        DEBUG_printf(" - POWERUP\n");
+        sSpiInformation.ulSpiState = eSPI_STATE_INITIALIZED;
+        break;
+    case eSPI_STATE_IDLE:
+        DEBUG_printf(" - IDLE\n");
+        sSpiInformation.ulSpiState = eSPI_STATE_READ_IRQ;
 
-            /* IRQ line goes down - we are start reception */
-            CS_LOW();
+        /* IRQ line goes down - we are start reception */
+        CS_LOW();
 
-            // Wait for TX/RX Compete which will come as DMA interrupt
-            SpiReadHeader();
+        // Wait for TX/RX Compete which will come as DMA interrupt
+        SpiReadHeader();
 
-            sSpiInformation.ulSpiState = eSPI_STATE_READ_EOT;
+        sSpiInformation.ulSpiState = eSPI_STATE_READ_EOT;
 
-            SSIContReadOperation();
-            break;
-        case eSPI_STATE_WRITE_IRQ:
-            DEBUG_printf(" - WRITE IRQ\n");
-            SpiWriteDataSynchronous(sSpiInformation.pTxPacket, sSpiInformation.usTxPacketLength);
+        SSIContReadOperation();
+        break;
+    case eSPI_STATE_WRITE_IRQ:
+        DEBUG_printf(" - WRITE IRQ\n");
+        SpiWriteDataSynchronous(sSpiInformation.pTxPacket, sSpiInformation.usTxPacketLength);
 
-            sSpiInformation.ulSpiState = eSPI_STATE_IDLE;
+        sSpiInformation.ulSpiState = eSPI_STATE_IDLE;
 
-            CS_HIGH();
-            break;
+        CS_HIGH();
+        break;
     }
     return mp_const_none;
 }

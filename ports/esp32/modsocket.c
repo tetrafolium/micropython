@@ -80,10 +80,10 @@ typedef struct _socket_obj_t {
     uint8_t proto;
     bool peer_closed;
     unsigned int retries;
-    #if MICROPY_PY_USOCKET_EVENTS
+#if MICROPY_PY_USOCKET_EVENTS
     mp_obj_t events_callback;
     struct _socket_obj_t *events_next;
-    #endif
+#endif
 } socket_obj_t;
 
 void _socket_settimeout(socket_obj_t *sock, uint64_t timeout_ms);
@@ -169,13 +169,13 @@ static inline void check_for_exceptions(void) {
 
 // This function mimics lwip_getaddrinfo, with added support for mDNS queries
 static int _socket_getaddrinfo3(const char *nodename, const char *servname,
-    const struct addrinfo *hints, struct addrinfo **res) {
+                                const struct addrinfo *hints, struct addrinfo **res) {
 
-    #if MICROPY_HW_ENABLE_MDNS_QUERIES
+#if MICROPY_HW_ENABLE_MDNS_QUERIES
     int nodename_len = strlen(nodename);
     const int local_len = sizeof(MDNS_LOCAL_SUFFIX) - 1;
     if (nodename_len > local_len
-        && strcasecmp(nodename + nodename_len - local_len, MDNS_LOCAL_SUFFIX) == 0) {
+            && strcasecmp(nodename + nodename_len - local_len, MDNS_LOCAL_SUFFIX) == 0) {
         // mDNS query
         char nodename_no_local[nodename_len - local_len + 1];
         memcpy(nodename_no_local, nodename, nodename_len - local_len);
@@ -213,7 +213,7 @@ static int _socket_getaddrinfo3(const char *nodename, const char *servname,
         *res = ai;
         return 0;
     }
-    #endif
+#endif
 
     // Normal query
     return lwip_getaddrinfo(nodename, servname, hints, res);
@@ -251,7 +251,7 @@ static int _socket_getaddrinfo2(const mp_obj_t host, const mp_obj_t portx, struc
     // Somehow LwIP returns a resolution of 0.0.0.0 for failed lookups, traced it as far back
     // as netconn_gethostbyname_addrtype returning OK instead of error.
     if (*resp == NULL ||
-        (strcmp(resp[0]->ai_canonname, "0.0.0.0") == 0 && strcmp(host_str, "0.0.0.0") != 0)) {
+            (strcmp(resp[0]->ai_canonname, "0.0.0.0") == 0 && strcmp(host_str, "0.0.0.0") != 0)) {
         mp_raise_OSError(-2); // name or service not known
     }
 
@@ -387,53 +387,53 @@ STATIC mp_obj_t socket_setsockopt(size_t n_args, const mp_obj_t *args) {
     int opt = mp_obj_get_int(args[2]);
 
     switch (opt) {
-        // level: SOL_SOCKET
-        case SO_REUSEADDR: {
-            int val = mp_obj_get_int(args[3]);
-            int ret = lwip_setsockopt(self->fd, SOL_SOCKET, opt, &val, sizeof(int));
-            if (ret != 0) {
-                exception_from_errno(errno);
+    // level: SOL_SOCKET
+    case SO_REUSEADDR: {
+        int val = mp_obj_get_int(args[3]);
+        int ret = lwip_setsockopt(self->fd, SOL_SOCKET, opt, &val, sizeof(int));
+        if (ret != 0) {
+            exception_from_errno(errno);
+        }
+        break;
+    }
+
+#if MICROPY_PY_USOCKET_EVENTS
+    // level: SOL_SOCKET
+    // special "register callback" option
+    case 20: {
+        if (args[3] == mp_const_none) {
+            if (self->events_callback != MP_OBJ_NULL) {
+                usocket_events_remove(self);
+                self->events_callback = MP_OBJ_NULL;
             }
-            break;
+        } else {
+            if (self->events_callback == MP_OBJ_NULL) {
+                usocket_events_add(self);
+            }
+            self->events_callback = args[3];
+        }
+        break;
+    }
+#endif
+
+    // level: IPPROTO_IP
+    case IP_ADD_MEMBERSHIP: {
+        mp_buffer_info_t bufinfo;
+        mp_get_buffer_raise(args[3], &bufinfo, MP_BUFFER_READ);
+        if (bufinfo.len != sizeof(ip4_addr_t) * 2) {
+            mp_raise_ValueError(NULL);
         }
 
-            #if MICROPY_PY_USOCKET_EVENTS
-        // level: SOL_SOCKET
-        // special "register callback" option
-        case 20: {
-            if (args[3] == mp_const_none) {
-                if (self->events_callback != MP_OBJ_NULL) {
-                    usocket_events_remove(self);
-                    self->events_callback = MP_OBJ_NULL;
-                }
-            } else {
-                if (self->events_callback == MP_OBJ_NULL) {
-                    usocket_events_add(self);
-                }
-                self->events_callback = args[3];
-            }
-            break;
+        // POSIX setsockopt has order: group addr, if addr, lwIP has it vice-versa
+        err_t err = igmp_joingroup((const ip4_addr_t *)bufinfo.buf + 1, bufinfo.buf);
+        if (err != ERR_OK) {
+            mp_raise_OSError(-err);
         }
-            #endif
+        break;
+    }
 
-        // level: IPPROTO_IP
-        case IP_ADD_MEMBERSHIP: {
-            mp_buffer_info_t bufinfo;
-            mp_get_buffer_raise(args[3], &bufinfo, MP_BUFFER_READ);
-            if (bufinfo.len != sizeof(ip4_addr_t) * 2) {
-                mp_raise_ValueError(NULL);
-            }
-
-            // POSIX setsockopt has order: group addr, if addr, lwIP has it vice-versa
-            err_t err = igmp_joingroup((const ip4_addr_t *)bufinfo.buf + 1, bufinfo.buf);
-            if (err != ERR_OK) {
-                mp_raise_OSError(-err);
-            }
-            break;
-        }
-
-        default:
-            mp_printf(&mp_plat_print, "Warning: lwip.setsockopt() option not implemented\n");
+    default:
+        mp_printf(&mp_plat_print, "Warning: lwip.setsockopt() option not implemented\n");
     }
 
     return mp_const_none;
@@ -461,11 +461,11 @@ STATIC mp_obj_t socket_settimeout(const mp_obj_t arg0, const mp_obj_t arg1) {
     if (arg1 == mp_const_none) {
         _socket_settimeout(self, UINT64_MAX);
     } else {
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         _socket_settimeout(self, (uint64_t)(mp_obj_get_float(arg1) * MICROPY_FLOAT_CONST(1000.0)));
-        #else
+#else
         _socket_settimeout(self, mp_obj_get_int(arg1) * 1000);
-        #endif
+#endif
     }
     return mp_const_none;
 }
@@ -486,7 +486,7 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_2(socket_setblocking_obj, socket_setblocking);
 // at a time, as the timeout resets each time a recvfrom succeeds ... this is probably not
 // good behaviour.
 STATIC mp_uint_t _socket_read_data(mp_obj_t self_in, void *buf, size_t size,
-    struct sockaddr *from, socklen_t *from_len, int *errcode) {
+                                   struct sockaddr *from, socklen_t *from_len, int *errcode) {
     socket_obj_t *sock = MP_OBJ_TO_PTR(self_in);
 
     // If the peer closed the connection then the lwIP socket API will only return "0" once
@@ -535,7 +535,7 @@ STATIC mp_uint_t _socket_read_data(mp_obj_t self_in, void *buf, size_t size,
 }
 
 mp_obj_t _socket_recvfrom(mp_obj_t self_in, mp_obj_t len_in,
-    struct sockaddr *from, socklen_t *from_len) {
+                          struct sockaddr *from, socklen_t *from_len) {
     size_t len = mp_obj_get_int(len_in);
     vstr_t vstr;
     vstr_init_len(&vstr, len);
@@ -721,12 +721,12 @@ STATIC mp_uint_t socket_stream_ioctl(mp_obj_t self_in, mp_uint_t request, uintpt
         return ret;
     } else if (request == MP_STREAM_CLOSE) {
         if (socket->fd >= 0) {
-            #if MICROPY_PY_USOCKET_EVENTS
+#if MICROPY_PY_USOCKET_EVENTS
             if (socket->events_callback != MP_OBJ_NULL) {
                 usocket_events_remove(socket);
                 socket->events_callback = MP_OBJ_NULL;
             }
-            #endif
+#endif
             int ret = lwip_close(socket->fd);
             if (ret != 0) {
                 *errcode = errno;

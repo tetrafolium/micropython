@@ -94,21 +94,21 @@ STATIC void cc3k_reset_fd_closed_state(int fd) {
 
 STATIC void cc3k_callback(long event_type, char *data, unsigned char length) {
     switch (event_type) {
-        case HCI_EVNT_WLAN_UNSOL_CONNECT:
-            wlan_connected = true;
-            break;
-        case HCI_EVNT_WLAN_UNSOL_DISCONNECT:
-            // link down
-            wlan_connected = false;
-            ip_obtained = false;
-            break;
-        case HCI_EVNT_WLAN_UNSOL_DHCP:
-            ip_obtained = true;
-            break;
-        case HCI_EVNT_BSD_TCP_CLOSE_WAIT:
-            // mark socket for closure
-            cc3k_set_fd_closed_state(data[0]);
-            break;
+    case HCI_EVNT_WLAN_UNSOL_CONNECT:
+        wlan_connected = true;
+        break;
+    case HCI_EVNT_WLAN_UNSOL_DISCONNECT:
+        // link down
+        wlan_connected = false;
+        ip_obtained = false;
+        break;
+    case HCI_EVNT_WLAN_UNSOL_DHCP:
+        ip_obtained = true;
+        break;
+    case HCI_EVNT_BSD_TCP_CLOSE_WAIT:
+        // mark socket for closure
+        cc3k_set_fd_closed_state(data[0]);
+        break;
     }
 }
 
@@ -143,18 +143,18 @@ STATIC int cc3k_socket_socket(mod_network_socket_obj_t *socket, int *_errno) {
 
     mp_uint_t type;
     switch (socket->u_param.type) {
-        case MOD_NETWORK_SOCK_STREAM:
-            type = SOCK_STREAM;
-            break;
-        case MOD_NETWORK_SOCK_DGRAM:
-            type = SOCK_DGRAM;
-            break;
-        case MOD_NETWORK_SOCK_RAW:
-            type = SOCK_RAW;
-            break;
-        default:
-            *_errno = MP_EINVAL;
-            return -1;
+    case MOD_NETWORK_SOCK_STREAM:
+        type = SOCK_STREAM;
+        break;
+    case MOD_NETWORK_SOCK_DGRAM:
+        type = SOCK_DGRAM;
+        break;
+    case MOD_NETWORK_SOCK_RAW:
+        type = SOCK_RAW;
+        break;
+    default:
+        *_errno = MP_EINVAL;
+        return -1;
     }
 
     // open socket
@@ -444,11 +444,11 @@ STATIC mp_obj_t cc3k_make_new(const mp_obj_type_t *type, size_t n_args, size_t n
         pin_find(args[1]),
         pin_find(args[2]),
         pin_find(args[3])
-        );
+    );
 
     // initialize and start the module
     wlan_init(cc3k_callback, NULL, NULL, NULL,
-        ReadWlanInterruptPin, SpiResumeSpi, SpiPauseSpi, WriteWlanPin);
+              ReadWlanInterruptPin, SpiResumeSpi, SpiPauseSpi, WriteWlanPin);
 
     if (wlan_start(0) != 0) {
         mp_raise_msg(&mp_type_OSError, MP_ERROR_TEXT("failed to init CC3000 module"));
@@ -459,9 +459,9 @@ STATIC mp_obj_t cc3k_make_new(const mp_obj_type_t *type, size_t n_args, size_t n
 
     // Mask out all non-required events from the CC3000
     wlan_set_event_mask(HCI_EVNT_WLAN_KEEPALIVE |
-        HCI_EVNT_WLAN_UNSOL_INIT |
-        HCI_EVNT_WLAN_ASYNC_PING_REPORT |
-        HCI_EVNT_WLAN_ASYNC_SIMPLE_CONFIG_DONE);
+                        HCI_EVNT_WLAN_UNSOL_INIT |
+                        HCI_EVNT_WLAN_ASYNC_PING_REPORT |
+                        HCI_EVNT_WLAN_ASYNC_SIMPLE_CONFIG_DONE);
 
     // register with network module
     mod_network_register_nic((mp_obj_t)&cc3k_obj);

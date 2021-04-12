@@ -126,11 +126,11 @@ int spi_Read_CPU(unsigned char *pBuff, int len)
     //
     while(ulCnt--)
     {
-          while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_TXS ));
-          HWREG(ulTxReg) = 0xFFFFFFFF;
-          while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_RXS ));
-          *ulDataIn = HWREG(ulRxReg);
-          ulDataIn++;
+        while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_TXS ));
+        HWREG(ulTxReg) = 0xFFFFFFFF;
+        while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_RXS ));
+        *ulDataIn = HWREG(ulRxReg);
+        ulDataIn++;
     }
 
     MAP_SPICSDisable(LSPI_BASE);
@@ -182,11 +182,11 @@ int spi_Write_CPU(unsigned char *pBuff, int len)
     //
     while(ulCnt--)
     {
-          while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_TXS ));
-          HWREG(ulTxReg) = *ulDataOut;
-          while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_RXS ));
-          ulDataIn = HWREG(ulRxReg);
-          ulDataOut++;
+        while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_TXS ));
+        HWREG(ulTxReg) = *ulDataOut;
+        while(!( HWREG(ulStatusReg)& MCSPI_CH0STAT_RXS ));
+        ulDataIn = HWREG(ulRxReg);
+        ulDataOut++;
     }
 
     MAP_SPICSDisable(LSPI_BASE);
@@ -242,17 +242,17 @@ Fd_t spi_Open(char *ifName, unsigned long flags)
 
     //
     // Configure SPI interface
-	//
+    //
 
     MAP_SPIConfigSetExpClk(ulBase,MAP_PRCMPeripheralClockGet(PRCM_LSPI),
-		  	  	  	 ulSpiBitRate,SPI_MODE_MASTER,SPI_SUB_MODE_0,
-                     (SPI_SW_CTRL_CS |
-                     SPI_4PIN_MODE |
-                     SPI_TURBO_OFF |
-                     SPI_CS_ACTIVEHIGH |
-                     SPI_WL_32));
+                           ulSpiBitRate,SPI_MODE_MASTER,SPI_SUB_MODE_0,
+                           (SPI_SW_CTRL_CS |
+                            SPI_4PIN_MODE |
+                            SPI_TURBO_OFF |
+                            SPI_CS_ACTIVEHIGH |
+                            SPI_WL_32));
 
-	MAP_SPIEnable(ulBase);
+    MAP_SPIEnable(ulBase);
 
     g_SpiFd = 1;
     return g_SpiFd;
@@ -275,18 +275,18 @@ int spi_Close(Fd_t fd)
 
     g_SpiFd = 0;
 
-		//Disable Chip Select
-	MAP_SPICSDisable(LSPI_BASE);
+    //Disable Chip Select
+    MAP_SPICSDisable(LSPI_BASE);
 
 
-		//Disable SPI Channel
-	MAP_SPIDisable(ulBase);
+    //Disable SPI Channel
+    MAP_SPIDisable(ulBase);
 
-		// Reset SPI
-	MAP_SPIReset(ulBase);
+    // Reset SPI
+    MAP_SPIReset(ulBase);
 
-		// Disable SPI Peripheral
-	MAP_PRCMPeripheralClkDisable(PRCM_LSPI,PRCM_RUN_MODE_CLK | PRCM_SLP_MODE_CLK);
+    // Disable SPI Peripheral
+    MAP_PRCMPeripheralClkDisable(PRCM_LSPI,PRCM_RUN_MODE_CLK | PRCM_SLP_MODE_CLK);
 
     return 0;
 }
@@ -358,34 +358,34 @@ int spi_Write(Fd_t fd, unsigned char *pBuff, int len)
     \warning
 */
 
-int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl , void* pValue)
+int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl, void* pValue)
 {
 
     if(InterruptHdl == NULL)
     {
-		//De-register Interprocessor communication interrupt between App and NWP
-		#ifdef SL_PLATFORM_MULTI_THREADED
-		  osi_InterruptDeRegister(INT_NWPIC);
-		#else
-		  MAP_IntDisable(INT_NWPIC);
-		  MAP_IntUnregister(INT_NWPIC);
-		  MAP_IntPendClear(INT_NWPIC);
-		#endif
+        //De-register Interprocessor communication interrupt between App and NWP
+#ifdef SL_PLATFORM_MULTI_THREADED
+        osi_InterruptDeRegister(INT_NWPIC);
+#else
+        MAP_IntDisable(INT_NWPIC);
+        MAP_IntUnregister(INT_NWPIC);
+        MAP_IntPendClear(INT_NWPIC);
+#endif
     }
     else
     {
-		  #ifdef SL_PLATFORM_MULTI_THREADED
-			 MAP_IntPendClear(INT_NWPIC);
-			 osi_InterruptRegister(INT_NWPIC, (P_OSI_INTR_ENTRY)InterruptHdl,INT_PRIORITY_LVL_1);
-		  #else
-			 MAP_IntRegister(INT_NWPIC, InterruptHdl);
-			 MAP_IntPrioritySet(INT_NWPIC, INT_PRIORITY_LVL_1);
-			 MAP_IntPendClear(INT_NWPIC);
-			 MAP_IntEnable(INT_NWPIC);
-		  #endif
+#ifdef SL_PLATFORM_MULTI_THREADED
+        MAP_IntPendClear(INT_NWPIC);
+        osi_InterruptRegister(INT_NWPIC, (P_OSI_INTR_ENTRY)InterruptHdl,INT_PRIORITY_LVL_1);
+#else
+        MAP_IntRegister(INT_NWPIC, InterruptHdl);
+        MAP_IntPrioritySet(INT_NWPIC, INT_PRIORITY_LVL_1);
+        MAP_IntPendClear(INT_NWPIC);
+        MAP_IntEnable(INT_NWPIC);
+#endif
     }
 
-  return 0;
+    return 0;
 }
 
 
@@ -399,7 +399,7 @@ int NwpRegisterInterruptHandler(P_EVENT_HANDLER InterruptHdl , void* pValue)
 */
 void NwpMaskInterrupt()
 {
-	(*(unsigned long *)REG_INT_MASK_SET) = 0x1;
+    (*(unsigned long *)REG_INT_MASK_SET) = 0x1;
 }
 
 
@@ -413,7 +413,7 @@ void NwpMaskInterrupt()
 */
 void NwpUnMaskInterrupt()
 {
-	(*(unsigned long *)REG_INT_MASK_CLR) = 0x1;
+    (*(unsigned long *)REG_INT_MASK_CLR) = 0x1;
 }
 
 #ifdef DEBUG
@@ -429,7 +429,7 @@ void NwpUnMaskInterrupt()
 */
 void NwpPowerOnPreamble(void)
 {
-    #define MAX_RETRY_COUNT         1000
+#define MAX_RETRY_COUNT         1000
 
     unsigned int sl_stop_ind, apps_int_sts_raw, nwp_lpds_wake_cfg;
     unsigned int retry_count;
@@ -501,10 +501,10 @@ void NwpPowerOn(void)
 */
 void NwpPowerOff(void)
 {
-	//Must delay 300 usec to enable the NWP to finish all sl_stop activities
-	UtilsDelay(300*80/3);
+    //Must delay 300 usec to enable the NWP to finish all sl_stop activities
+    UtilsDelay(300*80/3);
 
-	//Mask Host Interrupt
+    //Mask Host Interrupt
     NwpMaskInterrupt();
 
     //Switch to PFM Mode

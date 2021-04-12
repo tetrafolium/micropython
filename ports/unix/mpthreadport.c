@@ -95,15 +95,15 @@ STATIC void mp_thread_gc(int signo, siginfo_t *info, void *context) {
         // that we don't need the extra information, enough is captured by the
         // gc_collect_regs_and_stack function above
         // gc_collect_root((void**)context, sizeof(ucontext_t) / sizeof(uintptr_t));
-        #if MICROPY_ENABLE_PYSTACK
+#if MICROPY_ENABLE_PYSTACK
         void **ptrs = (void **)(void *)MP_STATE_THREAD(pystack_start);
         gc_collect_root(ptrs, (MP_STATE_THREAD(pystack_cur) - MP_STATE_THREAD(pystack_start)) / sizeof(void *));
-        #endif
-        #if defined(__APPLE__)
+#endif
+#if defined(__APPLE__)
         sem_post(thread_signal_done_p);
-        #else
+#else
         sem_post(&thread_signal_done);
-        #endif
+#endif
     }
 }
 
@@ -125,12 +125,12 @@ void mp_thread_init(void) {
     thread->arg = NULL;
     thread->next = NULL;
 
-    #if defined(__APPLE__)
+#if defined(__APPLE__)
     snprintf(thread_signal_done_name, sizeof(thread_signal_done_name), "micropython_sem_%d", (int)thread->id);
     thread_signal_done_p = sem_open(thread_signal_done_name, O_CREAT | O_EXCL, 0666, 0);
-    #else
+#else
     sem_init(&thread_signal_done, 0, 0);
-    #endif
+#endif
 
     // enable signal handler for garbage collection
     struct sigaction sa;
@@ -149,10 +149,10 @@ void mp_thread_deinit(void) {
         free(th);
     }
     mp_thread_unix_end_atomic_section();
-    #if defined(__APPLE__)
+#if defined(__APPLE__)
     sem_close(thread_signal_done_p);
     sem_unlink(thread_signal_done_name);
-    #endif
+#endif
     assert(thread->id == pthread_self());
     free(thread);
 }
@@ -174,11 +174,11 @@ void mp_thread_gc_others(void) {
             continue;
         }
         pthread_kill(th->id, MP_THREAD_GC_SIGNAL);
-        #if defined(__APPLE__)
+#if defined(__APPLE__)
         sem_wait(thread_signal_done_p);
-        #else
+#else
         sem_wait(&thread_signal_done);
-        #endif
+#endif
     }
     mp_thread_unix_end_atomic_section();
 }

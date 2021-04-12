@@ -64,29 +64,29 @@ void mp_hal_set_interrupt_char(int c) {
 
 uintptr_t mp_hal_stdio_poll(uintptr_t poll_flags) {
     uintptr_t ret = 0;
-    #if MICROPY_HW_ENABLE_UART_REPL
+#if MICROPY_HW_ENABLE_UART_REPL
     if ((poll_flags & MP_STREAM_POLL_RD) && ringbuf_peek(&stdin_ringbuf) != -1) {
         ret |= MP_STREAM_POLL_RD;
     }
-    #endif
-    #if MICROPY_HW_ENABLE_USBDEV
+#endif
+#if MICROPY_HW_ENABLE_USBDEV
     if (tud_cdc_connected() && tud_cdc_available()) {
         ret |= MP_STREAM_POLL_RD;
     }
-    #endif
+#endif
     return ret;
 }
 
 // Receive single character
 int mp_hal_stdin_rx_chr(void) {
     for (;;) {
-        #if MICROPY_HW_ENABLE_UART_REPL
+#if MICROPY_HW_ENABLE_UART_REPL
         int c = ringbuf_get(&stdin_ringbuf);
         if (c != -1) {
             return c;
         }
-        #endif
-        #if MICROPY_HW_ENABLE_USBDEV
+#endif
+#if MICROPY_HW_ENABLE_USBDEV
         if (tud_cdc_connected() && tud_cdc_available()) {
             uint8_t buf[1];
             uint32_t count = tud_cdc_read(buf, sizeof(buf));
@@ -94,18 +94,18 @@ int mp_hal_stdin_rx_chr(void) {
                 return buf[0];
             }
         }
-        #endif
+#endif
         MICROPY_EVENT_POLL_HOOK
     }
 }
 
 // Send string of given length
 void mp_hal_stdout_tx_strn(const char *str, mp_uint_t len) {
-    #if MICROPY_HW_ENABLE_UART_REPL
+#if MICROPY_HW_ENABLE_UART_REPL
     mp_uart_write_strn(str, len);
-    #endif
+#endif
 
-    #if MICROPY_HW_ENABLE_USBDEV
+#if MICROPY_HW_ENABLE_USBDEV
     if (tud_cdc_connected()) {
         for (size_t i = 0; i < len;) {
             uint32_t n = len - i;
@@ -122,7 +122,7 @@ void mp_hal_stdout_tx_strn(const char *str, mp_uint_t len) {
             i += n2;
         }
     }
-    #endif
+#endif
 }
 
 void mp_hal_delay_ms(mp_uint_t ms) {

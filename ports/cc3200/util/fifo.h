@@ -34,11 +34,11 @@ typedef struct {
     unsigned int uiLast;
     void (*pfElementPush)(void * const pvFifo, const void * const pvElement);
     void (*pfElementPop)(void * const pvFifo, void * const pvElement);
-}FIFO_t;
+} FIFO_t;
 
 extern void FIFO_Init (FIFO_t *fifo, unsigned int uiElementsMax,
-void (*pfElmentPush)(void * const pvFifo, const void * const pvElement),
-void (*pfElementPop)(void * const pvFifo, void * const pvElement));
+                       void (*pfElmentPush)(void * const pvFifo, const void * const pvElement),
+                       void (*pfElementPop)(void * const pvFifo, void * const pvElement));
 extern bool FIFO_bPushElement (FIFO_t *fifo, const void * const pvElement);
 extern bool FIFO_bPopElement (FIFO_t *fifo, void * const pvElement);
 extern bool FIFO_bPeekElement (FIFO_t *fifo, void * const pvElement);

@@ -3,35 +3,35 @@
 //
 // Interface APIs for free-rtos function calls
 //
-// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/ 
-// 
-// 
-//  Redistribution and use in source and binary forms, with or without 
-//  modification, are permitted provided that the following conditions 
+// Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
+//
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions
 //  are met:
 //
-//    Redistributions of source code must retain the above copyright 
+//    Redistributions of source code must retain the above copyright
 //    notice, this list of conditions and the following disclaimer.
 //
 //    Redistributions in binary form must reproduce the above copyright
-//    notice, this list of conditions and the following disclaimer in the 
-//    documentation and/or other materials provided with the   
+//    notice, this list of conditions and the following disclaimer in the
+//    documentation and/or other materials provided with the
 //    distribution.
 //
 //    Neither the name of Texas Instruments Incorporated nor the names of
 //    its contributors may be used to endorse or promote products derived
 //    from this software without specific prior written permission.
 //
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 
-//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT 
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+//  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 //  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT 
-//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, 
-//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT 
+//  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+//  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+//  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
 //  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
 //  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
-//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE 
+//  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 //  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
@@ -57,7 +57,7 @@ static void vSimpleLinkSpawnTask( void *pvParameters );
 //Queue Handler
 QueueHandle_t xSimpleLinkSpawnQueue = NULL;
 TaskHandle_t xSimpleLinkSpawnTaskHndl = NULL;
-// Queue size 
+// Queue size
 #define slQUEUE_SIZE				( 3 )
 #define SL_SPAWN_MAX_WAIT_MS        ( 200 )
 
@@ -82,10 +82,10 @@ static portSTACK_TYPE spawnTaskStack[896 / sizeof(portSTACK_TYPE)] __attribute__
 */
 OsiReturnVal_e osi_InterruptRegister(int iIntrNum,P_OSI_INTR_ENTRY pEntry,unsigned char ucPriority)
 {
-	MAP_IntRegister(iIntrNum,(void(*)(void))pEntry);
-	MAP_IntPrioritySet(iIntrNum, ucPriority);
-	MAP_IntEnable(iIntrNum);
-	return OSI_OK;
+    MAP_IntRegister(iIntrNum,(void(*)(void))pEntry);
+    MAP_IntPrioritySet(iIntrNum, ucPriority);
+    MAP_IntEnable(iIntrNum);
+    return OSI_OK;
 }
 
 /*!
@@ -101,8 +101,8 @@ OsiReturnVal_e osi_InterruptRegister(int iIntrNum,P_OSI_INTR_ENTRY pEntry,unsign
 
 void osi_InterruptDeRegister(int iIntrNum)
 {
-	MAP_IntDisable(iIntrNum);
-	MAP_IntUnregister(iIntrNum);
+    MAP_IntDisable(iIntrNum);
+    MAP_IntUnregister(iIntrNum);
 }
 
 /*!
@@ -177,15 +177,15 @@ OsiReturnVal_e osi_SyncObjSignal(OsiSyncObj_t* pSyncObj)
 */
 OsiReturnVal_e osi_SyncObjSignalFromISR(OsiSyncObj_t* pSyncObj)
 {
-	xHigherPriorityTaskWoken = pdFALSE;
-	if(pdTRUE == xSemaphoreGiveFromISR( *pSyncObj, &xHigherPriorityTaskWoken ))
-	{
-		if( xHigherPriorityTaskWoken )
-		{
-			taskYIELD ();
-		}
-	}
-	return OSI_OK;
+    xHigherPriorityTaskWoken = pdFALSE;
+    if(pdTRUE == xSemaphoreGiveFromISR( *pSyncObj, &xHigherPriorityTaskWoken ))
+    {
+        if( xHigherPriorityTaskWoken )
+        {
+            taskYIELD ();
+        }
+    }
+    return OSI_OK;
 }
 
 /*!
@@ -203,7 +203,7 @@ OsiReturnVal_e osi_SyncObjSignalFromISR(OsiSyncObj_t* pSyncObj)
 	\note
 	\warning
 */
-OsiReturnVal_e osi_SyncObjWait(OsiSyncObj_t* pSyncObj , OsiTime_t Timeout)
+OsiReturnVal_e osi_SyncObjWait(OsiSyncObj_t* pSyncObj, OsiTime_t Timeout)
 {
     if(pdTRUE == xSemaphoreTake( (SemaphoreHandle_t)*pSyncObj, ( TickType_t )Timeout))
     {
@@ -281,11 +281,11 @@ OsiReturnVal_e osi_TaskCreate(P_OSI_TASK_ENTRY pEntry,const signed char * const 
                               unsigned short usStackDepth, void *pvParameters,
                               unsigned long uxPriority,OsiTaskHandle* pTaskHandle)
 {
-	ASSERT (pdPASS == xTaskCreate( pEntry, (char const*)pcName,
-                                (usStackDepth/(sizeof( portSTACK_TYPE ))), 
-                                pvParameters,(unsigned portBASE_TYPE)uxPriority,
-                                (TaskHandle_t*)pTaskHandle ));
-	return OSI_OK;
+    ASSERT (pdPASS == xTaskCreate( pEntry, (char const*)pcName,
+                                   (usStackDepth/(sizeof( portSTACK_TYPE ))),
+                                   pvParameters,(unsigned portBASE_TYPE)uxPriority,
+                                   (TaskHandle_t*)pTaskHandle ));
+    return OSI_OK;
 }
 
 
@@ -301,7 +301,7 @@ OsiReturnVal_e osi_TaskCreate(P_OSI_TASK_ENTRY pEntry,const signed char * const 
 */
 void osi_TaskDelete(OsiTaskHandle* pTaskHandle)
 {
-	vTaskDelete((TaskHandle_t)*pTaskHandle);
+    vTaskDelete((TaskHandle_t)*pTaskHandle);
 }
 
 
@@ -341,7 +341,7 @@ OsiReturnVal_e _osi_LockObjDelete(OsiLockObj_t* pLockObj)
 	\note
 	\warning
 */
-OsiReturnVal_e _osi_LockObjLock(OsiLockObj_t* pLockObj , OsiTime_t Timeout)
+OsiReturnVal_e _osi_LockObjLock(OsiLockObj_t* pLockObj, OsiTime_t Timeout)
 {
     //Take Semaphore
     if(pdTRUE == xSemaphoreTake( *pLockObj, ( TickType_t ) Timeout ))
@@ -366,14 +366,14 @@ OsiReturnVal_e _osi_LockObjLock(OsiLockObj_t* pLockObj , OsiTime_t Timeout)
 */
 OsiReturnVal_e _osi_LockObjUnlock(OsiLockObj_t* pLockObj)
 {
-	//Release Semaphore
+    //Release Semaphore
     if(pdTRUE == xSemaphoreGive( *pLockObj ))
     {
-    	return OSI_OK;
+        return OSI_OK;
     }
     else
     {
-    	return OSI_OPERATION_FAILED;
+        return OSI_OPERATION_FAILED;
     }
 }
 
@@ -396,28 +396,28 @@ OsiReturnVal_e _osi_LockObjUnlock(OsiLockObj_t* pLockObj)
 	\warning
 */
 
-OsiReturnVal_e osi_Spawn(P_OSI_SPAWN_ENTRY pEntry , void* pValue , unsigned long flags)
+OsiReturnVal_e osi_Spawn(P_OSI_SPAWN_ENTRY pEntry, void* pValue, unsigned long flags)
 {
 
-	tSimpleLinkSpawnMsg Msg;
-	Msg.pEntry = pEntry;
-	Msg.pValue = pValue;
-	xHigherPriorityTaskWoken = pdFALSE;
+    tSimpleLinkSpawnMsg Msg;
+    Msg.pEntry = pEntry;
+    Msg.pValue = pValue;
+    xHigherPriorityTaskWoken = pdFALSE;
 
-	if(pdTRUE == xQueueSendFromISR( xSimpleLinkSpawnQueue, &Msg, &xHigherPriorityTaskWoken ))
-	{
-		if( xHigherPriorityTaskWoken )
-		{
-			taskYIELD ();
-		}
-		return OSI_OK;
-	}
-	return OSI_OPERATION_FAILED;
+    if(pdTRUE == xQueueSendFromISR( xSimpleLinkSpawnQueue, &Msg, &xHigherPriorityTaskWoken ))
+    {
+        if( xHigherPriorityTaskWoken )
+        {
+            taskYIELD ();
+        }
+        return OSI_OK;
+    }
+    return OSI_OPERATION_FAILED;
 }
 
 
 /*!
-	\brief 	This is the simplelink spawn task to call SL callback from a different context 
+	\brief 	This is the simplelink spawn task to call SL callback from a different context
 
 	\param	pvParameters		-	pointer to the task parameter
 
@@ -427,19 +427,19 @@ OsiReturnVal_e osi_Spawn(P_OSI_SPAWN_ENTRY pEntry , void* pValue , unsigned long
 */
 void vSimpleLinkSpawnTask(void *pvParameters)
 {
-	tSimpleLinkSpawnMsg Msg;
-	portBASE_TYPE ret;
+    tSimpleLinkSpawnMsg Msg;
+    portBASE_TYPE ret;
 
-	for(;;)
-	{
-		ret = xQueueReceive( xSimpleLinkSpawnQueue, &Msg, SL_SPAWN_MAX_WAIT_MS);
-		if(ret == pdPASS)
-		{
-				Msg.pEntry(Msg.pValue);
-		}
+    for(;;)
+    {
+        ret = xQueueReceive( xSimpleLinkSpawnQueue, &Msg, SL_SPAWN_MAX_WAIT_MS);
+        if(ret == pdPASS)
+        {
+            Msg.pEntry(Msg.pValue);
+        }
         // set the alive flag for the wdt
         pybwdt_sl_alive();
-	}
+    }
 }
 
 /*!
@@ -465,9 +465,9 @@ OsiReturnVal_e VStartSimpleLinkSpawnTask(unsigned portBASE_TYPE uxPriority)
 
     // This code creates the task using static memory for the TCB and stack
     xSimpleLinkSpawnTaskHndl = xTaskCreateStatic(
-        vSimpleLinkSpawnTask, ( portCHAR * ) "SLSPAWN",
-        896 / sizeof(portSTACK_TYPE), NULL, uxPriority,
-        spawnTaskStack, &spawnTaskTCB);
+                                   vSimpleLinkSpawnTask, ( portCHAR * ) "SLSPAWN",
+                                   896 / sizeof(portSTACK_TYPE), NULL, uxPriority,
+                                   spawnTaskStack, &spawnTaskTCB);
 
     ASSERT(xSimpleLinkSpawnTaskHndl != NULL);
 
@@ -485,17 +485,17 @@ OsiReturnVal_e VStartSimpleLinkSpawnTask(unsigned portBASE_TYPE uxPriority)
 */
 void VDeleteSimpleLinkSpawnTask( void )
 {
-	if(xSimpleLinkSpawnTaskHndl)
-	{
-		vTaskDelete( xSimpleLinkSpawnTaskHndl );
-		xSimpleLinkSpawnTaskHndl = 0;
-	}
+    if(xSimpleLinkSpawnTaskHndl)
+    {
+        vTaskDelete( xSimpleLinkSpawnTaskHndl );
+        xSimpleLinkSpawnTaskHndl = 0;
+    }
 
-	if(xSimpleLinkSpawnQueue)
-	{
-		vQueueDelete( xSimpleLinkSpawnQueue );
-		xSimpleLinkSpawnQueue = 0;
-	}
+    if(xSimpleLinkSpawnQueue)
+    {
+        vQueueDelete( xSimpleLinkSpawnQueue );
+        xSimpleLinkSpawnQueue = 0;
+    }
 }
 
 /*!
@@ -510,19 +510,19 @@ void VDeleteSimpleLinkSpawnTask( void )
 	\note
 	\warning
 */
-OsiReturnVal_e osi_MsgQCreate(OsiMsgQ_t* 		pMsgQ , 
-			      char*			pMsgQName,
-			      unsigned long 		MsgSize,
-			      unsigned long		MaxMsgs)
+OsiReturnVal_e osi_MsgQCreate(OsiMsgQ_t* 		pMsgQ,
+                              char*			pMsgQName,
+                              unsigned long 		MsgSize,
+                              unsigned long		MaxMsgs)
 {
-	QueueHandle_t handle;
+    QueueHandle_t handle;
 
-	//Create Queue
-	handle = xQueueCreate( MaxMsgs, MsgSize );
-	ASSERT (handle != NULL);
+    //Create Queue
+    handle = xQueueCreate( MaxMsgs, MsgSize );
+    ASSERT (handle != NULL);
 
-	*pMsgQ = (OsiMsgQ_t)handle;
-	return OSI_OK;
+    *pMsgQ = (OsiMsgQ_t)handle;
+    return OSI_OK;
 }
 /*!
 	\brief 	This function is used to delete the MsgQ
@@ -535,7 +535,7 @@ OsiReturnVal_e osi_MsgQCreate(OsiMsgQ_t* 		pMsgQ ,
 */
 OsiReturnVal_e osi_MsgQDelete(OsiMsgQ_t* pMsgQ)
 {
-	vQueueDelete((QueueHandle_t) *pMsgQ );
+    vQueueDelete((QueueHandle_t) *pMsgQ );
     return OSI_OK;
 }
 /*!
@@ -550,18 +550,18 @@ OsiReturnVal_e osi_MsgQDelete(OsiMsgQ_t* pMsgQ)
 	\warning
 */
 
-OsiReturnVal_e osi_MsgQWrite(OsiMsgQ_t* pMsgQ, void* pMsg , OsiTime_t Timeout)
+OsiReturnVal_e osi_MsgQWrite(OsiMsgQ_t* pMsgQ, void* pMsg, OsiTime_t Timeout)
 {
-	xHigherPriorityTaskWoken = pdFALSE;
+    xHigherPriorityTaskWoken = pdFALSE;
     if(pdPASS == xQueueSendFromISR((QueueHandle_t) *pMsgQ, pMsg, &xHigherPriorityTaskWoken ))
     {
-		taskYIELD ();
-		return OSI_OK;
+        taskYIELD ();
+        return OSI_OK;
     }
-	else
-	{
-		return OSI_OPERATION_FAILED;
-	}
+    else
+    {
+        return OSI_OPERATION_FAILED;
+    }
 }
 /*!
 	\brief 	This function is used to read data from the MsgQ
@@ -575,17 +575,17 @@ OsiReturnVal_e osi_MsgQWrite(OsiMsgQ_t* pMsgQ, void* pMsg , OsiTime_t Timeout)
 	\warning
 */
 
-OsiReturnVal_e osi_MsgQRead(OsiMsgQ_t* pMsgQ, void* pMsg , OsiTime_t Timeout)
+OsiReturnVal_e osi_MsgQRead(OsiMsgQ_t* pMsgQ, void* pMsg, OsiTime_t Timeout)
 {
-	//Receive Item from Queue
-	if( pdTRUE  == xQueueReceive((QueueHandle_t)*pMsgQ,pMsg,Timeout) )
-	{
-		return OSI_OK;
-	}
-	else
-	{
-		return OSI_OPERATION_FAILED;
-	}
+    //Receive Item from Queue
+    if( pdTRUE  == xQueueReceive((QueueHandle_t)*pMsgQ,pMsg,Timeout) )
+    {
+        return OSI_OK;
+    }
+    else
+    {
+        return OSI_OPERATION_FAILED;
+    }
 }
 
 /*!
@@ -607,8 +607,8 @@ void * mem_Malloc(unsigned long Size)
 	\brief 	This function to call the memory de-allocation function of the FREERTOS
 
 	\param	pMem		-	pointer to the memory which needs to be freed
-	
-	\return - void 
+
+	\return - void
 	\note
 	\warning
 */
@@ -622,7 +622,7 @@ void mem_Free(void *pMem)
 	\param	pBuf	     -	 pointer to the memory to be fill
         \param  Val          -   Value to be fill
         \param  Size         -   Size of the memory which needs to be fill
-	\return - void 
+	\return - void
 	\note
 	\warning
 */
@@ -637,8 +637,8 @@ void  mem_set(void *pBuf,int Val,size_t Size)
       \param	pDst	-	pointer to the destination
       \param pSrc     -   pointer to the source
       \param Size     -   Size of the memory which needs to be copy
-      
-      \return - void 
+
+      \return - void
       \note
       \warning
 */
@@ -650,8 +650,8 @@ void  mem_copy(void *pDst, void *pSrc,size_t Size)
 
 /*!
 	\brief 	This function use to entering into critical section
-	\param	void		
-	\return - void 
+	\param	void
+	\return - void
 	\note
 	\warning
 */
@@ -663,8 +663,8 @@ void osi_EnterCritical(void)
 
 /*!
 	\brief 	This function use to exit critical section
-	\param	void		
-	\return - void 
+	\param	void
+	\return - void
 	\note
 	\warning
 */
@@ -694,7 +694,7 @@ void osi_start()
 */
 void osi_Sleep(unsigned int MilliSecs)
 {
-	vTaskDelay(MilliSecs);
+    vTaskDelay(MilliSecs);
 }
 
 
@@ -707,7 +707,7 @@ void osi_Sleep(unsigned int MilliSecs)
 */
 void osi_TaskDisable(void)
 {
-   vTaskSuspendAll();
+    vTaskSuspendAll();
 }
 
 
@@ -720,7 +720,7 @@ void osi_TaskDisable(void)
 */
 void osi_TaskEnable(void)
 {
-   xTaskResumeAll();
+    xTaskResumeAll();
 }
 
 /*!

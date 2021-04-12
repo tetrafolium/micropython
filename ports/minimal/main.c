@@ -35,12 +35,12 @@ int main(int argc, char **argv) {
     int stack_dummy;
     stack_top = (char *)&stack_dummy;
 
-    #if MICROPY_ENABLE_GC
+#if MICROPY_ENABLE_GC
     gc_init(heap, heap + sizeof(heap));
-    #endif
+#endif
     mp_init();
-    #if MICROPY_ENABLE_COMPILER
-    #if MICROPY_REPL_EVENT_DRIVEN
+#if MICROPY_ENABLE_COMPILER
+#if MICROPY_REPL_EVENT_DRIVEN
     pyexec_event_repl_init();
     for (;;) {
         int c = mp_hal_stdin_rx_chr();
@@ -48,14 +48,14 @@ int main(int argc, char **argv) {
             break;
         }
     }
-    #else
+#else
     pyexec_friendly_repl();
-    #endif
+#endif
     // do_str("print('hello world!', list(x+1 for x in range(10)), end='eol\\n')", MP_PARSE_SINGLE_INPUT);
     // do_str("for i in range(10):\r\n  print(i)", MP_PARSE_FILE_INPUT);
-    #else
+#else
     pyexec_frozen_module("frozentest.py");
-    #endif
+#endif
     mp_deinit();
     return 0;
 }
@@ -158,10 +158,10 @@ void _start(void) {
     *((volatile uint32_t *)0xe000ed14) |= 1 << 9;
 
     // initialise the cpu and peripherals
-    #if MICROPY_MIN_USE_STM32_MCU
+#if MICROPY_MIN_USE_STM32_MCU
     void stm32_init(void);
     stm32_init();
-    #endif
+#endif
 
     // now that we have a basic system up and running we can call main
     main(0, NULL);

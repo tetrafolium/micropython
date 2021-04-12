@@ -125,12 +125,12 @@ STATIC mp_obj_t machine_sleep_helper(wake_type_t wake_type, size_t n_args, const
     }
 
     switch (wake_type) {
-        case MACHINE_WAKE_SLEEP:
-            esp_light_sleep_start();
-            break;
-        case MACHINE_WAKE_DEEPSLEEP:
-            esp_deep_sleep_start();
-            break;
+    case MACHINE_WAKE_SLEEP:
+        esp_light_sleep_start();
+        break;
+    case MACHINE_WAKE_DEEPSLEEP:
+        esp_deep_sleep_start();
+        break;
     }
     return mp_const_none;
 }
@@ -147,32 +147,32 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_KW(machine_deepsleep_obj, 0,  machine_deepsleep);
 
 STATIC mp_obj_t machine_reset_cause(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_args) {
     switch (esp_reset_reason()) {
-        case ESP_RST_POWERON:
-        case ESP_RST_BROWNOUT:
-            return MP_OBJ_NEW_SMALL_INT(MP_PWRON_RESET);
-            break;
+    case ESP_RST_POWERON:
+    case ESP_RST_BROWNOUT:
+        return MP_OBJ_NEW_SMALL_INT(MP_PWRON_RESET);
+        break;
 
-        case ESP_RST_INT_WDT:
-        case ESP_RST_TASK_WDT:
-        case ESP_RST_WDT:
-            return MP_OBJ_NEW_SMALL_INT(MP_WDT_RESET);
-            break;
+    case ESP_RST_INT_WDT:
+    case ESP_RST_TASK_WDT:
+    case ESP_RST_WDT:
+        return MP_OBJ_NEW_SMALL_INT(MP_WDT_RESET);
+        break;
 
-        case ESP_RST_DEEPSLEEP:
-            return MP_OBJ_NEW_SMALL_INT(MP_DEEPSLEEP_RESET);
-            break;
+    case ESP_RST_DEEPSLEEP:
+        return MP_OBJ_NEW_SMALL_INT(MP_DEEPSLEEP_RESET);
+        break;
 
-        case ESP_RST_SW:
-        case ESP_RST_PANIC:
-        case ESP_RST_EXT: // Comment in ESP-IDF: "For ESP32, ESP_RST_EXT is never returned"
-            return MP_OBJ_NEW_SMALL_INT(MP_HARD_RESET);
-            break;
+    case ESP_RST_SW:
+    case ESP_RST_PANIC:
+    case ESP_RST_EXT: // Comment in ESP-IDF: "For ESP32, ESP_RST_EXT is never returned"
+        return MP_OBJ_NEW_SMALL_INT(MP_HARD_RESET);
+        break;
 
-        case ESP_RST_SDIO:
-        case ESP_RST_UNKNOWN:
-        default:
-            return MP_OBJ_NEW_SMALL_INT(0);
-            break;
+    case ESP_RST_SDIO:
+    case ESP_RST_UNKNOWN:
+    default:
+        return MP_OBJ_NEW_SMALL_INT(0);
+        break;
     }
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_KW(machine_reset_cause_obj, 0,  machine_reset_cause);
@@ -243,9 +243,9 @@ STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
 
     { MP_ROM_QSTR(MP_QSTR_Timer), MP_ROM_PTR(&machine_timer_type) },
     { MP_ROM_QSTR(MP_QSTR_WDT), MP_ROM_PTR(&machine_wdt_type) },
-    #if MICROPY_HW_ENABLE_SDCARD
+#if MICROPY_HW_ENABLE_SDCARD
     { MP_ROM_QSTR(MP_QSTR_SDCard), MP_ROM_PTR(&machine_sdcard_type) },
-    #endif
+#endif
 
     // wake abilities
     { MP_ROM_QSTR(MP_QSTR_SLEEP), MP_ROM_INT(MACHINE_WAKE_SLEEP) },

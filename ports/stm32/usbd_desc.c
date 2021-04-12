@@ -135,62 +135,62 @@ STATIC uint8_t *USBD_StrDescriptor(USBD_HandleTypeDef *pdev, uint8_t idx, uint16
     const char *str = NULL;
 
     switch (idx) {
-        case USBD_IDX_LANGID_STR:
-            *length = sizeof(USBD_LangIDDesc);
-            return (uint8_t *)USBD_LangIDDesc; // the data should only be read from this buf
+    case USBD_IDX_LANGID_STR:
+        *length = sizeof(USBD_LangIDDesc);
+        return (uint8_t *)USBD_LangIDDesc; // the data should only be read from this buf
 
-        case USBD_IDX_MFC_STR:
-            str = USBD_MANUFACTURER_STRING;
-            break;
+    case USBD_IDX_MFC_STR:
+        str = USBD_MANUFACTURER_STRING;
+        break;
 
-        case USBD_IDX_PRODUCT_STR:
-            if (pdev->dev_speed == USBD_SPEED_HIGH) {
-                str = USBD_PRODUCT_HS_STRING;
-            } else {
-                str = USBD_PRODUCT_FS_STRING;
-            }
-            break;
-
-        case USBD_IDX_SERIAL_STR: {
-            // This document: http://www.usb.org/developers/docs/devclass_docs/usbmassbulk_10.pdf
-            // says that the serial number has to be at least 12 digits long and that
-            // the last 12 digits need to be unique. It also stipulates that the valid
-            // character set is that of upper-case hexadecimal digits.
-            //
-            // The onboard DFU bootloader produces a 12-digit serial number based on
-            // the 96-bit unique ID, so for consistency we go with this algorithm.
-            // You can see the serial number if you use: lsusb -v
-            //
-            // See: https://my.st.com/52d187b7 for the algorithim used.
-
-            uint8_t *id = (uint8_t *)MP_HAL_UNIQUE_ID_ADDRESS;
-            snprintf(str_buf, sizeof(str_buf),
-                "%02X%02X%02X%02X%02X%02X",
-                id[11], id[10] + id[2], id[9], id[8] + id[0], id[7], id[6]);
-
-            str = str_buf;
-            break;
+    case USBD_IDX_PRODUCT_STR:
+        if (pdev->dev_speed == USBD_SPEED_HIGH) {
+            str = USBD_PRODUCT_HS_STRING;
+        } else {
+            str = USBD_PRODUCT_FS_STRING;
         }
+        break;
 
-        case USBD_IDX_CONFIG_STR:
-            if (pdev->dev_speed == USBD_SPEED_HIGH) {
-                str = USBD_CONFIGURATION_HS_STRING;
-            } else {
-                str = USBD_CONFIGURATION_FS_STRING;
-            }
-            break;
+    case USBD_IDX_SERIAL_STR: {
+        // This document: http://www.usb.org/developers/docs/devclass_docs/usbmassbulk_10.pdf
+        // says that the serial number has to be at least 12 digits long and that
+        // the last 12 digits need to be unique. It also stipulates that the valid
+        // character set is that of upper-case hexadecimal digits.
+        //
+        // The onboard DFU bootloader produces a 12-digit serial number based on
+        // the 96-bit unique ID, so for consistency we go with this algorithm.
+        // You can see the serial number if you use: lsusb -v
+        //
+        // See: https://my.st.com/52d187b7 for the algorithim used.
 
-        case USBD_IDX_INTERFACE_STR:
-            if (pdev->dev_speed == USBD_SPEED_HIGH) {
-                str = USBD_INTERFACE_HS_STRING;
-            } else {
-                str = USBD_INTERFACE_FS_STRING;
-            }
-            break;
+        uint8_t *id = (uint8_t *)MP_HAL_UNIQUE_ID_ADDRESS;
+        snprintf(str_buf, sizeof(str_buf),
+                 "%02X%02X%02X%02X%02X%02X",
+                 id[11], id[10] + id[2], id[9], id[8] + id[0], id[7], id[6]);
 
-        default:
-            // invalid string index
-            return NULL;
+        str = str_buf;
+        break;
+    }
+
+    case USBD_IDX_CONFIG_STR:
+        if (pdev->dev_speed == USBD_SPEED_HIGH) {
+            str = USBD_CONFIGURATION_HS_STRING;
+        } else {
+            str = USBD_CONFIGURATION_FS_STRING;
+        }
+        break;
+
+    case USBD_IDX_INTERFACE_STR:
+        if (pdev->dev_speed == USBD_SPEED_HIGH) {
+            str = USBD_INTERFACE_HS_STRING;
+        } else {
+            str = USBD_INTERFACE_FS_STRING;
+        }
+        break;
+
+    default:
+        // invalid string index
+        return NULL;
     }
 
     uint8_t *str_desc = ((usbd_cdc_msc_hid_state_t *)pdev->pClassData)->usbd_str_desc;

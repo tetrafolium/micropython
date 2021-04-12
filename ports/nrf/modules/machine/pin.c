@@ -117,9 +117,9 @@ void pin_init0(void) {
         nrfx_gpiote_init(NRFX_GPIOTE_DEFAULT_CONFIG_IRQ_PRIORITY);
     }
 
-    #if PIN_DEBUG
+#if PIN_DEBUG
     pin_class_debug = false;
-    #endif
+#endif
 }
 
 // C API used to convert a user-supplied pin name into an ordinal pin number.
@@ -217,20 +217,20 @@ STATIC void pin_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t
 
     char *pull = "PULL_DISABLED";
     switch (nrf_gpio_pin_pull_get(self->pin)) {
-        case NRF_GPIO_PIN_PULLUP:
-            pull = "PULL_UP";
-            break;
-        case NRF_GPIO_PIN_PULLDOWN:
-            pull = "PULL_DOWN";
-            break;
-        default:
-            break;
+    case NRF_GPIO_PIN_PULLUP:
+        pull = "PULL_UP";
+        break;
+    case NRF_GPIO_PIN_PULLDOWN:
+        pull = "PULL_DOWN";
+        break;
+    default:
+        break;
     }
 
     mp_printf(print, "Pin(%d, mode=%s, pull=%s)",
-            self->pin,
-            (nrf_gpio_pin_dir_get(self->pin) == NRF_GPIO_PIN_DIR_OUTPUT) ? "OUT" : "IN",
-            pull);
+              self->pin,
+              (nrf_gpio_pin_dir_get(self->pin) == NRF_GPIO_PIN_DIR_OUTPUT) ? "OUT" : "IN",
+              pull);
 }
 
 STATIC mp_obj_t pin_obj_init_helper(const pin_obj_t *pin, mp_uint_t n_args, const mp_obj_t *args, mp_map_t *kw_args);
@@ -365,7 +365,7 @@ STATIC mp_obj_t pin_obj_init_helper(const pin_obj_t *self, mp_uint_t n_args, con
 
     // Connect input or not
     nrf_gpio_pin_input_t input = (mode == NRF_GPIO_PIN_DIR_INPUT) ? NRF_GPIO_PIN_INPUT_CONNECT
-                                                                  : NRF_GPIO_PIN_INPUT_DISCONNECT;
+                                 : NRF_GPIO_PIN_INPUT_DISCONNECT;
 
     if (mode == NRF_GPIO_PIN_DIR_OUTPUT || mode == NRF_GPIO_PIN_DIR_INPUT) {
         nrf_gpio_cfg(self->pin,
@@ -553,9 +553,9 @@ STATIC const mp_rom_map_elem_t pin_locals_dict_table[] = {
     // class methods
     { MP_ROM_QSTR(MP_QSTR_mapper),  MP_ROM_PTR(&pin_mapper_obj) },
     { MP_ROM_QSTR(MP_QSTR_dict),    MP_ROM_PTR(&pin_map_dict_obj) },
-    #if PIN_DEBUG
+#if PIN_DEBUG
     { MP_ROM_QSTR(MP_QSTR_debug),   MP_ROM_PTR(&pin_debug_obj) },
-    #endif
+#endif
 
     // class attributes
     { MP_ROM_QSTR(MP_QSTR_board),   MP_ROM_PTR(&pin_board_pins_obj_type) },
@@ -564,12 +564,12 @@ STATIC const mp_rom_map_elem_t pin_locals_dict_table[] = {
     // class constants
     { MP_ROM_QSTR(MP_QSTR_IN),        MP_ROM_INT(NRF_GPIO_PIN_DIR_INPUT) },
     { MP_ROM_QSTR(MP_QSTR_OUT),       MP_ROM_INT(NRF_GPIO_PIN_DIR_OUTPUT) },
-/*
-    { MP_ROM_QSTR(MP_QSTR_OPEN_DRAIN),     MP_ROM_INT(GPIO_MODE_OUTPUT_OD) },
-    { MP_ROM_QSTR(MP_QSTR_ALT),            MP_ROM_INT(GPIO_MODE_AF_PP) },
-    { MP_ROM_QSTR(MP_QSTR_ALT_OPEN_DRAIN), MP_ROM_INT(GPIO_MODE_AF_OD) },
-    { MP_ROM_QSTR(MP_QSTR_ANALOG),         MP_ROM_INT(GPIO_MODE_ANALOG) },
-*/
+    /*
+        { MP_ROM_QSTR(MP_QSTR_OPEN_DRAIN),     MP_ROM_INT(GPIO_MODE_OUTPUT_OD) },
+        { MP_ROM_QSTR(MP_QSTR_ALT),            MP_ROM_INT(GPIO_MODE_AF_PP) },
+        { MP_ROM_QSTR(MP_QSTR_ALT_OPEN_DRAIN), MP_ROM_INT(GPIO_MODE_AF_OD) },
+        { MP_ROM_QSTR(MP_QSTR_ANALOG),         MP_ROM_INT(GPIO_MODE_ANALOG) },
+    */
     { MP_ROM_QSTR(MP_QSTR_PULL_DISABLED), MP_ROM_INT(NRF_GPIO_PIN_NOPULL) },
     { MP_ROM_QSTR(MP_QSTR_PULL_UP),       MP_ROM_INT(NRF_GPIO_PIN_PULLUP) },
     { MP_ROM_QSTR(MP_QSTR_PULL_DOWN),     MP_ROM_INT(NRF_GPIO_PIN_PULLDOWN) },
@@ -577,14 +577,14 @@ STATIC const mp_rom_map_elem_t pin_locals_dict_table[] = {
     // IRQ triggers, can be or'd together
     { MP_ROM_QSTR(MP_QSTR_IRQ_RISING),    MP_ROM_INT(NRF_GPIOTE_POLARITY_LOTOHI) },
     { MP_ROM_QSTR(MP_QSTR_IRQ_FALLING),   MP_ROM_INT(NRF_GPIOTE_POLARITY_HITOLO) },
-/*
-    // legacy class constants
-    { MP_ROM_QSTR(MP_QSTR_OUT_PP),    MP_ROM_INT(GPIO_MODE_OUTPUT_PP) },
-    { MP_ROM_QSTR(MP_QSTR_OUT_OD),    MP_ROM_INT(GPIO_MODE_OUTPUT_OD) },
-    { MP_ROM_QSTR(MP_QSTR_AF_PP),     MP_ROM_INT(GPIO_MODE_AF_PP) },
-    { MP_ROM_QSTR(MP_QSTR_AF_OD),     MP_ROM_INT(GPIO_MODE_AF_OD) },
-    { MP_ROM_QSTR(MP_QSTR_PULL_NONE), MP_ROM_INT(GPIO_NOPULL) },
-*/
+    /*
+        // legacy class constants
+        { MP_ROM_QSTR(MP_QSTR_OUT_PP),    MP_ROM_INT(GPIO_MODE_OUTPUT_PP) },
+        { MP_ROM_QSTR(MP_QSTR_OUT_OD),    MP_ROM_INT(GPIO_MODE_OUTPUT_OD) },
+        { MP_ROM_QSTR(MP_QSTR_AF_PP),     MP_ROM_INT(GPIO_MODE_AF_PP) },
+        { MP_ROM_QSTR(MP_QSTR_AF_OD),     MP_ROM_INT(GPIO_MODE_AF_OD) },
+        { MP_ROM_QSTR(MP_QSTR_PULL_NONE), MP_ROM_INT(GPIO_NOPULL) },
+    */
 #include "genhdr/pins_af_const.h"
 };
 

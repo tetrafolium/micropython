@@ -46,9 +46,9 @@
 #define BLE_DRIVER_VERBOSE 0
 
 #if BLE_DRIVER_VERBOSE
-  #define BLE_DRIVER_LOG printf
+#define BLE_DRIVER_LOG printf
 #else
-  #define BLE_DRIVER_LOG(...)
+#define BLE_DRIVER_LOG(...)
 #endif
 
 #define BLE_ADV_LENGTH_FIELD_SIZE   1
@@ -67,12 +67,12 @@
 #define BLE_CONN_SUP_TIMEOUT         MSEC_TO_UNITS(4000, UNIT_10_MS)
 
 #if (BLUETOOTH_SD == 110)
-  #define MAX_TX_IN_PROGRESS         (6)
+#define MAX_TX_IN_PROGRESS         (6)
 #else
-  #define MAX_TX_IN_PROGRESS         (10)
+#define MAX_TX_IN_PROGRESS         (10)
 #endif
 #if !defined(GATT_MTU_SIZE_DEFAULT) && defined(BLE_GATT_ATT_MTU_DEFAULT)
-  #define GATT_MTU_SIZE_DEFAULT BLE_GATT_ATT_MTU_DEFAULT
+#define GATT_MTU_SIZE_DEFAULT BLE_GATT_ATT_MTU_DEFAULT
 #endif
 
 #define SD_TEST_OR_ENABLE() \
@@ -133,34 +133,34 @@ uint32_t ble_drv_stack_enable(void) {
     m_tx_in_progress  = 0;
 
 #if (BLUETOOTH_SD == 110)
-  #if BLUETOOTH_LFCLK_RC
+#if BLUETOOTH_LFCLK_RC
     uint32_t err_code = sd_softdevice_enable(NRF_CLOCK_LFCLKSRC_RC_250_PPM_250MS_CALIBRATION,
-                                             softdevice_assert_handler);
-  #else
+                        softdevice_assert_handler);
+#else
     uint32_t err_code = sd_softdevice_enable(NRF_CLOCK_LFCLKSRC_XTAL_20_PPM,
-                                             softdevice_assert_handler);
-  #endif // BLUETOOTH_LFCLK_RC
+                        softdevice_assert_handler);
+#endif // BLUETOOTH_LFCLK_RC
 #endif // (BLUETOOTH_SD == 110)
 
 #if (BLUETOOTH_SD == 132) || (BLUETOOTH_SD == 140)
-  #if BLUETOOTH_LFCLK_RC
+#if BLUETOOTH_LFCLK_RC
     nrf_clock_lf_cfg_t clock_config = {
         .source = NRF_CLOCK_LF_SRC_RC,
         .rc_ctiv = 16,
         .rc_temp_ctiv = 2,
         .accuracy = NRF_CLOCK_LF_ACCURACY_250_PPM
     };
-  #else
+#else
     nrf_clock_lf_cfg_t clock_config = {
         .source = NRF_CLOCK_LF_SRC_XTAL,
         .rc_ctiv = 0,
         .rc_temp_ctiv = 0,
         .accuracy = NRF_CLOCK_LF_ACCURACY_20_PPM
     };
-  #endif // BLUETOOTH_LFCLK_RC
+#endif // BLUETOOTH_LFCLK_RC
 
     uint32_t err_code = sd_softdevice_enable(&clock_config,
-                                             softdevice_assert_handler);
+                        softdevice_assert_handler);
 #endif // (BLUETOOTH_SD == 132) || (BLUETOOTH_SD == 140)
 
     BLE_DRIVER_LOG("SoftDevice enable status: " UINT_FMT "\n", (uint16_t)err_code);
@@ -220,8 +220,8 @@ uint32_t ble_drv_stack_enable(void) {
     const char device_name[] = "micr";
 
     if ((err_code = sd_ble_gap_device_name_set(&sec_mode,
-                                               (const uint8_t *)device_name,
-                                                strlen(device_name))) != 0) {
+                    (const uint8_t *)device_name,
+                    strlen(device_name))) != 0) {
         mp_raise_msg(&mp_type_OSError, MP_ERROR_TEXT("can't apply GAP parameters"));
     }
 
@@ -270,7 +270,7 @@ void ble_drv_address_get(ble_drv_addr_t * p_addr) {
 
     BLE_DRIVER_LOG("ble address, type: " HEX2_FMT ", " \
                    "address: " HEX2_FMT ":" HEX2_FMT ":" HEX2_FMT ":" \
-                               HEX2_FMT ":" HEX2_FMT ":" HEX2_FMT "\n", \
+                   HEX2_FMT ":" HEX2_FMT ":" HEX2_FMT "\n", \
                    local_ble_addr.addr_type, \
                    local_ble_addr.addr[5], local_ble_addr.addr[4], local_ble_addr.addr[3], \
                    local_ble_addr.addr[2], local_ble_addr.addr[1], local_ble_addr.addr[0]);
@@ -492,10 +492,10 @@ bool ble_drv_advertise_data(ubluepy_advertise_data_t * p_adv_params) {
                 uuid_total_size += encoded_size; // size of entry
                 byte_pos        += encoded_size; // relative to adv data packet
                 BLE_DRIVER_LOG("ADV: uuid size: %u, type: %u, uuid: %x%x, vs_idx: %u\n",
-                       encoded_size, p_service->p_uuid->type,
-                       p_service->p_uuid->value[1],
-                       p_service->p_uuid->value[0],
-                       p_service->p_uuid->uuid_vs_idx);
+                               encoded_size, p_service->p_uuid->type,
+                               p_service->p_uuid->value[1],
+                               p_service->p_uuid->value[0],
+                               p_service->p_uuid->uuid_vs_idx);
             }
 
             adv_data[size_byte_pos] = (BLE_ADV_AD_TYPE_FIELD_SIZE + uuid_total_size);
@@ -540,10 +540,10 @@ bool ble_drv_advertise_data(ubluepy_advertise_data_t * p_adv_params) {
                 uuid_total_size += encoded_size; // size of entry
                 byte_pos        += encoded_size; // relative to adv data packet
                 BLE_DRIVER_LOG("ADV: uuid size: %u, type: %x%x, uuid: %u, vs_idx: %u\n",
-                       encoded_size, p_service->p_uuid->type,
-                       p_service->p_uuid->value[1],
-                       p_service->p_uuid->value[0],
-                       p_service->p_uuid->uuid_vs_idx);
+                               encoded_size, p_service->p_uuid->type,
+                               p_service->p_uuid->value[1],
+                               p_service->p_uuid->value[0],
+                               p_service->p_uuid->uuid_vs_idx);
             }
 
             adv_data[size_byte_pos] = (BLE_ADV_AD_TYPE_FIELD_SIZE + uuid_total_size);
@@ -606,12 +606,12 @@ bool ble_drv_advertise_data(ubluepy_advertise_data_t * p_adv_params) {
 #if (BLUETOOTH_SD == 110)
     if ((err_code = sd_ble_gap_adv_data_set(adv_data, byte_pos, NULL, 0)) != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not apply advertisment data. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not apply advertisment data. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 #else
     if ((err_code = sd_ble_gap_adv_set_configure(&m_adv_handle, &m_adv_data, &m_adv_params)) != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not apply advertisment data. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not apply advertisment data. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 #endif
     BLE_DRIVER_LOG("Set Adv data size: " UINT_FMT "\n", byte_pos);
@@ -626,7 +626,7 @@ bool ble_drv_advertise_data(ubluepy_advertise_data_t * p_adv_params) {
 #endif
     if (err_code != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not start advertisment. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not start advertisment. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 
     m_adv_in_progress = true;
@@ -641,12 +641,12 @@ void ble_drv_advertise_stop(void) {
 #if (BLUETOOTH_SD == 110)
         if ((err_code = sd_ble_gap_adv_stop()) != 0) {
             mp_raise_msg_varg(&mp_type_OSError,
-                MP_ERROR_TEXT("Can not stop advertisment. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                              MP_ERROR_TEXT("Can not stop advertisment. status: 0x" HEX2_FMT), (uint16_t)err_code);
         }
 #else
         if ((err_code = sd_ble_gap_adv_stop(m_adv_handle)) != 0) {
             mp_raise_msg_varg(&mp_type_OSError,
-                MP_ERROR_TEXT("Can not stop advertisment. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                              MP_ERROR_TEXT("Can not stop advertisment. status: 0x" HEX2_FMT), (uint16_t)err_code);
         }
 #endif
     }
@@ -662,11 +662,11 @@ void ble_drv_attr_s_read(uint16_t conn_handle, uint16_t handle, uint16_t len, ui
     gatts_value.p_value = p_data;
 
     uint32_t err_code = sd_ble_gatts_value_get(conn_handle,
-                                               handle,
-                                               &gatts_value);
+                        handle,
+                        &gatts_value);
     if (err_code != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not read attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not read attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 
 }
@@ -683,7 +683,7 @@ void ble_drv_attr_s_write(uint16_t conn_handle, uint16_t handle, uint16_t len, u
 
     if (err_code != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not write attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not write attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 }
 
@@ -707,7 +707,7 @@ void ble_drv_attr_s_notify(uint16_t conn_handle, uint16_t handle, uint16_t len, 
     uint32_t err_code;
     if ((err_code = sd_ble_gatts_hvx(conn_handle, &hvx_params)) != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not notify attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not notify attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
     m_tx_in_progress++;
     BLE_DRIVER_LOG("Queued TX, m_tx_in_progress: %u\n", m_tx_in_progress);
@@ -746,7 +746,7 @@ void ble_drv_attr_c_read(uint16_t conn_handle, uint16_t handle, mp_obj_t obj, bl
                                           0);
     if (err_code != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not read attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not read attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 
     while (gattc_char_data_handle != NULL) {
@@ -759,7 +759,7 @@ void ble_drv_attr_c_write(uint16_t conn_handle, uint16_t handle, uint16_t len, u
     ble_gattc_write_params_t write_params;
 
     if (w_response) {
-            write_params.write_op = BLE_GATT_OP_WRITE_REQ;
+        write_params.write_op = BLE_GATT_OP_WRITE_REQ;
     } else {
         write_params.write_op = BLE_GATT_OP_WRITE_CMD;
     }
@@ -776,7 +776,7 @@ void ble_drv_attr_c_write(uint16_t conn_handle, uint16_t handle, uint16_t len, u
 
     if (err_code != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not write attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not write attribute value. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 
     while (m_write_done != true) {
@@ -807,7 +807,7 @@ void ble_drv_scan_start(bool cont) {
     }
     if ((err_code = sd_ble_gap_scan_start(p_scan_params, &scan_buffer)) != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not start scanning. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not start scanning. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 }
 
@@ -853,7 +853,7 @@ void ble_drv_connect(uint8_t * p_addr, uint8_t addr_type) {
                                        &conn_params,
                                        conn_tag)) != 0) {
         mp_raise_msg_varg(&mp_type_OSError,
-            MP_ERROR_TEXT("Can not connect. status: 0x" HEX2_FMT), (uint16_t)err_code);
+                          MP_ERROR_TEXT("Can not connect. status: 0x" HEX2_FMT), (uint16_t)err_code);
     }
 }
 
@@ -868,8 +868,8 @@ bool ble_drv_discover_services(mp_obj_t obj, uint16_t conn_handle, uint16_t star
 
     uint32_t err_code;
     err_code = sd_ble_gattc_primary_services_discover(conn_handle,
-                                                      start_handle,
-                                                      NULL);
+               start_handle,
+               NULL);
     if (err_code != 0) {
         return false;
     }
@@ -930,16 +930,16 @@ void ble_drv_discover_descriptors(void) {
 static void sd_evt_handler(uint32_t evt_id) {
     switch (evt_id) {
 #if MICROPY_MBFS
-        case NRF_EVT_FLASH_OPERATION_SUCCESS:
-            flash_operation_finished(FLASH_STATE_SUCCESS);
-            break;
-        case NRF_EVT_FLASH_OPERATION_ERROR:
-            flash_operation_finished(FLASH_STATE_ERROR);
-            break;
+    case NRF_EVT_FLASH_OPERATION_SUCCESS:
+        flash_operation_finished(FLASH_STATE_SUCCESS);
+        break;
+    case NRF_EVT_FLASH_OPERATION_ERROR:
+        flash_operation_finished(FLASH_STATE_ERROR);
+        break;
 #endif
-        default:
-            // unhandled event!
-            break;
+    default:
+        // unhandled event!
+        break;
     }
 #if MICROPY_HW_USB_CDC
     // Farward SOC events to USB CDC driver.
@@ -955,192 +955,192 @@ static void ble_evt_handler(ble_evt_t * p_ble_evt) {
 // GATTS  0x50 -> 0x6F
 // L2CAP  0x70 -> 0x8F
     switch (p_ble_evt->header.evt_id) {
-        case BLE_GAP_EVT_CONNECTED:
-            BLE_DRIVER_LOG("GAP CONNECT\n");
-            m_adv_in_progress = false;
-            gap_event_handler(mp_gap_observer, p_ble_evt->header.evt_id, p_ble_evt->evt.gap_evt.conn_handle, p_ble_evt->header.evt_len - (2 * sizeof(uint16_t)), NULL);
+    case BLE_GAP_EVT_CONNECTED:
+        BLE_DRIVER_LOG("GAP CONNECT\n");
+        m_adv_in_progress = false;
+        gap_event_handler(mp_gap_observer, p_ble_evt->header.evt_id, p_ble_evt->evt.gap_evt.conn_handle, p_ble_evt->header.evt_len - (2 * sizeof(uint16_t)), NULL);
 
-            ble_gap_conn_params_t conn_params;
-            (void)sd_ble_gap_ppcp_get(&conn_params);
-            (void)sd_ble_gap_conn_param_update(p_ble_evt->evt.gap_evt.conn_handle, &conn_params);
-            break;
+        ble_gap_conn_params_t conn_params;
+        (void)sd_ble_gap_ppcp_get(&conn_params);
+        (void)sd_ble_gap_conn_param_update(p_ble_evt->evt.gap_evt.conn_handle, &conn_params);
+        break;
 
-        case BLE_GAP_EVT_DISCONNECTED:
-            BLE_DRIVER_LOG("GAP DISCONNECT\n");
-            gap_event_handler(mp_gap_observer, p_ble_evt->header.evt_id, p_ble_evt->evt.gap_evt.conn_handle, p_ble_evt->header.evt_len - (2 * sizeof(uint16_t)), NULL);
-            break;
+    case BLE_GAP_EVT_DISCONNECTED:
+        BLE_DRIVER_LOG("GAP DISCONNECT\n");
+        gap_event_handler(mp_gap_observer, p_ble_evt->header.evt_id, p_ble_evt->evt.gap_evt.conn_handle, p_ble_evt->header.evt_len - (2 * sizeof(uint16_t)), NULL);
+        break;
 
-        case BLE_GATTS_EVT_HVC:
-            gatts_event_handler(mp_gatts_observer, p_ble_evt->header.evt_id, p_ble_evt->evt.gatts_evt.params.hvc.handle, p_ble_evt->header.evt_len - (2 * sizeof(uint16_t)), NULL);
-            break;
+    case BLE_GATTS_EVT_HVC:
+        gatts_event_handler(mp_gatts_observer, p_ble_evt->header.evt_id, p_ble_evt->evt.gatts_evt.params.hvc.handle, p_ble_evt->header.evt_len - (2 * sizeof(uint16_t)), NULL);
+        break;
 
-        case BLE_GATTS_EVT_WRITE:
-            BLE_DRIVER_LOG("GATTS write\n");
+    case BLE_GATTS_EVT_WRITE:
+        BLE_DRIVER_LOG("GATTS write\n");
 
-            uint16_t  handle   = p_ble_evt->evt.gatts_evt.params.write.handle;
-            uint16_t  data_len = p_ble_evt->evt.gatts_evt.params.write.len;
-            uint8_t * p_data   = &p_ble_evt->evt.gatts_evt.params.write.data[0];
+        uint16_t  handle   = p_ble_evt->evt.gatts_evt.params.write.handle;
+        uint16_t  data_len = p_ble_evt->evt.gatts_evt.params.write.len;
+        uint8_t * p_data   = &p_ble_evt->evt.gatts_evt.params.write.data[0];
 
-            gatts_event_handler(mp_gatts_observer, p_ble_evt->header.evt_id, handle, data_len, p_data);
-            break;
+        gatts_event_handler(mp_gatts_observer, p_ble_evt->header.evt_id, handle, data_len, p_data);
+        break;
 
-        case BLE_GAP_EVT_CONN_PARAM_UPDATE:
-            BLE_DRIVER_LOG("GAP CONN PARAM UPDATE\n");
-            break;
+    case BLE_GAP_EVT_CONN_PARAM_UPDATE:
+        BLE_DRIVER_LOG("GAP CONN PARAM UPDATE\n");
+        break;
 
-        case BLE_GATTS_EVT_SYS_ATTR_MISSING:
-            // No system attributes have been stored.
-            (void)sd_ble_gatts_sys_attr_set(p_ble_evt->evt.gatts_evt.conn_handle, NULL, 0, 0);
-            break;
+    case BLE_GATTS_EVT_SYS_ATTR_MISSING:
+        // No system attributes have been stored.
+        (void)sd_ble_gatts_sys_attr_set(p_ble_evt->evt.gatts_evt.conn_handle, NULL, 0, 0);
+        break;
 
 #if (BLUETOOTH_SD == 132) || (BLUETOOTH_SD == 140)
-        case BLE_GATTS_EVT_HVN_TX_COMPLETE:
+    case BLE_GATTS_EVT_HVN_TX_COMPLETE:
 #else
-        case BLE_EVT_TX_COMPLETE:
+    case BLE_EVT_TX_COMPLETE:
 #endif
-            BLE_DRIVER_LOG("BLE EVT TX COMPLETE\n");
+        BLE_DRIVER_LOG("BLE EVT TX COMPLETE\n");
 #if (BLUETOOTH_SD == 132) || (BLUETOOTH_SD == 140)
-            BLE_DRIVER_LOG("HVN_TX_COMPLETE, count: %u\n", p_ble_evt->evt.gatts_evt.params.hvn_tx_complete.count);
-            m_tx_in_progress -= p_ble_evt->evt.gatts_evt.params.hvn_tx_complete.count;
-            BLE_DRIVER_LOG("TX_COMPLETE, m_tx_in_progress: %u\n", m_tx_in_progress);
+        BLE_DRIVER_LOG("HVN_TX_COMPLETE, count: %u\n", p_ble_evt->evt.gatts_evt.params.hvn_tx_complete.count);
+        m_tx_in_progress -= p_ble_evt->evt.gatts_evt.params.hvn_tx_complete.count;
+        BLE_DRIVER_LOG("TX_COMPLETE, m_tx_in_progress: %u\n", m_tx_in_progress);
 #else
-            BLE_DRIVER_LOG("TX_COMPLETE, count: %u\n", p_ble_evt->evt.common_evt.params.tx_complete.count);
-            m_tx_in_progress -= p_ble_evt->evt.common_evt.params.tx_complete.count;
-            BLE_DRIVER_LOG("TX_COMPLETE, m_tx_in_progress: %u\n", m_tx_in_progress);
+        BLE_DRIVER_LOG("TX_COMPLETE, count: %u\n", p_ble_evt->evt.common_evt.params.tx_complete.count);
+        m_tx_in_progress -= p_ble_evt->evt.common_evt.params.tx_complete.count;
+        BLE_DRIVER_LOG("TX_COMPLETE, m_tx_in_progress: %u\n", m_tx_in_progress);
 #endif
-            break;
+        break;
 
-        case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
-            BLE_DRIVER_LOG("BLE EVT SEC PARAMS REQUEST\n");
-            // pairing not supported
-            (void)sd_ble_gap_sec_params_reply(p_ble_evt->evt.gatts_evt.conn_handle,
-                                              BLE_GAP_SEC_STATUS_PAIRING_NOT_SUPP,
-                                              NULL, NULL);
-            break;
+    case BLE_GAP_EVT_SEC_PARAMS_REQUEST:
+        BLE_DRIVER_LOG("BLE EVT SEC PARAMS REQUEST\n");
+        // pairing not supported
+        (void)sd_ble_gap_sec_params_reply(p_ble_evt->evt.gatts_evt.conn_handle,
+                                          BLE_GAP_SEC_STATUS_PAIRING_NOT_SUPP,
+                                          NULL, NULL);
+        break;
 
 #if (BLUETOOTH_SD == 132) || (BLUETOOTH_SD == 140)
-        case BLE_GAP_EVT_ADV_REPORT:
-            BLE_DRIVER_LOG("BLE EVT ADV REPORT\n");
-            ble_drv_adv_data_t adv_data = {
-                .p_peer_addr  = p_ble_evt->evt.gap_evt.params.adv_report.peer_addr.addr,
-                .addr_type    = p_ble_evt->evt.gap_evt.params.adv_report.peer_addr.addr_type,
-                .is_scan_resp = p_ble_evt->evt.gap_evt.params.adv_report.type.scan_response,
-                .rssi         = p_ble_evt->evt.gap_evt.params.adv_report.rssi,
-                .data_len     = p_ble_evt->evt.gap_evt.params.adv_report.data.len,
-                .p_data       = p_ble_evt->evt.gap_evt.params.adv_report.data.p_data,
+    case BLE_GAP_EVT_ADV_REPORT:
+        BLE_DRIVER_LOG("BLE EVT ADV REPORT\n");
+        ble_drv_adv_data_t adv_data = {
+            .p_peer_addr  = p_ble_evt->evt.gap_evt.params.adv_report.peer_addr.addr,
+            .addr_type    = p_ble_evt->evt.gap_evt.params.adv_report.peer_addr.addr_type,
+            .is_scan_resp = p_ble_evt->evt.gap_evt.params.adv_report.type.scan_response,
+            .rssi         = p_ble_evt->evt.gap_evt.params.adv_report.rssi,
+            .data_len     = p_ble_evt->evt.gap_evt.params.adv_report.data.len,
+            .p_data       = p_ble_evt->evt.gap_evt.params.adv_report.data.p_data,
 //              .adv_type     =
-            };
-            // TODO: Fix unsafe callback to possible undefined callback...
-            adv_event_handler(mp_adv_observer,
-                              p_ble_evt->header.evt_id,
-                              &adv_data);
-            break;
+        };
+        // TODO: Fix unsafe callback to possible undefined callback...
+        adv_event_handler(mp_adv_observer,
+                          p_ble_evt->header.evt_id,
+                          &adv_data);
+        break;
 
-        case BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST:
-            BLE_DRIVER_LOG("BLE EVT CONN PARAM UPDATE REQUEST\n");
+    case BLE_GAP_EVT_CONN_PARAM_UPDATE_REQUEST:
+        BLE_DRIVER_LOG("BLE EVT CONN PARAM UPDATE REQUEST\n");
 
-            (void)sd_ble_gap_conn_param_update(p_ble_evt->evt.gap_evt.conn_handle,
-                                               &p_ble_evt->evt.gap_evt.params.conn_param_update_request.conn_params);
-            break;
+        (void)sd_ble_gap_conn_param_update(p_ble_evt->evt.gap_evt.conn_handle,
+                                           &p_ble_evt->evt.gap_evt.params.conn_param_update_request.conn_params);
+        break;
 
-        case BLE_GATTC_EVT_PRIM_SRVC_DISC_RSP:
-            BLE_DRIVER_LOG("BLE EVT PRIMARY SERVICE DISCOVERY RESPONSE\n");
-            BLE_DRIVER_LOG(">>> service count: %d\n", p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.count);
+    case BLE_GATTC_EVT_PRIM_SRVC_DISC_RSP:
+        BLE_DRIVER_LOG("BLE EVT PRIMARY SERVICE DISCOVERY RESPONSE\n");
+        BLE_DRIVER_LOG(">>> service count: %d\n", p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.count);
 
-            for (uint16_t i = 0; i < p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.count; i++) {
-                ble_gattc_service_t * p_service = &p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.services[i];
+        for (uint16_t i = 0; i < p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.count; i++) {
+            ble_gattc_service_t * p_service = &p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.services[i];
 
-                ble_drv_service_data_t service;
-                service.uuid_type    = p_service->uuid.type;
-                service.uuid         = p_service->uuid.uuid;
-                service.start_handle = p_service->handle_range.start_handle;
-                service.end_handle   = p_service->handle_range.end_handle;
+            ble_drv_service_data_t service;
+            service.uuid_type    = p_service->uuid.type;
+            service.uuid         = p_service->uuid.uuid;
+            service.start_handle = p_service->handle_range.start_handle;
+            service.end_handle   = p_service->handle_range.end_handle;
 
-                disc_add_service_handler(mp_gattc_disc_service_observer, &service);
-            }
+            disc_add_service_handler(mp_gattc_disc_service_observer, &service);
+        }
 
-            if (p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.count > 0) {
-                m_primary_service_found = true;
-            }
+        if (p_ble_evt->evt.gattc_evt.params.prim_srvc_disc_rsp.count > 0) {
+            m_primary_service_found = true;
+        }
 
-            // mark end of service discovery
-            disc_add_service_handler = NULL;
+        // mark end of service discovery
+        disc_add_service_handler = NULL;
 
-            break;
+        break;
 
-        case BLE_GATTC_EVT_CHAR_DISC_RSP:
-            BLE_DRIVER_LOG("BLE EVT CHAR DISCOVERY RESPONSE\n");
-            BLE_DRIVER_LOG(">>> characteristic count: %d\n", p_ble_evt->evt.gattc_evt.params.char_disc_rsp.count);
+    case BLE_GATTC_EVT_CHAR_DISC_RSP:
+        BLE_DRIVER_LOG("BLE EVT CHAR DISCOVERY RESPONSE\n");
+        BLE_DRIVER_LOG(">>> characteristic count: %d\n", p_ble_evt->evt.gattc_evt.params.char_disc_rsp.count);
 
-            for (uint16_t i = 0; i < p_ble_evt->evt.gattc_evt.params.char_disc_rsp.count; i++) {
-                ble_gattc_char_t * p_char = &p_ble_evt->evt.gattc_evt.params.char_disc_rsp.chars[i];
+        for (uint16_t i = 0; i < p_ble_evt->evt.gattc_evt.params.char_disc_rsp.count; i++) {
+            ble_gattc_char_t * p_char = &p_ble_evt->evt.gattc_evt.params.char_disc_rsp.chars[i];
 
-                ble_drv_char_data_t char_data;
-                char_data.uuid_type    = p_char->uuid.type;
-                char_data.uuid         = p_char->uuid.uuid;
-                char_data.decl_handle  = p_char->handle_decl;
-                char_data.value_handle = p_char->handle_value;
+            ble_drv_char_data_t char_data;
+            char_data.uuid_type    = p_char->uuid.type;
+            char_data.uuid         = p_char->uuid.uuid;
+            char_data.decl_handle  = p_char->handle_decl;
+            char_data.value_handle = p_char->handle_value;
 
-                char_data.props  = (p_char->char_props.broadcast) ? UBLUEPY_PROP_BROADCAST : 0;
-                char_data.props |= (p_char->char_props.read) ? UBLUEPY_PROP_READ : 0;
-                char_data.props |= (p_char->char_props.write_wo_resp) ? UBLUEPY_PROP_WRITE_WO_RESP : 0;
-                char_data.props |= (p_char->char_props.write) ? UBLUEPY_PROP_WRITE : 0;
-                char_data.props |= (p_char->char_props.notify) ? UBLUEPY_PROP_NOTIFY : 0;
-                char_data.props |= (p_char->char_props.indicate) ? UBLUEPY_PROP_INDICATE : 0;
-            #if 0
-                char_data.props |= (p_char->char_props.auth_signed_wr) ? UBLUEPY_PROP_NOTIFY : 0;
-            #endif
+            char_data.props  = (p_char->char_props.broadcast) ? UBLUEPY_PROP_BROADCAST : 0;
+            char_data.props |= (p_char->char_props.read) ? UBLUEPY_PROP_READ : 0;
+            char_data.props |= (p_char->char_props.write_wo_resp) ? UBLUEPY_PROP_WRITE_WO_RESP : 0;
+            char_data.props |= (p_char->char_props.write) ? UBLUEPY_PROP_WRITE : 0;
+            char_data.props |= (p_char->char_props.notify) ? UBLUEPY_PROP_NOTIFY : 0;
+            char_data.props |= (p_char->char_props.indicate) ? UBLUEPY_PROP_INDICATE : 0;
+#if 0
+            char_data.props |= (p_char->char_props.auth_signed_wr) ? UBLUEPY_PROP_NOTIFY : 0;
+#endif
 
-                disc_add_char_handler(mp_gattc_disc_char_observer, &char_data);
-            }
+            disc_add_char_handler(mp_gattc_disc_char_observer, &char_data);
+        }
 
-            if (p_ble_evt->evt.gattc_evt.params.char_disc_rsp.count > 0) {
-                m_characteristic_found = true;
-            }
+        if (p_ble_evt->evt.gattc_evt.params.char_disc_rsp.count > 0) {
+            m_characteristic_found = true;
+        }
 
-            // mark end of characteristic discovery
-            disc_add_char_handler = NULL;
+        // mark end of characteristic discovery
+        disc_add_char_handler = NULL;
 
-            break;
+        break;
 
-        case BLE_GATTC_EVT_READ_RSP:
-            BLE_DRIVER_LOG("BLE EVT READ RESPONSE, offset: 0x"HEX2_FMT", length: 0x"HEX2_FMT"\n",
-                           p_ble_evt->evt.gattc_evt.params.read_rsp.offset,
-                           p_ble_evt->evt.gattc_evt.params.read_rsp.len);
+    case BLE_GATTC_EVT_READ_RSP:
+        BLE_DRIVER_LOG("BLE EVT READ RESPONSE, offset: 0x"HEX2_FMT", length: 0x"HEX2_FMT"\n",
+                       p_ble_evt->evt.gattc_evt.params.read_rsp.offset,
+                       p_ble_evt->evt.gattc_evt.params.read_rsp.len);
 
-            gattc_char_data_handle(mp_gattc_char_data_observer,
-                                   p_ble_evt->evt.gattc_evt.params.read_rsp.len,
-                                   p_ble_evt->evt.gattc_evt.params.read_rsp.data);
+        gattc_char_data_handle(mp_gattc_char_data_observer,
+                               p_ble_evt->evt.gattc_evt.params.read_rsp.len,
+                               p_ble_evt->evt.gattc_evt.params.read_rsp.data);
 
-            // mark end of read
-            gattc_char_data_handle = NULL;
+        // mark end of read
+        gattc_char_data_handle = NULL;
 
-            break;
+        break;
 
-        case BLE_GATTC_EVT_WRITE_RSP:
-            BLE_DRIVER_LOG("BLE EVT WRITE RESPONSE\n");
-            m_write_done = true;
-            break;
+    case BLE_GATTC_EVT_WRITE_RSP:
+        BLE_DRIVER_LOG("BLE EVT WRITE RESPONSE\n");
+        m_write_done = true;
+        break;
 
-        case BLE_GATTC_EVT_HVX:
-            BLE_DRIVER_LOG("BLE EVT HVX RESPONSE\n");
-            break;
+    case BLE_GATTC_EVT_HVX:
+        BLE_DRIVER_LOG("BLE EVT HVX RESPONSE\n");
+        break;
 
-        case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
-            BLE_DRIVER_LOG("GATTS EVT EXCHANGE MTU REQUEST\n");
-            (void)sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle, 23); // MAX MTU size
-            break;
+    case BLE_GATTS_EVT_EXCHANGE_MTU_REQUEST:
+        BLE_DRIVER_LOG("GATTS EVT EXCHANGE MTU REQUEST\n");
+        (void)sd_ble_gatts_exchange_mtu_reply(p_ble_evt->evt.gatts_evt.conn_handle, 23); // MAX MTU size
+        break;
 
-        case BLE_GAP_EVT_DATA_LENGTH_UPDATE_REQUEST:
-            BLE_DRIVER_LOG("BLE GAP EVT DATA LENGTH UPDATE REQUEST\n");
-            sd_ble_gap_data_length_update(p_ble_evt->evt.gap_evt.conn_handle, NULL, NULL);
-            break;
+    case BLE_GAP_EVT_DATA_LENGTH_UPDATE_REQUEST:
+        BLE_DRIVER_LOG("BLE GAP EVT DATA LENGTH UPDATE REQUEST\n");
+        sd_ble_gap_data_length_update(p_ble_evt->evt.gap_evt.conn_handle, NULL, NULL);
+        break;
 
 #endif // (BLUETOOTH_SD == 132) || (BLUETOOTH_SD == 140)
 
-        default:
-            BLE_DRIVER_LOG(">>> unhandled evt: 0x" HEX2_FMT "\n", p_ble_evt->header.evt_id);
-            break;
+    default:
+        BLE_DRIVER_LOG(">>> unhandled evt: 0x" HEX2_FMT "\n", p_ble_evt->header.evt_id);
+        break;
     }
 }
 

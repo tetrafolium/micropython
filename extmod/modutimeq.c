@@ -180,7 +180,7 @@ STATIC mp_obj_t mod_utimeq_dump(mp_obj_t heap_in) {
     mp_obj_utimeq_t *heap = utimeq_get_heap(heap_in);
     for (int i = 0; i < heap->len; i++) {
         printf(UINT_FMT "\t%p\t%p\n", heap->items[i].time,
-            MP_OBJ_TO_PTR(heap->items[i].callback), MP_OBJ_TO_PTR(heap->items[i].args));
+               MP_OBJ_TO_PTR(heap->items[i].callback), MP_OBJ_TO_PTR(heap->items[i].args));
     }
     return mp_const_none;
 }
@@ -190,12 +190,12 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(mod_utimeq_dump_obj, mod_utimeq_dump);
 STATIC mp_obj_t utimeq_unary_op(mp_unary_op_t op, mp_obj_t self_in) {
     mp_obj_utimeq_t *self = MP_OBJ_TO_PTR(self_in);
     switch (op) {
-        case MP_UNARY_OP_BOOL:
-            return mp_obj_new_bool(self->len != 0);
-        case MP_UNARY_OP_LEN:
-            return MP_OBJ_NEW_SMALL_INT(self->len);
-        default:
-            return MP_OBJ_NULL;      // op not supported
+    case MP_UNARY_OP_BOOL:
+        return mp_obj_new_bool(self->len != 0);
+    case MP_UNARY_OP_LEN:
+        return MP_OBJ_NEW_SMALL_INT(self->len);
+    default:
+        return MP_OBJ_NULL;      // op not supported
     }
 }
 
@@ -203,9 +203,9 @@ STATIC const mp_rom_map_elem_t utimeq_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_push), MP_ROM_PTR(&mod_utimeq_heappush_obj) },
     { MP_ROM_QSTR(MP_QSTR_pop), MP_ROM_PTR(&mod_utimeq_heappop_obj) },
     { MP_ROM_QSTR(MP_QSTR_peektime), MP_ROM_PTR(&mod_utimeq_peektime_obj) },
-    #if DEBUG
+#if DEBUG
     { MP_ROM_QSTR(MP_QSTR_dump), MP_ROM_PTR(&mod_utimeq_dump_obj) },
-    #endif
+#endif
 };
 
 STATIC MP_DEFINE_CONST_DICT(utimeq_locals_dict, utimeq_locals_dict_table);

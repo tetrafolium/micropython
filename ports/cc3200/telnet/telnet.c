@@ -113,11 +113,11 @@ static const char* telnet_request_password  = "Password: ";
 static const char* telnet_invalid_loggin    = "\r\nInvalid credentials, try again.\r\n";
 static const char* telnet_loggin_success    = "\r\nLogin succeeded!\r\nType \"help()\" for more information.\r\n";
 static const uint8_t telnet_options_user[]  = // IAC   WONT ECHO IAC   WONT SUPPRESS_GO_AHEAD IAC  WILL LINEMODE
-                                               { 255,  252,   1, 255,  252,       3,          255, 251,   34 };
+{ 255,  252,   1, 255,  252,       3,          255, 251,   34 };
 static const uint8_t telnet_options_pass[]  = // IAC   WILL ECHO IAC   WONT SUPPRESS_GO_AHEAD IAC  WILL LINEMODE
-                                               { 255,  251,   1, 255,  252,       3,          255, 251,   34 };
+{ 255,  251,   1, 255,  252,       3,          255, 251,   34 };
 static const uint8_t telnet_options_repl[]  = // IAC   WILL ECHO IAC   WILL SUPPRESS_GO_AHEAD IAC  WONT LINEMODE
-                                               { 255,  251,   1, 255,  251,       3,          255, 252,   34 };
+{ 255,  251,   1, 255,  251,       3,          255, 252,   34 };
 
 /******************************************************************************
  DECLARE PRIVATE FUNCTIONS
@@ -146,93 +146,93 @@ void telnet_init (void) {
 void telnet_run (void) {
     _i16 rxLen;
     switch (telnet_data.state) {
-        case E_TELNET_STE_DISABLED:
-            telnet_wait_for_enabled();
+    case E_TELNET_STE_DISABLED:
+        telnet_wait_for_enabled();
+        break;
+    case E_TELNET_STE_START:
+        if (wlan_is_connected() && telnet_create_socket()) {
+            telnet_data.state = E_TELNET_STE_LISTEN;
+        }
+        break;
+    case E_TELNET_STE_LISTEN:
+        telnet_wait_for_connection();
+        break;
+    case E_TELNET_STE_CONNECTED:
+        switch (telnet_data.substate.connected) {
+        case E_TELNET_STE_SUB_WELCOME:
+            telnet_send_and_proceed((void *)telnet_welcome_msg, strlen(telnet_welcome_msg), E_TELNET_STE_SUB_SND_USER_OPTIONS);
             break;
-        case E_TELNET_STE_START:
-            if (wlan_is_connected() && telnet_create_socket()) {
-                telnet_data.state = E_TELNET_STE_LISTEN;
+        case E_TELNET_STE_SUB_SND_USER_OPTIONS:
+            telnet_send_and_proceed((void *)telnet_options_user, sizeof(telnet_options_user), E_TELNET_STE_SUB_REQ_USER);
+            break;
+        case E_TELNET_STE_SUB_REQ_USER:
+            // to catch any left over characters from the previous actions
+            telnet_recv_text_non_blocking(telnet_data.rxBuffer, TELNET_RX_BUFFER_SIZE, &rxLen);
+            telnet_send_and_proceed((void *)telnet_request_user, strlen(telnet_request_user), E_TELNET_STE_SUB_GET_USER);
+            break;
+        case E_TELNET_STE_SUB_GET_USER:
+            if (E_TELNET_RESULT_OK == telnet_recv_text_non_blocking(telnet_data.rxBuffer + telnet_data.rxWindex,
+                    TELNET_RX_BUFFER_SIZE - telnet_data.rxWindex,
+                    &rxLen)) {
+                int result;
+                if ((result = telnet_process_credential (servers_user, rxLen))) {
+                    telnet_data.credentialsValid = result > 0 ? true : false;
+                    telnet_data.substate.connected = E_TELNET_STE_SUB_REQ_PASSWORD;
+                }
             }
             break;
-        case E_TELNET_STE_LISTEN:
-            telnet_wait_for_connection();
+        case E_TELNET_STE_SUB_REQ_PASSWORD:
+            telnet_send_and_proceed((void *)telnet_request_password, strlen(telnet_request_password), E_TELNET_STE_SUB_SND_PASSWORD_OPTIONS);
             break;
-        case E_TELNET_STE_CONNECTED:
-            switch (telnet_data.substate.connected) {
-            case E_TELNET_STE_SUB_WELCOME:
-                telnet_send_and_proceed((void *)telnet_welcome_msg, strlen(telnet_welcome_msg), E_TELNET_STE_SUB_SND_USER_OPTIONS);
-                break;
-            case E_TELNET_STE_SUB_SND_USER_OPTIONS:
-                telnet_send_and_proceed((void *)telnet_options_user, sizeof(telnet_options_user), E_TELNET_STE_SUB_REQ_USER);
-                break;
-            case E_TELNET_STE_SUB_REQ_USER:
-                // to catch any left over characters from the previous actions
-                telnet_recv_text_non_blocking(telnet_data.rxBuffer, TELNET_RX_BUFFER_SIZE, &rxLen);
-                telnet_send_and_proceed((void *)telnet_request_user, strlen(telnet_request_user), E_TELNET_STE_SUB_GET_USER);
-                break;
-            case E_TELNET_STE_SUB_GET_USER:
-                if (E_TELNET_RESULT_OK == telnet_recv_text_non_blocking(telnet_data.rxBuffer + telnet_data.rxWindex,
-                                                                        TELNET_RX_BUFFER_SIZE - telnet_data.rxWindex,
-                                                                        &rxLen)) {
-                    int result;
-                    if ((result = telnet_process_credential (servers_user, rxLen))) {
-                        telnet_data.credentialsValid = result > 0 ? true : false;
-                        telnet_data.substate.connected = E_TELNET_STE_SUB_REQ_PASSWORD;
-                    }
-                }
-                break;
-            case E_TELNET_STE_SUB_REQ_PASSWORD:
-                telnet_send_and_proceed((void *)telnet_request_password, strlen(telnet_request_password), E_TELNET_STE_SUB_SND_PASSWORD_OPTIONS);
-                break;
-            case E_TELNET_STE_SUB_SND_PASSWORD_OPTIONS:
-                // to catch any left over characters from the previous actions
-                telnet_recv_text_non_blocking(telnet_data.rxBuffer, TELNET_RX_BUFFER_SIZE, &rxLen);
-                telnet_send_and_proceed((void *)telnet_options_pass, sizeof(telnet_options_pass), E_TELNET_STE_SUB_GET_PASSWORD);
-                break;
-            case E_TELNET_STE_SUB_GET_PASSWORD:
-                if (E_TELNET_RESULT_OK == telnet_recv_text_non_blocking(telnet_data.rxBuffer + telnet_data.rxWindex,
-                                                                        TELNET_RX_BUFFER_SIZE - telnet_data.rxWindex,
-                                                                        &rxLen)) {
-                    int result;
-                    if ((result = telnet_process_credential (servers_pass, rxLen))) {
-                        if ((telnet_data.credentialsValid = telnet_data.credentialsValid && (result > 0 ? true : false))) {
-                            telnet_data.substate.connected = E_TELNET_STE_SUB_SND_REPL_OPTIONS;
-                        }
-                        else {
-                            telnet_data.substate.connected = E_TELNET_STE_SUB_INVALID_LOGGIN;
-                        }
-                    }
-                }
-                break;
-            case E_TELNET_STE_SUB_INVALID_LOGGIN:
-                if (E_TELNET_RESULT_OK == telnet_send_non_blocking((void *)telnet_invalid_loggin, strlen(telnet_invalid_loggin))) {
-                    telnet_data.credentialsValid = true;
-                    if (++telnet_data.logginRetries >= TELNET_LOGIN_RETRIES_MAX) {
-                        telnet_reset();
+        case E_TELNET_STE_SUB_SND_PASSWORD_OPTIONS:
+            // to catch any left over characters from the previous actions
+            telnet_recv_text_non_blocking(telnet_data.rxBuffer, TELNET_RX_BUFFER_SIZE, &rxLen);
+            telnet_send_and_proceed((void *)telnet_options_pass, sizeof(telnet_options_pass), E_TELNET_STE_SUB_GET_PASSWORD);
+            break;
+        case E_TELNET_STE_SUB_GET_PASSWORD:
+            if (E_TELNET_RESULT_OK == telnet_recv_text_non_blocking(telnet_data.rxBuffer + telnet_data.rxWindex,
+                    TELNET_RX_BUFFER_SIZE - telnet_data.rxWindex,
+                    &rxLen)) {
+                int result;
+                if ((result = telnet_process_credential (servers_pass, rxLen))) {
+                    if ((telnet_data.credentialsValid = telnet_data.credentialsValid && (result > 0 ? true : false))) {
+                        telnet_data.substate.connected = E_TELNET_STE_SUB_SND_REPL_OPTIONS;
                     }
                     else {
-                        telnet_data.substate.connected = E_TELNET_STE_SUB_SND_USER_OPTIONS;
+                        telnet_data.substate.connected = E_TELNET_STE_SUB_INVALID_LOGGIN;
                     }
                 }
-                break;
-            case E_TELNET_STE_SUB_SND_REPL_OPTIONS:
-                telnet_send_and_proceed((void *)telnet_options_repl, sizeof(telnet_options_repl), E_TELNET_STE_SUB_LOGGIN_SUCCESS);
-                break;
-            case E_TELNET_STE_SUB_LOGGIN_SUCCESS:
-                if (E_TELNET_RESULT_OK == telnet_send_non_blocking((void *)telnet_loggin_success, strlen(telnet_loggin_success))) {
-                    // clear the current line and force the prompt
-                    telnet_reset_buffer();
-                    telnet_data.state= E_TELNET_STE_LOGGED_IN;
-                }
-            default:
-                break;
             }
             break;
-        case E_TELNET_STE_LOGGED_IN:
-            telnet_process();
+        case E_TELNET_STE_SUB_INVALID_LOGGIN:
+            if (E_TELNET_RESULT_OK == telnet_send_non_blocking((void *)telnet_invalid_loggin, strlen(telnet_invalid_loggin))) {
+                telnet_data.credentialsValid = true;
+                if (++telnet_data.logginRetries >= TELNET_LOGIN_RETRIES_MAX) {
+                    telnet_reset();
+                }
+                else {
+                    telnet_data.substate.connected = E_TELNET_STE_SUB_SND_USER_OPTIONS;
+                }
+            }
             break;
+        case E_TELNET_STE_SUB_SND_REPL_OPTIONS:
+            telnet_send_and_proceed((void *)telnet_options_repl, sizeof(telnet_options_repl), E_TELNET_STE_SUB_LOGGIN_SUCCESS);
+            break;
+        case E_TELNET_STE_SUB_LOGGIN_SUCCESS:
+            if (E_TELNET_RESULT_OK == telnet_send_non_blocking((void *)telnet_loggin_success, strlen(telnet_loggin_success))) {
+                // clear the current line and force the prompt
+                telnet_reset_buffer();
+                telnet_data.state= E_TELNET_STE_LOGGED_IN;
+            }
         default:
             break;
+        }
+        break;
+    case E_TELNET_STE_LOGGED_IN:
+        telnet_process();
+        break;
+    default:
+        break;
     }
 
     if (telnet_data.state >= E_TELNET_STE_CONNECTED) {
@@ -250,7 +250,7 @@ void telnet_tx_strn (const char *str, int len) {
 
 bool telnet_rx_any (void) {
     return (telnet_data.n_sd > 0) ? (telnet_data.rxRindex != telnet_data.rxWindex &&
-            telnet_data.state == E_TELNET_STE_LOGGED_IN) : false;
+                                     telnet_data.state == E_TELNET_STE_LOGGED_IN) : false;
 }
 
 int telnet_rx_char (void) {
@@ -406,7 +406,7 @@ static telnet_result_t telnet_recv_text_non_blocking (void *buff, _i16 Maxlen, _
 static void telnet_process (void) {
     _i16 rxLen;
     _i16 maxLen = (telnet_data.rxWindex >= telnet_data.rxRindex) ? (TELNET_RX_BUFFER_SIZE - telnet_data.rxWindex) :
-                                                                   ((telnet_data.rxRindex - telnet_data.rxWindex) - 1);
+                  ((telnet_data.rxRindex - telnet_data.rxWindex) - 1);
     // to avoid an overrrun
     maxLen = (telnet_data.rxRindex == 0) ? (maxLen - 1) : maxLen;
 

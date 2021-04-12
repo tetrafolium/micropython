@@ -51,4 +51,4 @@ const char nrf5_help_text[] =
     "  CTRL-E        -- on a blank line, enter paste mode\n"
     "\n"
     "For further help on a specific object, type help(obj)\n"
-;
+    ;

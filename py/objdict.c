@@ -104,11 +104,11 @@ mp_obj_t mp_obj_dict_make_new(const mp_obj_type_t *type, size_t n_args, size_t n
     mp_obj_t dict_out = mp_obj_new_dict(0);
     mp_obj_dict_t *dict = MP_OBJ_TO_PTR(dict_out);
     dict->base.type = type;
-    #if MICROPY_PY_COLLECTIONS_ORDEREDDICT
+#if MICROPY_PY_COLLECTIONS_ORDEREDDICT
     if (type == &mp_type_ordereddict) {
         dict->map.is_ordered = 1;
     }
-    #endif
+#endif
     if (n_args > 0 || n_kw > 0) {
         mp_obj_t args2[2] = {dict_out, args[0]}; // args[0] is always valid, even if it's not a positional arg
         mp_map_t kwargs;
@@ -121,67 +121,67 @@ mp_obj_t mp_obj_dict_make_new(const mp_obj_type_t *type, size_t n_args, size_t n
 STATIC mp_obj_t dict_unary_op(mp_unary_op_t op, mp_obj_t self_in) {
     mp_obj_dict_t *self = MP_OBJ_TO_PTR(self_in);
     switch (op) {
-        case MP_UNARY_OP_BOOL:
-            return mp_obj_new_bool(self->map.used != 0);
-        case MP_UNARY_OP_LEN:
-            return MP_OBJ_NEW_SMALL_INT(self->map.used);
-        #if MICROPY_PY_SYS_GETSIZEOF
-        case MP_UNARY_OP_SIZEOF: {
-            size_t sz = sizeof(*self) + sizeof(*self->map.table) * self->map.alloc;
-            return MP_OBJ_NEW_SMALL_INT(sz);
-        }
-        #endif
-        default:
-            return MP_OBJ_NULL;      // op not supported
+    case MP_UNARY_OP_BOOL:
+        return mp_obj_new_bool(self->map.used != 0);
+    case MP_UNARY_OP_LEN:
+        return MP_OBJ_NEW_SMALL_INT(self->map.used);
+#if MICROPY_PY_SYS_GETSIZEOF
+    case MP_UNARY_OP_SIZEOF: {
+        size_t sz = sizeof(*self) + sizeof(*self->map.table) * self->map.alloc;
+        return MP_OBJ_NEW_SMALL_INT(sz);
+    }
+#endif
+    default:
+        return MP_OBJ_NULL;      // op not supported
     }
 }
 
 STATIC mp_obj_t dict_binary_op(mp_binary_op_t op, mp_obj_t lhs_in, mp_obj_t rhs_in) {
     mp_obj_dict_t *o = MP_OBJ_TO_PTR(lhs_in);
     switch (op) {
-        case MP_BINARY_OP_CONTAINS: {
-            mp_map_elem_t *elem = mp_map_lookup(&o->map, rhs_in, MP_MAP_LOOKUP);
-            return mp_obj_new_bool(elem != NULL);
-        }
-        case MP_BINARY_OP_EQUAL: {
-            #if MICROPY_PY_COLLECTIONS_ORDEREDDICT
-            if (MP_UNLIKELY(mp_obj_is_type(lhs_in, &mp_type_ordereddict) && mp_obj_is_type(rhs_in, &mp_type_ordereddict))) {
-                // Iterate through both dictionaries simultaneously and compare keys and values.
-                mp_obj_dict_t *rhs = MP_OBJ_TO_PTR(rhs_in);
-                size_t c1 = 0, c2 = 0;
-                mp_map_elem_t *e1 = dict_iter_next(o, &c1), *e2 = dict_iter_next(rhs, &c2);
-                for (; e1 != NULL && e2 != NULL; e1 = dict_iter_next(o, &c1), e2 = dict_iter_next(rhs, &c2)) {
-                    if (!mp_obj_equal(e1->key, e2->key) || !mp_obj_equal(e1->value, e2->value)) {
-                        return mp_const_false;
-                    }
-                }
-                return e1 == NULL && e2 == NULL ? mp_const_true : mp_const_false;
-            }
-            #endif
-
-            if (mp_obj_is_type(rhs_in, &mp_type_dict)) {
-                mp_obj_dict_t *rhs = MP_OBJ_TO_PTR(rhs_in);
-                if (o->map.used != rhs->map.used) {
+    case MP_BINARY_OP_CONTAINS: {
+        mp_map_elem_t *elem = mp_map_lookup(&o->map, rhs_in, MP_MAP_LOOKUP);
+        return mp_obj_new_bool(elem != NULL);
+    }
+    case MP_BINARY_OP_EQUAL: {
+#if MICROPY_PY_COLLECTIONS_ORDEREDDICT
+        if (MP_UNLIKELY(mp_obj_is_type(lhs_in, &mp_type_ordereddict) && mp_obj_is_type(rhs_in, &mp_type_ordereddict))) {
+            // Iterate through both dictionaries simultaneously and compare keys and values.
+            mp_obj_dict_t *rhs = MP_OBJ_TO_PTR(rhs_in);
+            size_t c1 = 0, c2 = 0;
+            mp_map_elem_t *e1 = dict_iter_next(o, &c1), *e2 = dict_iter_next(rhs, &c2);
+            for (; e1 != NULL && e2 != NULL; e1 = dict_iter_next(o, &c1), e2 = dict_iter_next(rhs, &c2)) {
+                if (!mp_obj_equal(e1->key, e2->key) || !mp_obj_equal(e1->value, e2->value)) {
                     return mp_const_false;
                 }
+            }
+            return e1 == NULL && e2 == NULL ? mp_const_true : mp_const_false;
+        }
+#endif
 
-                size_t cur = 0;
-                mp_map_elem_t *next = NULL;
-                while ((next = dict_iter_next(o, &cur)) != NULL) {
-                    mp_map_elem_t *elem = mp_map_lookup(&rhs->map, next->key, MP_MAP_LOOKUP);
-                    if (elem == NULL || !mp_obj_equal(next->value, elem->value)) {
-                        return mp_const_false;
-                    }
-                }
-                return mp_const_true;
-            } else {
-                // dict is not equal to instance of any other type
+        if (mp_obj_is_type(rhs_in, &mp_type_dict)) {
+            mp_obj_dict_t *rhs = MP_OBJ_TO_PTR(rhs_in);
+            if (o->map.used != rhs->map.used) {
                 return mp_const_false;
             }
+
+            size_t cur = 0;
+            mp_map_elem_t *next = NULL;
+            while ((next = dict_iter_next(o, &cur)) != NULL) {
+                mp_map_elem_t *elem = mp_map_lookup(&rhs->map, next->key, MP_MAP_LOOKUP);
+                if (elem == NULL || !mp_obj_equal(next->value, elem->value)) {
+                    return mp_const_false;
+                }
+            }
+            return mp_const_true;
+        } else {
+            // dict is not equal to instance of any other type
+            return mp_const_false;
         }
-        default:
-            // op not supported
-            return MP_OBJ_NULL;
+    }
+    default:
+        // op not supported
+        return MP_OBJ_NULL;
     }
 }
 
@@ -337,11 +337,11 @@ STATIC mp_obj_t dict_popitem(mp_obj_t self_in) {
         mp_raise_msg(&mp_type_KeyError, MP_ERROR_TEXT("popitem(): dictionary is empty"));
     }
     size_t cur = 0;
-    #if MICROPY_PY_COLLECTIONS_ORDEREDDICT
+#if MICROPY_PY_COLLECTIONS_ORDEREDDICT
     if (self->map.is_ordered) {
         cur = self->map.used - 1;
     }
-    #endif
+#endif
     mp_map_elem_t *next = dict_iter_next(self, &cur);
     assert(next);
     self->map.used--;
@@ -383,8 +383,8 @@ STATIC mp_obj_t dict_update(size_t n_args, const mp_obj_t *args, mp_map_t *kwarg
                 mp_obj_t value = mp_iternext(inneriter);
                 mp_obj_t stop = mp_iternext(inneriter);
                 if (key == MP_OBJ_STOP_ITERATION
-                    || value == MP_OBJ_STOP_ITERATION
-                    || stop != MP_OBJ_STOP_ITERATION) {
+                        || value == MP_OBJ_STOP_ITERATION
+                        || stop != MP_OBJ_STOP_ITERATION) {
                     mp_raise_ValueError(MP_ERROR_TEXT("dict update sequence has wrong length"));
                 } else {
                     mp_map_lookup(&self->map, key, MP_MAP_LOOKUP_ADD_IF_NOT_FOUND)->value = value;
@@ -441,15 +441,15 @@ STATIC mp_obj_t dict_view_it_iternext(mp_obj_t self_in) {
         return MP_OBJ_STOP_ITERATION;
     } else {
         switch (self->kind) {
-            case MP_DICT_VIEW_ITEMS:
-            default: {
-                mp_obj_t items[] = {next->key, next->value};
-                return mp_obj_new_tuple(2, items);
-            }
-            case MP_DICT_VIEW_KEYS:
-                return next->key;
-            case MP_DICT_VIEW_VALUES:
-                return next->value;
+        case MP_DICT_VIEW_ITEMS:
+        default: {
+            mp_obj_t items[] = {next->key, next->value};
+            return mp_obj_new_tuple(2, items);
+        }
+        case MP_DICT_VIEW_KEYS:
+            return next->key;
+        case MP_DICT_VIEW_VALUES:
+            return next->value;
         }
     }
 }
@@ -561,9 +561,9 @@ STATIC mp_obj_t dict_getiter(mp_obj_t self_in, mp_obj_iter_buf_t *iter_buf) {
 STATIC const mp_rom_map_elem_t dict_locals_dict_table[] = {
     { MP_ROM_QSTR(MP_QSTR_clear), MP_ROM_PTR(&dict_clear_obj) },
     { MP_ROM_QSTR(MP_QSTR_copy), MP_ROM_PTR(&dict_copy_obj) },
-    #if MICROPY_PY_BUILTINS_DICT_FROMKEYS
+#if MICROPY_PY_BUILTINS_DICT_FROMKEYS
     { MP_ROM_QSTR(MP_QSTR_fromkeys), MP_ROM_PTR(&dict_fromkeys_obj) },
-    #endif
+#endif
     { MP_ROM_QSTR(MP_QSTR_get), MP_ROM_PTR(&dict_get_obj) },
     { MP_ROM_QSTR(MP_QSTR_items), MP_ROM_PTR(&dict_items_obj) },
     { MP_ROM_QSTR(MP_QSTR_keys), MP_ROM_PTR(&dict_keys_obj) },

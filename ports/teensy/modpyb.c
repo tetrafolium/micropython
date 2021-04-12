@@ -258,9 +258,9 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_0(pyb_have_cdc_obj, pyb_have_cdc);
 /// Takes a 4-tuple (or list) and sends it to the USB host (the PC) to
 /// signal a HID mouse-motion event.
 STATIC mp_obj_t pyb_hid_send_report(mp_obj_t arg) {
-    #if 1
+#if 1
     printf("hid_send_report not currently implemented\n");
-    #else
+#else
     mp_obj_t *items;
     mp_obj_get_array_fixed_n(arg, 4, &items);
     uint8_t data[4];
@@ -269,7 +269,7 @@ STATIC mp_obj_t pyb_hid_send_report(mp_obj_t arg) {
     data[2] = mp_obj_get_int(items[2]);
     data[3] = mp_obj_get_int(items[3]);
     usb_hid_send_report(data);
-    #endif
+#endif
     return mp_const_none;
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(pyb_hid_send_report_obj, pyb_hid_send_report);
@@ -285,9 +285,9 @@ STATIC const mp_rom_map_elem_t pyb_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_info), MP_ROM_PTR(&pyb_info_obj) },
     { MP_ROM_QSTR(MP_QSTR_unique_id), MP_ROM_PTR(&pyb_unique_id_obj) },
     { MP_ROM_QSTR(MP_QSTR_freq), MP_ROM_PTR(&pyb_freq_obj) },
-    #if MICROPY_REPL_INFO
+#if MICROPY_REPL_INFO
     { MP_ROM_QSTR(MP_QSTR_repl_info), MP_ROM_PTR(&pyb_set_repl_info_obj) },
-    #endif
+#endif
 
     { MP_ROM_QSTR(MP_QSTR_wfi), MP_ROM_PTR(&pyb_wfi_obj) },
     { MP_ROM_QSTR(MP_QSTR_disable_irq), MP_ROM_PTR(&machine_disable_irq_obj) },
@@ -323,15 +323,15 @@ STATIC const mp_rom_map_elem_t pyb_module_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR_Pin), MP_ROM_PTR(&pin_type) },
 //    { MP_ROM_QSTR(MP_QSTR_ExtInt), MP_ROM_PTR(&extint_type) },
 
-    #if MICROPY_HW_ENABLE_SERVO
+#if MICROPY_HW_ENABLE_SERVO
     { MP_ROM_QSTR(MP_QSTR_pwm), MP_ROM_PTR(&pyb_pwm_set_obj) },
     { MP_ROM_QSTR(MP_QSTR_servo), MP_ROM_PTR(&pyb_servo_set_obj) },
     { MP_ROM_QSTR(MP_QSTR_Servo), MP_ROM_PTR(&pyb_servo_type) },
-    #endif
+#endif
 
-    #if MICROPY_HW_HAS_SWITCH
+#if MICROPY_HW_HAS_SWITCH
     { MP_ROM_QSTR(MP_QSTR_Switch), MP_ROM_PTR(&pyb_switch_type) },
-    #endif
+#endif
 
 // #if MICROPY_HW_HAS_SDCARD
 //    { MP_ROM_QSTR(MP_QSTR_SD), MP_ROM_PTR(&pyb_sdcard_obj) },

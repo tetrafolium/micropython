@@ -110,17 +110,17 @@ STATIC mp_uint_t file_obj_ioctl(mp_obj_t o_in, mp_uint_t request, uintptr_t arg,
         struct mp_stream_seek_t *s = (struct mp_stream_seek_t *)(uintptr_t)arg;
 
         switch (s->whence) {
-            case 0: // SEEK_SET
-                f_lseek(&self->fp, s->offset);
-                break;
+        case 0: // SEEK_SET
+            f_lseek(&self->fp, s->offset);
+            break;
 
-            case 1: // SEEK_CUR
-                f_lseek(&self->fp, f_tell(&self->fp) + s->offset);
-                break;
+        case 1: // SEEK_CUR
+            f_lseek(&self->fp, f_tell(&self->fp) + s->offset);
+            break;
 
-            case 2: // SEEK_END
-                f_lseek(&self->fp, f_size(&self->fp) + s->offset);
-                break;
+        case 2: // SEEK_END
+            f_lseek(&self->fp, f_size(&self->fp) + s->offset);
+            break;
         }
 
         s->offset = f_tell(&self->fp);
@@ -166,29 +166,29 @@ STATIC mp_obj_t file_open(fs_user_mount_t *vfs, const mp_obj_type_t *type, mp_ar
     // TODO make sure only one of r, w, x, a, and b, t are specified
     while (*mode_s) {
         switch (*mode_s++) {
-            case 'r':
-                mode |= FA_READ;
-                break;
-            case 'w':
-                mode |= FA_WRITE | FA_CREATE_ALWAYS;
-                break;
-            case 'x':
-                mode |= FA_WRITE | FA_CREATE_NEW;
-                break;
-            case 'a':
-                mode |= FA_WRITE | FA_OPEN_ALWAYS;
-                break;
-            case '+':
-                mode |= FA_READ | FA_WRITE;
-                break;
-            #if MICROPY_PY_IO_FILEIO
-            case 'b':
-                type = &mp_type_vfs_fat_fileio;
-                break;
-            #endif
-            case 't':
-                type = &mp_type_vfs_fat_textio;
-                break;
+        case 'r':
+            mode |= FA_READ;
+            break;
+        case 'w':
+            mode |= FA_WRITE | FA_CREATE_ALWAYS;
+            break;
+        case 'x':
+            mode |= FA_WRITE | FA_CREATE_NEW;
+            break;
+        case 'a':
+            mode |= FA_WRITE | FA_OPEN_ALWAYS;
+            break;
+        case '+':
+            mode |= FA_READ | FA_WRITE;
+            break;
+#if MICROPY_PY_IO_FILEIO
+        case 'b':
+            type = &mp_type_vfs_fat_fileio;
+            break;
+#endif
+        case 't':
+            type = &mp_type_vfs_fat_textio;
+            break;
         }
     }
 

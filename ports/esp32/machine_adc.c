@@ -56,7 +56,7 @@ STATIC const madc_obj_t madc_obj[] = {
 STATIC uint8_t adc_bit_width;
 
 STATIC mp_obj_t madc_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw,
-    const mp_obj_t *args) {
+                              const mp_obj_t *args) {
 
     static int initialized = 0;
     if (!initialized) {
@@ -128,20 +128,20 @@ STATIC mp_obj_t madc_width(mp_obj_t cls_in, mp_obj_t width_in) {
         mp_raise_ValueError(MP_ERROR_TEXT("parameter error"));
     }
     switch (width) {
-        case ADC_WIDTH_9Bit:
-            adc_bit_width = 9;
-            break;
-        case ADC_WIDTH_10Bit:
-            adc_bit_width = 10;
-            break;
-        case ADC_WIDTH_11Bit:
-            adc_bit_width = 11;
-            break;
-        case ADC_WIDTH_12Bit:
-            adc_bit_width = 12;
-            break;
-        default:
-            break;
+    case ADC_WIDTH_9Bit:
+        adc_bit_width = 9;
+        break;
+    case ADC_WIDTH_10Bit:
+        adc_bit_width = 10;
+        break;
+    case ADC_WIDTH_11Bit:
+        adc_bit_width = 11;
+        break;
+    case ADC_WIDTH_12Bit:
+        adc_bit_width = 12;
+        break;
+    default:
+        break;
     }
     return mp_const_none;
 }

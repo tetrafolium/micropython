@@ -69,7 +69,7 @@ STATIC volatile bool events_task_is_scheduled = false;
 STATIC mp_obj_t run_events_scheduled_task(mp_obj_t none_in) {
     (void)none_in;
     MICROPY_PY_BLUETOOTH_ENTER
-        events_task_is_scheduled = false;
+    events_task_is_scheduled = false;
     MICROPY_PY_BLUETOOTH_EXIT
     mp_bluetooth_hci_poll();
     return mp_const_none;
@@ -86,7 +86,7 @@ STATIC void *hci_poll_thread(void *arg) {
 
     DEBUG_printf("hci_poll_thread: starting\n");
 
-    #if MICROPY_PY_BLUETOOTH_USE_SYNC_EVENTS
+#if MICROPY_PY_BLUETOOTH_USE_SYNC_EVENTS
 
     events_task_is_scheduled = false;
 
@@ -99,7 +99,7 @@ STATIC void *hci_poll_thread(void *arg) {
         usleep(UART_POLL_INTERVAL_US);
     }
 
-    #else
+#else
 
     // In asynchronous (i.e. ringbuffer) mode, we run the BLE stack directly from the thread.
     // This will return false when the stack is shutdown.
@@ -107,7 +107,7 @@ STATIC void *hci_poll_thread(void *arg) {
         usleep(UART_POLL_INTERVAL_US);
     }
 
-    #endif
+#endif
 
     DEBUG_printf("hci_poll_thread: stopped\n");
 
@@ -234,9 +234,9 @@ int mp_bluetooth_hci_uart_readchar(void) {
     ssize_t bytes_read = read(uart_fd, &c, 1);
 
     if (bytes_read == 1) {
-        #if DEBUG_HCI_DUMP
+#if DEBUG_HCI_DUMP
         printf("[% 8ld] RX: %02x\n", mp_hal_ticks_ms(), c);
-        #endif
+#endif
         return c;
     } else {
         return -1;
@@ -250,13 +250,13 @@ int mp_bluetooth_hci_uart_write(const uint8_t *buf, size_t len) {
         return 0;
     }
 
-    #if DEBUG_HCI_DUMP
+#if DEBUG_HCI_DUMP
     printf("[% 8ld] TX: %02x", mp_hal_ticks_ms(), buf[0]);
     for (size_t i = 1; i < len; ++i) {
         printf(":%02x", buf[i]);
     }
     printf("\n");
-    #endif
+#endif
 
     return write(uart_fd, buf, len);
 }

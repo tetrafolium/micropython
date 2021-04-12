@@ -527,7 +527,7 @@ SHAMD5DataWrite(uint32_t ui32Base, uint8_t *pui8Src)
     for(ui8Counter = 0; ui8Counter < 64; ui8Counter += 4)
     {
         HWREG(ui32Base + SHAMD5_O_DATA0_IN + ui8Counter) =
-                                        *((uint32_t *) (pui8Src + ui8Counter));
+            *((uint32_t *) (pui8Src + ui8Counter));
     }
 }
 
@@ -569,81 +569,81 @@ SHAMD5ResultRead(uint32_t ui32Base, uint8_t *pui8Dest)
     //
     switch(HWREG(ui32Base + SHAMD5_O_MODE) & SHAMD5_MODE_ALGO_M)
     {
+    //
+    // The MD5 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_MD5:
+    {
         //
-        // The MD5 hash is being used.
+        // There are 16 bytes in the MD5 hash.
         //
-        case SHAMD5_MODE_ALGO_MD5:
-        {
-            //
-            // There are 16 bytes in the MD5 hash.
-            //
-            ui32Count = 16;
-
-            //
-            // Done.
-            //
-            break;
-        }
+        ui32Count = 16;
 
         //
-        // The SHA-1 hash is being used.
+        // Done.
         //
-        case SHAMD5_MODE_ALGO_SHA1:
-        {
-            //
-            // There are 20 bytes in the SHA-1 hash.
-            //
-            ui32Count = 20;
+        break;
+    }
 
-            //
-            // Done.
-            //
-            break;
-        }
-
+    //
+    // The SHA-1 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_SHA1:
+    {
         //
-        // The SHA-224 hash is being used.
+        // There are 20 bytes in the SHA-1 hash.
         //
-        case SHAMD5_MODE_ALGO_SHA224:
-        {
-            //
-            // There are 28 bytes in the SHA-224 hash.
-            //
-            ui32Count = 28;
-
-            //
-            // Done.
-            //
-            break;
-        }
+        ui32Count = 20;
 
         //
-        // The SHA-256 hash is being used.
+        // Done.
         //
-        case SHAMD5_MODE_ALGO_SHA256:
-        {
-            //
-            // There are 32 bytes in the SHA-256 hash.
-            //
-            ui32Count = 32;
+        break;
+    }
 
-            //
-            // Done.
-            //
-            break;
-        }
+    //
+    // The SHA-224 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_SHA224:
+    {
+        //
+        // There are 28 bytes in the SHA-224 hash.
+        //
+        ui32Count = 28;
 
         //
-        // The hash type is not recognized.
+        // Done.
         //
-        default:
-        {
-            //
-            // Return without reading a result since the hardware appears to be
-            // misconfigured.
-            //
-            return;
-        }
+        break;
+    }
+
+    //
+    // The SHA-256 hash is being used.
+    //
+    case SHAMD5_MODE_ALGO_SHA256:
+    {
+        //
+        // There are 32 bytes in the SHA-256 hash.
+        //
+        ui32Count = 32;
+
+        //
+        // Done.
+        //
+        break;
+    }
+
+    //
+    // The hash type is not recognized.
+    //
+    default:
+    {
+        //
+        // Return without reading a result since the hardware appears to be
+        // misconfigured.
+        //
+        return;
+    }
     }
 
     //
@@ -651,8 +651,8 @@ SHAMD5ResultRead(uint32_t ui32Base, uint8_t *pui8Dest)
     //
     for(ui32Idx = 0; ui32Idx < ui32Count; ui32Idx += 4)
     {
-    	*((uint32_t *)(pui8Dest+ui32Idx)) =
-                                HWREG(ui32Base + SHAMD5_O_IDIGEST_A + ui32Idx);
+        *((uint32_t *)(pui8Dest+ui32Idx)) =
+            HWREG(ui32Base + SHAMD5_O_IDIGEST_A + ui32Idx);
     }
 }
 
@@ -738,16 +738,16 @@ SHAMD5DataWriteMultiple(uint8_t *pui8DataSrc, uint32_t ui32DataLength)
         ui8TempData = (uint8_t *) &ui32TempData;
         if(ui32Count)
         {
-        	ui32Lastword = 0;
-        	if(ui32Idx)
-        	{
-        		ui32Lastword = (ui32Idx-1) *4;
-        	}
-        	for(ui32Idx=0 ; ui32Idx<ui32Count ; ui32Idx++)
-        	{
-        		*(ui8TempData+ui32Idx) = *(pui8DataSrc+ui32Idx);
-        	}
-        	HWREG(SHAMD5_BASE + SHAMD5_O_DATA0_IN + ui32Lastword) = ui32TempData;
+            ui32Lastword = 0;
+            if(ui32Idx)
+            {
+                ui32Lastword = (ui32Idx-1) *4;
+            }
+            for(ui32Idx=0 ; ui32Idx<ui32Count ; ui32Idx++)
+            {
+                *(ui8TempData+ui32Idx) = *(pui8DataSrc+ui32Idx);
+            }
+            HWREG(SHAMD5_BASE + SHAMD5_O_DATA0_IN + ui32Lastword) = ui32TempData;
         }
     }
 }
@@ -796,7 +796,7 @@ SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     // Wait for the context to be ready before writing the mode.
     //
     while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
-          0)
+            0)
     {
     }
 
@@ -814,7 +814,7 @@ SHAMD5DataProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     // Wait for the output to be ready.
     //
     while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
-          0)
+            0)
     {
     }
 
@@ -873,7 +873,7 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     // Wait for the context to be ready before writing the mode.
     //
     while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
-          0)
+            0)
     {
     }
 
@@ -891,7 +891,7 @@ SHAMD5HMACProcess(uint32_t ui32Base, uint8_t *pui8DataSrc,
     // Wait for the output to be ready.
     //
     while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
-          0)
+            0)
     {
     }
 
@@ -943,7 +943,7 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
     // Wait for the context to be ready before writing the mode.
     //
     while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_CONTEXT_READY) ==
-          0)
+            0)
     {
     }
 
@@ -953,7 +953,7 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
     for(ui32Index = 0; ui32Index < 64; ui32Index += 4)
     {
         HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index) =
-                                          *((uint32_t *)(pui8Key + ui32Index));
+            *((uint32_t *)(pui8Key + ui32Index));
     }
 
     //
@@ -970,7 +970,7 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
     // Wait for key to be processed.
     //
     while((HWREG(ui32Base + SHAMD5_O_IRQSTATUS) & SHAMD5_INT_OUTPUT_READY) ==
-          0)
+            0)
     {
     }
 
@@ -979,8 +979,8 @@ SHAMD5HMACPPKeyGenerate(uint32_t ui32Base, uint8_t *pui8Key,
     //
     for(ui32Index = 0; ui32Index < 64; ui32Index += 4)
     {
-    	*((uint32_t *)(pui8PPKey+ui32Index)) =
-                              HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index);
+        *((uint32_t *)(pui8PPKey+ui32Index)) =
+            HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Index);
     }
 }
 
@@ -1017,7 +1017,7 @@ SHAMD5HMACKeySet(uint32_t ui32Base, uint8_t *pui8Src)
     for(ui32Idx = 0; ui32Idx < 64; ui32Idx += 4)
     {
         HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) =
-                                           * ((uint32_t *)(pui8Src + ui32Idx));
+            * ((uint32_t *)(pui8Src + ui32Idx));
     }
 
     //
@@ -1062,7 +1062,7 @@ SHAMD5HMACPPKeySet(uint32_t ui32Base, uint8_t *pui8Src)
     for(ui32Idx = 0; ui32Idx < 64; ui32Idx += 4)
     {
         HWREG(ui32Base + SHAMD5_O_ODIGEST_A + ui32Idx) =
-                                           *((uint32_t *) (pui8Src + ui32Idx));
+            *((uint32_t *) (pui8Src + ui32Idx));
     }
 
     //

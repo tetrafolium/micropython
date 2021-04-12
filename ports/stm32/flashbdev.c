@@ -150,30 +150,30 @@ static void flash_bdev_irq_handler(void);
 int32_t flash_bdev_ioctl(uint32_t op, uint32_t arg) {
     (void)arg;
     switch (op) {
-        case BDEV_IOCTL_INIT:
-            flash_flags = 0;
-            flash_cache_sector_id = 0;
-            flash_tick_counter_last_write = 0;
-            return 0;
+    case BDEV_IOCTL_INIT:
+        flash_flags = 0;
+        flash_cache_sector_id = 0;
+        flash_tick_counter_last_write = 0;
+        return 0;
 
-        case BDEV_IOCTL_NUM_BLOCKS:
-            return FLASH_MEM_SEG1_NUM_BLOCKS + FLASH_MEM_SEG2_NUM_BLOCKS;
+    case BDEV_IOCTL_NUM_BLOCKS:
+        return FLASH_MEM_SEG1_NUM_BLOCKS + FLASH_MEM_SEG2_NUM_BLOCKS;
 
-        case BDEV_IOCTL_IRQ_HANDLER:
-            flash_bdev_irq_handler();
-            return 0;
+    case BDEV_IOCTL_IRQ_HANDLER:
+        flash_bdev_irq_handler();
+        return 0;
 
-        case BDEV_IOCTL_SYNC: {
-            uint32_t basepri = raise_irq_pri(IRQ_PRI_FLASH); // prevent cache flushing and USB access
-            if (flash_flags & FLASH_FLAG_DIRTY) {
-                flash_flags |= FLASH_FLAG_FORCE_WRITE;
-                while (flash_flags & FLASH_FLAG_DIRTY) {
-                    flash_bdev_irq_handler();
-                }
+    case BDEV_IOCTL_SYNC: {
+        uint32_t basepri = raise_irq_pri(IRQ_PRI_FLASH); // prevent cache flushing and USB access
+        if (flash_flags & FLASH_FLAG_DIRTY) {
+            flash_flags |= FLASH_FLAG_FORCE_WRITE;
+            while (flash_flags & FLASH_FLAG_DIRTY) {
+                flash_bdev_irq_handler();
             }
-            restore_irq_pri(basepri);
-            return 0;
         }
+        restore_irq_pri(basepri);
+        return 0;
+    }
     }
     return -MP_EINVAL;
 }

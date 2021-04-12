@@ -51,7 +51,8 @@ const mp_arg_t mp_irq_init_args[] = {
  DECLARE PRIVATE DATA
  ******************************************************************************/
 STATIC uint8_t mp_irq_priorities[] = { INT_PRIORITY_LVL_7, INT_PRIORITY_LVL_6, INT_PRIORITY_LVL_5, INT_PRIORITY_LVL_4,
-                                       INT_PRIORITY_LVL_3, INT_PRIORITY_LVL_2, INT_PRIORITY_LVL_1 };
+                                       INT_PRIORITY_LVL_3, INT_PRIORITY_LVL_2, INT_PRIORITY_LVL_1
+                                     };
 
 /******************************************************************************
  DEFINE PUBLIC FUNCTIONS

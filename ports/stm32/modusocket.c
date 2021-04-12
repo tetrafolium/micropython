@@ -318,11 +318,11 @@ STATIC mp_obj_t socket_settimeout(mp_obj_t self_in, mp_obj_t timeout_in) {
     if (timeout_in == mp_const_none) {
         timeout = -1;
     } else {
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         timeout = (mp_uint_t)(MICROPY_FLOAT_CONST(1000.0) * mp_obj_get_float(timeout_in));
-        #else
+#else
         timeout = 1000 * mp_obj_get_int(timeout_in);
-        #endif
+#endif
     }
     int _errno;
     if (self->nic_type->settimeout(self, timeout, &_errno) != 0) {

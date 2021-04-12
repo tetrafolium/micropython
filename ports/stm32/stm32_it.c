@@ -147,11 +147,11 @@ void HardFault_C_Handler(ExceptionRegisters_t *regs) {
         powerctrl_mcu_reset();
     }
 
-    #if MICROPY_HW_ENABLE_USB
+#if MICROPY_HW_ENABLE_USB
     // We need to disable the USB so it doesn't try to write data out on
     // the VCP and then block indefinitely waiting for the buffer to drain.
     pyb_usb_flags = 0;
-    #endif
+#endif
 
     mp_hal_stdout_tx_str("HardFault\r\n");
 
@@ -165,7 +165,7 @@ void HardFault_C_Handler(ExceptionRegisters_t *regs) {
     print_reg("PC    ", regs->pc);
     print_reg("XPSR  ", regs->xpsr);
 
-    #if __CORTEX_M >= 3
+#if __CORTEX_M >= 3
     uint32_t cfsr = SCB->CFSR;
 
     print_reg("HFSR  ", SCB->HFSR);
@@ -176,7 +176,7 @@ void HardFault_C_Handler(ExceptionRegisters_t *regs) {
     if (cfsr & 0x8000) {
         print_reg("BFAR  ", SCB->BFAR);
     }
-    #endif
+#endif
 
     if ((void *)&_ram_start <= (void *)regs && (void *)regs < (void *)&_ram_end) {
         mp_hal_stdout_tx_str("Stack:\r\n");
@@ -209,7 +209,7 @@ void HardFault_Handler(void) {
     // main stack pointer (aka MSP). If CONTROL.SPSEL is 1, then the exception
     // was stacked up using the process stack pointer (aka PSP).
 
-    #if __CORTEX_M == 0
+#if __CORTEX_M == 0
     __asm volatile (
         " mov r0, lr    \n"
         " lsr r0, r0, #3 \n"    // Shift Bit 3 into carry to see which stack pointer we should use.
@@ -218,16 +218,16 @@ void HardFault_Handler(void) {
         " mrs r0, psp   \n"     // Make R0 point to process stack pointer
         " .use_msp:     \n"
         " b HardFault_C_Handler \n" // Off to C land
-        );
-    #else
+    );
+#else
     __asm volatile (
         " tst lr, #4    \n"     // Test Bit 3 to see which stack pointer we should use.
         " ite eq        \n"     // Tell the assembler that the nest 2 instructions are if-then-else
         " mrseq r0, msp \n"     // Make R0 point to main stack pointer
         " mrsne r0, psp \n"     // Make R0 point to process stack pointer
         " b HardFault_C_Handler \n" // Off to C land
-        );
-    #endif
+    );
+#endif
 }
 
 /**
@@ -351,9 +351,9 @@ STATIC void OTG_CMD_WKUP_Handler(PCD_HandleTypeDef *pcd_handle) {
         PLL as system clock source (HSE/HSI and PLL are disabled in STOP mode) */
 
         __HAL_RCC_HSE_CONFIG(MICROPY_HW_RCC_HSE_STATE);
-        #if MICROPY_HW_CLK_USE_HSI
+#if MICROPY_HW_CLK_USE_HSI
         __HAL_RCC_HSI_ENABLE();
-        #endif
+#endif
 
         /* Wait till HSE/HSI is ready */
         while (__HAL_RCC_GET_FLAG(MICROPY_HW_RCC_FLAG_HSxRDY) == RESET) {
@@ -369,13 +369,13 @@ STATIC void OTG_CMD_WKUP_Handler(PCD_HandleTypeDef *pcd_handle) {
         /* Select PLL as SYSCLK */
         MODIFY_REG(RCC->CFGR, RCC_CFGR_SW, RCC_SYSCLKSOURCE_PLLCLK);
 
-        #if defined(STM32H7)
+#if defined(STM32H7)
         while (__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL1) {
         }
-        #else
+#else
         while (__HAL_RCC_GET_SYSCLK_SOURCE() != RCC_CFGR_SWS_PLL) {
         }
-        #endif
+#endif
 
         /* ungate PHY clock */
         __HAL_PCD_UNGATE_PHYCLOCK(pcd_handle);
@@ -395,10 +395,10 @@ void OTG_FS_WKUP_IRQHandler(void) {
 
     OTG_CMD_WKUP_Handler(&pcd_fs_handle);
 
-    #if !defined(STM32H7)
+#if !defined(STM32H7)
     /* Clear EXTI pending Bit*/
     __HAL_USB_FS_EXTI_CLEAR_FLAG();
-    #endif
+#endif
 
     IRQ_EXIT(OTG_FS_WKUP_IRQn);
 }
@@ -415,10 +415,10 @@ void OTG_HS_WKUP_IRQHandler(void) {
 
     OTG_CMD_WKUP_Handler(&pcd_hs_handle);
 
-    #if !defined(STM32H7)
+#if !defined(STM32H7)
     /* Clear EXTI pending Bit*/
     __HAL_USB_HS_EXTI_CLEAR_FLAG();
-    #endif
+#endif
 
     IRQ_EXIT(OTG_HS_WKUP_IRQn);
 }

@@ -114,7 +114,8 @@ STATIC void freertos_entry(void *arg) {
         ext_thread_entry(arg);
     }
     vTaskDelete(NULL);
-    for (;;) {;
+    for (;;) {
+        ;
     }
 }
 

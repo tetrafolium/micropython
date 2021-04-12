@@ -294,16 +294,16 @@ STATIC mp_obj_t jobject_subscr(mp_obj_t self_in, mp_obj_t index, mp_obj_t value)
 STATIC mp_obj_t jobject_unary_op(mp_unary_op_t op, mp_obj_t self_in) {
     mp_obj_jobject_t *self = MP_OBJ_TO_PTR(self_in);
     switch (op) {
-        case MP_UNARY_OP_BOOL:
-        case MP_UNARY_OP_LEN: {
-            jint len = JJ(CallIntMethod, self->obj, List_size_mid);
-            if (op == MP_UNARY_OP_BOOL) {
-                return mp_obj_new_bool(len != 0);
-            }
-            return MP_OBJ_NEW_SMALL_INT(len);
+    case MP_UNARY_OP_BOOL:
+    case MP_UNARY_OP_LEN: {
+        jint len = JJ(CallIntMethod, self->obj, List_size_mid);
+        if (op == MP_UNARY_OP_BOOL) {
+            return mp_obj_new_bool(len != 0);
         }
-        default:
-            return MP_OBJ_NULL; // op not supported
+        return MP_OBJ_NEW_SMALL_INT(len);
+    }
+    default:
+        return MP_OBJ_NULL; // op not supported
     }
 }
 
@@ -541,7 +541,7 @@ STATIC mp_obj_t call_method(jobject obj, const char *name, jarray methods, bool 
             }
         }
 
-    next_method:
+next_method:
         JJ(ReleaseStringUTFChars, name_o, decl);
         JJ(DeleteLocalRef, name_o);
         JJ(DeleteLocalRef, meth);
@@ -614,26 +614,26 @@ STATIC void create_jvm(void) {
 
     jclass Object_class = JJ(FindClass, "java/lang/Object");
     Object_toString_mid = JJ(GetMethodID, Object_class, "toString",
-        MP_ERROR_TEXT("()Ljava/lang/String;"));
+                             MP_ERROR_TEXT("()Ljava/lang/String;"));
 
     Class_getName_mid = (*env)->GetMethodID(env, Class_class, "getName",
-        MP_ERROR_TEXT("()Ljava/lang/String;"));
+                                            MP_ERROR_TEXT("()Ljava/lang/String;"));
     Class_getField_mid = (*env)->GetMethodID(env, Class_class, "getField",
-        MP_ERROR_TEXT("(Ljava/lang/String;)Ljava/lang/reflect/Field;"));
+                         MP_ERROR_TEXT("(Ljava/lang/String;)Ljava/lang/reflect/Field;"));
     Class_getMethods_mid = (*env)->GetMethodID(env, Class_class, "getMethods",
-        MP_ERROR_TEXT("()[Ljava/lang/reflect/Method;"));
+                           MP_ERROR_TEXT("()[Ljava/lang/reflect/Method;"));
     Class_getConstructors_mid = (*env)->GetMethodID(env, Class_class, "getConstructors",
-        MP_ERROR_TEXT("()[Ljava/lang/reflect/Constructor;"));
+                                MP_ERROR_TEXT("()[Ljava/lang/reflect/Constructor;"));
     Method_getName_mid = (*env)->GetMethodID(env, method_class, "getName",
-        MP_ERROR_TEXT("()Ljava/lang/String;"));
+                         MP_ERROR_TEXT("()Ljava/lang/String;"));
 
     List_class = JJ(FindClass, "java/util/List");
     List_get_mid = JJ(GetMethodID, List_class, "get",
-        MP_ERROR_TEXT("(I)Ljava/lang/Object;"));
+                      MP_ERROR_TEXT("(I)Ljava/lang/Object;"));
     List_set_mid = JJ(GetMethodID, List_class, "set",
-        MP_ERROR_TEXT("(ILjava/lang/Object;)Ljava/lang/Object;"));
+                      MP_ERROR_TEXT("(ILjava/lang/Object;)Ljava/lang/Object;"));
     List_size_mid = JJ(GetMethodID, List_class, "size",
-        MP_ERROR_TEXT("()I"));
+                       MP_ERROR_TEXT("()I"));
     IndexException_class = JJ(FindClass, "java/lang/IndexOutOfBoundsException");
 }
 
@@ -666,30 +666,30 @@ STATIC mp_obj_t mod_jni_array(mp_obj_t type_in, mp_obj_t size_in) {
     } else if (mp_obj_is_str(type_in)) {
         const char *type = mp_obj_str_get_str(type_in);
         switch (*type) {
-            case 'Z':
-                res = JJ(NewBooleanArray, size);
-                break;
-            case 'B':
-                res = JJ(NewByteArray, size);
-                break;
-            case 'C':
-                res = JJ(NewCharArray, size);
-                break;
-            case 'S':
-                res = JJ(NewShortArray, size);
-                break;
-            case 'I':
-                res = JJ(NewIntArray, size);
-                break;
-            case 'J':
-                res = JJ(NewLongArray, size);
-                break;
-            case 'F':
-                res = JJ(NewFloatArray, size);
-                break;
-            case 'D':
-                res = JJ(NewDoubleArray, size);
-                break;
+        case 'Z':
+            res = JJ(NewBooleanArray, size);
+            break;
+        case 'B':
+            res = JJ(NewByteArray, size);
+            break;
+        case 'C':
+            res = JJ(NewCharArray, size);
+            break;
+        case 'S':
+            res = JJ(NewShortArray, size);
+            break;
+        case 'I':
+            res = JJ(NewIntArray, size);
+            break;
+        case 'J':
+            res = JJ(NewLongArray, size);
+            break;
+        case 'F':
+            res = JJ(NewFloatArray, size);
+            break;
+        case 'D':
+            res = JJ(NewDoubleArray, size);
+            break;
         }
 
     }

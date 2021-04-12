@@ -37,8 +37,8 @@ typedef union {
 } double_s_t;
 
 double copysign(double x, double y) {
-    double_s_t dx={.d = x};
-    double_s_t dy={.d = y};
+    double_s_t dx= {.d = x};
+    double_s_t dy= {.d = y};
 
     // copy sign bit;
     dx.s = dy.s;

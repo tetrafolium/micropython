@@ -60,9 +60,9 @@ extern uint16_t usb_rx_byte_count_data[NUM_ENDPOINTS];
 static inline uint32_t usb_rx_byte_count(uint32_t endpoint) __attribute__((always_inline));
 static inline uint32_t usb_rx_byte_count(uint32_t endpoint)
 {
-        endpoint--;
-        if (endpoint >= NUM_ENDPOINTS) return 0;
-        return usb_rx_byte_count_data[endpoint];
+    endpoint--;
+    if (endpoint >= NUM_ENDPOINTS) return 0;
+    return usb_rx_byte_count_data[endpoint];
 }
 
 #ifdef CDC_DATA_INTERFACE

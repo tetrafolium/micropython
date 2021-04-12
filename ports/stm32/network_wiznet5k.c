@@ -271,7 +271,7 @@ STATIC mp_obj_t wiznet5k_make_new(const mp_obj_type_t *type, size_t n_args, size
     // Access the existing object, if it has been constructed with the same hardware interface
     if (wiznet5k_obj.base.type == &mod_network_nic_type_wiznet5k) {
         if (!(wiznet5k_obj.spi == spi && wiznet5k_obj.cs == cs && wiznet5k_obj.rst == rst
-              && wiznet5k_obj.netif.flags != 0)) {
+                && wiznet5k_obj.netif.flags != 0)) {
             wiznet5k_deinit();
         }
     }
@@ -295,11 +295,11 @@ STATIC mp_obj_t wiznet5k_regs(mp_obj_t self_in) {
         if (i % 16 == 0) {
             printf("\n  %04x:", i);
         }
-        #if MICROPY_PY_WIZNET5K == 5200
+#if MICROPY_PY_WIZNET5K == 5200
         uint32_t reg = i;
-        #else
+#else
         uint32_t reg = _W5500_IO_BASE_ | i << 8;
-        #endif
+#endif
         printf(" %02x", WIZCHIP_READ(reg));
     }
     for (int sn = 0; sn < 4; ++sn) {
@@ -308,11 +308,11 @@ STATIC mp_obj_t wiznet5k_regs(mp_obj_t self_in) {
             if (i % 16 == 0) {
                 printf("\n  %04x:", i);
             }
-            #if MICROPY_PY_WIZNET5K == 5200
+#if MICROPY_PY_WIZNET5K == 5200
             uint32_t reg = WIZCHIP_SREG_ADDR(sn, i);
-            #else
+#else
             uint32_t reg = _W5500_IO_BASE_ | i << 8 | WIZCHIP_SREG_BLOCK(sn) << 3;
-            #endif
+#endif
             printf(" %02x", WIZCHIP_READ(reg));
         }
     }
@@ -324,10 +324,10 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(wiznet5k_regs_obj, wiznet5k_regs);
 STATIC mp_obj_t wiznet5k_isconnected(mp_obj_t self_in) {
     wiznet5k_obj_t *self = MP_OBJ_TO_PTR(self_in);
     return mp_obj_new_bool(
-        wizphy_getphylink() == PHY_LINK_ON
-        && (self->netif.flags & NETIF_FLAG_UP)
-        && self->netif.ip_addr.addr != 0
-        );
+               wizphy_getphylink() == PHY_LINK_ON
+               && (self->netif.flags & NETIF_FLAG_UP)
+               && self->netif.ip_addr.addr != 0
+           );
 }
 STATIC MP_DEFINE_CONST_FUN_OBJ_1(wiznet5k_isconnected_obj, wiznet5k_isconnected);
 
@@ -391,13 +391,13 @@ STATIC mp_obj_t wiznet5k_config(size_t n_args, const mp_obj_t *args, mp_map_t *k
         }
 
         switch (mp_obj_str_get_qstr(args[1])) {
-            case MP_QSTR_mac: {
-                uint8_t buf[6];
-                wiznet5k_get_mac_address(self, buf);
-                return mp_obj_new_bytes(buf, 6);
-            }
-            default:
-                mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
+        case MP_QSTR_mac: {
+            uint8_t buf[6];
+            wiznet5k_get_mac_address(self, buf);
+            return mp_obj_new_bytes(buf, 6);
+        }
+        default:
+            mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
         }
     } else {
         // Set config value(s)
@@ -409,22 +409,22 @@ STATIC mp_obj_t wiznet5k_config(size_t n_args, const mp_obj_t *args, mp_map_t *k
             if (MP_MAP_SLOT_IS_FILLED(kwargs, i)) {
                 mp_map_elem_t *e = &kwargs->table[i];
                 switch (mp_obj_str_get_qstr(e->key)) {
-                    case MP_QSTR_mac: {
-                        mp_buffer_info_t buf;
-                        mp_get_buffer_raise(e->value, &buf, MP_BUFFER_READ);
-                        if (buf.len != 6) {
-                            mp_raise_ValueError(NULL);
-                        }
-                        setSHAR(buf.buf);
-                        memcpy(self->netif.hwaddr, buf.buf, 6);
-                        break;
+                case MP_QSTR_mac: {
+                    mp_buffer_info_t buf;
+                    mp_get_buffer_raise(e->value, &buf, MP_BUFFER_READ);
+                    if (buf.len != 6) {
+                        mp_raise_ValueError(NULL);
                     }
-                    case MP_QSTR_trace: {
-                        self->trace_flags = mp_obj_get_int(e->value);
-                        break;
-                    }
-                    default:
-                        mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
+                    setSHAR(buf.buf);
+                    memcpy(self->netif.hwaddr, buf.buf, 6);
+                    break;
+                }
+                case MP_QSTR_trace: {
+                    self->trace_flags = mp_obj_get_int(e->value);
+                    break;
+                }
+                default:
+                    mp_raise_ValueError(MP_ERROR_TEXT("unknown config param"));
                 }
             }
         }

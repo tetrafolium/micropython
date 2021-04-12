@@ -37,7 +37,7 @@
 STATIC void cyw43_ethernet_trace(cyw43_t *self, struct netif *netif, size_t len, const void *data, unsigned int flags) {
     bool is_tx = flags & NETUTILS_TRACE_IS_TX;
     if ((is_tx && (self->trace_flags & CYW43_TRACE_ETH_TX))
-        || (!is_tx && (self->trace_flags & CYW43_TRACE_ETH_RX))) {
+            || (!is_tx && (self->trace_flags & CYW43_TRACE_ETH_RX))) {
         const uint8_t *buf;
         if (len == (size_t)-1) {
             // data is a pbuf
@@ -92,11 +92,11 @@ STATIC err_t cyw43_netif_init(struct netif *netif) {
 
 void cyw43_tcpip_init(cyw43_t *self, int itf) {
     ip_addr_t ipconfig[4];
-    #if LWIP_IPV6
-    #define IP(x) ((x).u_addr.ip4)
-    #else
-    #define IP(x) (x)
-    #endif
+#if LWIP_IPV6
+#define IP(x) ((x).u_addr.ip4)
+#else
+#define IP(x) (x)
+#endif
     if (itf == 0) {
         // need to zero out to get isconnected() working
         IP4_ADDR(&IP(ipconfig[0]), 0, 0, 0, 0);
@@ -107,16 +107,16 @@ void cyw43_tcpip_init(cyw43_t *self, int itf) {
     }
     IP4_ADDR(&IP(ipconfig[1]), 255, 255, 255, 0);
     IP4_ADDR(&IP(ipconfig[3]), 8, 8, 8, 8);
-    #undef IP
+#undef IP
 
     struct netif *n = &self->netif[itf];
     n->name[0] = 'w';
     n->name[1] = '0' + itf;
-    #if LWIP_IPV6
+#if LWIP_IPV6
     netif_add(n, &ipconfig[0].u_addr.ip4, &ipconfig[1].u_addr.ip4, &ipconfig[2].u_addr.ip4, self, cyw43_netif_init, ethernet_input);
-    #else
+#else
     netif_add(n, &ipconfig[0], &ipconfig[1], &ipconfig[2], self, cyw43_netif_init, netif_input);
-    #endif
+#endif
     netif_set_hostname(n, "PYBD");
     netif_set_default(n);
     netif_set_up(n);
@@ -129,14 +129,14 @@ void cyw43_tcpip_init(cyw43_t *self, int itf) {
         dhcp_server_init(&self->dhcp_server, &ipconfig[0], &ipconfig[1]);
     }
 
-    #if LWIP_MDNS_RESPONDER
+#if LWIP_MDNS_RESPONDER
     // TODO better to call after IP address is set
     char mdns_hostname[9];
     memcpy(&mdns_hostname[0], "PYBD", 4);
     mp_hal_get_mac_ascii(MP_HAL_MAC_WLAN0, 8, 4, &mdns_hostname[4]);
     mdns_hostname[8] = '\0';
     mdns_resp_add_netif(n, mdns_hostname, 60);
-    #endif
+#endif
 }
 
 void cyw43_tcpip_deinit(cyw43_t *self, int itf) {
@@ -146,9 +146,9 @@ void cyw43_tcpip_deinit(cyw43_t *self, int itf) {
     } else {
         dhcp_server_deinit(&self->dhcp_server);
     }
-    #if LWIP_MDNS_RESPONDER
+#if LWIP_MDNS_RESPONDER
     mdns_resp_remove_netif(n);
-    #endif
+#endif
     for (struct netif *netif = netif_list; netif != NULL; netif = netif->next) {
         if (netif == n) {
             netif_remove(netif);
@@ -186,7 +186,7 @@ void cyw43_tcpip_set_link_down(cyw43_t *self, int itf) {
 int cyw43_tcpip_link_status(cyw43_t *self, int itf) {
     struct netif *netif = &self->netif[itf];
     if ((netif->flags & (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP))
-        == (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP)) {
+            == (NETIF_FLAG_UP | NETIF_FLAG_LINK_UP)) {
         if (netif->ip_addr.addr != 0) {
             return CYW43_LINK_UP;
         } else {

@@ -74,9 +74,9 @@
 #define WDT_CTL_WRC             0x80000000  // Write Complete
 #define WDT_CTL_INTTYPE         0x00000004  // Watchdog Interrupt Type
 #define WDT_CTL_RESEN           0x00000002  // Watchdog Reset Enable. This bit
-                                            // is not used in cc3xx, WDOG shall
-                                            // always generate RESET to system
-                                            // irrespective of this bit setting.
+// is not used in cc3xx, WDOG shall
+// always generate RESET to system
+// irrespective of this bit setting.
 #define WDT_CTL_INTEN           0x00000001  // Watchdog Interrupt Enable
 //******************************************************************************
 //

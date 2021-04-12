@@ -125,32 +125,32 @@ STATIC mp_obj_t get_lan(size_t n_args, const mp_obj_t *pos_args, mp_map_t *kw_ar
     }
 
     if (args[ARG_phy_type].u_int != PHY_LAN8720 &&
-        args[ARG_phy_type].u_int != PHY_TLK110 &&
-        args[ARG_phy_type].u_int != PHY_IP101) {
+            args[ARG_phy_type].u_int != PHY_TLK110 &&
+            args[ARG_phy_type].u_int != PHY_IP101) {
         mp_raise_ValueError(MP_ERROR_TEXT("invalid phy type"));
     }
 
     if (args[ARG_clock_mode].u_int != -1 &&
-        args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO0_IN &&
-        // Disabled due ESP-IDF (see modnetwork.c note)
-        // args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO0_OUT &&
-        args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO16_OUT &&
-        args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO17_OUT) {
+            args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO0_IN &&
+            // Disabled due ESP-IDF (see modnetwork.c note)
+            // args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO0_OUT &&
+            args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO16_OUT &&
+            args[ARG_clock_mode].u_int != ETH_CLOCK_GPIO17_OUT) {
         mp_raise_ValueError(MP_ERROR_TEXT("invalid clock mode"));
     }
 
     eth_config_t config;
 
     switch (args[ARG_phy_type].u_int) {
-        case PHY_TLK110:
-            config = phy_tlk110_default_ethernet_config;
-            break;
-        case PHY_LAN8720:
-            config = phy_lan8720_default_ethernet_config;
-            break;
-        case PHY_IP101:
-            config = phy_ip101_default_ethernet_config;
-            break;
+    case PHY_TLK110:
+        config = phy_tlk110_default_ethernet_config;
+        break;
+    case PHY_LAN8720:
+        config = phy_lan8720_default_ethernet_config;
+        break;
+    case PHY_IP101:
+        config = phy_ip101_default_ethernet_config;
+        break;
     }
 
     self->link_func = config.phy_check_link;

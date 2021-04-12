@@ -98,9 +98,10 @@ typedef struct _pyb_timer_channel_obj_t {
  ******************************************************************************/
 STATIC const mp_irq_methods_t pyb_timer_channel_irq_methods;
 STATIC pyb_timer_obj_t pyb_timer_obj[PYBTIMER_NUM_TIMERS] = {{.timer = TIMERA0_BASE, .peripheral = PRCM_TIMERA0},
-                                                             {.timer = TIMERA1_BASE, .peripheral = PRCM_TIMERA1},
-                                                             {.timer = TIMERA2_BASE, .peripheral = PRCM_TIMERA2},
-                                                             {.timer = TIMERA3_BASE, .peripheral = PRCM_TIMERA3}};
+    {.timer = TIMERA1_BASE, .peripheral = PRCM_TIMERA1},
+    {.timer = TIMERA2_BASE, .peripheral = PRCM_TIMERA2},
+    {.timer = TIMERA3_BASE, .peripheral = PRCM_TIMERA3}
+};
 STATIC const mp_obj_type_t pyb_timer_channel_type;
 STATIC const mp_obj_t pyb_timer_pwm_pin[8] = {&pin_GP24, MP_OBJ_NULL, &pin_GP25, MP_OBJ_NULL, MP_OBJ_NULL, &pin_GP9, &pin_GP10, &pin_GP11};
 
@@ -533,15 +534,15 @@ STATIC void pyb_timer_channel_print(const mp_print_t *print, mp_obj_t self_in, m
     if (mode == TIMER_CFG_A_PWM) {
         mp_printf(print, ", %q=Timer.", MP_QSTR_polarity);
         switch (ch->polarity) {
-            case PYBTIMER_POLARITY_POS:
-                mp_printf(print, "POSITIVE");
-                break;
-            case PYBTIMER_POLARITY_NEG:
-                mp_printf(print, "NEGATIVE");
-                break;
-            default:
-                mp_printf(print, "BOTH");
-                break;
+        case PYBTIMER_POLARITY_POS:
+            mp_printf(print, "POSITIVE");
+            break;
+        case PYBTIMER_POLARITY_NEG:
+            mp_printf(print, "NEGATIVE");
+            break;
+        default:
+            mp_printf(print, "BOTH");
+            break;
         }
         mp_printf(print, ", %q=%u.%02u", MP_QSTR_duty_cycle, ch->duty_cycle / 100, ch->duty_cycle % 100);
     }
@@ -652,7 +653,7 @@ STATIC mp_obj_t pyb_timer_channel_irq(size_t n_args, const mp_obj_t *pos_args, m
     }
     // special case for a 32-bit timer
     if (ch->channel == (TIMER_A | TIMER_B)) {
-       ch->timer->irq_trigger |= (ch->timer->irq_trigger << 8);
+        ch->timer->irq_trigger |= (ch->timer->irq_trigger << 8);
     }
 
     void (*pfnHandler)(void);

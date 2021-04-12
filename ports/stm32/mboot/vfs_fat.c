@@ -53,28 +53,28 @@ DRESULT disk_ioctl(void *pdrv, BYTE cmd, void *buf) {
     vfs_fat_context_t *ctx = pdrv;
 
     switch (cmd) {
-        case CTRL_SYNC:
-            return RES_OK;
+    case CTRL_SYNC:
+        return RES_OK;
 
-        case GET_SECTOR_COUNT:
-            *((DWORD*)buf) = ctx->bdev_byte_len / SECSIZE;
-            return RES_OK;
+    case GET_SECTOR_COUNT:
+        *((DWORD*)buf) = ctx->bdev_byte_len / SECSIZE;
+        return RES_OK;
 
-        case GET_SECTOR_SIZE:
-            *((WORD*)buf) = SECSIZE;
-            return RES_OK;
+    case GET_SECTOR_SIZE:
+        *((WORD*)buf) = SECSIZE;
+        return RES_OK;
 
-        case GET_BLOCK_SIZE:
-            *((DWORD*)buf) = 1; // erase block size in units of sector size
-            return RES_OK;
+    case GET_BLOCK_SIZE:
+        *((DWORD*)buf) = 1; // erase block size in units of sector size
+        return RES_OK;
 
-        case IOCTL_INIT:
-        case IOCTL_STATUS:
-            *((DSTATUS*)buf) = STA_PROTECT;
-            return RES_OK;
+    case IOCTL_INIT:
+    case IOCTL_STATUS:
+        *((DSTATUS*)buf) = STA_PROTECT;
+        return RES_OK;
 
-        default:
-            return RES_PARERR;
+    default:
+        return RES_PARERR;
     }
 }
 

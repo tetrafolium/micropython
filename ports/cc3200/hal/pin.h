@@ -116,8 +116,8 @@ extern "C"
 #define PIN_MODE_14	 0x0000000E
 #define PIN_MODE_15	 0x0000000F
 // Note : PIN_MODE_255 is a dummy define for pinmux utility code generation
-// PIN_MODE_255 should never be used in any user code.  
-#define PIN_MODE_255 0x000000FF  
+// PIN_MODE_255 should never be used in any user code.
+#define PIN_MODE_255 0x000000FF
 
 //*****************************************************************************
 // Macros that can be used with PinDirModeSet() and returned from
@@ -161,9 +161,9 @@ extern void PinDirModeSet(unsigned long ulPin, unsigned long ulPinIO);
 extern unsigned long PinDirModeGet(unsigned long ulPin);
 extern unsigned long PinModeGet(unsigned long ulPin);
 extern void PinConfigGet(unsigned long ulPin,unsigned long  *pulPinStrength,
-	       					unsigned long *pulPinType);
+                         unsigned long *pulPinType);
 extern void PinConfigSet(unsigned long ulPin,unsigned long  ulPinStrength,
-						unsigned long ulPinType);
+                         unsigned long ulPinType);
 extern void PinTypeUART(unsigned long ulPin,unsigned long ulPinMode);
 extern void PinTypeI2C(unsigned long ulPin,unsigned long ulPinMode);
 extern void PinTypeSPI(unsigned long ulPin,unsigned long ulPinMode);

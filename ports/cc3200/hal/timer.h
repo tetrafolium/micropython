@@ -59,10 +59,10 @@ extern "C"
 
 #define TIMER_CFG_ONE_SHOT       0x00000021  // Full-width one-shot timer
 #define TIMER_CFG_ONE_SHOT_UP    0x00000031  // Full-width one-shot up-count
-                                             // timer
+// timer
 #define TIMER_CFG_PERIODIC       0x00000022  // Full-width periodic timer
 #define TIMER_CFG_PERIODIC_UP    0x00000032  // Full-width periodic up-count
-                                             // timer
+// timer
 #define TIMER_CFG_SPLIT_PAIR     0x04000000  // Two half-width timers
 
 #define TIMER_CFG_A_ONE_SHOT     0x00000021  // Timer A one-shot timer
@@ -173,7 +173,7 @@ extern unsigned long TimerPrescaleGet(unsigned long ulBase,
 extern void TimerPrescaleMatchSet(unsigned long ulBase, unsigned long ulTimer,
                                   unsigned long ulValue);
 extern unsigned long TimerPrescaleMatchGet(unsigned long ulBase,
-                                           unsigned long ulTimer);
+        unsigned long ulTimer);
 extern void TimerLoadSet(unsigned long ulBase, unsigned long ulTimer,
                          unsigned long ulValue);
 extern unsigned long TimerLoadGet(unsigned long ulBase, unsigned long ulTimer);
@@ -181,7 +181,7 @@ extern unsigned long TimerLoadGet(unsigned long ulBase, unsigned long ulTimer);
 extern unsigned long TimerValueGet(unsigned long ulBase,
                                    unsigned long ulTimer);
 extern void TimerValueSet(unsigned long ulBase, unsigned long ulTimer,
-              unsigned long ulValue);
+                          unsigned long ulValue);
 
 extern void TimerMatchSet(unsigned long ulBase, unsigned long ulTimer,
                           unsigned long ulValue);

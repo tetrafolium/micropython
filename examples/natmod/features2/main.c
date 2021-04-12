@@ -71,9 +71,9 @@ mp_obj_t mpy_init(mp_obj_fun_bc_t *self, size_t n_args, size_t n_kw, mp_obj_t *a
     // Make the functions available in the module's namespace
     mp_store_global(MP_QSTR_add, MP_OBJ_FROM_PTR(&add_obj));
     mp_store_global(MP_QSTR_add_f, MP_OBJ_FROM_PTR(&add_f_obj));
-    #if USE_DOUBLE
+#if USE_DOUBLE
     mp_store_global(MP_QSTR_add_d, MP_OBJ_FROM_PTR(&add_d_obj));
-    #endif
+#endif
 
     // The productf function uses the most general C argument interface
     mp_store_global(MP_QSTR_productf, MP_DYNRUNTIME_MAKE_FUNCTION(productf));

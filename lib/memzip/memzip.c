@@ -50,8 +50,8 @@ bool memzip_is_dir(const char *filename) {
     while (file_hdr->signature == MEMZIP_FILE_HEADER_SIGNATURE) {
         const char *file_hdr_filename = (const char *)&file_hdr[1];
         if (filename_len < file_hdr->filename_len &&
-            strncmp(file_hdr_filename, filename, filename_len) == 0 &&
-            file_hdr_filename[filename_len] == '/') {
+                strncmp(file_hdr_filename, filename, filename_len) == 0 &&
+                file_hdr_filename[filename_len] == '/') {
             return true;
         }
 

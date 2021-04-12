@@ -30,15 +30,15 @@ int mp_soft_spi_ioctl(void *self_in, uint32_t cmd) {
     mp_soft_spi_obj_t *self = (mp_soft_spi_obj_t*)self_in;
 
     switch (cmd) {
-        case MP_SPI_IOCTL_INIT:
-            mp_hal_pin_write(self->sck, self->polarity);
-            mp_hal_pin_output(self->sck);
-            mp_hal_pin_output(self->mosi);
-            mp_hal_pin_input(self->miso);
-            break;
+    case MP_SPI_IOCTL_INIT:
+        mp_hal_pin_write(self->sck, self->polarity);
+        mp_hal_pin_output(self->sck);
+        mp_hal_pin_output(self->mosi);
+        mp_hal_pin_input(self->miso);
+        break;
 
-        case MP_SPI_IOCTL_DEINIT:
-            break;
+    case MP_SPI_IOCTL_DEINIT:
+        break;
     }
 
     return 0;
@@ -53,7 +53,7 @@ void mp_soft_spi_transfer(void *self_in, size_t len, const uint8_t *src, uint8_t
     // If a port defines MICROPY_HW_SOFTSPI_MIN_DELAY, and the configured
     // delay_half is equal to this value, then the software SPI implementation
     // will run as fast as possible, limited only by CPU speed and GPIO time.
-    #ifdef MICROPY_HW_SOFTSPI_MIN_DELAY
+#ifdef MICROPY_HW_SOFTSPI_MIN_DELAY
     if (delay_half == MICROPY_HW_SOFTSPI_MIN_DELAY) {
         for (size_t i = 0; i < len; ++i) {
             uint8_t data_out = src[i];
@@ -70,7 +70,7 @@ void mp_soft_spi_transfer(void *self_in, size_t len, const uint8_t *src, uint8_t
         }
         return;
     }
-    #endif
+#endif
 
     for (size_t i = 0; i < len; ++i) {
         uint8_t data_out = src[i];

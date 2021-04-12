@@ -149,90 +149,90 @@ typedef  struct  usb_setup_req
     uint16_t  wValue;
     uint16_t  wIndex;
     uint16_t  wLength;
-}USBD_SetupReqTypedef;
+} USBD_SetupReqTypedef;
 
 struct _USBD_HandleTypeDef;
 
 typedef struct _Device_cb
 {
-  uint8_t  (*Init)             (struct _USBD_HandleTypeDef *pdev , uint8_t cfgidx);
-  uint8_t  (*DeInit)           (struct _USBD_HandleTypeDef *pdev , uint8_t cfgidx);
- /* Control Endpoints*/
-  uint8_t  (*Setup)            (struct _USBD_HandleTypeDef *pdev , USBD_SetupReqTypedef  *req);
-  uint8_t  (*EP0_TxSent)       (struct _USBD_HandleTypeDef *pdev );
-  uint8_t  (*EP0_RxReady)      (struct _USBD_HandleTypeDef *pdev );
-  /* Class Specific Endpoints*/
-  uint8_t  (*DataIn)           (struct _USBD_HandleTypeDef *pdev , uint8_t epnum);
-  uint8_t  (*DataOut)          (struct _USBD_HandleTypeDef *pdev , uint8_t epnum);
-  uint8_t  (*SOF)              (struct _USBD_HandleTypeDef *pdev);
-  uint8_t  (*IsoINIncomplete)  (struct _USBD_HandleTypeDef *pdev , uint8_t epnum);
-  uint8_t  (*IsoOUTIncomplete) (struct _USBD_HandleTypeDef *pdev , uint8_t epnum);
+    uint8_t  (*Init)             (struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+    uint8_t  (*DeInit)           (struct _USBD_HandleTypeDef *pdev, uint8_t cfgidx);
+    /* Control Endpoints*/
+    uint8_t  (*Setup)            (struct _USBD_HandleTypeDef *pdev, USBD_SetupReqTypedef  *req);
+    uint8_t  (*EP0_TxSent)       (struct _USBD_HandleTypeDef *pdev );
+    uint8_t  (*EP0_RxReady)      (struct _USBD_HandleTypeDef *pdev );
+    /* Class Specific Endpoints*/
+    uint8_t  (*DataIn)           (struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+    uint8_t  (*DataOut)          (struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+    uint8_t  (*SOF)              (struct _USBD_HandleTypeDef *pdev);
+    uint8_t  (*IsoINIncomplete)  (struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
+    uint8_t  (*IsoOUTIncomplete) (struct _USBD_HandleTypeDef *pdev, uint8_t epnum);
 
-  uint8_t  *(*GetHSConfigDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
-  uint8_t  *(*GetFSConfigDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
-  uint8_t  *(*GetOtherSpeedConfigDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
-  uint8_t  *(*GetDeviceQualifierDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
+    uint8_t  *(*GetHSConfigDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
+    uint8_t  *(*GetFSConfigDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
+    uint8_t  *(*GetOtherSpeedConfigDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
+    uint8_t  *(*GetDeviceQualifierDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
 
 } USBD_ClassTypeDef;
 
 /* Following USB Device Speed */
 typedef enum
 {
-  USBD_SPEED_HIGH  = 0,
-  USBD_SPEED_FULL  = 1,
-  USBD_SPEED_LOW   = 2,
-}USBD_SpeedTypeDef;
+    USBD_SPEED_HIGH  = 0,
+    USBD_SPEED_FULL  = 1,
+    USBD_SPEED_LOW   = 2,
+} USBD_SpeedTypeDef;
 
 /* Following USB Device status */
 typedef enum {
-  USBD_OK   = 0,
-  USBD_BUSY,
-  USBD_FAIL,
-}USBD_StatusTypeDef;
+    USBD_OK   = 0,
+    USBD_BUSY,
+    USBD_FAIL,
+} USBD_StatusTypeDef;
 
 struct _USBD_HandleTypeDef;
 
 /* USB Device descriptors structure */
 typedef struct
 {
-  uint8_t *(*GetDeviceDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
-  uint8_t *(*GetStrDescriptor)(struct _USBD_HandleTypeDef *pdev, uint8_t idx, uint16_t *length);
+    uint8_t *(*GetDeviceDescriptor)(struct _USBD_HandleTypeDef *pdev, uint16_t *length);
+    uint8_t *(*GetStrDescriptor)(struct _USBD_HandleTypeDef *pdev, uint8_t idx, uint16_t *length);
 } USBD_DescriptorsTypeDef;
 
 /* USB Device handle structure */
 typedef struct
 {
-  uint32_t                status;
-  uint32_t                total_length;
-  uint32_t                rem_length;
-  uint32_t                maxpacket;
+    uint32_t                status;
+    uint32_t                total_length;
+    uint32_t                rem_length;
+    uint32_t                maxpacket;
 } USBD_EndpointTypeDef;
 
 /* USB Device handle structure */
 typedef struct _USBD_HandleTypeDef
 {
-  uint8_t                 id;
-  uint32_t                dev_config;
-  uint32_t                dev_default_config;
-  uint32_t                dev_config_status;
-  USBD_SpeedTypeDef       dev_speed;
-  USBD_EndpointTypeDef    ep_in[15];
-  USBD_EndpointTypeDef    ep_out[15];
-  uint32_t                ep0_state;
-  uint32_t                ep0_data_len;
-  uint8_t                 dev_state;
-  uint8_t                 dev_old_state;
-  uint8_t                 dev_address;
-  uint8_t                 dev_connection_status;
-  uint8_t                 dev_test_mode;
-  uint32_t                dev_remote_wakeup;
+    uint8_t                 id;
+    uint32_t                dev_config;
+    uint32_t                dev_default_config;
+    uint32_t                dev_config_status;
+    USBD_SpeedTypeDef       dev_speed;
+    USBD_EndpointTypeDef    ep_in[15];
+    USBD_EndpointTypeDef    ep_out[15];
+    uint32_t                ep0_state;
+    uint32_t                ep0_data_len;
+    uint8_t                 dev_state;
+    uint8_t                 dev_old_state;
+    uint8_t                 dev_address;
+    uint8_t                 dev_connection_status;
+    uint8_t                 dev_test_mode;
+    uint32_t                dev_remote_wakeup;
 
-  USBD_SetupReqTypedef    request;
-  USBD_DescriptorsTypeDef *pDesc;
-  const USBD_ClassTypeDef *pClass;
-  void                    *pClassData;
-  void                    *pUserData;
-  void                    *pData;
+    USBD_SetupReqTypedef    request;
+    USBD_DescriptorsTypeDef *pDesc;
+    const USBD_ClassTypeDef *pClass;
+    void                    *pClassData;
+    void                    *pUserData;
+    void                    *pData;
 } USBD_HandleTypeDef;
 
 /**
@@ -254,12 +254,12 @@ typedef struct _USBD_HandleTypeDef
 
 
 #if  defined ( __GNUC__ )
-  #ifndef __weak
-    #define __weak   __attribute__((weak))
-  #endif /* __weak */
-  #ifndef __packed
-    #define __packed __attribute__((__packed__))
-  #endif /* __packed */
+#ifndef __weak
+#define __weak   __attribute__((weak))
+#endif /* __weak */
+#ifndef __packed
+#define __packed __attribute__((__packed__))
+#endif /* __packed */
 #endif /* __GNUC__ */
 
 
@@ -267,17 +267,17 @@ typedef struct _USBD_HandleTypeDef
    with the DMA during the transaction process should be 4-bytes aligned */
 
 #if defined   (__GNUC__)        /* GNU Compiler */
-  #define __ALIGN_END    __attribute__ ((aligned (4)))
-  #define __ALIGN_BEGIN
+#define __ALIGN_END    __attribute__ ((aligned (4)))
+#define __ALIGN_BEGIN
 #else
-  #define __ALIGN_END
-  #if defined   (__CC_ARM)      /* ARM Compiler */
-    #define __ALIGN_BEGIN    __align(4)
-  #elif defined (__ICCARM__)    /* IAR Compiler */
-    #define __ALIGN_BEGIN
-  #elif defined  (__TASKING__)  /* TASKING Compiler */
-    #define __ALIGN_BEGIN    __align(4)
-  #endif /* __CC_ARM */
+#define __ALIGN_END
+#if defined   (__CC_ARM)      /* ARM Compiler */
+#define __ALIGN_BEGIN    __align(4)
+#elif defined (__ICCARM__)    /* IAR Compiler */
+#define __ALIGN_BEGIN
+#elif defined  (__TASKING__)  /* TASKING Compiler */
+#define __ALIGN_BEGIN    __align(4)
+#endif /* __CC_ARM */
 #endif /* __GNUC__ */
 
 

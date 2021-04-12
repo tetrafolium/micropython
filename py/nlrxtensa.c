@@ -50,7 +50,7 @@ unsigned int nlr_push(nlr_buf_t *nlr) {
         "s32i.n  a14, a2, 40        \n"
         "s32i.n  a15, a2, 44        \n"
         "j      nlr_push_tail       \n" // do the rest in C
-        );
+    );
 
     return 0; // needed to silence compiler warning
 }
@@ -75,7 +75,7 @@ NORETURN void nlr_jump(void *val) {
         :                           // output operands
         : "r" (top)                 // input operands
         :                           // clobbered registers
-        );
+    );
 
     MP_UNREACHABLE
 }

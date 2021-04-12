@@ -22,30 +22,30 @@
 //!
 //! Copyright (c)  2013, WIZnet Co., LTD.
 //! All rights reserved.
-//! 
-//! Redistribution and use in source and binary forms, with or without 
-//! modification, are permitted provided that the following conditions 
-//! are met: 
-//! 
-//!     * Redistributions of source code must retain the above copyright 
-//! notice, this list of conditions and the following disclaimer. 
+//!
+//! Redistribution and use in source and binary forms, with or without
+//! modification, are permitted provided that the following conditions
+//! are met:
+//!
+//!     * Redistributions of source code must retain the above copyright
+//! notice, this list of conditions and the following disclaimer.
 //!     * Redistributions in binary form must reproduce the above copyright
 //! notice, this list of conditions and the following disclaimer in the
-//! documentation and/or other materials provided with the distribution. 
-//!     * Neither the name of the <ORGANIZATION> nor the names of its 
-//! contributors may be used to endorse or promote products derived 
-//! from this software without specific prior written permission. 
-//! 
+//! documentation and/or other materials provided with the distribution.
+//!     * Neither the name of the <ORGANIZATION> nor the names of its
+//! contributors may be used to endorse or promote products derived
+//! from this software without specific prior written permission.
+//!
 //! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-//! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+//! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 //! IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-//! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
-//! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
-//! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+//! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+//! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+//! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
 //! SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-//! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-//! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-//! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+//! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+//! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+//! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 //! THE POSSIBILITY OF SUCH DAMAGE.
 //
 //*****************************************************************************
@@ -77,9 +77,9 @@ uint8_t WIZCHIP_READ(uint32_t AddrSel) {
 
     uint8_t spi_data[4] = {
         AddrSel >> 8,
-        AddrSel,
-        0x00,
-        0x01,
+                AddrSel,
+                0x00,
+                0x01,
     };
     WIZCHIP.IF.SPI._write_bytes(spi_data, 4);
     uint8_t ret;
@@ -97,10 +97,10 @@ void WIZCHIP_WRITE(uint32_t AddrSel, uint8_t wb) {
 
     uint8_t spi_data[5] = {
         AddrSel >> 8,
-        AddrSel,
-        0x80,
-        0x01,
-        wb,
+                AddrSel,
+                0x80,
+                0x01,
+                wb,
     };
     WIZCHIP.IF.SPI._write_bytes(spi_data, 5);
 
@@ -114,9 +114,9 @@ void WIZCHIP_READ_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len) {
 
     uint8_t spi_data[4] = {
         AddrSel >> 8,
-        AddrSel,
-        0x00 | ((len >> 8) & 0x7f),
-        len & 0xff,
+                AddrSel,
+                0x00 | ((len >> 8) & 0x7f),
+                len & 0xff,
     };
     WIZCHIP.IF.SPI._write_bytes(spi_data, 4);
     WIZCHIP.IF.SPI._read_bytes(pBuf, len);
@@ -131,9 +131,9 @@ void WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len) {
 
     uint8_t spi_data[4] = {
         AddrSel >> 8,
-        AddrSel,
-        0x80 | ((len >> 8) & 0x7f),
-        len & 0xff,
+                AddrSel,
+                0x80 | ((len >> 8) & 0x7f),
+                len & 0xff,
     };
     WIZCHIP.IF.SPI._write_bytes(spi_data, 4);
     WIZCHIP.IF.SPI._write_bytes(pBuf, len);

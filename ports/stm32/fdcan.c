@@ -89,24 +89,24 @@ bool can_init(pyb_can_obj_t *can_obj, uint32_t mode, uint32_t prescaler, uint32_
     const pin_obj_t *pins[2];
 
     switch (can_obj->can_id) {
-        #if defined(MICROPY_HW_CAN1_TX)
-        case PYB_CAN_1:
-            CANx = FDCAN1;
-            pins[0] = MICROPY_HW_CAN1_TX;
-            pins[1] = MICROPY_HW_CAN1_RX;
-            break;
-        #endif
+#if defined(MICROPY_HW_CAN1_TX)
+    case PYB_CAN_1:
+        CANx = FDCAN1;
+        pins[0] = MICROPY_HW_CAN1_TX;
+        pins[1] = MICROPY_HW_CAN1_RX;
+        break;
+#endif
 
-        #if defined(MICROPY_HW_CAN2_TX)
-        case PYB_CAN_2:
-            CANx = FDCAN2;
-            pins[0] = MICROPY_HW_CAN2_TX;
-            pins[1] = MICROPY_HW_CAN2_RX;
-            break;
-        #endif
+#if defined(MICROPY_HW_CAN2_TX)
+    case PYB_CAN_2:
+        CANx = FDCAN2;
+        pins[0] = MICROPY_HW_CAN2_TX;
+        pins[1] = MICROPY_HW_CAN2_RX;
+        break;
+#endif
 
-        default:
-            return false;
+    default:
+        return false;
     }
 
     // Enable FDCAN clock
@@ -142,20 +142,20 @@ bool can_init(pyb_can_obj_t *can_obj, uint32_t mode, uint32_t prescaler, uint32_
     can_obj->num_bus_off = 0;
 
     switch (can_obj->can_id) {
-        case PYB_CAN_1:
-            NVIC_SetPriority(FDCAN1_IT0_IRQn, IRQ_PRI_CAN);
-            HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
-            NVIC_SetPriority(FDCAN1_IT1_IRQn, IRQ_PRI_CAN);
-            HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
-            break;
-        case PYB_CAN_2:
-            NVIC_SetPriority(FDCAN2_IT0_IRQn, IRQ_PRI_CAN);
-            HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
-            NVIC_SetPriority(FDCAN2_IT1_IRQn, IRQ_PRI_CAN);
-            HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
-            break;
-        default:
-            return false;
+    case PYB_CAN_1:
+        NVIC_SetPriority(FDCAN1_IT0_IRQn, IRQ_PRI_CAN);
+        HAL_NVIC_EnableIRQ(FDCAN1_IT0_IRQn);
+        NVIC_SetPriority(FDCAN1_IT1_IRQn, IRQ_PRI_CAN);
+        HAL_NVIC_EnableIRQ(FDCAN1_IT1_IRQn);
+        break;
+    case PYB_CAN_2:
+        NVIC_SetPriority(FDCAN2_IT0_IRQn, IRQ_PRI_CAN);
+        HAL_NVIC_EnableIRQ(FDCAN2_IT0_IRQn);
+        NVIC_SetPriority(FDCAN2_IT1_IRQn, IRQ_PRI_CAN);
+        HAL_NVIC_EnableIRQ(FDCAN2_IT1_IRQn);
+        break;
+    default:
+        return false;
     }
 
     __HAL_FDCAN_ENABLE_IT(&can_obj->can, FDCAN_IT_BUS_OFF | FDCAN_IT_ERROR_WARNING | FDCAN_IT_ERROR_PASSIVE);
@@ -176,7 +176,7 @@ void can_deinit(pyb_can_obj_t *self) {
         __HAL_RCC_FDCAN_FORCE_RESET();
         __HAL_RCC_FDCAN_RELEASE_RESET();
         __HAL_RCC_FDCAN_CLK_DISABLE();
-    #if defined(MICROPY_HW_CAN2_TX)
+#if defined(MICROPY_HW_CAN2_TX)
     } else if (self->can.Instance == FDCAN2) {
         HAL_NVIC_DisableIRQ(FDCAN2_IT0_IRQn);
         HAL_NVIC_DisableIRQ(FDCAN2_IT1_IRQn);
@@ -184,7 +184,7 @@ void can_deinit(pyb_can_obj_t *self) {
         __HAL_RCC_FDCAN_FORCE_RESET();
         __HAL_RCC_FDCAN_RELEASE_RESET();
         __HAL_RCC_FDCAN_CLK_DISABLE();
-    #endif
+#endif
     }
 }
 
@@ -278,29 +278,29 @@ STATIC void can_rx_irq_handler(uint can_id, uint fifo_id) {
     }
 
     switch (*state) {
-        case RX_STATE_FIFO_EMPTY:
-            __HAL_FDCAN_DISABLE_IT(&self->can,  (fifo_id == FDCAN_RX_FIFO0) ?
-                FDCAN_IT_RX_FIFO0_NEW_MESSAGE : FDCAN_IT_RX_FIFO1_NEW_MESSAGE);
-            irq_reason = MP_OBJ_NEW_SMALL_INT(0);
-            *state = RX_STATE_MESSAGE_PENDING;
-            break;
-        case RX_STATE_MESSAGE_PENDING:
-            __HAL_FDCAN_DISABLE_IT(&self->can, (fifo_id == FDCAN_RX_FIFO0) ? FDCAN_IT_RX_FIFO0_FULL : FDCAN_IT_RX_FIFO1_FULL);
-            __HAL_FDCAN_CLEAR_FLAG(&self->can, (fifo_id == FDCAN_RX_FIFO0) ? FDCAN_FLAG_RX_FIFO0_FULL : FDCAN_FLAG_RX_FIFO1_FULL);
-            irq_reason = MP_OBJ_NEW_SMALL_INT(1);
-            *state = RX_STATE_FIFO_FULL;
-            break;
-        case RX_STATE_FIFO_FULL:
-            __HAL_FDCAN_DISABLE_IT(&self->can, (fifo_id == FDCAN_RX_FIFO0) ?
-                FDCAN_IT_RX_FIFO0_MESSAGE_LOST : FDCAN_IT_RX_FIFO1_MESSAGE_LOST);
-            __HAL_FDCAN_CLEAR_FLAG(&self->can, (fifo_id == FDCAN_RX_FIFO0) ?
-                FDCAN_FLAG_RX_FIFO0_MESSAGE_LOST : FDCAN_FLAG_RX_FIFO1_MESSAGE_LOST);
-            irq_reason = MP_OBJ_NEW_SMALL_INT(2);
-            *state = RX_STATE_FIFO_OVERFLOW;
-            break;
-        case RX_STATE_FIFO_OVERFLOW:
-            // This should never happen
-            break;
+    case RX_STATE_FIFO_EMPTY:
+        __HAL_FDCAN_DISABLE_IT(&self->can,  (fifo_id == FDCAN_RX_FIFO0) ?
+                               FDCAN_IT_RX_FIFO0_NEW_MESSAGE : FDCAN_IT_RX_FIFO1_NEW_MESSAGE);
+        irq_reason = MP_OBJ_NEW_SMALL_INT(0);
+        *state = RX_STATE_MESSAGE_PENDING;
+        break;
+    case RX_STATE_MESSAGE_PENDING:
+        __HAL_FDCAN_DISABLE_IT(&self->can, (fifo_id == FDCAN_RX_FIFO0) ? FDCAN_IT_RX_FIFO0_FULL : FDCAN_IT_RX_FIFO1_FULL);
+        __HAL_FDCAN_CLEAR_FLAG(&self->can, (fifo_id == FDCAN_RX_FIFO0) ? FDCAN_FLAG_RX_FIFO0_FULL : FDCAN_FLAG_RX_FIFO1_FULL);
+        irq_reason = MP_OBJ_NEW_SMALL_INT(1);
+        *state = RX_STATE_FIFO_FULL;
+        break;
+    case RX_STATE_FIFO_FULL:
+        __HAL_FDCAN_DISABLE_IT(&self->can, (fifo_id == FDCAN_RX_FIFO0) ?
+                               FDCAN_IT_RX_FIFO0_MESSAGE_LOST : FDCAN_IT_RX_FIFO1_MESSAGE_LOST);
+        __HAL_FDCAN_CLEAR_FLAG(&self->can, (fifo_id == FDCAN_RX_FIFO0) ?
+                               FDCAN_FLAG_RX_FIFO0_MESSAGE_LOST : FDCAN_FLAG_RX_FIFO1_MESSAGE_LOST);
+        irq_reason = MP_OBJ_NEW_SMALL_INT(2);
+        *state = RX_STATE_FIFO_OVERFLOW;
+        break;
+    case RX_STATE_FIFO_OVERFLOW:
+        // This should never happen
+        break;
     }
 
     pyb_can_handle_callback(self, fifo_id, callback, irq_reason);

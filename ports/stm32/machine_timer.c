@@ -55,11 +55,11 @@ STATIC mp_obj_t machine_timer_init_helper(machine_timer_obj_t *self, size_t n_ar
     self->mode = args[ARG_mode].u_int;
     if (args[ARG_freq].u_obj != mp_const_none) {
         // Frequency specified in Hz
-        #if MICROPY_PY_BUILTINS_FLOAT
+#if MICROPY_PY_BUILTINS_FLOAT
         self->delta_ms = (uint32_t)(MICROPY_FLOAT_CONST(1000.0) / mp_obj_get_float(args[ARG_freq].u_obj));
-        #else
+#else
         self->delta_ms = 1000 / mp_obj_get_int(args[ARG_freq].u_obj);
-        #endif
+#endif
     } else {
         // Period specified
         self->delta_ms = args[ARG_period].u_int * 1000 / args[ARG_tick_hz].u_int;
