@@ -17,6 +17,8 @@ except StopIteration as e:
     print(e.args[0])
 
 # using yield from
+
+
 @micropython.native
 def gen2(x):
     yield from range(x)

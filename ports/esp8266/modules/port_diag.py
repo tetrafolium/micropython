@@ -10,7 +10,8 @@ def main():
     fid = esp.flash_id()
 
     print("FlashROM:")
-    print("Flash ID: %x (Vendor: %x Device: %x)" % (fid, fid & 0xFF, fid & 0xFF00 | fid >> 16))
+    print("Flash ID: %x (Vendor: %x Device: %x)" %
+          (fid, fid & 0xFF, fid & 0xFF00 | fid >> 16))
 
     print("Flash bootloader data:")
     SZ_MAP = {0: "512KB", 1: "256KB", 2: "1MB", 3: "2MB", 4: "4MB"}
@@ -28,7 +29,8 @@ def main():
     print("AP ifconfig:", network.WLAN(network.AP_IF).ifconfig())
     print("Free WiFi driver buffers of type:")
     for i, comm in enumerate(
-        ("1,2 TX", "4 Mngmt TX(len: 0x41-0x100)", "5 Mngmt TX (len: 0-0x40)", "7", "8 RX")
+        ("1,2 TX", "4 Mngmt TX(len: 0x41-0x100)",
+         "5 Mngmt TX (len: 0-0x40)", "7", "8 RX")
     ):
         print("%d: %d (%s)" % (i, esp.esf_free_bufs(i), comm))
     print("lwIP PCBs:")

@@ -6,4 +6,5 @@ class A:
         super.pop()
         print(super)
 
+
 A().foo()

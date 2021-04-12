@@ -12,11 +12,14 @@ class MyGen:
             raise StopIteration
         return self.v
 
+
 def gen():
     yield from MyGen()
 
+
 def gen2():
     yield from gen()
+
 
 print(list(gen()))
 print(list(gen2()))
@@ -35,8 +38,10 @@ class Incrementer:
             return "Incrementer initialized"
         return val + 1
 
+
 def gen3():
     yield from Incrementer()
+
 
 g = gen3()
 print(next(g))
@@ -50,13 +55,16 @@ print(g.send(100))
 class MyIter:
     def __iter__(self):
         return self
+
     def __next__(self):
         raise StopIteration(42)
+
 
 def gen4():
     global ret
     ret = yield from MyIter()
     1//0
+
 
 ret = None
 try:

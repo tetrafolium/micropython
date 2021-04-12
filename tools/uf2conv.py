@@ -76,7 +76,7 @@ def convert_from_uf2(buf):
     outp = b""
     for blockno in range(numblocks):
         ptr = blockno * 512
-        block = buf[ptr : ptr + 512]
+        block = buf[ptr: ptr + 512]
         hd = struct.unpack(b"<IIIIIIII", block[0:32])
         if hd[0] != UF2_MAGIC_START0 or hd[1] != UF2_MAGIC_START1:
             print("Skipping block at " + ptr + "; bad magic")
@@ -101,7 +101,7 @@ def convert_from_uf2(buf):
         while padding > 0:
             padding -= 4
             outp += b"\x00\x00\x00\x00"
-        outp += block[32 : 32 + datalen]
+        outp += block[32: 32 + datalen]
         curraddr = newaddr + datalen
     return outp
 
@@ -125,7 +125,7 @@ def convert_to_uf2(file_content):
     outp = b""
     for blockno in range(numblocks):
         ptr = 256 * blockno
-        chunk = file_content[ptr : ptr + 256]
+        chunk = file_content[ptr: ptr + 256]
         flags = 0x0
         if familyid:
             flags |= 0x2000
@@ -188,7 +188,7 @@ def convert_from_hex_to_uf2(buf):
         i = 1
         rec = []
         while i < len(line) - 1:
-            rec.append(int(line[i : i + 2], 16))
+            rec.append(int(line[i: i + 2], 16))
             i += 2
         tp = rec[3]
         if tp == 4:
@@ -280,7 +280,8 @@ def main():
         print(msg)
         sys.exit(1)
 
-    parser = argparse.ArgumentParser(description="Convert to UF2 or flash directly.")
+    parser = argparse.ArgumentParser(
+        description="Convert to UF2 or flash directly.")
     parser.add_argument(
         "input", metavar="INPUT", type=str, nargs="?", help="input file (HEX, BIN or UF2)"
     )
@@ -300,9 +301,12 @@ def main():
         type=str,
         help='write output to named file; defaults to "flash.uf2" or "flash.bin" where sensible',
     )
-    parser.add_argument("-d", "--device", dest="device_path", help="select a device path to flash")
-    parser.add_argument("-l", "--list", action="store_true", help="list connected devices")
-    parser.add_argument("-c", "--convert", action="store_true", help="do not flash, just convert")
+    parser.add_argument("-d", "--device", dest="device_path",
+                        help="select a device path to flash")
+    parser.add_argument("-l", "--list", action="store_true",
+                        help="list connected devices")
+    parser.add_argument("-c", "--convert", action="store_true",
+                        help="do not flash, just convert")
     parser.add_argument(
         "-f",
         "--family",
@@ -323,7 +327,8 @@ def main():
         try:
             familyid = int(args.family, 0)
         except ValueError:
-            error("Family ID needs to be a number or one of: " + ", ".join(families.keys()))
+            error("Family ID needs to be a number or one of: " +
+                  ", ".join(families.keys()))
 
     if args.list:
         list_drives()

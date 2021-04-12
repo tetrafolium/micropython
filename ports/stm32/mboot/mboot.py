@@ -1,7 +1,10 @@
 # Driver for Mboot, the MicroPython boot loader
 # MIT license; Copyright (c) 2018 Damien P. George
 
-import struct, time, os, hashlib
+import struct
+import time
+import os
+import hashlib
 
 
 I2C_CMD_ECHO = 1
@@ -89,15 +92,18 @@ class Bootloader:
         return pages
 
     def pageerase(self, addr):
-        self.i2c.writeto(self.addr, struct.pack("<BI", I2C_CMD_PAGEERASE, addr))
+        self.i2c.writeto(self.addr, struct.pack(
+            "<BI", I2C_CMD_PAGEERASE, addr))
         self.wait_empty_response()
 
     def setrdaddr(self, addr):
-        self.i2c.writeto(self.addr, struct.pack("<BI", I2C_CMD_SETRDADDR, addr))
+        self.i2c.writeto(self.addr, struct.pack(
+            "<BI", I2C_CMD_SETRDADDR, addr))
         self.wait_empty_response()
 
     def setwraddr(self, addr):
-        self.i2c.writeto(self.addr, struct.pack("<BI", I2C_CMD_SETWRADDR, addr))
+        self.i2c.writeto(self.addr, struct.pack(
+            "<BI", I2C_CMD_SETWRADDR, addr))
         self.wait_empty_response()
 
     def read(self, n):
@@ -162,7 +168,8 @@ class Bootloader:
                 addr += n
                 ntotal = addr - start_addr
                 if ntotal % 2048 == 0 or ntotal == fsize:
-                    print("\r% 3u%% % 7u bytes   " % (100 * ntotal // fsize, ntotal), end="")
+                    print("\r% 3u%% % 7u bytes   " %
+                          (100 * ntotal // fsize, ntotal), end="")
             t1 = time.ticks_ms()
         print()
         print("rate: %.2f KiB/sec" % (1024 * ntotal / (t1 - t0) / 1000))

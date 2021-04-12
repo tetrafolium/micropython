@@ -6,10 +6,11 @@ except ImportError:
     import sys
 if sys.implementation.name == 'micropython':
     # uPy allows normal generators to be awaitables
-    coroutine = lambda f: f
+    def coroutine(f): return f
 else:
     import types
     coroutine = types.coroutine
+
 
 @coroutine
 def f(x):
@@ -17,6 +18,7 @@ def f(x):
     yield x + 1
     yield x + 2
     return x + 3
+
 
 class ARange:
     def __init__(self, high):
@@ -37,6 +39,7 @@ class ARange:
             return val
         else:
             raise StopAsyncIteration
+
 
 async def coro():
     async for x in ARange(4):

@@ -2,7 +2,8 @@
 # MIT license; Copyright (c) 2019 Damien P. George
 
 from time import ticks_ms as ticks, ticks_diff, ticks_add
-import sys, select
+import sys
+import select
 
 # Import TaskQueue and Task, preferring built-in C code over Python code
 try:
@@ -24,7 +25,8 @@ class TimeoutError(Exception):
 
 
 # Used when calling Loop.call_exception_handler
-_exc_context = {"message": "Task exception wasn't retrieved", "exception": None, "future": None}
+_exc_context = {"message": "Task exception wasn't retrieved",
+                "exception": None, "future": None}
 
 
 ################################################################################
@@ -69,14 +71,16 @@ def sleep(t):
 class IOQueue:
     def __init__(self):
         self.poller = select.poll()
-        self.map = {}  # maps id(stream) to [task_waiting_read, task_waiting_write, stream]
+        # maps id(stream) to [task_waiting_read, task_waiting_write, stream]
+        self.map = {}
 
     def _enqueue(self, s, idx):
         if id(s) not in self.map:
             entry = [None, None, s]
             entry[idx] = cur_task
             self.map[id(s)] = entry
-            self.poller.register(s, select.POLLIN if idx == 0 else select.POLLOUT)
+            self.poller.register(s, select.POLLIN if idx ==
+                                 0 else select.POLLOUT)
         else:
             sm = self.map[id(s)]
             assert sm[idx] is None
@@ -149,8 +153,10 @@ def create_task(coro):
 # Keep scheduling tasks until there are none left to schedule
 def run_until_complete(main_task=None):
     global cur_task
-    excs_all = (CancelledError, Exception)  # To prevent heap allocation in loop
-    excs_stop = (CancelledError, StopIteration)  # To prevent heap allocation in loop
+    # To prevent heap allocation in loop
+    excs_all = (CancelledError, Exception)
+    # To prevent heap allocation in loop
+    excs_stop = (CancelledError, StopIteration)
     while True:
         # Wait until the head of _task_queue is ready to run
         dt = 1

@@ -19,7 +19,8 @@ class GVector(object):
 
     def dist(self, other):
         return math.sqrt(
-            (self.x - other.x) ** 2 + (self.y - other.y) ** 2 + (self.z - other.z) ** 2
+            (self.x - other.x) ** 2 + (self.y -
+                                       other.y) ** 2 + (self.z - other.z) ** 2
         )
 
     def __add__(self, other):
@@ -41,7 +42,8 @@ class GVector(object):
         if l2 is None:
             l2 = 1 - l1
         v = GVector(
-            self.x * l1 + other.x * l2, self.y * l1 + other.y * l2, self.z * l1 + other.z * l2
+            self.x * l1 + other.x * l2, self.y * l1 +
+            other.y * l2, self.z * l1 + other.z * l2
         )
         return v
 
@@ -87,7 +89,8 @@ class Spline(object):
         if u == dom[1]:
             return self.points[-1]
         I = self.GetIndex(u)
-        d = [self.points[I - self.degree + 1 + ii] for ii in range(self.degree + 1)]
+        d = [self.points[I - self.degree + 1 + ii]
+             for ii in range(self.degree + 1)]
         U = self.knots
         for ik in range(1, self.degree + 1):
             for ii in range(I - self.degree + ik + 1, I + 2):
@@ -199,7 +202,8 @@ class Chaosgame(object):
         random.seed(rng_seed)
 
         im = bytearray(w * h)
-        point = GVector((self.maxx + self.minx) / 2, (self.maxy + self.miny) / 2, 0)
+        point = GVector((self.maxx + self.minx) / 2,
+                        (self.maxy + self.miny) / 2, 0)
         for _ in range(iterations):
             point = self.transform_point(point)
             x = (point.x - self.minx) / self.width * w

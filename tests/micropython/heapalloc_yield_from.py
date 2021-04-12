@@ -3,6 +3,8 @@
 import micropython
 
 # Yielding from a function generator
+
+
 def sub_gen(a):
     for i in range(a):
         yield i
@@ -19,6 +21,8 @@ print(next(g))
 micropython.heap_unlock()
 
 # Yielding from a user iterator
+
+
 class G:
     def __init__(self):
         self.value = 0

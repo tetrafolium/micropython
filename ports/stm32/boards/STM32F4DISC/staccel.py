@@ -43,16 +43,20 @@ class STAccel:
     def __init__(self):
         self.cs_pin = Pin("PE3", Pin.OUT_PP, Pin.PULL_NONE)
         self.cs_pin.high()
-        self.spi = SPI(1, SPI.MASTER, baudrate=328125, polarity=0, phase=1, bits=8)
+        self.spi = SPI(1, SPI.MASTER, baudrate=328125,
+                       polarity=0, phase=1, bits=8)
 
         self.who_am_i = self.read_id()
 
         if self.who_am_i == LIS302DL_WHO_AM_I_VAL:
-            self.write_bytes(LIS302DL_CTRL_REG1_ADDR, bytearray([LIS302DL_CONF]))
+            self.write_bytes(LIS302DL_CTRL_REG1_ADDR,
+                             bytearray([LIS302DL_CONF]))
             self.sensitivity = 18
         elif self.who_am_i == LIS3DSH_WHO_AM_I_VAL:
-            self.write_bytes(LIS3DSH_CTRL_REG4_ADDR, bytearray([LIS3DSH_CTRL_REG4_CONF]))
-            self.write_bytes(LIS3DSH_CTRL_REG5_ADDR, bytearray([LIS3DSH_CTRL_REG5_CONF]))
+            self.write_bytes(LIS3DSH_CTRL_REG4_ADDR,
+                             bytearray([LIS3DSH_CTRL_REG4_CONF]))
+            self.write_bytes(LIS3DSH_CTRL_REG5_ADDR,
+                             bytearray([LIS3DSH_CTRL_REG5_CONF]))
             self.sensitivity = 0.06 * 256
         else:
             raise Exception("LIS302DL or LIS3DSH accelerometer not present")

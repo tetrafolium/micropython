@@ -9,9 +9,13 @@ def f():
         print('finally')
         return 0
     print('got here')
+
+
 print(f())
 
 # nested, return in outer
+
+
 def f():
     try:
         try:
@@ -23,9 +27,13 @@ def f():
         print('finally 2')
         return 2
     print('got here')
+
+
 print(f())
 
 # nested, return in inner
+
+
 def f():
     try:
         try:
@@ -37,9 +45,13 @@ def f():
     finally:
         print('finally 2')
     print('got here')
+
+
 print(f())
 
 # nested, return in inner and outer
+
+
 def f():
     try:
         try:
@@ -52,9 +64,13 @@ def f():
         print('finally 2')
         return 2
     print('got here')
+
+
 print(f())
 
 # nested with reraise
+
+
 def f():
     try:
         try:
@@ -66,9 +82,13 @@ def f():
         print('finally')
         return 0
     print('got here')
+
+
 print(f())
 
 # triple nesting with reraise
+
+
 def f():
     try:
         try:
@@ -81,9 +101,13 @@ def f():
     finally:
         print('finally')
         return 0
+
+
 print(f())
 
 # exception when matching exception
+
+
 def f():
     try:
         raise ValueError
@@ -92,13 +116,19 @@ def f():
     finally:
         print('finally')
         return 0
+
+
 print(f())
 
 # raising exception class, not instance
+
+
 def f():
     try:
         raise ValueError
     finally:
         print('finally')
         return 0
+
+
 print(f())

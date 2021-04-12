@@ -6,5 +6,8 @@ print(id(None) == id(None))
 l = [1, 2]
 print(id(l) == id(l))
 
-f = lambda:None
+
+def f(): return None
+
+
 print(id(f) == id(f))

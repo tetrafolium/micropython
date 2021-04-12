@@ -1,7 +1,8 @@
 # Test for VfsLfs using a RAM device, mtime feature
 
 try:
-    import utime, uos
+    import utime
+    import uos
 
     utime.time
     utime.sleep

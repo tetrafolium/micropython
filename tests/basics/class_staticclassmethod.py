@@ -4,6 +4,7 @@ class C:
     @staticmethod
     def f(rhs):
         print('f', rhs)
+
     @classmethod
     def g(self, rhs):
         print('g', rhs)
@@ -13,6 +14,7 @@ class C:
     def __sub__(rhs):
         print('sub', rhs)
     # builtin wrapped in classmethod
+
     @classmethod
     def __add__(self, rhs):
         print('add', rhs)
@@ -22,12 +24,15 @@ class C:
     def __getitem__(item):
         print('static get', item)
         return 'item'
+
     @staticmethod
     def __setitem__(item, value):
         print('static set', item, value)
+
     @staticmethod
     def __delitem__(item):
         print('static del', item)
+
 
 c = C()
 

@@ -12,9 +12,12 @@ def foo():
                 break
         i -= 1
 
+
 foo()
 
 # break from within nested for loop
+
+
 def bar():
     l = [1, 2, 3]
     for e1 in l:
@@ -23,5 +26,6 @@ def bar():
             print(e1, e2)
             if e2 == 2:
                 break
+
 
 bar()

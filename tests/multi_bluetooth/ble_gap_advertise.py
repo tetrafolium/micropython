@@ -1,7 +1,9 @@
 # Test BLE GAP advertising and scanning
 
 from micropython import const
-import time, machine, bluetooth
+import time
+import machine
+import bluetooth
 
 _IRQ_SCAN_RESULT = const(5)
 _IRQ_SCAN_DONE = const(6)

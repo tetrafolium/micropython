@@ -89,7 +89,8 @@ class BLESimpleCentral:
             if self._scan_callback:
                 if self._addr:
                     # Found a device during the scan (and the scan was explicitly stopped).
-                    self._scan_callback(self._addr_type, self._addr, self._name)
+                    self._scan_callback(
+                        self._addr_type, self._addr, self._name)
                     self._scan_callback = None
                 else:
                     # Scan timed out.
@@ -188,7 +189,8 @@ class BLESimpleCentral:
     def write(self, v, response=False):
         if not self.is_connected():
             return
-        self._ble.gattc_write(self._conn_handle, self._rx_handle, v, 1 if response else 0)
+        self._ble.gattc_write(
+            self._conn_handle, self._rx_handle, v, 1 if response else 0)
 
     # Set handler for when data is received over the UART.
     def on_notify(self, callback):

@@ -30,7 +30,8 @@ def advertising_payload(limited_disc=False, br_edr=False, name=None, services=No
 
     _append(
         _ADV_TYPE_FLAGS,
-        struct.pack("B", (0x01 if limited_disc else 0x02) + (0x18 if br_edr else 0x04)),
+        struct.pack("B", (0x01 if limited_disc else 0x02) +
+                    (0x18 if br_edr else 0x04)),
     )
 
     if name:
@@ -58,7 +59,7 @@ def decode_field(payload, adv_type):
     result = []
     while i + 1 < len(payload):
         if payload[i + 1] == adv_type:
-            result.append(payload[i + 2 : i + payload[i] + 1])
+            result.append(payload[i + 2: i + payload[i] + 1])
         i += 1 + payload[i]
     return result
 
@@ -82,7 +83,8 @@ def decode_services(payload):
 def demo():
     payload = advertising_payload(
         name="micropython",
-        services=[bluetooth.UUID(0x181A), bluetooth.UUID("6E400001-B5A3-F393-E0A9-E50E24DCCA9E")],
+        services=[bluetooth.UUID(0x181A), bluetooth.UUID(
+            "6E400001-B5A3-F393-E0A9-E50E24DCCA9E")],
     )
     print(payload)
     print(decode_name(payload))

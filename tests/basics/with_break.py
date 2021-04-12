@@ -7,6 +7,7 @@ class CtxMgr:
     def __exit__(self, a, b, c):
         print("__exit__", repr(a), repr(b))
 
+
 for i in range(5):
     print(i)
     with CtxMgr():

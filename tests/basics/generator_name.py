@@ -3,9 +3,11 @@
 def Fun():
     yield
 
+
 class A:
     def Fun(self):
         yield
+
 
 try:
     print(Fun.__name__)

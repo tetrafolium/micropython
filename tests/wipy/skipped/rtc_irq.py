@@ -51,7 +51,8 @@ print(rtc_irq_count == 10)
 rtc.alarm_cancel()
 rtc_irq_count = 0
 rtc.alarm(time=50, repeat=True)
-rtc_irq.init(trigger=RTC.ALARM0, handler=alarm_handler, wake=machine.SLEEP | machine.IDLE)
+rtc_irq.init(trigger=RTC.ALARM0, handler=alarm_handler,
+             wake=machine.SLEEP | machine.IDLE)
 while rtc_irq_count < 3:
     machine.sleep()
 print(rtc_irq_count == 3)
@@ -75,7 +76,8 @@ rtc.alarm_cancel()
 rtc_irq_count = 0
 rtc.alarm(time=500, repeat=True)
 t0 = rtc_ticks_ms(rtc)
-rtc_irq = rtc.irq(trigger=RTC.ALARM0, handler=alarm_handler, wake=machine.SLEEP)
+rtc_irq = rtc.irq(trigger=RTC.ALARM0,
+                  handler=alarm_handler, wake=machine.SLEEP)
 while rtc_irq_count < 3:
     machine.sleep()
     t1 = rtc_ticks_ms(rtc)

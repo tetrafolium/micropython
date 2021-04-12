@@ -15,17 +15,17 @@ except ValueError:
 
 # apply args using **
 try:
-    for x in range(**{'end':1}):
+    for x in range(**{'end': 1}):
         print(x)
 except TypeError:
     print('TypeError')
 try:
-    for x in range(0, **{'end':1}):
+    for x in range(0, **{'end': 1}):
         print(x)
 except TypeError:
     print('TypeError')
 try:
-    for x in range(0, 1, **{'step':1}):
+    for x in range(0, 1, **{'step': 1}):
         print(x)
 except TypeError:
     print('TypeError')

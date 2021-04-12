@@ -6,12 +6,14 @@ def gen():
     except GeneratorExit:
         print('GeneratorExit')
 
+
 def gen2():
     try:
         yield from gen()
     except GeneratorExit:
         print('GeneratorExit outer')
     yield 789
+
 
 # thrown a class
 g = gen2()

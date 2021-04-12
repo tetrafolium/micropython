@@ -31,10 +31,10 @@ except TypeError:
 # joined by the compiler
 print("a" "b")
 print("a" '''b''')
-print("a" # inline comment
-    "b")
-print("a" \
-    "b")
+print("a"  # inline comment
+      "b")
+print("a"
+      "b")
 
 # the following should not be joined by the compiler
 x = 'a'

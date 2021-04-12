@@ -6,6 +6,7 @@ def f():
     except:
         raise
 
+
 try:
     f()
 except ValueError as e:

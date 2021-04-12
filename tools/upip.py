@@ -5,6 +5,8 @@
 #
 # Licensed under the MIT license.
 #
+import usocket
+import ussl
 import sys
 import gc
 import uos as os
@@ -82,7 +84,7 @@ def install_tar(f, prefix):
         # print(info)
         fname = info.name
         try:
-            fname = fname[fname.index("/") + 1 :]
+            fname = fname[fname.index("/") + 1:]
         except ValueError:
             fname = ""
 
@@ -114,9 +116,6 @@ def expandhome(s):
         s = s.replace("~/", h + "/")
     return s
 
-
-import ussl
-import usocket
 
 warn_ussl = True
 
@@ -151,7 +150,8 @@ def url_open(url):
                 warn_ussl = False
 
         # MicroPython rawsocket module supports file interface directly
-        s.write("GET /%s HTTP/1.0\r\nHost: %s:%s\r\n\r\n" % (urlpath, host, port))
+        s.write("GET /%s HTTP/1.0\r\nHost: %s:%s\r\n\r\n" %
+                (urlpath, host, port))
         l = s.readline()
         protover, status, msg = l.split(None, 2)
         if status != b"200":
@@ -248,7 +248,8 @@ def install(to_install, install_path=None):
                 to_install.extend(deps)
     except Exception as e:
         print(
-            "Error installing '{}': {}, packages may be partially installed".format(pkg_spec, e),
+            "Error installing '{}': {}, packages may be partially installed".format(
+                pkg_spec, e),
             file=sys.stderr,
         )
 

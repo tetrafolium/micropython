@@ -14,4 +14,6 @@ def foo(x):
             finally:
                 print('return')
                 return 43
+
+
 print(foo(4))

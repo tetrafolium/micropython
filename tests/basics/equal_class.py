@@ -3,11 +3,14 @@
 class A:
     pass
 
+
 class B:
     pass
 
+
 class C(A):
     pass
+
 
 print(A == None)
 print(None == A)

@@ -1,5 +1,6 @@
 try:
-    import micropython
+import lcd
+import micropython
 except:
     pass
 
@@ -24,7 +25,6 @@ def mandelbrot():
 
 
 # PC testing
-import lcd
 
 lcd = lcd.LCD(128, 32)
 mandelbrot()

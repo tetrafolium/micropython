@@ -17,4 +17,5 @@ for x in values:
             print("  ** pow", x ** y, pow(x, y))
         except ZeroDivisionError:
             print("  ** pow ZeroDivisionError")
-        print("  == != < <= > >=", x == y, x != y, x < y, x <= y, x > y, x >= y)
+        print("  == != < <= > >=", x == y, x !=
+              y, x < y, x <= y, x > y, x >= y)

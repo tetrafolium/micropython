@@ -1,6 +1,8 @@
 # Test for sdcard block protocol
 # Peter hinch 30th Jan 2016
-import os, sdcard, machine
+import os
+import sdcard
+import machine
 
 
 def sdtest():

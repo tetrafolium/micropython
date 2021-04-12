@@ -1,9 +1,13 @@
 # test that modtls produces a numerical error message when out of heap
 
 try:
-    import usocket as socket, ussl as ssl, sys
+    import usocket as socket
+    import ussl as ssl
+    import sys
 except:
-    import socket, ssl, sys
+    import socket
+    import ssl
+    import sys
 try:
     from micropython import alloc_emergency_exception_buf, heap_lock, heap_unlock
 except:

@@ -21,12 +21,15 @@ else:
     _timer = None
 
 # Batch writes into 50ms intervals.
+
+
 def schedule_in(handler, delay_ms):
     def _wrap(_arg):
         handler()
 
     if _timer:
-        _timer.init(mode=machine.Timer.ONE_SHOT, period=delay_ms, callback=_wrap)
+        _timer.init(mode=machine.Timer.ONE_SHOT,
+                    period=delay_ms, callback=_wrap)
     else:
         micropython.schedule(_wrap, None)
 

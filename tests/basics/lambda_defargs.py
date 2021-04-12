@@ -1,10 +1,14 @@
 # test default args with lambda
 
-f = lambda x=1: x
+def f(x=1): return x
+
+
 print(f(), f(2), f(x=3))
 
 y = 'y'
-f = lambda x=y: x
+def f(x=y): return x
+
+
 print(f())
 
 f = lambda x, y=[]: (x, y)

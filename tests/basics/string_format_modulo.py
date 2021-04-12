@@ -81,7 +81,7 @@ except TypeError:
     print('TypeError')
 
 try:
-    '%(a' % {'a':1}
+    '%(a' % {'a': 1}
 except ValueError:
     print('ValueError')
 

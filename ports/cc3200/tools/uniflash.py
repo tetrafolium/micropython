@@ -23,7 +23,8 @@ def print_exception(e):
 
 
 def execute(command):
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    process = subprocess.Popen(
+        command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     cmd_log = ""
 
     # Poll process for new output until finished
@@ -54,7 +55,8 @@ def main():
     cmd_parser.add_argument(
         "-c", "--config", default=None, help="the path to the uniflash config file"
     )
-    cmd_parser.add_argument("-p", "--port", default=8, help="the com serial port")
+    cmd_parser.add_argument("-p", "--port", default=8,
+                            help="the com serial port")
     cmd_parser.add_argument(
         "-s", "--servicepack", default=None, help="the path to the servicepack file"
     )

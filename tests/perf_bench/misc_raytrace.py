@@ -184,11 +184,13 @@ def trace_ray(scene, ray, depth):
 
     # Reflections
     if depth > 0 and surf.reflect > 0:
-        col += trace_ray(scene, Ray(point + reflected * EPS, reflected), depth - 1) * surf.reflect
+        col += trace_ray(scene, Ray(point + reflected * EPS,
+                                    reflected), depth - 1) * surf.reflect
 
     # Transparency
     if depth > 0 and surf.transp > 0:
-        col += trace_ray(scene, Ray(point + ray.d * EPS, ray.d), depth - 1) * surf.transp
+        col += trace_ray(scene, Ray(point + ray.d * EPS,
+                                    ray.d), depth - 1) * surf.transp
 
     return col
 
@@ -216,13 +218,15 @@ class Canvas:
 
     def write_ppm(self, filename):
         with open(filename, "wb") as f:
-            f.write(bytes("P6 %d %d 255\n" % (self.width, self.height), "ascii"))
+            f.write(bytes("P6 %d %d 255\n" %
+                          (self.width, self.height), "ascii"))
             f.write(self.data)
 
 
 def main(w, h, d):
     canvas = Canvas(w, h)
-    view = View(32, 32, 64, Vec(0, 0, 50), Vec(1, 0, 0), Vec(0, 1, 0), Vec(0, 0, -1))
+    view = View(32, 32, 64, Vec(0, 0, 50), Vec(
+        1, 0, 0), Vec(0, 1, 0), Vec(0, 0, -1))
     scene = Scene(
         0.5,
         Light(Vec(0, 8, 0), RGB(1, 1, 1), True),

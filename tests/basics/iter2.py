@@ -3,6 +3,7 @@
 class MyStopIteration(StopIteration):
     pass
 
+
 class myiter:
     def __init__(self, i):
         self.i = i
@@ -17,6 +18,7 @@ class myiter:
             raise StopIteration(1)
         elif self.i == 2:
             raise MyStopIteration
+
 
 print(list(myiter(0)))
 print(list(myiter(1)))

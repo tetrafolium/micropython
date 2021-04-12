@@ -4,6 +4,8 @@
 def gen():
     yield 1
     raise StopIteration
+
+
 g = gen()
 print(next(g))
 try:
@@ -18,9 +20,13 @@ except StopIteration:
     print('StopIteration')
 
 # throwing a StopIteration which is uncaught will be converted into a RuntimeError
+
+
 def gen():
     yield 1
     yield 2
+
+
 g = gen()
 print(next(g))
 try:
@@ -29,9 +35,13 @@ except RuntimeError:
     print('RuntimeError')
 
 # throwing a StopIteration through yield from, will be converted to a RuntimeError
+
+
 def gen():
     yield from range(2)
     print('should not get here')
+
+
 g = gen()
 print(next(g))
 try:

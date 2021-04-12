@@ -1,9 +1,11 @@
 # test that socket.connect() has correct polling behaviour before, during and after
 
 try:
-    import usocket as socket, uselect as select
+    import usocket as socket
+    import uselect as select
 except:
-    import socket, select
+    import socket
+    import select
 
 
 def test(peer_addr):

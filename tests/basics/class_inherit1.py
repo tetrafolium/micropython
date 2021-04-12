@@ -6,6 +6,7 @@ class A:
     def f(self):
         print(self.x, self.y)
 
+
 class B(A):
     def __init__(self, x, y):
         A.__init__(self, x)
@@ -14,6 +15,7 @@ class B(A):
 
     def g(self):
         print(self.x, self.y)
+
 
 A(1)
 b = B(1, 2)

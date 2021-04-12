@@ -18,7 +18,8 @@ _NUM_TASKS = 10000
 _TIMEOUT_MS = 10000
 
 n = 0  # How many times the task successfully ran.
-t = None  # Start time of test, assigned here to preallocate entry in globals dict.
+# Start time of test, assigned here to preallocate entry in globals dict.
+t = None
 
 
 def task(x):

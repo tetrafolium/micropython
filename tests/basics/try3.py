@@ -11,6 +11,7 @@ def f():
             print("except 2")
         bar()
 
+
 try:
     f()
 except:

@@ -5,11 +5,13 @@ def noop_task():
     print('noop task')
     yield 1
 
+
 def raise_task():
     print('raise task')
     yield 2
     print('raising')
     raise Exception
+
 
 def main():
     try:
@@ -18,6 +20,7 @@ def main():
         print('main exception')
 
     yield from noop_task()
+
 
 for z in main():
     print('outer iter', z)

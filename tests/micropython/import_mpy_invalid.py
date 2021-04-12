@@ -1,7 +1,9 @@
 # test importing of invalid .mpy files
 
 try:
-    import usys, uio, uos
+    import usys
+    import uio
+    import uos
 
     uio.IOBase
     uos.mount
@@ -17,7 +19,7 @@ class UserFile(uio.IOBase):
 
     def readinto(self, buf):
         n = min(len(buf), len(self.data) - self.pos)
-        buf[:n] = self.data[self.pos : self.pos + n]
+        buf[:n] = self.data[self.pos: self.pos + n]
         self.pos += n
         return n
 

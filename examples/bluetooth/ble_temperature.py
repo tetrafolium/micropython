@@ -43,7 +43,8 @@ class BLETemperature:
         ((self._handle,),) = self._ble.gatts_register_services((_ENV_SENSE_SERVICE,))
         self._connections = set()
         self._payload = advertising_payload(
-            name=name, services=[_ENV_SENSE_UUID], appearance=_ADV_APPEARANCE_GENERIC_THERMOMETER
+            name=name, services=[
+                _ENV_SENSE_UUID], appearance=_ADV_APPEARANCE_GENERIC_THERMOMETER
         )
         self._advertise()
 
@@ -63,7 +64,8 @@ class BLETemperature:
     def set_temperature(self, temp_deg_c, notify=False, indicate=False):
         # Data is sint16 in degrees Celsius with a resolution of 0.01 degrees Celsius.
         # Write the local value, ready for a central to read.
-        self._ble.gatts_write(self._handle, struct.pack("<h", int(temp_deg_c * 100)))
+        self._ble.gatts_write(self._handle, struct.pack(
+            "<h", int(temp_deg_c * 100)))
         if notify or indicate:
             for conn_handle in self._connections:
                 if notify:

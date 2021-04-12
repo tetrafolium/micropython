@@ -28,13 +28,13 @@ def uart_rx_mini():
     # Wait for start bit
     wait(0, pin, 0)
     # Preload bit counter, delay until eye of first data bit
-    set(x, 7)                 [10]
+    set(x, 7)[10]
     # Loop 8 times
     label("bitloop")
     # Sample data
     in_(pins, 1)
     # Each iteration is 8 cycles
-    jmp(x_dec, "bitloop")     [6]
+    jmp(x_dec, "bitloop")[6]
     # fmt: on
 
 
@@ -48,12 +48,12 @@ def uart_rx():
     wait(0, pin, 0)
     # Preload bit counter, then delay until halfway through
     # the first data bit (12 cycles incl wait, set).
-    set(x, 7)                 [10]
+    set(x, 7)[10]
     label("bitloop")
     # Shift data bit into ISR
     in_(pins, 1)
     # Loop 8 times, each loop iteration is 8 cycles
-    jmp(x_dec, "bitloop")     [6]
+    jmp(x_dec, "bitloop")[6]
     # Check stop bit (should be high)
     jmp(pin, "good_stop")
     # Either a framing error or a break. Set a sticky flag

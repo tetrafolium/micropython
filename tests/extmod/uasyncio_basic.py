@@ -16,8 +16,8 @@ try:
 except:
     import time
 
-    ticks = lambda: int(time.time() * 1000)
-    ticks_diff = lambda t1, t0: t1 - t0
+    def ticks(): return int(time.time() * 1000)
+    def ticks_diff(t1, t0): return t1 - t0
 
 
 async def delay_print(t, s):

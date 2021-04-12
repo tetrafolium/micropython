@@ -5,6 +5,7 @@ def f():
     # g here is already executing so this will raise an exception
     yield from g
 
+
 g = f()
 
 print(next(g))

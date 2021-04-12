@@ -8,7 +8,7 @@ except ImportError:
 def printbuf():
     print("--8<--")
     for y in range(h):
-        print(buf[y * w // 2 : (y + 1) * w // 2])
+        print(buf[y * w // 2: (y + 1) * w // 2])
     print("-->8--")
 
 
@@ -34,8 +34,10 @@ fbuf.pixel(0, h - 1, 0x04)
 printbuf()
 
 # get pixel
-print(fbuf.pixel(0, 0), fbuf.pixel(w - 1, 0), fbuf.pixel(w - 1, h - 1), fbuf.pixel(0, h - 1))
-print(fbuf.pixel(1, 0), fbuf.pixel(w - 2, 0), fbuf.pixel(w - 2, h - 1), fbuf.pixel(1, h - 1))
+print(fbuf.pixel(0, 0), fbuf.pixel(w - 1, 0),
+      fbuf.pixel(w - 1, h - 1), fbuf.pixel(0, h - 1))
+print(fbuf.pixel(1, 0), fbuf.pixel(w - 2, 0),
+      fbuf.pixel(w - 2, h - 1), fbuf.pixel(1, h - 1))
 
 # fill rect
 fbuf.fill_rect(0, 0, w, h, 0x0F)

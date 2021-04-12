@@ -5,6 +5,8 @@
 import _thread
 
 # the shared user class and instance
+
+
 class User:
     def __init__(self):
         self.a = "A"
@@ -15,6 +17,8 @@ class User:
 user = User()
 
 # main thread function
+
+
 def th(n, lo, hi):
     for repeat in range(n):
         for i in range(lo, hi):

@@ -106,7 +106,8 @@ if full_tests:
                     for sign in ("", "+", "-", " "):
                         for prec in ("", "1", "3", "6"):
                             for num in eg_nums:
-                                test_fmt("", fill, alignment, sign, "", width, prec, type, num)
+                                test_fmt("", fill, alignment, sign,
+                                         "", width, prec, type, num)
 
 # Note: We use 1.23459 rather than 1.2345 because '{:3f}'.format(1.2345)
 #       rounds differently than print("%.3f", 1.2345);
@@ -151,9 +152,11 @@ if full_tests:
                         # long doubles).
                         for prec in ("1", "2", "3"):
                             for num in f_nums:
-                                test_fmt("", fill, alignment, sign, "", width, prec, type, num)
+                                test_fmt("", fill, alignment, sign,
+                                         "", width, prec, type, num)
                         for num in int_nums2:
-                            test_fmt("", fill, alignment, sign, "", width, "", type, num)
+                            test_fmt("", fill, alignment, sign,
+                                     "", width, "", type, num)
 
 pct_nums1 = (0.1, 0.58, 0.99, -0.1, -0.58, -0.99)
 pct_nums2 = (True, False, 1, 0, -1)
@@ -171,9 +174,11 @@ if full_tests:
                     # long doubles).
                     for prec in ("1", "2", "3"):
                         for num in pct_nums1:
-                            test_fmt("", fill, alignment, sign, "", width, prec, type, num)
+                            test_fmt("", fill, alignment, sign,
+                                     "", width, prec, type, num)
                     for num in pct_nums2:
-                        test_fmt("", fill, alignment, sign, "", width, "", type, num)
+                        test_fmt("", fill, alignment, sign,
+                                 "", width, "", type, num)
 else:
     for num in pct_nums1:
         test_fmt("", "", "", "", "", "", "1", "%", num)

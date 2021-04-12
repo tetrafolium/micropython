@@ -4,6 +4,7 @@ def func1():
     finally:
         print("finally 1")
 
+
 print(func1())
 
 
@@ -13,6 +14,7 @@ def func2():
     finally:
         print("finally 2")
 
+
 def func3():
     try:
         s = func2()
@@ -20,18 +22,25 @@ def func3():
     finally:
         print("finally 3")
 
+
 print(func3())
 
 # for loop within try-finally
+
+
 def f():
     try:
         for i in [1, 2]:
             return i
     finally:
         print('finally')
+
+
 print(f())
 
 # multiple for loops within try-finally
+
+
 def f():
     try:
         for i in [1, 2]:
@@ -39,9 +48,13 @@ def f():
                 return (i, j)
     finally:
         print('finally')
+
+
 print(f())
 
 # multiple for loops and nested try-finally's
+
+
 def f():
     try:
         for i in [1, 2]:
@@ -54,9 +67,13 @@ def f():
                     print('finally 2')
     finally:
         print('finally 1')
+
+
 print(f())
 
 # multiple for loops that are optimised, and nested try-finally's
+
+
 def f():
     try:
         for i in range(1, 3):
@@ -69,4 +86,6 @@ def f():
                     print('finally 2')
     finally:
         print('finally 1')
+
+
 print(f())

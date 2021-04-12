@@ -6,6 +6,7 @@ except NameError:
     print("SKIP")
     raise SystemExit
 
+
 def test_syntax(code):
     try:
         exec(code)
@@ -14,6 +15,7 @@ def test_syntax(code):
         print("IndentationError")
     except SyntaxError:
         print("SyntaxError")
+
 
 # non-newline after line-continuation character (lexer error)
 test_syntax("a \\a\n")

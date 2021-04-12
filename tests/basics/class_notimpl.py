@@ -6,6 +6,7 @@ except NameError:
     print("SKIP")
     raise SystemExit
 
+
 class C:
     def __init__(self, value):
         self.value = value
@@ -28,6 +29,7 @@ class C:
     def __neg__(self):
         print('-', self)
         return NotImplemented
+
 
 c = C(0)
 

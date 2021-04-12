@@ -88,7 +88,8 @@ def reset_board(args):
                     b'Type "help()" for more information.', timeout=5
                 ):
                     print("Telnet login succeeded")
-                    tn.write(b"\r\x03\x03")  # ctrl-C twice: interrupt any running program
+                    # ctrl-C twice: interrupt any running program
+                    tn.write(b"\r\x03\x03")
                     time.sleep(1)
                     tn.write(b"\r\x02")  # ctrl-B: enter friendly REPL
                     if b'Type "help()" for more information.' in tn.read_until(
@@ -176,14 +177,19 @@ def main():
     cmd_parser = argparse.ArgumentParser(
         description="Update the WiPy firmware with the specified image file"
     )
-    cmd_parser.add_argument("-f", "--file", default=None, help="the path of the firmware file")
-    cmd_parser.add_argument("-u", "--user", default="micro", help="the username")
-    cmd_parser.add_argument("-p", "--password", default="python", help="the login password")
-    cmd_parser.add_argument("--ip", default="192.168.1.1", help="the ip address of the WiPy")
+    cmd_parser.add_argument("-f", "--file", default=None,
+                            help="the path of the firmware file")
+    cmd_parser.add_argument(
+        "-u", "--user", default="micro", help="the username")
+    cmd_parser.add_argument(
+        "-p", "--password", default="python", help="the login password")
+    cmd_parser.add_argument("--ip", default="192.168.1.1",
+                            help="the ip address of the WiPy")
     cmd_parser.add_argument(
         "--verify", action="store_true", help="verify that the update succeeded"
     )
-    cmd_parser.add_argument("-t", "--tag", default=None, help="git tag of the firmware image")
+    cmd_parser.add_argument("-t", "--tag", default=None,
+                            help="git tag of the firmware image")
     args = cmd_parser.parse_args()
 
     result = 1

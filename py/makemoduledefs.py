@@ -13,7 +13,8 @@ import os
 import argparse
 
 
-pattern = re.compile(r"[\n;]\s*MP_REGISTER_MODULE\((.*?),\s*(.*?),\s*(.*?)\);", flags=re.DOTALL)
+pattern = re.compile(
+    r"[\n;]\s*MP_REGISTER_MODULE\((.*?),\s*(.*?),\s*(.*?)\);", flags=re.DOTALL)
 
 
 def find_c_file(obj_file, vpath):

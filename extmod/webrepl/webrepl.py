@@ -25,7 +25,8 @@ def setup_conn(port, accept_handler):
     for i in (network.AP_IF, network.STA_IF):
         iface = network.WLAN(i)
         if iface.active():
-            print("WebREPL daemon started on ws://%s:%d" % (iface.ifconfig()[0], port))
+            print("WebREPL daemon started on ws://%s:%d" %
+                  (iface.ifconfig()[0], port))
     return listen_s
 
 

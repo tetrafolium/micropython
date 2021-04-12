@@ -1,3 +1,4 @@
+import array
 from pyb import ADC, Timer
 
 adct = ADC(16)  # Temperature 930 -> 20C
@@ -20,7 +21,6 @@ for i in buf:
     assert i > 50 and i < 150
 
 # read into arrays with different element sizes
-import array
 
 arv = array.array("h", 25 * [0x7FFF])
 adcv.read_timed(arv, tim)

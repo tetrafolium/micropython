@@ -8,6 +8,8 @@ import _thread
 ba = bytearray()
 
 # main thread function
+
+
 def th(n, lo, hi):
     for repeat in range(n):
         for i in range(lo, hi):
@@ -31,7 +33,8 @@ n_repeat = 4  # use 40 for more stressful test (uses more heap)
 
 # spawn threads
 for i in range(n_thread):
-    _thread.start_new_thread(th, (n_repeat, i * 256 // n_thread, (i + 1) * 256 // n_thread))
+    _thread.start_new_thread(
+        th, (n_repeat, i * 256 // n_thread, (i + 1) * 256 // n_thread))
 
 # busy wait for threads to finish
 while n_finished < n_thread:

@@ -14,7 +14,8 @@ if hasattr(sys, "print_exception"):
 else:
     import traceback
 
-    print_exception = lambda e, f: traceback.print_exception(None, e, sys.exc_info()[2], file=f)
+    def print_exception(e, f): return traceback.print_exception(
+        None, e, sys.exc_info()[2], file=f)
 
 
 def print_exc(e):
@@ -41,6 +42,8 @@ except Exception as e:
     print_exc(e)
 
 # exception message with more than 1 source-code line
+
+
 def f():
     g()
 
@@ -79,6 +82,8 @@ except Exception as e:
 
 # Here we have a function with lots of bytecode generated for a single source-line, and
 # there is an error right at the end of the bytecode.  It should report the correct line.
+
+
 def f():
     f([1, 2], [1, 2], [1, 2], {1: 1, 1: 1, 1: 1, 1: 1, 1: 1, 1: 1, 1: f.X})
     return 1

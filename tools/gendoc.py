@@ -8,6 +8,8 @@ import re
 import markdown
 
 # given a list of (name,regex) pairs, find the first one that matches the given line
+
+
 def re_match_first(regexs, line):
     for name, regex in regexs:
         match = re.match(regex, line)
@@ -163,7 +165,8 @@ class ReStructuredTextWriter:
         self.lines.append(self._convert(text))
 
     def module(self, name, short_descr, descr):
-        self.heading(1, ":mod:`{}` --- {}".format(name, self._convert(short_descr)), convert=False)
+        self.heading(1, ":mod:`{}` --- {}".format(name,
+                                                  self._convert(short_descr)), convert=False)
         self.lines.append(".. module:: {}".format(name))
         self.lines.append("   :synopsis: {}".format(short_descr))
         self.para(descr)
@@ -348,7 +351,8 @@ class DocModule(DocItem):
 
     def validate(self):
         if self.descr is None:
-            raise DocValidateError("module {} referenced but never defined".format(self.name))
+            raise DocValidateError(
+                "module {} referenced but never defined".format(self.name))
 
     def dump(self, writer):
         writer.module(self.name, self.descr, self.doc)
@@ -363,7 +367,8 @@ class DocModule(DocItem):
         if self.classes:
             writer.heading(2, "Classes")
             for c in sorted(self.classes.values(), key=lambda x: x.name):
-                writer.para("[`{}.{}`]({}) - {}".format(self.name, c.name, c.name, c.descr))
+                writer.para(
+                    "[`{}.{}`]({}) - {}".format(self.name, c.name, c.name, c.descr))
 
     def write_html(self, dir):
         md_writer = MarkdownWriter()
@@ -475,17 +480,23 @@ class Doc:
 regex_descr = r"(?P<descr>.*)"
 
 doc_regexs = (
-    (Doc.process_module, re.compile(r"\\module (?P<id>[a-z][a-z0-9]*) - " + regex_descr + r"$")),
+    (Doc.process_module, re.compile(
+        r"\\module (?P<id>[a-z][a-z0-9]*) - " + regex_descr + r"$")),
     (Doc.process_moduleref, re.compile(r"\\moduleref (?P<id>[a-z]+)$")),
-    (Doc.process_function, re.compile(r"\\function (?P<id>[a-z0-9_]+)(?P<args>\(.*\))$")),
-    (Doc.process_classmethod, re.compile(r"\\classmethod (?P<id>\\?[a-z0-9_]+)(?P<args>\(.*\))$")),
-    (Doc.process_method, re.compile(r"\\method (?P<id>\\?[a-z0-9_]+)(?P<args>\(.*\))$")),
+    (Doc.process_function, re.compile(
+        r"\\function (?P<id>[a-z0-9_]+)(?P<args>\(.*\))$")),
+    (Doc.process_classmethod, re.compile(
+        r"\\classmethod (?P<id>\\?[a-z0-9_]+)(?P<args>\(.*\))$")),
+    (Doc.process_method, re.compile(
+        r"\\method (?P<id>\\?[a-z0-9_]+)(?P<args>\(.*\))$")),
     (
         Doc.process_constant,
-        re.compile(r"\\constant (?P<id>[A-Za-z0-9_]+) - " + regex_descr + r"$"),
+        re.compile(
+            r"\\constant (?P<id>[A-Za-z0-9_]+) - " + regex_descr + r"$"),
     ),
     # (Doc.process_classref, re.compile(r'\\classref (?P<id>[A-Za-z0-9_]+)$')),
-    (Doc.process_class, re.compile(r"\\class (?P<id>[A-Za-z0-9_]+) - " + regex_descr + r"$")),
+    (Doc.process_class, re.compile(
+        r"\\class (?P<id>[A-Za-z0-9_]+) - " + regex_descr + r"$")),
 )
 
 
@@ -520,7 +531,8 @@ def main():
     cmd_parser.add_argument(
         "--outdir", metavar="<output dir>", default="gendoc-out", help="ouput directory"
     )
-    cmd_parser.add_argument("--format", default="html", help="output format: html or rst")
+    cmd_parser.add_argument("--format", default="html",
+                            help="output format: html or rst")
     cmd_parser.add_argument("files", nargs="+", help="input files")
     args = cmd_parser.parse_args()
 

@@ -1,6 +1,7 @@
 # Test board-specific items on PYBv1.x
 
-import os, pyb
+import os
+import pyb
 
 if not "PYBv1." in os.uname().machine:
     print("SKIP")

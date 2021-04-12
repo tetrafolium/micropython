@@ -4,8 +4,10 @@ class AContext:
     async def __aenter__(self):
         print('enter')
         return 1
+
     async def __aexit__(self, exc_type, exc, tb):
         print('exit', exc_type, exc)
+
 
 async def f1():
     while 1:
@@ -20,6 +22,7 @@ try:
     print(o.send(None))
 except StopIteration:
     print('finished')
+
 
 async def f2():
     while 1:
@@ -37,6 +40,7 @@ try:
     print(o.send(None))
 except StopIteration:
     print('finished')
+
 
 async def f3():
     while 1:

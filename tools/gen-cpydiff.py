@@ -39,7 +39,8 @@ from collections import namedtuple
 # to the correct executable.
 if os.name == "nt":
     CPYTHON3 = os.getenv("MICROPY_CPYTHON3", "python3.exe")
-    MICROPYTHON = os.getenv("MICROPY_MICROPYTHON", "../ports/windows/micropython.exe")
+    MICROPYTHON = os.getenv("MICROPY_MICROPYTHON",
+                            "../ports/windows/micropython.exe")
 else:
     CPYTHON3 = os.getenv("MICROPY_CPYTHON3", "python3")
     MICROPYTHON = os.getenv("MICROPY_MICROPYTHON", "../ports/unix/micropython")
@@ -86,7 +87,8 @@ def readfiles():
             class_, desc, cause, workaround, code = [
                 x.rstrip() for x in list(filter(None, re.split(SPLIT, text)))
             ]
-            output = Output(test, class_, desc, cause, workaround, code, "", "", "")
+            output = Output(test, class_, desc, cause,
+                            workaround, code, "", "", "")
             files.append(output)
         except IndexError:
             print("Incorrect format in file " + TESTPATH + test)
@@ -117,7 +119,8 @@ def run_tests(tests):
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        output_cpy = [com.decode("utf8") for com in process.communicate(input_cpy)]
+        output_cpy = [com.decode("utf8")
+                      for com in process.communicate(input_cpy)]
 
         process = subprocess.Popen(
             MICROPYTHON,
@@ -126,7 +129,8 @@ def run_tests(tests):
             stdin=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        output_upy = [com.decode("utf8") for com in process.communicate(input_upy)]
+        output_upy = [com.decode("utf8")
+                      for com in process.communicate(input_upy)]
 
         if output_cpy[0] == output_upy[0] and output_cpy[1] == output_upy[1]:
             status = "Supported"
@@ -180,7 +184,8 @@ def gen_table(contents):
     table = table_divider
     for i in range(len(ylengths)):
         row = [column[i] for column in contents]
-        row = [entry + "\n" * (ylengths[i] - len(entry.split("\n"))) for entry in row]
+        row = [entry + "\n" * (ylengths[i] - len(entry.split("\n")))
+               for entry in row]
         row = [entry.split("\n") for entry in row]
         for j in range(ylengths[i]):
             k = 0
@@ -218,11 +223,13 @@ def gen_rst(results):
                     rst.write(HEADER)
                     rst.write(section[i] + "\n")
                     rst.write(RSTCHARS[0] * len(section[i]))
-                    rst.write(time.strftime("\nGenerated %a %d %b %Y %X UTC\n\n", time.gmtime()))
+                    rst.write(time.strftime(
+                        "\nGenerated %a %d %b %Y %X UTC\n\n", time.gmtime()))
                     toctree.append(filename)
                 else:
                     rst.write(section[i] + "\n")
-                    rst.write(RSTCHARS[min(i, len(RSTCHARS) - 1)] * len(section[i]))
+                    rst.write(
+                        RSTCHARS[min(i, len(RSTCHARS) - 1)] * len(section[i]))
                     rst.write("\n\n")
         class_ = section
         rst.write(".. _cpydiff_%s:\n\n" % output.name.rsplit(".", 1)[0])
@@ -238,7 +245,8 @@ def gen_rst(results):
         output_cpy = ("::\n\n" if output_cpy != "" else "") + output_cpy
         output_upy = indent("".join(output.output_upy[0:2]), TAB).rstrip()
         output_upy = ("::\n\n" if output_upy != "" else "") + output_upy
-        table = gen_table([["CPy output:", output_cpy], ["uPy output:", output_upy]])
+        table = gen_table([["CPy output:", output_cpy],
+                           ["uPy output:", output_upy]])
         rst.write(table)
 
     template = open(INDEXTEMPLATE, "r")

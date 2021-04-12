@@ -3,6 +3,7 @@
 class A:
     pass
 
+
 print(issubclass(A, A))
 print(issubclass(A, (A,)))
 

@@ -5,6 +5,8 @@ def dec(f):
     return f
 
 # test definition with a decorator
+
+
 @dec
 async def foo():
     print('foo')

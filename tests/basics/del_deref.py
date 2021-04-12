@@ -1,6 +1,7 @@
 def f():
     x = 1
     y = 2
+
     def g():
         nonlocal x
         print(y)
@@ -8,6 +9,7 @@ def f():
             print(x)
         except NameError:
             print("NameError")
+
     def h():
         nonlocal x
         print(y)
@@ -19,4 +21,6 @@ def f():
     del x
     g()
     h()
+
+
 f()

@@ -1,9 +1,12 @@
 # Test VfsFat class and its finaliser
 
 try:
-    import uerrno, uos
+import gc
+import micropython
+import uerrno
+import uos
 
-    uos.VfsFat
+uos.VfsFat
 except (ImportError, AttributeError):
     print("SKIP")
     raise SystemExit
@@ -44,7 +47,6 @@ vfs = uos.VfsFat(bdev)
 # is a special case because file objects use a finaliser and allocating with a
 # finaliser is a different path to normal allocation.  It would be better to
 # test this in the core tests but there are no core objects that use finaliser.
-import micropython
 
 micropython.heap_lock()
 try:
@@ -54,7 +56,6 @@ except MemoryError:
 micropython.heap_unlock()
 
 # Here we test that the finaliser is actually called during a garbage collection.
-import gc
 
 N = 4
 for i in range(N):

@@ -18,6 +18,7 @@ class AsyncIteratorWrapper:
             raise StopAsyncIteration
         return value
 
+
 async def coro():
     async for letter in AsyncIteratorWrapper('abc'):
         print(letter)

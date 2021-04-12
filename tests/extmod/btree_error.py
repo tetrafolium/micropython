@@ -1,7 +1,9 @@
 # Test that errno's propagate correctly through btree module.
 
 try:
-    import btree, uio, uerrno
+    import btree
+    import uio
+    import uerrno
 
     uio.IOBase
 except (ImportError, AttributeError):

@@ -1,4 +1,5 @@
-import pyb, stm
+import pyb
+import stm
 from pyb import RTC
 
 rtc = RTC()
@@ -56,6 +57,8 @@ set_and_print_calib(-511)
 rtc.calibration(cal_tmp)
 
 # Check register settings for wakeup
+
+
 def set_and_print_wakeup(ms):
     try:
         rtc.wakeup(ms)

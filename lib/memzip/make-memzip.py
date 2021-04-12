@@ -15,6 +15,7 @@ import subprocess
 import sys
 import types
 
+
 def create_zip(zip_filename, zip_dir):
     abs_zip_filename = os.path.abspath(zip_filename)
     save_cwd = os.getcwd()
@@ -23,6 +24,7 @@ def create_zip(zip_filename, zip_dir):
         os.remove(abs_zip_filename)
     subprocess.check_call(['zip', '-0', '-r', '-D', abs_zip_filename, '.'])
     os.chdir(save_cwd)
+
 
 def create_c_from_file(c_filename, zip_filename):
     with open(zip_filename, 'rb') as zip_file:
@@ -37,11 +39,13 @@ def create_c_from_file(c_filename, zip_filename):
                 print('   ', end='', file=c_file)
                 for byte in buf:
                     if type(byte) is types.StringType:
-                        print(' 0x{:02x},'.format(ord(byte)), end='', file=c_file)
+                        print(' 0x{:02x},'.format(
+                            ord(byte)), end='', file=c_file)
                     else:
                         print(' 0x{:02x},'.format(byte), end='', file=c_file)
                 print('', file=c_file)
             print('};', file=c_file)
+
 
 def main():
     parser = argparse.ArgumentParser(
@@ -74,6 +78,6 @@ def main():
     create_zip(args.zip_filename, args.source_dir)
     create_c_from_file(args.c_filename, args.zip_filename)
 
+
 if __name__ == "__main__":
     main()
-

@@ -30,6 +30,8 @@ fb2.blit(fb, 0, 0)
 print(bytes(fb2))
 
 # Test that blitting something that isn't a subclass fails with TypeError.
+
+
 class NotAFrameBuf:
     pass
 

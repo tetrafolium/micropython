@@ -15,6 +15,7 @@ class CtxMgr:
         if 15 <= self.id < 25:
             raise Exception('exit', self.id)
 
+
 # no raising
 try:
     with CtxMgr(1):

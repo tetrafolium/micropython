@@ -15,6 +15,7 @@ def f():
                 print("except 3")
             bak()
 
+
 try:
     f()
 except:

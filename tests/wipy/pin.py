@@ -152,17 +152,20 @@ print(pin.id() == pin_map[0])
 
 # all the next ones MUST raise
 try:
-    pin = Pin(pin_map[0], mode=Pin.OUT, pull=Pin.PULL_UP, drive=pin.IN)  # incorrect drive value
+    pin = Pin(pin_map[0], mode=Pin.OUT, pull=Pin.PULL_UP,
+              drive=pin.IN)  # incorrect drive value
 except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], mode=Pin.LOW_POWER, pull=Pin.PULL_UP)  # incorrect mode value
+    pin = Pin(pin_map[0], mode=Pin.LOW_POWER,
+              pull=Pin.PULL_UP)  # incorrect mode value
 except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], mode=Pin.IN, pull=Pin.HIGH_POWER)  # incorrect pull value
+    # incorrect pull value
+    pin = Pin(pin_map[0], mode=Pin.IN, pull=Pin.HIGH_POWER)
 except Exception:
     print("Exception")
 
@@ -172,12 +175,14 @@ except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], Pin.IN, Pin.PULL_UP, alt=0)  # af specified in GPIO mode
+    # af specified in GPIO mode
+    pin = Pin(pin_map[0], Pin.IN, Pin.PULL_UP, alt=0)
 except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], Pin.OUT, Pin.PULL_UP, alt=7)  # af specified in GPIO mode
+    pin = Pin(pin_map[0], Pin.OUT, Pin.PULL_UP,
+              alt=7)  # af specified in GPIO mode
 except Exception:
     print("Exception")
 
@@ -187,12 +192,14 @@ except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN, Pin.PULL_UP, alt=-1)  # incorrect af
+    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN,
+              Pin.PULL_UP, alt=-1)  # incorrect af
 except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN, Pin.PULL_UP, alt=16)  # incorrect af
+    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN,
+              Pin.PULL_UP, alt=16)  # incorrect af
 except Exception:
     print("Exception")
 

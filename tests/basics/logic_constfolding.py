@@ -4,9 +4,11 @@ def f_true():
     print('f_true')
     return True
 
+
 def f_false():
     print('f_false')
     return False
+
 
 print(0 or False)
 print(1 or foo)

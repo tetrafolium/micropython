@@ -12,7 +12,8 @@ import os
 import re
 import subprocess
 import sys
-import multiprocessing, multiprocessing.dummy
+import multiprocessing
+import multiprocessing.dummy
 
 
 # Extract MP_QSTR_FOO macros.
@@ -58,7 +59,8 @@ def preprocess():
             (args.cxxflags, cxxsources),
         ):
             batch_size = (len(sources) + cpus - 1) // cpus
-            chunks = [sources[i : i + batch_size] for i in range(0, len(sources), batch_size or 1)]
+            chunks = [sources[i: i + batch_size]
+                      for i in range(0, len(sources), batch_size or 1)]
             for output in p.imap(pp(flags), chunks):
                 out_file.write(output)
 
@@ -149,7 +151,8 @@ def cat_together():
 
 if __name__ == "__main__":
     if len(sys.argv) < 6:
-        print("usage: %s command mode input_filename output_dir output_file" % sys.argv[0])
+        print("usage: %s command mode input_filename output_dir output_file" %
+              sys.argv[0])
         sys.exit(2)
 
     class Args:
@@ -191,7 +194,8 @@ if __name__ == "__main__":
     args.mode = sys.argv[2]
     args.input_filename = sys.argv[3]  # Unused for command=cat
     args.output_dir = sys.argv[4]
-    args.output_file = None if len(sys.argv) == 5 else sys.argv[5]  # Unused for command=split
+    args.output_file = None if len(
+        sys.argv) == 5 else sys.argv[5]  # Unused for command=split
 
     if args.mode not in (_MODE_QSTR, _MODE_COMPRESS):
         print("error: mode %s unrecognised" % sys.argv[2])

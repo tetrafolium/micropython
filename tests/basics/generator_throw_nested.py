@@ -21,6 +21,7 @@ def gen():
         print(2)
     yield 9
 
+
 for i in range(1, 10):
     g = gen()
     try:

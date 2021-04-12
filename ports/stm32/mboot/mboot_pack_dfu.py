@@ -25,6 +25,7 @@
 Utility to create compressed, encrypted and signed DFU files.
 """
 
+import dfu
 import argparse
 import os
 import re
@@ -33,7 +34,6 @@ import sys
 import zlib
 
 sys.path.append(os.path.dirname(__file__) + "/../../../tools")
-import dfu
 
 try:
     import pyhy
@@ -69,7 +69,8 @@ class Keys:
     def _save_data(self, name, data, file_, hide=False):
         prefix = "//" if hide else ""
         data = ",".join("0x{:02x}".format(b) for b in data)
-        file_.write("{}const uint8_t {}[] = {{{}}};\n".format(prefix, name, data))
+        file_.write("{}const uint8_t {}[] = {{{}}};\n".format(
+            prefix, name, data))
 
     def _load_data(self, name, line):
         line = line.split(name + "[] = ")
@@ -80,15 +81,19 @@ class Keys:
 
     def save(self):
         with open(self.filename, "w") as f:
-            self._save_data("mboot_pack_sign_secret_key", self.sign_sk, f, hide=True)
+            self._save_data("mboot_pack_sign_secret_key",
+                            self.sign_sk, f, hide=True)
             self._save_data("mboot_pack_sign_public_key", self.sign_pk, f)
             self._save_data("mboot_pack_secretbox_key", self.secretbox, f)
 
     def load(self):
         with open(self.filename) as f:
-            self.sign_sk = self._load_data("mboot_pack_sign_secret_key", f.readline())
-            self.sign_pk = self._load_data("mboot_pack_sign_public_key", f.readline())
-            self.secretbox = self._load_data("mboot_pack_secretbox_key", f.readline())
+            self.sign_sk = self._load_data(
+                "mboot_pack_sign_secret_key", f.readline())
+            self.sign_pk = self._load_data(
+                "mboot_pack_sign_public_key", f.readline())
+            self.secretbox = self._load_data(
+                "mboot_pack_secretbox_key", f.readline())
 
 
 def dfu_read(filename):
@@ -101,7 +106,8 @@ def dfu_read(filename):
 
         for i in range(num_targ):
             hdr = f.read(274)
-            sig, alt, has_name, name, t_size, num_elem = struct.unpack("<6sBi255sII", hdr)
+            sig, alt, has_name, name, t_size, num_elem = struct.unpack(
+                "<6sBi255sII", hdr)
 
             file_offset += 274
             file_offset_t = file_offset
@@ -113,7 +119,8 @@ def dfu_read(filename):
                 file_offset += 8 + e_size
 
             if t_size != file_offset - file_offset_t:
-                raise Exception("corrupt DFU {} {}".format(t_size, file_offset - file_offset_t))
+                raise Exception("corrupt DFU {} {}".format(
+                    t_size, file_offset - file_offset_t))
 
         if size != file_offset:
             raise Exception("corrupt DFU {} {}".format(size, file_offset))
@@ -140,7 +147,8 @@ def sign(keys, data):
 
 def pack_chunk(keys, format_, chunk_addr, chunk_payload):
     header = struct.pack(
-        "<BBBBII", MBOOT_PACK_HEADER_VERSION, format_, 0, 0, chunk_addr, len(chunk_payload)
+        "<BBBBII", MBOOT_PACK_HEADER_VERSION, format_, 0, 0, chunk_addr, len(
+            chunk_payload)
     )
     chunk = header + chunk_payload
     sig = sign(keys, chunk)
@@ -150,7 +158,7 @@ def pack_chunk(keys, format_, chunk_addr, chunk_payload):
 
 def data_chunks(data, n):
     for i in range(0, len(data), n):
-        yield data[i : i + n]
+        yield data[i: i + n]
 
 
 def generate_keys(keys, args):
@@ -215,8 +223,8 @@ def verify_pack_dfu(keys, filename):
     _, elems = dfu_read(filename)
     for addr, data in elems:
         header = struct.unpack("<BBBBII", data[:12])
-        chunk = data[12 : 12 + header[5]]
-        sig = data[12 + header[5] :]
+        chunk = data[12: 12 + header[5]]
+        sig = data[12 + header[5]:]
         sig_pass = pyhy.hydro_sign_verify(
             sig, data[:12] + chunk, MBOOT_PACK_HYDRO_CONTEXT, keys.sign_pk
         )
@@ -236,16 +244,21 @@ def verify_pack_dfu(keys, filename):
 
 
 def main():
-    cmd_parser = argparse.ArgumentParser(description="Build signed/encrypted DFU files")
-    cmd_parser.add_argument("-k", "--keys", default="mboot_keys.h", help="filename for keys")
+    cmd_parser = argparse.ArgumentParser(
+        description="Build signed/encrypted DFU files")
+    cmd_parser.add_argument(
+        "-k", "--keys", default="mboot_keys.h", help="filename for keys")
     subparsers = cmd_parser.add_subparsers()
 
     parser_gk = subparsers.add_parser("generate-keys", help="generate keys")
     parser_gk.set_defaults(func=generate_keys)
 
-    parser_ed = subparsers.add_parser("pack-dfu", help="encrypt and sign a DFU file")
-    parser_ed.add_argument("-z", "--gzip", action="store_true", help="compress chunks")
-    parser_ed.add_argument("chunk_size", nargs=1, help="maximum size in bytes of each chunk")
+    parser_ed = subparsers.add_parser(
+        "pack-dfu", help="encrypt and sign a DFU file")
+    parser_ed.add_argument(
+        "-z", "--gzip", action="store_true", help="compress chunks")
+    parser_ed.add_argument("chunk_size", nargs=1,
+                           help="maximum size in bytes of each chunk")
     parser_ed.add_argument("infile", nargs=1, help="input DFU file")
     parser_ed.add_argument("outfile", nargs=1, help="output DFU file")
     parser_ed.set_defaults(func=pack_dfu)

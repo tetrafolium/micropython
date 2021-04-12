@@ -247,7 +247,7 @@ class SDCard:
             mv = memoryview(buf)
             while nblocks:
                 # receive the data and release card
-                self.readinto(mv[offset : offset + 512])
+                self.readinto(mv[offset: offset + 512])
                 offset += 512
                 nblocks -= 1
             if self.cmd(12, 0, 0xFF, skip1=True):
@@ -271,7 +271,7 @@ class SDCard:
             offset = 0
             mv = memoryview(buf)
             while nblocks:
-                self.write(_TOKEN_CMD25, mv[offset : offset + 512])
+                self.write(_TOKEN_CMD25, mv[offset: offset + 512])
                 offset += 512
                 nblocks -= 1
             self.write_token(_TOKEN_STOP_TRAN)

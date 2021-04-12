@@ -74,7 +74,8 @@ def change_daemon(action):
 def main():
     status = get_daemon_status()
 
-    print("WebREPL daemon auto-start status:", "enabled" if status else "disabled")
+    print("WebREPL daemon auto-start status:",
+          "enabled" if status else "disabled")
     print("\nWould you like to (E)nable or (D)isable it running on boot?")
     print("(Empty line to quit)")
     resp = input("> ").upper()
@@ -82,7 +83,8 @@ def main():
     if resp == "E":
         if exists(CONFIG):
             resp2 = input_choice(
-                "Would you like to change WebREPL password? (y/n) ", ("y", "n", "")
+                "Would you like to change WebREPL password? (y/n) ", ("y",
+                                                                      "n", "")
             )
         else:
             print("To enable WebREPL, you must set password for it")

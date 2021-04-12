@@ -45,7 +45,7 @@ print(list(m[1:-1]))
 # this tests get_buffer of memoryview
 m = memoryview(bytearray(2))
 print(bytearray(m))
-print(list(memoryview(memoryview(b'1234')))) # read-only memoryview
+print(list(memoryview(memoryview(b'1234'))))  # read-only memoryview
 
 a = array.array('i', [1, 2, 3, 4])
 m = memoryview(a)

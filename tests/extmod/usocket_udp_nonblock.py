@@ -1,10 +1,12 @@
 # test non-blocking UDP sockets
 
 try:
-    import usocket as socket, uerrno as errno
+    import usocket as socket
+    import uerrno as errno
 except ImportError:
     try:
-        import socket, errno
+        import socket
+        import errno
     except ImportError:
         print("SKIP")
         raise SystemExit

@@ -19,7 +19,8 @@ while True:
     if switch():
         pyb.delay(200)  # delay avoids detection of multiple presses
         blue.on()  # blue LED indicates file open
-        log = open("/sd/log.csv", "w")  # open file on SD (SD: '/sd/', flash: '/flash/)
+        # open file on SD (SD: '/sd/', flash: '/flash/)
+        log = open("/sd/log.csv", "w")
 
         # until switch is pressed again
         while not switch():

@@ -1,5 +1,5 @@
 els = []
-d = {1:2,3:4}
+d = {1: 2, 3: 4}
 a = d.popitem()
 print(len(d))
 els.append(a)
@@ -13,4 +13,3 @@ except KeyError:
 else:
     print("Did not raise KeyError")
 print(sorted(els))
-

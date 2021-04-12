@@ -1,10 +1,12 @@
 # test select.poll on UDP sockets
 
 try:
-    import usocket as socket, uselect as select
+    import usocket as socket
+    import uselect as select
 except ImportError:
     try:
-        import socket, select
+        import socket
+        import select
     except ImportError:
         print("SKIP")
         raise SystemExit

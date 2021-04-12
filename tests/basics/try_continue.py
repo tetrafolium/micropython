@@ -10,4 +10,6 @@ def f():
         except Exception:
             continue
         print('b', x)
+
+
 f()

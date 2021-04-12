@@ -1,7 +1,9 @@
 # Test btree interaction with the garbage collector.
 
 try:
-    import btree, uio, gc
+    import btree
+    import uio
+    import gc
 except ImportError:
     print("SKIP")
     raise SystemExit

@@ -9,7 +9,9 @@ except ImportError:
         print("SKIP")
         raise SystemExit
 
-import struct, time, socket
+import struct
+import time
+import socket
 
 PORT = 8000
 
@@ -50,7 +52,8 @@ def instance1():
     s.connect(socket.getaddrinfo(IP, PORT)[0][-1])
     lgr_onoff = 1
     lgr_linger = 0
-    s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER, struct.pack("ii", lgr_onoff, lgr_linger))
+    s.setsockopt(socket.SOL_SOCKET, socket.SO_LINGER,
+                 struct.pack("ii", lgr_onoff, lgr_linger))
     s.send(b"GET / HTTP/1.0\r\n\r\n")
     time.sleep(0.1)
     s.close()  # This issues a TCP RST since we've set the linger option

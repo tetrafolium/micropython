@@ -2,6 +2,9 @@
 # test printing of all bytecodes
 # fmt: off
 
+from sys import *
+
+
 def f():
     # constants
     a = None + False + True
@@ -15,7 +18,7 @@ def f():
     c = [1, 2]
     d = {1, 2}
     e = {}
-    f = {1:2}
+    f = {1: 2}
     g = 'a'
     h = b'a'
 
@@ -59,7 +62,7 @@ def f():
     # comprehensions
     a = (b for c in d if e)
     a = [b for c in d if e]
-    a = {b:b for c in d if e}
+    a = {b: b for c in d if e}
 
     # function calls
     a()
@@ -108,15 +111,17 @@ def f():
 
     # closed over variables
     x = 1
+
     def closure():
-        nonlocal x; a = x + 1
+        nonlocal x
+        a = x + 1
         x = 1
         del x
 
     # import
     import a
     from a import b
-    #from sys import * # tested at module scope
+    # from sys import * # tested at module scope
 
     # raise
     raise
@@ -127,12 +132,16 @@ def f():
     return 1
 
 # function with lots of locals
+
+
 def f():
     l1 = l2 = l3 = l4 = l5 = l6 = l7 = l8 = l9 = l10 = 1
     m1 = m2 = m3 = m4 = m5 = m6 = m7 = m8 = m9 = m10 = 2
     l10 + m10
 
 # functions with default args
+
+
 def f(a=1):
     pass
 
@@ -140,21 +149,28 @@ def f(a=1):
         return b + a
 
 # function which yields
+
+
 def f():
     yield
     yield 1
     yield from 1
 
 # class
+
+
 class Class:
     pass
+
 
 # delete name
 del Class
 
 # load super method
+
+
 def f(self):
     super().f()
 
+
 # import * (needs to be in module scope)
-from sys import *

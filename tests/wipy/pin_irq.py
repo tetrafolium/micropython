@@ -65,7 +65,8 @@ print(pin_irq_count_total == 1)
 
 # check the call method
 pin1_irq()
-print(pin_irq_count_trigger == 1)  # no flags since the irq was manually triggered
+# no flags since the irq was manually triggered
+print(pin_irq_count_trigger == 1)
 print(pin_irq_count_total == 2)
 
 pin1_irq.disable()

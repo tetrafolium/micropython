@@ -9,6 +9,7 @@ def test_exc(code, exc):
     except:
         print("wrong exception")
 
+
 # object with buffer protocol needed on rhs
 try:
     (1 << 70) in 1
