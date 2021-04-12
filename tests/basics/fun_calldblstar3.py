@@ -1,5 +1,6 @@
 # test passing a user-defined mapping as the argument to **
 
+
 def foo(**kw):
     print(sorted(kw.items()))
 

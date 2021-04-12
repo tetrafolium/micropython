@@ -12,7 +12,6 @@ except AttributeError:
 
 
 class Foo:
-
     def __new__(cls):
         # Should not be called in this test
         print("in __new__")

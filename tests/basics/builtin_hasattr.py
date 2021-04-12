@@ -18,7 +18,6 @@ print(hasattr(list, "foo"))
 
 
 class C:
-
     def __getattr__(self, attr):
         if attr == "exists":
             return attr

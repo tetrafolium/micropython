@@ -1,6 +1,7 @@
 # test 'return' within the finally block, with nested finally's
 # only inactive finally's should be executed, and only once
 
+
 # basic nested finally's, the print should only be executed once
 def f():
     try:

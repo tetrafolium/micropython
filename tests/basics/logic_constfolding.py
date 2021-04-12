@@ -1,5 +1,6 @@
 # tests logical constant folding in parser
 
+
 def f_true():
     print('f_true')
     return True

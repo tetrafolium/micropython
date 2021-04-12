@@ -1,5 +1,6 @@
 # testing default args to a function
 
+
 def fun1(val=5):
     print(val)
 

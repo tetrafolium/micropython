@@ -68,9 +68,10 @@ class TargetSubprocess:
 
     def run_script(self, script):
         try:
-            p = subprocess.run(
-                self.cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, input=script
-            )
+            p = subprocess.run(self.cmd,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT,
+                               input=script)
             return p.stdout, None
         except subprocess.CalledProcessError as er:
             return b"", er
@@ -119,7 +120,8 @@ def run_tests(target_truth, target, args, stats):
         except OSError:
             print("----  {} - mpy file not compiled".format(test_file))
             continue
-        test_script += bytes(injected_import_hook_code.format(test_module), "ascii")
+        test_script += bytes(injected_import_hook_code.format(test_module),
+                             "ascii")
         test_script += test_file_data
 
         # Run test under MicroPython
@@ -163,17 +165,19 @@ def run_tests(target_truth, target, args, stats):
 
 def main():
     cmd_parser = argparse.ArgumentParser(
-        description="Run dynamic-native-module tests under MicroPython"
-    )
-    cmd_parser.add_argument(
-        "-p", "--pyboard", action="store_true", help="run tests via pyboard.py"
-    )
-    cmd_parser.add_argument(
-        "-d", "--device", default="/dev/ttyACM0", help="the device for pyboard.py"
-    )
-    cmd_parser.add_argument(
-        "-a", "--arch", default="x64", help="native architecture of the target"
-    )
+        description="Run dynamic-native-module tests under MicroPython")
+    cmd_parser.add_argument("-p",
+                            "--pyboard",
+                            action="store_true",
+                            help="run tests via pyboard.py")
+    cmd_parser.add_argument("-d",
+                            "--device",
+                            default="/dev/ttyACM0",
+                            help="the device for pyboard.py")
+    cmd_parser.add_argument("-a",
+                            "--arch",
+                            default="x64",
+                            help="native architecture of the target")
     cmd_parser.add_argument("files", nargs="*", help="input test files")
     args = cmd_parser.parse_args()
 

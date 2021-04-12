@@ -1,5 +1,5 @@
 # basic multiplication
-print((0,) * 5)
+print((0, ) * 5)
 
 # check negative, 0, positive; lhs and rhs multiplication
 for i in (-4, -2, 0, 2, 4):

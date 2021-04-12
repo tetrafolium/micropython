@@ -34,8 +34,8 @@ def compute_stats(lst):
         avg += x
         var += x * x
     avg /= len(lst)
-    var = max(0, var / len(lst) - avg ** 2)
-    return avg, var ** 0.5
+    var = max(0, var / len(lst) - avg**2)
+    return avg, var**0.5
 
 
 def run_script_on_target(target, script):
@@ -52,9 +52,10 @@ def run_script_on_target(target, script):
     else:
         # Run local executable
         try:
-            p = subprocess.run(
-                target, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, input=script
-            )
+            p = subprocess.run(target,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT,
+                               input=script)
             output = p.stdout
         except subprocess.CalledProcessError as er:
             err = er
@@ -92,12 +93,8 @@ def run_benchmarks(target, param_n, param_m, n_average, test_list):
         print(test_file + ": ", end="")
 
         # Check if test should be skipped
-        skip = (
-            skip_complex
-            and test_file.find("bm_fft") != -1
-            or skip_native
-            and test_file.find("viper_") != -1
-        )
+        skip = (skip_complex and test_file.find("bm_fft") != -1
+                or skip_native and test_file.find("viper_") != -1)
         if skip:
             print("skip")
             continue
@@ -134,8 +131,8 @@ def run_benchmarks(target, param_n, param_m, n_average, test_list):
 
         # Check result against truth if needed
         if error is None and result_out != "None":
-            _, _, result_exp = run_benchmark_on_target(
-                PYTHON_TRUTH, test_script)
+            _, _, result_exp = run_benchmark_on_target(PYTHON_TRUTH,
+                                                       test_script)
             if result_out != result_exp:
                 error = "FAIL truth"
 
@@ -144,11 +141,10 @@ def run_benchmarks(target, param_n, param_m, n_average, test_list):
         else:
             t_avg, t_sd = compute_stats(times)
             s_avg, s_sd = compute_stats(scores)
-            print(
-                "{:.2f} {:.4f} {:.2f} {:.4f}".format(
-                    t_avg, 100 * t_sd / t_avg, s_avg, 100 * s_sd / s_avg
-                )
-            )
+            print("{:.2f} {:.4f} {:.2f} {:.4f}".format(t_avg,
+                                                       100 * t_sd / t_avg,
+                                                       s_avg,
+                                                       100 * s_sd / s_avg))
             if 0:
                 print("  times: ", times)
                 print("  scores:", scores)
@@ -164,10 +160,11 @@ def parse_output(filename):
         m = int(m.split("=")[1])
         data = []
         for l in f:
-            if l.find(": ") != -1 and l.find(": skip") == -1 and l.find("CRASH: ") == -1:
+            if l.find(": ") != -1 and l.find(": skip") == -1 and l.find(
+                    "CRASH: ") == -1:
                 name, values = l.strip().split(": ")
                 values = tuple(float(v) for v in values.split())
-                data.append((name,) + values)
+                data.append((name, ) + values)
     return n, m, data
 
 
@@ -185,11 +182,8 @@ def compute_diff(file1, file2, diff_score):
         hdr = "N={} M={}".format(n1, m1)
     else:
         hdr = "N={} M={} vs N={} M={}".format(n1, m1, n2, m2)
-    print(
-        "{:24} {:>10} -> {:>10}   {:>10}   {:>7}% (error%)".format(
-            hdr, file1, file2, "diff", "diff"
-        )
-    )
+    print("{:24} {:>10} -> {:>10}   {:>10}   {:>7}% (error%)".format(
+        hdr, file1, file2, "diff", "diff"))
 
     # Print entries
     while d1 and d2:
@@ -203,14 +197,12 @@ def compute_diff(file1, file2, diff_score):
             sd1 *= av1 / 100  # convert from percent sd to absolute sd
             sd2 *= av2 / 100  # convert from percent sd to absolute sd
             av_diff = av2 - av1
-            sd_diff = (sd1 ** 2 + sd2 ** 2) ** 0.5
+            sd_diff = (sd1**2 + sd2**2)**0.5
             percent = 100 * av_diff / av1
             percent_sd = 100 * sd_diff / av1
             print(
-                "{:24} {:10.2f} -> {:10.2f} : {:+10.2f} = {:+7.3f}% (+/-{:.2f}%)".format(
-                    name, av1, av2, av_diff, percent, percent_sd
-                )
-            )
+                "{:24} {:10.2f} -> {:10.2f} : {:+10.2f} = {:+7.3f}% (+/-{:.2f}%)"
+                .format(name, av1, av2, av_diff, percent, percent_sd))
         elif d1[0][0] < d2[0][0]:
             d1.pop(0)
         else:
@@ -220,23 +212,30 @@ def compute_diff(file1, file2, diff_score):
 def main():
     cmd_parser = argparse.ArgumentParser(
         description="Run benchmarks for MicroPython")
+    cmd_parser.add_argument("-t",
+                            "--diff-time",
+                            action="store_true",
+                            help="diff time outputs from a previous run")
+    cmd_parser.add_argument("-s",
+                            "--diff-score",
+                            action="store_true",
+                            help="diff score outputs from a previous run")
+    cmd_parser.add_argument("-p",
+                            "--pyboard",
+                            action="store_true",
+                            help="run tests via pyboard.py")
+    cmd_parser.add_argument("-d",
+                            "--device",
+                            default="/dev/ttyACM0",
+                            help="the device for pyboard.py")
+    cmd_parser.add_argument("-a",
+                            "--average",
+                            default="8",
+                            help="averaging number")
     cmd_parser.add_argument(
-        "-t", "--diff-time", action="store_true", help="diff time outputs from a previous run"
-    )
-    cmd_parser.add_argument(
-        "-s", "--diff-score", action="store_true", help="diff score outputs from a previous run"
-    )
-    cmd_parser.add_argument(
-        "-p", "--pyboard", action="store_true", help="run tests via pyboard.py"
-    )
-    cmd_parser.add_argument(
-        "-d", "--device", default="/dev/ttyACM0", help="the device for pyboard.py"
-    )
-    cmd_parser.add_argument(
-        "-a", "--average", default="8", help="averaging number")
-    cmd_parser.add_argument(
-        "--emit", default="bytecode", help="MicroPython emitter to use (bytecode or native)"
-    )
+        "--emit",
+        default="bytecode",
+        help="MicroPython emitter to use (bytecode or native)")
     cmd_parser.add_argument(
         "N", nargs=1, help="N parameter (approximate target CPU frequency)")
     cmd_parser.add_argument(
@@ -262,15 +261,14 @@ def main():
         target = [MICROPYTHON, "-X", "emit=" + args.emit]
 
     if len(args.files) == 0:
-        tests_skip = ("benchrun.py",)
+        tests_skip = ("benchrun.py", )
         if M <= 25:
             # These scripts are too big to be compiled by the target
             tests_skip += ("bm_chaos.py", "bm_hexiom.py", "misc_raytrace.py")
         tests = sorted(
             BENCH_SCRIPT_DIR + test_file
             for test_file in os.listdir(BENCH_SCRIPT_DIR)
-            if test_file.endswith(".py") and test_file not in tests_skip
-        )
+            if test_file.endswith(".py") and test_file not in tests_skip)
     else:
         tests = sorted(args.files)
 

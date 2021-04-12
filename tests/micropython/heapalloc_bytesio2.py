@@ -9,7 +9,6 @@ except (ImportError, AttributeError):
     print("SKIP")
     raise SystemExit
 
-
 data = b"1234" * 256
 
 before = micropython.mem_total()

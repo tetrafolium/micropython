@@ -14,7 +14,7 @@ wifi = WLAN()
 
 print(machine)
 machine.idle()
-print(machine.freq() == (80000000,))
+print(machine.freq() == (80000000, ))
 print(machine.unique_id() == wifi.mac())
 
 machine.main("main.py")

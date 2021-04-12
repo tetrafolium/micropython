@@ -37,8 +37,8 @@ def test():
         utime.sleep_ms(100)
         for func_name, _ in EXPECTED_MAP:
             try:
-                time_func = getattr(utime, func_name, None) or globals()[
-                    func_name]
+                time_func = getattr(utime, func_name,
+                                    None) or globals()[func_name]
                 now = time_func()  # may raise AttributeError
             except (KeyError, AttributeError):
                 continue
@@ -57,10 +57,9 @@ def test():
             # ticks_cpu() returns 0 on some ports (e.g. unix)
             pass
         elif len(results) < min_len:
-            print(
-                "%s() returns %s result%s in %s ms, expecting >= %s"
-                % (func_name, len(results), "s"[: len(results) != 1], TEST_TIME, min_len)
-            )
+            print("%s() returns %s result%s in %s ms, expecting >= %s" %
+                  (func_name, len(results), "s"[:len(results) != 1], TEST_TIME,
+                   min_len))
 
 
 test()

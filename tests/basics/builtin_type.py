@@ -26,6 +26,6 @@ except TypeError:
 
 # elements of second arg (the bases) should be types
 try:
-    type('abc', (1,), {})
+    type('abc', (1, ), {})
 except TypeError:
     print('TypeError')

@@ -15,7 +15,7 @@ def mandelbrot(w, h):
     xscale = (w - 1) / 2.4
     yscale = (h - 1) / 3.2
     for v in range(h):
-        line = memoryview(img)[v * w: v * w + w]
+        line = memoryview(img)[v * w:v * w + w]
         for u in range(w):
             c = in_set(complex(v / yscale - 2.3, u / xscale - 1.2))
             line[u] = c

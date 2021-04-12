@@ -11,16 +11,10 @@ def conway_step():
     for x in range(128):  # loop over x coordinates
         for y in range(32):  # loop over y coordinates
             # count number of neighbours
-            num_neighbours = (
-                lcd.get(x - 1, y - 1)
-                + lcd.get(x, y - 1)
-                + lcd.get(x + 1, y - 1)
-                + lcd.get(x - 1, y)
-                + lcd.get(x + 1, y)
-                + lcd.get(x + 1, y + 1)
-                + lcd.get(x, y + 1)
-                + lcd.get(x - 1, y + 1)
-            )
+            num_neighbours = (lcd.get(x - 1, y - 1) + lcd.get(x, y - 1) +
+                              lcd.get(x + 1, y - 1) + lcd.get(x - 1, y) +
+                              lcd.get(x + 1, y) + lcd.get(x + 1, y + 1) +
+                              lcd.get(x, y + 1) + lcd.get(x - 1, y + 1))
 
             # check if the centre cell is alive or not
             self = lcd.get(x, y)

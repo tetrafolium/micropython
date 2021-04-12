@@ -1,5 +1,6 @@
 # test static and class methods
 
+
 class C:
     @staticmethod
     def f(rhs):
@@ -13,6 +14,7 @@ class C:
     @staticmethod
     def __sub__(rhs):
         print('sub', rhs)
+
     # builtin wrapped in classmethod
 
     @classmethod

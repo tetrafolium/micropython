@@ -29,7 +29,8 @@ def schedule_in(handler, delay_ms):
 
     if _timer:
         _timer.init(mode=machine.Timer.ONE_SHOT,
-                    period=delay_ms, callback=_wrap)
+                    period=delay_ms,
+                    callback=_wrap)
     else:
         micropython.schedule(_wrap, None)
 

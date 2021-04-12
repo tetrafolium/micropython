@@ -31,8 +31,8 @@ print(123 // -7, 123 % -7)
 print(-123 // -7, -123 % -7)
 
 # power
-print(2 ** 3)
-print(3 ** 4)
+print(2**3)
+print(3**4)
 
 # won't fold so an exception can be raised at runtime
 try:

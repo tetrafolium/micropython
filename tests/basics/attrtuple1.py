@@ -14,7 +14,6 @@ except AttributeError:
     print("SKIP")
     raise SystemExit
 
-
 # test printing of attrtuple
 print(str(t).find("version=") > 0)
 

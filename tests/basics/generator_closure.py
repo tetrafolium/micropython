@@ -5,6 +5,7 @@ def f():
     def g():
         yield x
         yield x + 1
+
     return g()
 
 
@@ -19,6 +20,7 @@ def f():
 
     def g():
         return x + 1
+
     yield g()
     x = 2
     yield g()

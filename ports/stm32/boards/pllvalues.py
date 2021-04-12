@@ -9,9 +9,8 @@ import re
 
 
 class MCU:
-    def __init__(
-        self, range_sysclk, range_m, range_n, range_p, range_q, range_vco_in, range_vco_out
-    ):
+    def __init__(self, range_sysclk, range_m, range_n, range_p, range_q,
+                 range_vco_in, range_vco_out):
         self.range_sysclk = range_sysclk
         self.range_m = range_m
         self.range_n = range_n
@@ -162,11 +161,8 @@ def compute_pll_table(source_clk, relax_pll48):
 
 def generate_c_table(hse, valid_plls):
     valid_plls.sort()
-    if (
-        mcu.range_sysclk[-1] <= 0xFF
-        and mcu.range_m[-1] <= 0x3F
-        and mcu.range_p[-1] // 2 - 1 <= 0x3
-    ):
+    if (mcu.range_sysclk[-1] <= 0xFF and mcu.range_m[-1] <= 0x3F
+            and mcu.range_p[-1] // 2 - 1 <= 0x3):
         typedef = "uint16_t"
         sys_mask = 0xFF
         m_shift = 10
@@ -180,24 +176,25 @@ def generate_c_table(hse, valid_plls):
         m_mask = 0xFF
         p_shift = 16
         p_mask = 0xFF
-    print("#define PLL_FREQ_TABLE_SYS(pll) ((pll) & %d)" % (sys_mask,))
+    print("#define PLL_FREQ_TABLE_SYS(pll) ((pll) & %d)" % (sys_mask, ))
     print("#define PLL_FREQ_TABLE_M(pll) (((pll) >> %d) & %d)" %
           (m_shift, m_mask))
     print("#define PLL_FREQ_TABLE_P(pll) (((((pll) >> %d) & %d) + 1) * 2)" %
           (p_shift, p_mask))
-    print("typedef %s pll_freq_table_t;" % (typedef,))
+    print("typedef %s pll_freq_table_t;" % (typedef, ))
     print("// (M, P/2-1, SYS) values for %u MHz source" % hse)
-    print("static const pll_freq_table_t pll_freq_table[%u] = {" % (
-        len(valid_plls),))
+    print("static const pll_freq_table_t pll_freq_table[%u] = {" %
+          (len(valid_plls), ))
     for sys, (M, N, P, Q) in valid_plls:
         print("    (%u << %u) | (%u << %u) | %u," %
-              (M, m_shift, P // 2 - 1, p_shift, sys), end="")
+              (M, m_shift, P // 2 - 1, p_shift, sys),
+              end="")
         if M >= 2:
             vco_in, vco_out, pllck, pll48ck = compute_derived(
                 hse, (M, N, P, Q))
             print(
-                " // M=%u N=%u P=%u Q=%u vco_in=%.2f vco_out=%.2f pll48=%.2f"
-                % (M, N, P, Q, vco_in, vco_out, pll48ck),
+                " // M=%u N=%u P=%u Q=%u vco_in=%.2f vco_out=%.2f pll48=%.2f" %
+                (M, N, P, Q, vco_in, vco_out, pll48ck),
                 end="",
             )
         print()
@@ -209,7 +206,7 @@ def print_table(hse, valid_plls):
     print("sys :  M      N     P     Q : VCO_IN VCO_OUT   PLLCK PLL48CK")
     out_format = "%3u : %2u  %.1f  %.2f  %.2f :  %5.2f  %6.2f  %6.2f  %6.2f"
     for sys, pll in valid_plls:
-        print(out_format % ((sys,) + pll + compute_derived(hse, pll)))
+        print(out_format % ((sys, ) + pll + compute_derived(hse, pll)))
     print("found %u valid configurations" % len(valid_plls))
 
 
@@ -268,8 +265,8 @@ def main():
         # extract HSE_VALUE, and optionally HSI_VALUE, from header file
         hse, hsi = search_header_for_hsx_values(argv[0][5:], [None, None])
         if hse is None:
-            raise ValueError(
-                "%s does not contain a definition of HSE_VALUE" % argv[0])
+            raise ValueError("%s does not contain a definition of HSE_VALUE" %
+                             argv[0])
         if hsi is not None and hsi > 16:
             # Currently, a HSI value greater than 16MHz is not supported
             hsi = None

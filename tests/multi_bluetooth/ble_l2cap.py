@@ -31,7 +31,6 @@ _NUM_PAYLOADS = const(16)
 
 _RANDOM_SEED = 22
 
-
 waiting_events = {}
 
 
@@ -93,10 +92,9 @@ def recv_data(ble, conn_handle, cid):
     buf = bytearray(_PAYLOAD_LEN)
     recv_bytes = 0
     recv_correct = 0
-    expected_bytes = (
-        _PAYLOAD_LEN * _NUM_PAYLOADS + _PAYLOAD_LEN_STEP *
-        _NUM_PAYLOADS * (_NUM_PAYLOADS - 1) // 2
-    )
+    expected_bytes = (_PAYLOAD_LEN * _NUM_PAYLOADS +
+                      _PAYLOAD_LEN_STEP * _NUM_PAYLOADS *
+                      (_NUM_PAYLOADS - 1) // 2)
     print("l2cap_recvinto", expected_bytes)
     while recv_bytes < expected_bytes:
         wait_for_event(_IRQ_L2CAP_RECV, TIMEOUT_MS)

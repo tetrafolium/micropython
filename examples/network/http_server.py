@@ -3,7 +3,6 @@ try:
 except:
     import socket
 
-
 CONTENT = b"""\
 HTTP/1.0 200 OK
 

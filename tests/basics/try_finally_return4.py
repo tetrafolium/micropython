@@ -1,6 +1,7 @@
 # test try-finally with return, where unwinding return has to go through
 # another try-finally which may affect the behaviour of the return
 
+
 # case where a simple try-finally executes during an unwinding return
 def f(x):
     try:

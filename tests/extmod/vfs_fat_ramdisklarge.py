@@ -35,7 +35,7 @@ class RAMBDevSparse:
             s = n + off // self.SEC_SIZE
             if s not in self.data:
                 self.data[s] = bytearray(self.SEC_SIZE)
-            self.data[s][:] = mv[off: off + self.SEC_SIZE]
+            self.data[s][:] = mv[off:off + self.SEC_SIZE]
 
     def ioctl(self, op, arg):
         # print("ioctl(%d, %r)" % (op, arg))

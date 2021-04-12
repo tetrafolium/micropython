@@ -59,7 +59,8 @@ def verify(sha):
     subject_line = raw_body[0]
     very_verbose("subject_line", subject_line)
     if not re.match(r"^[^!]+: [A-Z]+.+ .+\.$", subject_line):
-        error("Subject line should contain ': ' and end in '.': " + subject_line)
+        error("Subject line should contain ': ' and end in '.': " +
+              subject_line)
     if len(subject_line) >= 73:
         error("Subject line should be 72 or less characters: " + subject_line)
 
@@ -72,7 +73,8 @@ def verify(sha):
         if len(line) >= 76:
             error("Message lines should be 75 or less characters: " + line)
 
-    if not raw_body[-1].startswith("Signed-off-by: ") or "@" not in raw_body[-1]:
+    if not raw_body[-1].startswith(
+            "Signed-off-by: ") or "@" not in raw_body[-1]:
         warning("Message should be signed-off")
 
     return errors, warnings
@@ -93,7 +95,8 @@ def run(args):
     if has_errors or has_warnings:
         if suggestions:
             print(
-                "See https://github.com/micropython/micropython/blob/master/CODECONVENTIONS.md")
+                "See https://github.com/micropython/micropython/blob/master/CODECONVENTIONS.md"
+            )
     else:
         print("ok")
     if has_errors:

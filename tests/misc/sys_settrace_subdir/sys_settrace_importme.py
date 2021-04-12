@@ -6,7 +6,8 @@ except NameError:
     print("const not defined")
 
 
-def const(x): return x
+def const(x):
+    return x
 
 
 _CNT01 = "CONST01"

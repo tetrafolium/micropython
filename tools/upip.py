@@ -17,7 +17,6 @@ import upip_utarfile as tarfile
 
 gc.collect()
 
-
 debug = False
 index_urls = ["https://micropython.org/pi", "https://pypi.org/pypi"]
 install_path = None
@@ -248,8 +247,8 @@ def install(to_install, install_path=None):
                 to_install.extend(deps)
     except Exception as e:
         print(
-            "Error installing '{}': {}, packages may be partially installed".format(
-                pkg_spec, e),
+            "Error installing '{}': {}, packages may be partially installed".
+            format(pkg_spec, e),
             file=sys.stderr,
         )
 
@@ -272,24 +271,20 @@ def cleanup():
 
 
 def help():
-    print(
-        """\
+    print("""\
 upip - Simple PyPI package manager for MicroPython
 Usage: micropython -m upip install [-p <path>] <package>... | -r <requirements.txt>
 import upip; upip.install(package_or_list, [<path>])
 
 If <path> is not given, packages will be installed into sys.path[1]
 (can be set from MICROPYPATH environment variable, if current system
-supports that)."""
-    )
+supports that).""")
     print("Current value of sys.path[1]:", sys.path[1])
-    print(
-        """\
+    print("""\
 
 Note: only MicroPython packages (usually, named micropython-*) are supported
 for installation, upip does not support arbitrary code in setup.py.
-"""
-    )
+""")
 
 
 def main():

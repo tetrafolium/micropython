@@ -1,5 +1,6 @@
 # basic class
 
+
 def go():
     class C:
         def f():

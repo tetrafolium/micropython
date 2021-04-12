@@ -10,7 +10,9 @@ except NameError:
 args = {'thisisaverylongargumentname': 123}
 
 # when this string is executed it will intern the keyword argument
-exec("def foo(*,thisisaverylongargumentname=1):\n print(thisisaverylongargumentname)")
+exec(
+    "def foo(*,thisisaverylongargumentname=1):\n print(thisisaverylongargumentname)"
+)
 
 # test default arg
 foo()

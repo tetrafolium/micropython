@@ -16,7 +16,7 @@ print(a, b, c)
 
 (a) = range(1)
 print(a)
-(a,) = range(1)
+(a, ) = range(1)
 print(a)
 (a, b) = range(2)
 print(a, b)
@@ -73,7 +73,7 @@ print(a, b, a == b, a is b)
 print(a)
 
 try:
-    a, *b, c = (30,)
+    a, *b, c = (30, )
 except ValueError:
     print("ValueError")
 

@@ -48,13 +48,11 @@ def server_handshake(sock):
     if DEBUG:
         print("respkey:", respkey)
 
-    sock.send(
-        b"""\
+    sock.send(b"""\
 HTTP/1.1 101 Switching Protocols\r
 Upgrade: websocket\r
 Connection: Upgrade\r
-Sec-WebSocket-Accept: """
-    )
+Sec-WebSocket-Accept: """)
     sock.send(respkey)
     sock.send("\r\n\r\n")
 
@@ -64,16 +62,14 @@ Sec-WebSocket-Accept: """
 # servers.
 def client_handshake(sock):
     cl = sock.makefile("rwb", 0)
-    cl.write(
-        b"""\
+    cl.write(b"""\
 GET / HTTP/1.1\r
 Host: echo.websocket.org\r
 Connection: Upgrade\r
 Upgrade: websocket\r
 Sec-WebSocket-Key: foo\r
 \r
-"""
-    )
+""")
     l = cl.readline()
     #    print(l)
     while 1:

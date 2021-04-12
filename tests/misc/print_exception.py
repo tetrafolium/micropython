@@ -14,8 +14,8 @@ if hasattr(sys, "print_exception"):
 else:
     import traceback
 
-    def print_exception(e, f): return traceback.print_exception(
-        None, e, sys.exc_info()[2], file=f)
+    def print_exception(e, f):
+        return traceback.print_exception(None, e, sys.exc_info()[2], file=f)
 
 
 def print_exc(e):

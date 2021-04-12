@@ -1,5 +1,5 @@
 print(','.join(()))
-print(','.join(('a',)))
+print(','.join(('a', )))
 print(','.join(('a', 'b')))
 
 print(','.join([]))
@@ -33,8 +33,7 @@ print("a" "b")
 print("a" '''b''')
 print("a"  # inline comment
       "b")
-print("a"
-      "b")
+print("a" "b")
 
 # the following should not be joined by the compiler
 x = 'a'

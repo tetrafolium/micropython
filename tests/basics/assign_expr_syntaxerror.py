@@ -1,5 +1,6 @@
 # test SyntaxError with := operator
 
+
 def test(code):
     try:
         print(eval(code))

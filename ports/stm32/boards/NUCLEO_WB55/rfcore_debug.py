@@ -87,8 +87,9 @@ def sram2a_dump(num_words=64, width=8):
     for i in range((num_words + width - 1) // width):
         print("  %04x " % (i * 4 * width), end="")
         for j in range(width):
-            print(" %08x" %
-                  (mem32[SRAM2A_BASE + (i * width + j) * 4] & 0xFFFFFFFF), end="")
+            print(" %08x" % (mem32[SRAM2A_BASE +
+                                   (i * width + j) * 4] & 0xFFFFFFFF),
+                  end="")
         print()
 
 
@@ -162,16 +163,13 @@ def dev_info():
     def dump_version(offset):
         x = get_ipcc_table_word(TABLE_DEVICE_INFO, offset)
         print(
-            "0x%08x (%u.%u.%u.%u.%u)"
-            % (x, x >> 24, x >> 16 & 0xFF, x >> 8 & 0xFF, x >> 4 & 0xF, x & 0xF)
-        )
+            "0x%08x (%u.%u.%u.%u.%u)" %
+            (x, x >> 24, x >> 16 & 0xFF, x >> 8 & 0xFF, x >> 4 & 0xF, x & 0xF))
 
     def dump_memory_size(offset):
         x = get_ipcc_table_word(TABLE_DEVICE_INFO, offset)
-        print(
-            "0x%08x (SRAM2b=%uk SRAM2a=%uk flash=%uk)"
-            % (x, x >> 24, x >> 16 & 0xFF, (x & 0xFF) * 4)
-        )
+        print("0x%08x (SRAM2b=%uk SRAM2a=%uk flash=%uk)" %
+              (x, x >> 24, x >> 16 & 0xFF, (x & 0xFF) * 4))
 
     print("Device information table @%08x:" %
           get_ipcc_table(TABLE_DEVICE_INFO))
@@ -200,13 +198,10 @@ def dev_info():
               get_ipcc_table_word(TABLE_DEVICE_INFO, 7))
         print("wireless FW-thread info  : 0x%08x" %
               get_ipcc_table_word(TABLE_DEVICE_INFO, 8))
-        print(
-            "UID64                    : 0x%08x 0x%08x"
-            % (
-                get_ipcc_table_word(TABLE_DEVICE_INFO, 9),
-                get_ipcc_table_word(TABLE_DEVICE_INFO, 10),
-            )
-        )
+        print("UID64                    : 0x%08x 0x%08x" % (
+            get_ipcc_table_word(TABLE_DEVICE_INFO, 9),
+            get_ipcc_table_word(TABLE_DEVICE_INFO, 10),
+        ))
         print("device ID                : 0x%04x" %
               get_ipcc_table_word(TABLE_DEVICE_INFO, 11))
     else:
@@ -233,18 +228,21 @@ def dev_info():
 def ipcc_state():
     print("IPCC:")
     print("  C1CR:     0x%08x" %
-          (mem32[stm.IPCC + stm.IPCC_C1CR] & 0xFFFFFFFF), end="")
+          (mem32[stm.IPCC + stm.IPCC_C1CR] & 0xFFFFFFFF),
+          end="")
     print("  C2CR:     0x%08x" %
           (mem32[stm.IPCC + stm.IPCC_C2CR] & 0xFFFFFFFF))
     print("  C1MR:     0x%08x" %
-          (mem32[stm.IPCC + stm.IPCC_C1MR] & 0xFFFFFFFF), end="")
+          (mem32[stm.IPCC + stm.IPCC_C1MR] & 0xFFFFFFFF),
+          end="")
     print("  C2MR:     0x%08x" %
           (mem32[stm.IPCC + stm.IPCC_C2MR] & 0xFFFFFFFF))
     # these always read 0
     # print('  C1SCR:    0x%08x' % (mem32[stm.IPCC + stm.IPCC_C1SCR] & 0xffffffff), end='')
     # print('  C2SCR:    0x%08x' % (mem32[stm.IPCC + stm.IPCC_C2SCR] & 0xffffffff))
     print("  C1TOC2SR: 0x%08x" %
-          (mem32[stm.IPCC + stm.IPCC_C1TOC2SR] & 0xFFFFFFFF), end="")
+          (mem32[stm.IPCC + stm.IPCC_C1TOC2SR] & 0xFFFFFFFF),
+          end="")
     print("  C2TOC1SR: 0x%08x" %
           (mem32[stm.IPCC + stm.IPCC_C2TOC1SR] & 0xFFFFFFFF))
 

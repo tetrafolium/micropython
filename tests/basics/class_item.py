@@ -1,5 +1,6 @@
 # test class with __getitem__, __setitem__, __delitem__ methods
 
+
 class C:
     def __getitem__(self, item):
         print('get', item)

@@ -42,7 +42,6 @@ except ImportError:
         "ERROR: pyhy not found. Please install python pyhy for encrypted mboot support: pip3 install pyhy"
     )
 
-
 # Currenty supported version of a packed DFU file.
 MBOOT_PACK_HEADER_VERSION = 1
 
@@ -82,18 +81,20 @@ class Keys:
     def save(self):
         with open(self.filename, "w") as f:
             self._save_data("mboot_pack_sign_secret_key",
-                            self.sign_sk, f, hide=True)
+                            self.sign_sk,
+                            f,
+                            hide=True)
             self._save_data("mboot_pack_sign_public_key", self.sign_pk, f)
             self._save_data("mboot_pack_secretbox_key", self.secretbox, f)
 
     def load(self):
         with open(self.filename) as f:
-            self.sign_sk = self._load_data(
-                "mboot_pack_sign_secret_key", f.readline())
-            self.sign_pk = self._load_data(
-                "mboot_pack_sign_public_key", f.readline())
-            self.secretbox = self._load_data(
-                "mboot_pack_secretbox_key", f.readline())
+            self.sign_sk = self._load_data("mboot_pack_sign_secret_key",
+                                           f.readline())
+            self.sign_pk = self._load_data("mboot_pack_sign_public_key",
+                                           f.readline())
+            self.secretbox = self._load_data("mboot_pack_secretbox_key",
+                                             f.readline())
 
 
 def dfu_read(filename):
@@ -138,7 +139,8 @@ def compress(data):
 
 
 def encrypt(keys, data):
-    return pyhy.hydro_secretbox_encrypt(data, 0, MBOOT_PACK_HYDRO_CONTEXT, keys.secretbox)
+    return pyhy.hydro_secretbox_encrypt(data, 0, MBOOT_PACK_HYDRO_CONTEXT,
+                                        keys.secretbox)
 
 
 def sign(keys, data):
@@ -146,10 +148,8 @@ def sign(keys, data):
 
 
 def pack_chunk(keys, format_, chunk_addr, chunk_payload):
-    header = struct.pack(
-        "<BBBBII", MBOOT_PACK_HEADER_VERSION, format_, 0, 0, chunk_addr, len(
-            chunk_payload)
-    )
+    header = struct.pack("<BBBBII", MBOOT_PACK_HEADER_VERSION, format_, 0, 0,
+                         chunk_addr, len(chunk_payload))
     chunk = header + chunk_payload
     sig = sign(keys, chunk)
     chunk = chunk + sig
@@ -158,7 +158,7 @@ def pack_chunk(keys, format_, chunk_addr, chunk_payload):
 
 def data_chunks(data, n):
     for i in range(0, len(data), n):
-        yield data[i: i + n]
+        yield data[i:i + n]
 
 
 def generate_keys(keys, args):
@@ -196,7 +196,8 @@ def pack_dfu(keys, args):
             chunk = encrypt(keys, chunk)
             chunk = pack_chunk(
                 keys,
-                MBOOT_PACK_CHUNK_FW_GZIP if args.gzip else MBOOT_PACK_CHUNK_FW_RAW,
+                MBOOT_PACK_CHUNK_FW_GZIP
+                if args.gzip else MBOOT_PACK_CHUNK_FW_RAW,
                 chunk_addr,
                 chunk,
             )
@@ -206,9 +207,8 @@ def pack_dfu(keys, args):
     chunk_addr += chunk_size
     sig = sign(keys, full_fw)
     full_signature_payload += sig
-    full_signature_chunk = pack_chunk(
-        keys, MBOOT_PACK_CHUNK_FULL_SIG, chunk_addr, full_signature_payload
-    )
+    full_signature_chunk = pack_chunk(keys, MBOOT_PACK_CHUNK_FULL_SIG,
+                                      chunk_addr, full_signature_payload)
     target.append({"address": chunk_addr, "data": full_signature_chunk})
 
     # Build the packed DFU file of all the encrypted and signed chunks.
@@ -223,18 +223,18 @@ def verify_pack_dfu(keys, filename):
     _, elems = dfu_read(filename)
     for addr, data in elems:
         header = struct.unpack("<BBBBII", data[:12])
-        chunk = data[12: 12 + header[5]]
+        chunk = data[12:12 + header[5]]
         sig = data[12 + header[5]:]
-        sig_pass = pyhy.hydro_sign_verify(
-            sig, data[:12] + chunk, MBOOT_PACK_HYDRO_CONTEXT, keys.sign_pk
-        )
+        sig_pass = pyhy.hydro_sign_verify(sig, data[:12] + chunk,
+                                          MBOOT_PACK_HYDRO_CONTEXT,
+                                          keys.sign_pk)
         assert sig_pass
         if header[1] == MBOOT_PACK_CHUNK_FULL_SIG:
             actual_sig = chunk[-64:]
         else:
-            chunk = pyhy.hydro_secretbox_decrypt(
-                chunk, 0, MBOOT_PACK_HYDRO_CONTEXT, keys.secretbox
-            )
+            chunk = pyhy.hydro_secretbox_decrypt(chunk, 0,
+                                                 MBOOT_PACK_HYDRO_CONTEXT,
+                                                 keys.secretbox)
             assert chunk is not None
             if header[1] == MBOOT_PACK_CHUNK_FW_GZIP:
                 chunk = zlib.decompress(chunk, wbits=-15)
@@ -246,18 +246,23 @@ def verify_pack_dfu(keys, filename):
 def main():
     cmd_parser = argparse.ArgumentParser(
         description="Build signed/encrypted DFU files")
-    cmd_parser.add_argument(
-        "-k", "--keys", default="mboot_keys.h", help="filename for keys")
+    cmd_parser.add_argument("-k",
+                            "--keys",
+                            default="mboot_keys.h",
+                            help="filename for keys")
     subparsers = cmd_parser.add_subparsers()
 
     parser_gk = subparsers.add_parser("generate-keys", help="generate keys")
     parser_gk.set_defaults(func=generate_keys)
 
-    parser_ed = subparsers.add_parser(
-        "pack-dfu", help="encrypt and sign a DFU file")
-    parser_ed.add_argument(
-        "-z", "--gzip", action="store_true", help="compress chunks")
-    parser_ed.add_argument("chunk_size", nargs=1,
+    parser_ed = subparsers.add_parser("pack-dfu",
+                                      help="encrypt and sign a DFU file")
+    parser_ed.add_argument("-z",
+                           "--gzip",
+                           action="store_true",
+                           help="compress chunks")
+    parser_ed.add_argument("chunk_size",
+                           nargs=1,
                            help="maximum size in bytes of each chunk")
     parser_ed.add_argument("infile", nargs=1, help="input DFU file")
     parser_ed.add_argument("outfile", nargs=1, help="output DFU file")

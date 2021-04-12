@@ -44,9 +44,9 @@ except ValueError:
     print("ValueError")
 
 # test memoryview of arrays with items sized larger than 1
-a1 = array.array('i', [0]*5)
+a1 = array.array('i', [0] * 5)
 m4 = memoryview(a1)
-a2 = array.array('i', [3]*5)
+a2 = array.array('i', [3] * 5)
 m5 = memoryview(a2)
 m4[1:3] = m5[1:3]
 print(a1)

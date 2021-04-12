@@ -1,5 +1,6 @@
 # test class with __add__ and __sub__ methods
 
+
 class C:
     def __init__(self, value):
         self.value = value

@@ -19,14 +19,12 @@ def fs_corrupted():
     import time
 
     while 1:
-        print(
-            """\
+        print("""\
 The filesystem appears to be corrupted. If you had important data there, you
 may want to make a flash snapshot to try to recover it. Otherwise, perform
 factory reprogramming of MicroPython firmware (completely erase flash, followed
 by firmware programming).
-"""
-        )
+""")
         time.sleep(3)
 
 
@@ -37,13 +35,11 @@ def setup():
     vfs = uos.VfsLfs2(bdev)
     uos.mount(vfs, "/")
     with open("boot.py", "w") as f:
-        f.write(
-            """\
+        f.write("""\
 # This file is executed on every boot (including wake-boot from deepsleep)
 #import esp
 #esp.osdebug(None)
 #import webrepl
 #webrepl.start()
-"""
-        )
+""")
     return vfs

@@ -39,8 +39,7 @@ def uart_rx_mini():
 
 
 @asm_pio(
-    in_shiftdir=rp2.PIO.SHIFT_RIGHT,
-)
+    in_shiftdir=rp2.PIO.SHIFT_RIGHT, )
 def uart_rx():
     # fmt: off
     label("start")

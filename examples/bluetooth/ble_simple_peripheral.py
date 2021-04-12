@@ -37,8 +37,9 @@ class BLESimplePeripheral:
         self._ble = ble
         self._ble.active(True)
         self._ble.irq(self._irq)
-        ((self._handle_tx, self._handle_rx),
-         ) = self._ble.gatts_register_services((_UART_SERVICE,))
+        ((self._handle_tx,
+          self._handle_rx), ) = self._ble.gatts_register_services(
+              (_UART_SERVICE, ))
         self._connections = set()
         self._write_callback = None
         self._payload = advertising_payload(name=name, services=[_UART_UUID])

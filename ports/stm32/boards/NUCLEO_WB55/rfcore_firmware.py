@@ -77,7 +77,6 @@ _OCF_BLE_INIT = const(0x66)
 
 _HCI_KIND_VENDOR_RESPONSE = const(0x11)
 
-
 # The firmware updater will search all of flash for the image to install, so
 # it's important that the file doesn't exist anywhere on the filesystem and
 # that the updater only finds the version that we copy into the reserved area.
@@ -202,11 +201,13 @@ class _Flash:
     _FLASH_SR_BSY_MASK = 1 << 16
 
     def wait_not_busy(self):
-        while machine.mem32[stm.FLASH + stm.FLASH_SR] & _Flash._FLASH_SR_BSY_MASK:
+        while machine.mem32[stm.FLASH +
+                            stm.FLASH_SR] & _Flash._FLASH_SR_BSY_MASK:
             machine.idle()
 
     def unlock(self):
-        if machine.mem32[stm.FLASH + stm.FLASH_CR] & _Flash._FLASH_CR_LOCK_MASK:
+        if machine.mem32[stm.FLASH +
+                         stm.FLASH_CR] & _Flash._FLASH_CR_LOCK_MASK:
             # Only unlock if already locked (i.e. FLASH_CR_LOCK is set).
             machine.mem32[stm.FLASH + stm.FLASH_KEYR] = _Flash._FLASH_KEY1
             machine.mem32[stm.FLASH + stm.FLASH_KEYR] = _Flash._FLASH_KEY2
@@ -233,8 +234,8 @@ class _Flash:
         machine.mem32[stm.FLASH + stm.FLASH_CR] = cr
         off = 0
         while off < sz:
-            v = (buf[off]) | (buf[off + 1] << 8) | (buf[off + 2]
-                                                    << 16) | (buf[off + 3] << 24)
+            v = (buf[off]) | (buf[off + 1] << 8) | (buf[off + 2] << 16) | (
+                buf[off + 3] << 24)
             machine.mem32[addr + off] = v ^ key
             off += 4
             if off % 8 == 0:
@@ -285,8 +286,7 @@ def _parse_vendor_response(data):
 def _run_sys_hci_cmd(ogf, ocf, buf=b"", timeout=0):
     try:
         ogf_out, ocf_out, status, result = _parse_vendor_response(
-            stm.rfcore_sys_hci(ogf, ocf, buf, timeout)
-        )
+            stm.rfcore_sys_hci(ogf, ocf, buf, timeout))
     except OSError:
         # Timeout or FUS not active.
         return (0xFF, 0xFF)
@@ -313,7 +313,8 @@ def _fus_fwdelete():
 
 def _fus_run_fwupgrade(addr):
     # Note: Address is ignored by the FUS (see comments above).
-    return _run_sys_hci_cmd(_OGF_VENDOR, _OCF_FUS_FW_UPGRADE, struct.pack("<I", addr))
+    return _run_sys_hci_cmd(_OGF_VENDOR, _OCF_FUS_FW_UPGRADE,
+                            struct.pack("<I", addr))
 
 
 # Get/set current state/reason to RTC Backup Domain.
@@ -418,7 +419,8 @@ def resume():
                 status, result = fus_start_ws()
                 if status != 0:
                     log("Can't start WS")
-                    log("WS version: {}", stm.rfcore_fw_version(_FW_VERSION_WS))
+                    log("WS version: {}",
+                        stm.rfcore_fw_version(_FW_VERSION_WS))
                     _write_failure_state(REASON_NO_WS)
 
         # Sequence the FUS 1.0.2 -> FUS 1.1.0 -> WS (depending on what's available).
@@ -428,23 +430,20 @@ def resume():
             log("FUS version {}", fus_version)
             if fus_version < _FUS_VERSION_102:
                 log("Factory FUS detected")
-                if _stat_and_start_copy(
-                    _PATH_FUS_102, _ADDR_FUS, _STATE_COPYING_FUS, _STATE_COPIED_FUS
-                ):
+                if _stat_and_start_copy(_PATH_FUS_102, _ADDR_FUS,
+                                        _STATE_COPYING_FUS, _STATE_COPIED_FUS):
                     continue
             elif fus_version >= _FUS_VERSION_102 and fus_version < _FUS_VERSION_110:
                 log("FUS 1.0.2 detected")
-                if _stat_and_start_copy(
-                    _PATH_FUS_110, _ADDR_FUS, _STATE_COPYING_FUS, _STATE_COPIED_FUS
-                ):
+                if _stat_and_start_copy(_PATH_FUS_110, _ADDR_FUS,
+                                        _STATE_COPYING_FUS, _STATE_COPIED_FUS):
                     continue
             else:
                 log("FUS is up-to-date")
 
             if fus_version >= _FUS_VERSION_110:
-                if _stat_and_start_copy(
-                    _PATH_WS_BLE_HCI, _ADDR_WS_BLE_HCI, _STATE_COPYING_WS, _STATE_COPIED_WS
-                ):
+                if _stat_and_start_copy(_PATH_WS_BLE_HCI, _ADDR_WS_BLE_HCI,
+                                        _STATE_COPYING_WS, _STATE_COPIED_WS):
                     continue
                 else:
                     log("No WS updates available")
@@ -488,7 +487,8 @@ def resume():
             elif 0x10 <= status <= 0x1F and result == 0x11:
                 # FUS_STATE_FW_UPGRD_ONGOING and FUS_FW_ROLLBACK_ERROR
                 # Confusingly this is a "FW_UPGRD" (0x10) not "FUS_UPRD" (0x20).
-                log("Attempted to install same FUS version... re-querying FUS state to resume.")
+                log("Attempted to install same FUS version... re-querying FUS state to resume."
+                    )
             elif status == 0:
                 log("FUS update successful")
                 _write_state(_STATE_CHECK_UPDATES)
@@ -539,7 +539,8 @@ def resume():
                 log("WS still in progress...")
             elif 0x10 <= status <= 0x1F and result == 0x11:
                 # FUS_FW_ROLLBACK_ERROR
-                log("Attempted to install same WS version... re-querying FUS state to resume.")
+                log("Attempted to install same WS version... re-querying FUS state to resume."
+                    )
             elif status == 0:
                 log("WS update successful")
                 _write_state(_STATE_WAITING_FOR_WS)

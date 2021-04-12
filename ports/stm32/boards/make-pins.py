@@ -9,7 +9,10 @@ import csv
 
 # Must have matching entries in AF_FN_* enum in ../pin_defs_stm32.h
 SUPPORTED_FN = {
-    "TIM": ["CH1", "CH2", "CH3", "CH4", "CH1N", "CH2N", "CH3N", "CH1_ETR", "ETR", "BKIN"],
+    "TIM": [
+        "CH1", "CH2", "CH3", "CH4", "CH1N", "CH2N", "CH3N", "CH1_ETR", "ETR",
+        "BKIN"
+    ],
     "I2C": ["SDA", "SCL"],
     "I2S": ["CK", "MCK", "SD", "WS", "EXTSD"],
     "USART": ["RX", "TX", "CTS", "RTS", "CK"],
@@ -49,7 +52,7 @@ def split_name_num(name_num):
     num = None
     for num_idx in range(len(name_num) - 1, -1, -1):
         if not name_num[num_idx].isdigit():
-            name = name_num[0: num_idx + 1]
+            name = name_num[0:num_idx + 1]
             num_str = name_num[num_idx + 1:]
             if len(num_str) > 0:
                 num = int(num_str)
@@ -87,7 +90,6 @@ def print_conditional_endif(cond_var, file=None):
 
 class AlternateFunction(object):
     """Holds the information associated with a pins alternate function."""
-
     def __init__(self, idx, af_str):
         self.idx = idx
         # Special case. We change I2S2ext_SD into I2S2_EXTSD so that it parses
@@ -134,11 +136,9 @@ class AlternateFunction(object):
         fn_num = self.fn_num
         if fn_num is None:
             fn_num = 0
-        print(
-            "({:2d}, {:8s}, {:2d}, {:10s}, {:8s}), // {:s}".format(
-                self.idx, self.func, fn_num, self.pin_type, self.ptr(), self.af_str
-            )
-        )
+        print("({:2d}, {:8s}, {:2d}, {:10s}, {:8s}), // {:s}".format(
+            self.idx, self.func, fn_num, self.pin_type, self.ptr(),
+            self.af_str))
         print_conditional_endif(cond_var)
 
     def qstr_list(self):
@@ -147,7 +147,6 @@ class AlternateFunction(object):
 
 class Pin(object):
     """Holds the information associated with a pin."""
-
     def __init__(self, port, pin):
         self.port = port
         self.pin = pin
@@ -235,15 +234,15 @@ class Pin(object):
         print("};")
         print("")
         print(
-            "const pin_obj_t pin_{:s}_obj = PIN({:s}, {:d}, {:s}, {:s}, {:d});".format(
+            "const pin_obj_t pin_{:s}_obj = PIN({:s}, {:d}, {:s}, {:s}, {:d});"
+            .format(
                 self.cpu_pin_name(),
                 self.port_letter(),
                 self.pin,
                 self.alt_fn_name(null_if_0=True),
                 self.adc_num_str(),
                 self.adc_channel,
-            )
-        )
+            ))
         print("")
 
     def print_header(self, hdr_file):
@@ -325,23 +324,18 @@ class Pins(object):
 
     def print_named(self, label, named_pins):
         print(
-            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{".format(
-                label)
-        )
+            "STATIC const mp_rom_map_elem_t pin_{:s}_pins_locals_dict_table[] = {{"
+            .format(label))
         for named_pin in named_pins:
             pin = named_pin.pin()
             if pin.is_board_pin() and not named_pin.is_hidden():
                 print(
-                    "  {{ MP_ROM_QSTR(MP_QSTR_{:s}), MP_ROM_PTR(&pin_{:s}_obj) }},".format(
-                        named_pin.name(), pin.cpu_pin_name()
-                    )
-                )
+                    "  {{ MP_ROM_QSTR(MP_QSTR_{:s}), MP_ROM_PTR(&pin_{:s}_obj) }},"
+                    .format(named_pin.name(), pin.cpu_pin_name()))
         print("};")
         print(
-            "MP_DEFINE_CONST_DICT(pin_{:s}_pins_locals_dict, pin_{:s}_pins_locals_dict_table);".format(
-                label, label
-            )
-        )
+            "MP_DEFINE_CONST_DICT(pin_{:s}_pins_locals_dict, pin_{:s}_pins_locals_dict_table);"
+            .format(label, label))
 
     def print(self):
         for named_pin in self.cpu_pins:
@@ -361,13 +355,10 @@ class Pins(object):
             adc_found = False
             for named_pin in self.cpu_pins:
                 pin = named_pin.pin()
-                if (
-                    pin.is_board_pin()
-                    and (pin.adc_num & (1 << (adc_num - 1)))
-                    and (pin.adc_channel == channel)
-                ):
-                    print(
-                        "  &pin_{:s}_obj, // {:d}".format(pin.cpu_pin_name(), channel))
+                if (pin.is_board_pin() and (pin.adc_num & (1 << (adc_num - 1)))
+                        and (pin.adc_channel == channel)):
+                    print("  &pin_{:s}_obj, // {:d}".format(
+                        pin.cpu_pin_name(), channel))
                     adc_found = True
                     break
             if not adc_found:
@@ -388,11 +379,9 @@ class Pins(object):
                 hdr_file.write("extern const pin_obj_t * const pin_adc3[];\n")
             # provide #define's mapping board to cpu name
             for named_pin in self.board_pins:
-                hdr_file.write(
-                    "#define pyb_pin_{:s} pin_{:s}\n".format(
-                        named_pin.name(), named_pin.pin().cpu_pin_name()
-                    )
-                )
+                hdr_file.write("#define pyb_pin_{:s} pin_{:s}\n".format(
+                    named_pin.name(),
+                    named_pin.pin().cpu_pin_name()))
 
     def print_qstr(self, qstr_filename):
         with open(qstr_filename, "wt") as qstr_file:
@@ -433,8 +422,8 @@ class Pins(object):
                 print_conditional_if(cond_var, file=af_const_file)
                 key = "MP_ROM_QSTR(MP_QSTR_{}),".format(mux_name)
                 val = "MP_ROM_INT(GPIO_{})".format(mux_name)
-                print("    { %-*s %s }," %
-                      (mux_name_width + 26, key, val), file=af_const_file)
+                print("    { %-*s %s }," % (mux_name_width + 26, key, val),
+                      file=af_const_file)
                 print_conditional_endif(cond_var, file=af_const_file)
 
     def print_af_defs(self, af_defs_filename, cmp_strings):
@@ -443,11 +432,11 @@ class Pins(object):
             STATIC_AF_TOKENS = {}
             for named_pin in self.board_pins:
                 for af in named_pin.pin().alt_fn:
-                    func = "%s%d" % (
-                        af.func, af.fn_num) if af.fn_num else af.func
+                    func = "%s%d" % (af.func,
+                                     af.fn_num) if af.fn_num else af.func
                     pin_type = (af.pin_type or "NULL").split("(")[0]
-                    tok = "#define STATIC_AF_%s_%s(pin_obj) ( \\" % (
-                        func, pin_type)
+                    tok = "#define STATIC_AF_%s_%s(pin_obj) ( \\" % (func,
+                                                                     pin_type)
                     if tok not in STATIC_AF_TOKENS:
                         STATIC_AF_TOKENS[tok] = []
                     if cmp_strings:
@@ -455,8 +444,7 @@ class Pins(object):
                         cmp_str = (
                             '    ((strcmp( #pin_obj , "(&pin_%s_obj)") '
                             ' & strcmp( #pin_obj , "((&pin_%s_obj))")) == 0) ? (%d) : \\'
-                            % (pin_name, pin_name, af.idx)
-                        )
+                            % (pin_name, pin_name, af.idx))
                     else:
                         cmp_str = "    ((pin_obj) == (pin_%s)) ? (%d) : \\" % (
                             named_pin.pin().cpu_pin_name(),
@@ -478,8 +466,9 @@ class Pins(object):
                 print("  ('%s', " % named_pin.name(), end="", file=af_py_file)
                 for af in named_pin.pin().alt_fn:
                     if af.is_supported():
-                        print("(%d, '%s'), " %
-                              (af.idx, af.af_str), end="", file=af_py_file)
+                        print("(%d, '%s'), " % (af.idx, af.af_str),
+                              end="",
+                              file=af_py_file)
                 print("),", file=af_py_file)
             print(")", file=af_py_file)
 
@@ -506,7 +495,8 @@ def main():
     parser.add_argument(
         "--af-py",
         dest="af_py_filename",
-        help="Specifies the filename for the python alternate function mappings.",
+        help=
+        "Specifies the filename for the python alternate function mappings.",
         default="build/pins_af.py",
     )
     parser.add_argument(
@@ -518,7 +508,8 @@ def main():
     parser.add_argument(
         "--af-defs-cmp-strings",
         dest="af_defs_cmp_strings",
-        help="Whether to compare pin name strings for the alternate function defines instead of object values",
+        help=
+        "Whether to compare pin name strings for the alternate function defines instead of object values",
         action="store_true",
     )
     parser.add_argument(
@@ -551,7 +542,8 @@ def main():
     parser.add_argument(
         "--hdr-obj-decls",
         dest="hdr_obj_decls",
-        help="Whether to include declarations for pin objects in pin header file",
+        help=
+        "Whether to include declarations for pin objects in pin header file",
         action="store_true",
     )
     args = parser.parse_args(sys.argv[1:])

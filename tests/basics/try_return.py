@@ -1,5 +1,6 @@
 # test use of return with try-except
 
+
 def f():
     try:
         print(1)

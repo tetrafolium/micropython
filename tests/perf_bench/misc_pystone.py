@@ -18,7 +18,12 @@ __version__ = "1.2"
 
 
 class Record:
-    def __init__(self, PtrComp=None, Discr=0, EnumComp=0, IntComp=0, StringComp=0):
+    def __init__(self,
+                 PtrComp=None,
+                 Discr=0,
+                 EnumComp=0,
+                 IntComp=0,
+                 StringComp=0):
         self.PtrComp = PtrComp
         self.Discr = Discr
         self.EnumComp = EnumComp
@@ -26,7 +31,8 @@ class Record:
         self.StringComp = StringComp
 
     def copy(self):
-        return Record(self.PtrComp, self.Discr, self.EnumComp, self.IntComp, self.StringComp)
+        return Record(self.PtrComp, self.Discr, self.EnumComp, self.IntComp,
+                      self.StringComp)
 
 
 TRUE = 1
@@ -228,10 +234,10 @@ def Func3(EnumParIn):
 # Benchmark interface
 
 bm_params = {
-    (50, 10): (80,),
-    (100, 10): (300,),
-    (1000, 10): (4000,),
-    (5000, 10): (20000,),
+    (50, 10): (80, ),
+    (100, 10): (300, ),
+    (1000, 10): (4000, ),
+    (5000, 10): (20000, ),
 }
 
 

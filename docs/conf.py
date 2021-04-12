@@ -23,19 +23,17 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # The members of the html_context dict are available inside topindex.html
 micropy_version = os.getenv('MICROPY_VERSION') or 'latest'
-micropy_all_versions = (
-    os.getenv('MICROPY_ALL_VERSIONS') or 'latest').split(',')
-url_pattern = '%s/en/%%s' % (os.getenv('MICROPY_URL_PREFIX') or '/',)
+micropy_all_versions = (os.getenv('MICROPY_ALL_VERSIONS')
+                        or 'latest').split(',')
+url_pattern = '%s/en/%%s' % (os.getenv('MICROPY_URL_PREFIX') or '/', )
 html_context = {
-    'cur_version': micropy_version,
-    'all_versions': [
-        (ver, url_pattern % ver) for ver in micropy_all_versions
-    ],
+    'cur_version':
+    micropy_version,
+    'all_versions': [(ver, url_pattern % ver) for ver in micropy_all_versions],
     'downloads': [
         ('PDF', url_pattern % micropy_version + '/micropython-docs.pdf'),
     ],
 }
-
 
 # -- General configuration ------------------------------------------------
 
@@ -216,7 +214,6 @@ html_additional_pages = {"index": "topindex.html"}
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'MicroPythondoc'
 
-
 # -- Options for LaTeX output ---------------------------------------------
 
 latex_elements = {
@@ -260,7 +257,6 @@ latex_documents = [
 # If false, no module index is generated.
 #latex_domain_indices = True
 
-
 # -- Options for manual page output ---------------------------------------
 
 # One entry per manual page. List of tuples
@@ -273,7 +269,6 @@ man_pages = [
 # If true, show URL addresses after external links.
 #man_show_urls = False
 
-
 # -- Options for Texinfo output -------------------------------------------
 
 # Grouping the document tree into Texinfo files. List of tuples
@@ -281,8 +276,8 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, 'MicroPython', 'MicroPython Documentation',
-     'Damien P. George, Paul Sokolovsky, and contributors', 'MicroPython', 'One line description of project.',
-     'Miscellaneous'),
+     'Damien P. George, Paul Sokolovsky, and contributors', 'MicroPython',
+     'One line description of project.', 'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.
@@ -296,7 +291,6 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #texinfo_no_detailmenu = False
-
 
 # Example configuration for intersphinx: refer to the Python standard library.
 intersphinx_mapping = {'python': ('https://docs.python.org/3.5', None)}

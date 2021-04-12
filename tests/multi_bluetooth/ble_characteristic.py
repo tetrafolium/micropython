@@ -25,13 +25,14 @@ SERVICE_UUID = bluetooth.UUID("A5A5A5A5-FFFF-9999-1111-5A5A5A5A5A5A")
 CHAR_UUID = bluetooth.UUID("00000000-1111-2222-3333-444444444444")
 CHAR = (
     CHAR_UUID,
-    bluetooth.FLAG_READ | bluetooth.FLAG_WRITE | bluetooth.FLAG_NOTIFY | bluetooth.FLAG_INDICATE,
+    bluetooth.FLAG_READ | bluetooth.FLAG_WRITE | bluetooth.FLAG_NOTIFY
+    | bluetooth.FLAG_INDICATE,
 )
 SERVICE = (
     SERVICE_UUID,
-    (CHAR,),
+    (CHAR, ),
 )
-SERVICES = (SERVICE,)
+SERVICES = (SERVICE, )
 
 waiting_events = {}
 
@@ -87,7 +88,7 @@ def wait_for_event(event, timeout_ms):
 # Acting in peripheral role.
 def instance0():
     multitest.globals(BDADDR=ble.config("mac"))
-    ((char_handle,),) = ble.gatts_register_services(SERVICES)
+    ((char_handle, ), ) = ble.gatts_register_services(SERVICES)
     print("gap_advertise")
     ble.gap_advertise(20_000, b"\x02\x01\x06\x04\xffMPY")
     multitest.next()
@@ -144,8 +145,8 @@ def instance1():
 
         # Discover characteristics.
         ble.gattc_discover_characteristics(conn_handle, 1, 65535)
-        value_handle = wait_for_event(
-            _IRQ_GATTC_CHARACTERISTIC_RESULT, TIMEOUT_MS)
+        value_handle = wait_for_event(_IRQ_GATTC_CHARACTERISTIC_RESULT,
+                                      TIMEOUT_MS)
         wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
 
         # Issue read of characteristic, should get initial value.

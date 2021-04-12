@@ -7,8 +7,8 @@ print(False and True)
 print(False or True)
 
 # unary operators
-print(+True)
-print(-True)
+print(+ True)
+print(- True)
 
 # comparison with itself
 print(False == False)

@@ -28,8 +28,8 @@ with open(sys.argv[3], "wb") as fout:
         offset = 8
         for seg_num in range(num_segs):
             seg_name = [".text", ".data", ".rodata"][seg_num]
-            seg_offset, seg_size = struct.unpack_from(
-                "<II", data_flash, offset)
+            seg_offset, seg_size = struct.unpack_from("<II", data_flash,
+                                                      offset)
             print(" {:7}  {} at 0x{:x}".format(seg_name, seg_size, seg_offset))
             offset += 8 + seg_size
 

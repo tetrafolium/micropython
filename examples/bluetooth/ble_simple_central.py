@@ -74,9 +74,9 @@ class BLESimpleCentral:
     def _irq(self, event, data):
         if event == _IRQ_SCAN_RESULT:
             addr_type, addr, adv_type, rssi, adv_data = data
-            if adv_type in (_ADV_IND, _ADV_DIRECT_IND) and _UART_SERVICE_UUID in decode_services(
-                adv_data
-            ):
+            if adv_type in (
+                    _ADV_IND, _ADV_DIRECT_IND
+            ) and _UART_SERVICE_UUID in decode_services(adv_data):
                 # Found a potential device, remember it and stop scanning.
                 self._addr_type = addr_type
                 self._addr = bytes(
@@ -89,8 +89,8 @@ class BLESimpleCentral:
             if self._scan_callback:
                 if self._addr:
                     # Found a device during the scan (and the scan was explicitly stopped).
-                    self._scan_callback(
-                        self._addr_type, self._addr, self._name)
+                    self._scan_callback(self._addr_type, self._addr,
+                                        self._name)
                     self._scan_callback = None
                 else:
                     # Scan timed out.
@@ -121,8 +121,7 @@ class BLESimpleCentral:
             # Service query complete.
             if self._start_handle and self._end_handle:
                 self._ble.gattc_discover_characteristics(
-                    self._conn_handle, self._start_handle, self._end_handle
-                )
+                    self._conn_handle, self._start_handle, self._end_handle)
             else:
                 print("Failed to find uart service.")
 
@@ -155,11 +154,8 @@ class BLESimpleCentral:
 
     # Returns true if we've successfully connected and discovered characteristics.
     def is_connected(self):
-        return (
-            self._conn_handle is not None
-            and self._tx_handle is not None
-            and self._rx_handle is not None
-        )
+        return (self._conn_handle is not None and self._tx_handle is not None
+                and self._rx_handle is not None)
 
     # Find a device advertising the environmental sensor service.
     def scan(self, callback=None):
@@ -189,8 +185,8 @@ class BLESimpleCentral:
     def write(self, v, response=False):
         if not self.is_connected():
             return
-        self._ble.gattc_write(
-            self._conn_handle, self._rx_handle, v, 1 if response else 0)
+        self._ble.gattc_write(self._conn_handle, self._rx_handle, v,
+                              1 if response else 0)
 
     # Set handler for when data is received over the UART.
     def on_notify(self, callback):

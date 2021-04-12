@@ -6,9 +6,14 @@ except ImportError:
 
 desc = {
     "s0": uctypes.UINT16 | 0,
-    "sub": (0, {"b0": uctypes.UINT8 | 0, "b1": uctypes.UINT8 | 1}),
+    "sub": (0, {
+        "b0": uctypes.UINT8 | 0,
+        "b1": uctypes.UINT8 | 1
+    }),
     "arr": (uctypes.ARRAY | 0, uctypes.UINT8 | 2),
-    "arr2": (uctypes.ARRAY | 0, 2, {"b": uctypes.UINT8 | 0}),
+    "arr2": (uctypes.ARRAY | 0, 2, {
+        "b": uctypes.UINT8 | 0
+    }),
     "bitf0": uctypes.BFUINT16 | 0 | 0 << uctypes.BF_POS | 8 << uctypes.BF_LEN,
     "bitf1": uctypes.BFUINT16 | 0 | 8 << uctypes.BF_POS | 8 << uctypes.BF_LEN,
     "bf0": uctypes.BFUINT16 | 0 | 0 << uctypes.BF_POS | 4 << uctypes.BF_LEN,
@@ -16,7 +21,9 @@ desc = {
     "bf2": uctypes.BFUINT16 | 0 | 8 << uctypes.BF_POS | 4 << uctypes.BF_LEN,
     "bf3": uctypes.BFUINT16 | 0 | 12 << uctypes.BF_POS | 4 << uctypes.BF_LEN,
     "ptr": (uctypes.PTR | 0, uctypes.UINT8),
-    "ptr2": (uctypes.PTR | 0, {"b": uctypes.UINT8 | 0}),
+    "ptr2": (uctypes.PTR | 0, {
+        "b": uctypes.UINT8 | 0
+    }),
 }
 
 data = bytearray(b"01")
@@ -42,7 +49,6 @@ assert (S.arr[0], S.arr[1]) == (0x30, 0x31)
 print("arr of struct:", S.arr2[0].b, S.arr2[1].b)
 assert (S.arr2[0].b, S.arr2[1].b) == (0x30, 0x31)
 
-
 try:
     S.arr[2]
     assert False, "Out of bounds index"
@@ -54,7 +60,6 @@ assert (S.bitf0, S.bitf1) == (0x30, 0x31)
 
 print("bf 4bit:", S.bf3, S.bf2, S.bf1, S.bf0)
 assert (S.bf3, S.bf2, S.bf1, S.bf0) == (3, 1, 3, 0)
-
 
 # Write access
 

@@ -1,5 +1,6 @@
 # test that no-arg super() works when self is closed over
 
+
 class A:
     def __init__(self):
         self.val = 4

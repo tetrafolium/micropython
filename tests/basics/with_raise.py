@@ -1,5 +1,6 @@
 # test with when context manager raises in __enter__/__exit__
 
+
 class CtxMgr:
     def __init__(self, id):
         self.id = id

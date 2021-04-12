@@ -15,8 +15,14 @@ _RX_POLL_DELAY = const(15)
 _SLAVE_SEND_DELAY = const(10)
 
 if usys.platform == "pyboard":
-    cfg = {"spi": 2, "miso": "Y7", "mosi": "Y8",
-           "sck": "Y6", "csn": "Y5", "ce": "Y4"}
+    cfg = {
+        "spi": 2,
+        "miso": "Y7",
+        "mosi": "Y8",
+        "sck": "Y6",
+        "csn": "Y5",
+        "ce": "Y4"
+    }
 elif usys.platform == "esp8266":  # Hardware SPI
     cfg = {"spi": 1, "miso": 12, "mosi": 13, "sck": 14, "csn": 4, "ce": 5}
 elif usys.platform == "esp32":  # Software SPI
@@ -33,8 +39,10 @@ def master():
     csn = Pin(cfg["csn"], mode=Pin.OUT, value=1)
     ce = Pin(cfg["ce"], mode=Pin.OUT, value=0)
     if cfg["spi"] == -1:
-        spi = SPI(-1, sck=Pin(cfg["sck"]),
-                  mosi=Pin(cfg["mosi"]), miso=Pin(cfg["miso"]))
+        spi = SPI(-1,
+                  sck=Pin(cfg["sck"]),
+                  mosi=Pin(cfg["mosi"]),
+                  miso=Pin(cfg["miso"]))
         nrf = NRF24L01(spi, csn, ce, payload_size=8)
     else:
         nrf = NRF24L01(SPI(cfg["spi"]), csn, ce, payload_size=8)
@@ -77,7 +85,7 @@ def master():
 
         else:
             # recv packet
-            (got_millis,) = struct.unpack("i", nrf.recv())
+            (got_millis, ) = struct.unpack("i", nrf.recv())
 
             # print response and round-trip delay
             print(
@@ -100,8 +108,10 @@ def slave():
     csn = Pin(cfg["csn"], mode=Pin.OUT, value=1)
     ce = Pin(cfg["ce"], mode=Pin.OUT, value=0)
     if cfg["spi"] == -1:
-        spi = SPI(-1, sck=Pin(cfg["sck"]),
-                  mosi=Pin(cfg["mosi"]), miso=Pin(cfg["miso"]))
+        spi = SPI(-1,
+                  sck=Pin(cfg["sck"]),
+                  mosi=Pin(cfg["mosi"]),
+                  miso=Pin(cfg["miso"]))
         nrf = NRF24L01(spi, csn, ce, payload_size=8)
     else:
         nrf = NRF24L01(SPI(cfg["spi"]), csn, ce, payload_size=8)
@@ -151,4 +161,5 @@ print("    CSN on", cfg["csn"])
 print("    SCK on", cfg["sck"])
 print("    MISO on", cfg["miso"])
 print("    MOSI on", cfg["mosi"])
-print("run nrf24l01test.slave() on slave, then nrf24l01test.master() on master")
+print(
+    "run nrf24l01test.slave() on slave, then nrf24l01test.master() on master")

@@ -29,7 +29,6 @@ import sys
 import os
 import subprocess
 
-
 ###########################################################################
 # Public functions to be used in the manifest
 
@@ -185,10 +184,11 @@ def freeze_internal(kind, path, script, opt):
             subdir = ""
         else:
             subdir = "/" + script
-        for dirpath, dirnames, filenames in os.walk(path + subdir, followlinks=True):
+        for dirpath, dirnames, filenames in os.walk(path + subdir,
+                                                    followlinks=True):
             for f in filenames:
-                freeze_internal(kind, path, (dirpath + "/" + f)
-                                [len(path) + 1:], opt)
+                freeze_internal(kind, path,
+                                (dirpath + "/" + f)[len(path) + 1:], opt)
     elif not isinstance(script, str):
         # `script` is an iterable of items to freeze
         for s in script:
@@ -202,7 +202,8 @@ def freeze_internal(kind, path, script, opt):
                     kind = k
                     break
             else:
-                print("warn: unsupported file type, skipped freeze: {}".format(script))
+                print("warn: unsupported file type, skipped freeze: {}".format(
+                    script))
                 return
         wanted_extension = extension_kind[kind]
         if not script.endswith(wanted_extension):
@@ -216,14 +217,17 @@ def main():
     import argparse
 
     cmd_parser = argparse.ArgumentParser(
-        description="A tool to generate frozen content in MicroPython firmware images."
-    )
+        description=
+        "A tool to generate frozen content in MicroPython firmware images.")
     cmd_parser.add_argument("-o", "--output", help="output path")
     cmd_parser.add_argument("-b", "--build-dir", help="output path")
-    cmd_parser.add_argument(
-        "-f", "--mpy-cross-flags", default="", help="flags to pass to mpy-cross"
-    )
-    cmd_parser.add_argument("-v", "--var", action="append",
+    cmd_parser.add_argument("-f",
+                            "--mpy-cross-flags",
+                            default="",
+                            help="flags to pass to mpy-cross")
+    cmd_parser.add_argument("-v",
+                            "--var",
+                            action="append",
                             help="variables to substitute")
     cmd_parser.add_argument("files", nargs="+", help="input manifest list")
     args = cmd_parser.parse_args()
@@ -249,7 +253,8 @@ def main():
 
     # Ensure mpy-cross is built
     if not os.path.exists(MPY_CROSS):
-        print("mpy-cross not found at {}, please build it first".format(MPY_CROSS))
+        print("mpy-cross not found at {}, please build it first".format(
+            MPY_CROSS))
         sys.exit(1)
 
     # Include top-level inputs, to generate the manifest
@@ -274,18 +279,16 @@ def main():
             ts_outfile = get_timestamp_newest(path)
         elif kind == KIND_AS_MPY:
             infile = "{}/{}".format(path, script)
-            outfile = "{}/frozen_mpy/{}.mpy".format(
-                args.build_dir, script[:-3])
+            outfile = "{}/frozen_mpy/{}.mpy".format(args.build_dir,
+                                                    script[:-3])
             ts_infile = get_timestamp(infile)
             ts_outfile = get_timestamp(outfile, 0)
             if ts_infile >= ts_outfile:
                 print("MPY", script)
                 mkdir(outfile)
                 res, out = system(
-                    [MPY_CROSS]
-                    + args.mpy_cross_flags.split()
-                    + ["-o", outfile, "-s", script, "-O{}".format(opt), infile]
-                )
+                    [MPY_CROSS] + args.mpy_cross_flags.split() +
+                    ["-o", outfile, "-s", script, "-O{}".format(opt), infile])
                 if res != 0:
                     print("error compiling {}:".format(infile))
                     sys.stdout.buffer.write(out)
@@ -312,16 +315,13 @@ def main():
 
     # Freeze .mpy files
     if mpy_files:
-        res, output_mpy = system(
-            [
-                sys.executable,
-                MPY_TOOL,
-                "-f",
-                "-q",
-                args.build_dir + "/genhdr/qstrdefs.preprocessed.h",
-            ]
-            + mpy_files
-        )
+        res, output_mpy = system([
+            sys.executable,
+            MPY_TOOL,
+            "-f",
+            "-q",
+            args.build_dir + "/genhdr/qstrdefs.preprocessed.h",
+        ] + mpy_files)
         if res != 0:
             print("error freezing mpy {}:".format(mpy_files))
             print(str(output_mpy, "utf8"))
@@ -334,8 +334,7 @@ def main():
             b"    (qstr_pool_t*)&mp_qstr_const_pool, MP_QSTRnumber_of, 0, 0\n"
             b"};\n"
             b'const char mp_frozen_mpy_names[1] = {"\\0"};\n'
-            b"const mp_raw_code_t *const mp_frozen_mpy_content[1] = {NULL};\n"
-        )
+            b"const mp_raw_code_t *const mp_frozen_mpy_content[1] = {NULL};\n")
 
     # Generate output
     print("GEN", args.output)

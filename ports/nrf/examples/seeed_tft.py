@@ -21,7 +21,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
-
 """
 MicroPython Seeedstudio TFT Shield V2 driver, SPI interfaces, Analog GPIO
 Contains SD-card reader, LCD and Touch sensor
@@ -63,9 +62,8 @@ class ILI9341:
         self.height = height
         self.pages = self.height // 8
         self.buffer = bytearray(self.pages * self.width)
-        self.framebuf = framebuf.FrameBuffer(
-            self.buffer, self.width, self.height, framebuf.MONO_VLSB
-        )
+        self.framebuf = framebuf.FrameBuffer(self.buffer, self.width,
+                                             self.height, framebuf.MONO_VLSB)
 
         self.spi = SPI(0)
         # chip select
@@ -149,50 +147,44 @@ class ILI9341:
         # Set Gamma
         self.write_cmd(0xE0)
         self.write_data(
-            bytearray(
-                [
-                    0x0F,
-                    0x2A,
-                    0x28,
-                    0x08,
-                    0x0E,
-                    0x08,
-                    0x54,
-                    0xA9,
-                    0x43,
-                    0x0A,
-                    0x0F,
-                    0x00,
-                    0x00,
-                    0x00,
-                    0x00,
-                ]
-            )
-        )
+            bytearray([
+                0x0F,
+                0x2A,
+                0x28,
+                0x08,
+                0x0E,
+                0x08,
+                0x54,
+                0xA9,
+                0x43,
+                0x0A,
+                0x0F,
+                0x00,
+                0x00,
+                0x00,
+                0x00,
+            ]))
 
         # Set Gamma
         self.write_cmd(0xE1)
         self.write_data(
-            bytearray(
-                [
-                    0x00,
-                    0x15,
-                    0x17,
-                    0x07,
-                    0x11,
-                    0x06,
-                    0x2B,
-                    0x56,
-                    0x3C,
-                    0x05,
-                    0x10,
-                    0x0F,
-                    0x3F,
-                    0x3F,
-                    0x0F,
-                ]
-            )
-        )
+            bytearray([
+                0x00,
+                0x15,
+                0x17,
+                0x07,
+                0x11,
+                0x06,
+                0x2B,
+                0x56,
+                0x3C,
+                0x05,
+                0x10,
+                0x0F,
+                0x3F,
+                0x3F,
+                0x0F,
+            ]))
 
         # Exit Sleep
         self.write_cmd(0x11)

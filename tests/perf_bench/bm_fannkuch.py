@@ -30,7 +30,7 @@ def fannkuch(n):
             flips_count = 0
             k = perm[0]
             while k:
-                perm[: k + 1] = perm[k::-1]
+                perm[:k + 1] = perm[k::-1]
                 flips_count += 1
                 k = perm[0]
 
@@ -51,11 +51,11 @@ def fannkuch(n):
 # Benchmark interface
 
 bm_params = {
-    (50, 10): (5,),
-    (100, 10): (6,),
-    (500, 10): (7,),
-    (1000, 10): (8,),
-    (5000, 10): (9,),
+    (50, 10): (5, ),
+    (100, 10): (6, ),
+    (500, 10): (7, ),
+    (1000, 10): (8, ),
+    (5000, 10): (9, ),
 }
 
 

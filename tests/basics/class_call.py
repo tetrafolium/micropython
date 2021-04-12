@@ -5,7 +5,6 @@ class C1:
 
 
 class C2:
-
     def __getattr__(self, k):
         pass
 

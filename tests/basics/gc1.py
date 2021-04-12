@@ -23,10 +23,10 @@ if hasattr(gc, 'mem_free'):
 if hasattr(gc, 'threshold'):
     # uPy has this extra function
     # check execution and returns
-    assert(gc.threshold(1) is None)
-    assert(gc.threshold() == 0)
-    assert(gc.threshold(-1) is None)
-    assert(gc.threshold() == -1)
+    assert (gc.threshold(1) is None)
+    assert (gc.threshold() == 0)
+    assert (gc.threshold(-1) is None)
+    assert (gc.threshold() == -1)
 
     # Setting a low threshold should trigger collection at the list alloc
     gc.threshold(1)

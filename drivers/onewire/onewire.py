@@ -78,7 +78,8 @@ class OneWire:
                         return None, 0
                 else:
                     if not b:  # collision, two devices with different bit meaning
-                        if diff > i or ((l_rom[byte] & (1 << bit)) and diff != i):
+                        if diff > i or ((l_rom[byte] &
+                                         (1 << bit)) and diff != i):
                             b = 1
                             next_diff = i
                 self.writebit(b)

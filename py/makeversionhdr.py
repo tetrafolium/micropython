@@ -48,12 +48,12 @@ def get_version_info_from_git():
     try:
         # Check if there are any modified files.
         subprocess.check_call(
-            ["git", "diff", "--no-ext-diff", "--quiet", "--exit-code"], stderr=subprocess.STDOUT
-        )
+            ["git", "diff", "--no-ext-diff", "--quiet", "--exit-code"],
+            stderr=subprocess.STDOUT)
         # Check if there are any staged files.
         subprocess.check_call(
-            ["git", "diff-index", "--cached", "--quiet", "HEAD", "--"], stderr=subprocess.STDOUT
-        )
+            ["git", "diff-index", "--cached", "--quiet", "HEAD", "--"],
+            stderr=subprocess.STDOUT)
     except subprocess.CalledProcessError:
         git_hash += "-dirty"
     except OSError:
@@ -63,7 +63,9 @@ def get_version_info_from_git():
 
 
 def get_version_info_from_docs_conf():
-    with open(os.path.join(os.path.dirname(sys.argv[0]), "..", "docs", "conf.py")) as f:
+    with open(
+            os.path.join(os.path.dirname(sys.argv[0]), "..", "docs",
+                         "conf.py")) as f:
         for line in f:
             if line.startswith("version = release = '"):
                 ver = line.strip().split(" = ")[2].strip("'")
@@ -83,8 +85,7 @@ def make_version_header(filename):
     build_date = datetime.date.today()
     if "SOURCE_DATE_EPOCH" in os.environ:
         build_date = datetime.datetime.utcfromtimestamp(
-            int(os.environ["SOURCE_DATE_EPOCH"])
-        ).date()
+            int(os.environ["SOURCE_DATE_EPOCH"])).date()
 
     # Generate the file with the git and version info
     file_data = """\

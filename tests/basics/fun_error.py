@@ -38,7 +38,10 @@ except TypeError:
 
 # kw given for positional, but a different positional is missing
 try:
-    def f(x, y): pass
+
+    def f(x, y):
+        pass
+
     f(x=1)
 except TypeError:
     print('TypeError')

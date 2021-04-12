@@ -13,7 +13,6 @@ except AttributeError:
     print("SKIP")
     raise SystemExit
 
-
 # Verify that an injected exception will be raised from next().
 print(next(g))
 print(next(g))
@@ -26,7 +25,6 @@ except Exception as e:
     print("raised", repr(e))
 
 print("ret was:", v)
-
 
 # Verify that pend_throw works on an unstarted coroutine.
 g = gen()
@@ -90,13 +88,11 @@ try:
 except Exception as e:
     print("raised", repr(e))
 
-
 # Verify that calling pend_throw returns the previous exception.
 g = gen()
 next(g)
 print(repr(g.pend_throw(CancelledError())))
 print(repr(g.pend_throw(OSError)))
-
 
 # Verify that you can pend_throw(None) to cancel a previous pend_throw.
 g = gen()

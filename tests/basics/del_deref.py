@@ -17,6 +17,7 @@ def f():
             del x
         except NameError:
             print("NameError")
+
     print(x, y)
     del x
     g()

@@ -2,8 +2,11 @@
 
 # feature test for __setattr__/__delattr__
 try:
+
     class Test():
-        def __delattr__(self, attr): pass
+        def __delattr__(self, attr):
+            pass
+
     del Test().noexist
 except AttributeError:
     print('SKIP')
@@ -101,7 +104,6 @@ try:
     object.__setattr__(c, 5, 5)
 except TypeError:
     print("TypeError")
-
 
 # test object.__delattr__
 del c.a

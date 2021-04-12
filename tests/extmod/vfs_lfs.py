@@ -37,8 +37,8 @@ class RAMBlockDevice:
 
 def print_stat(st, print_size=True):
     # don't print times (just check that they have the correct type)
-    print(st[:6], st[6] if print_size else -1,
-          type(st[7]), type(st[8]), type(st[9]))
+    print(st[:6], st[6] if print_size else -1, type(st[7]), type(st[8]),
+          type(st[9]))
 
 
 def test(bdev, vfs_class):

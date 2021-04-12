@@ -1,5 +1,6 @@
 # del global
 
+
 def do_del():
     global x
     del x
@@ -21,7 +22,7 @@ except:  # NameError:
 # delete globals using a list
 
 a = 1
-del (a,)
+del (a, )
 try:
     print(a)
 except NameError:

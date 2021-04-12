@@ -3,7 +3,6 @@
 from micropython import const
 import framebuf
 
-
 # register definitions
 SET_CONTRAST = const(0x81)
 SET_ENTIRE_ON = const(0xA4)
@@ -34,41 +33,42 @@ class SSD1306(framebuf.FrameBuffer):
         self.external_vcc = external_vcc
         self.pages = self.height // 8
         self.buffer = bytearray(self.pages * self.width)
-        super().__init__(self.buffer, self.width, self.height, framebuf.MONO_VLSB)
+        super().__init__(self.buffer, self.width, self.height,
+                         framebuf.MONO_VLSB)
         self.init_display()
 
     def init_display(self):
         for cmd in (
-            SET_DISP | 0x00,  # off
-            # address setting
-            SET_MEM_ADDR,
-            0x00,  # horizontal
-            # resolution and layout
-            SET_DISP_START_LINE | 0x00,
-            SET_SEG_REMAP | 0x01,  # column addr 127 mapped to SEG0
-            SET_MUX_RATIO,
-            self.height - 1,
-            SET_COM_OUT_DIR | 0x08,  # scan from COM[N] to COM0
-            SET_DISP_OFFSET,
-            0x00,
-            SET_COM_PIN_CFG,
-            0x02 if self.width > 2 * self.height else 0x12,
-            # timing and driving scheme
-            SET_DISP_CLK_DIV,
-            0x80,
-            SET_PRECHARGE,
-            0x22 if self.external_vcc else 0xF1,
-            SET_VCOM_DESEL,
-            0x30,  # 0.83*Vcc
-            # display
-            SET_CONTRAST,
-            0xFF,  # maximum
-            SET_ENTIRE_ON,  # output follows RAM contents
-            SET_NORM_INV,  # not inverted
-            # charge pump
-            SET_CHARGE_PUMP,
-            0x10 if self.external_vcc else 0x14,
-            SET_DISP | 0x01,
+                SET_DISP | 0x00,  # off
+                # address setting
+                SET_MEM_ADDR,
+                0x00,  # horizontal
+                # resolution and layout
+                SET_DISP_START_LINE | 0x00,
+                SET_SEG_REMAP | 0x01,  # column addr 127 mapped to SEG0
+                SET_MUX_RATIO,
+                self.height - 1,
+                SET_COM_OUT_DIR | 0x08,  # scan from COM[N] to COM0
+                SET_DISP_OFFSET,
+                0x00,
+                SET_COM_PIN_CFG,
+                0x02 if self.width > 2 * self.height else 0x12,
+                # timing and driving scheme
+                SET_DISP_CLK_DIV,
+                0x80,
+                SET_PRECHARGE,
+                0x22 if self.external_vcc else 0xF1,
+                SET_VCOM_DESEL,
+                0x30,  # 0.83*Vcc
+                # display
+                SET_CONTRAST,
+                0xFF,  # maximum
+                SET_ENTIRE_ON,  # output follows RAM contents
+                SET_NORM_INV,  # not inverted
+                # charge pump
+                SET_CHARGE_PUMP,
+                0x10 if self.external_vcc else 0x14,
+                SET_DISP | 0x01,
         ):  # on
             self.write_cmd(cmd)
         self.fill(0)

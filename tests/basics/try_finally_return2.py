@@ -1,6 +1,7 @@
 # test 'return' within the finally block
 # it should swallow the exception
 
+
 # simple case
 def f():
     try:

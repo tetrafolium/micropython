@@ -11,5 +11,4 @@ import sys
 sys.path.append(sys.path[1] + "/modules")
 sys.path.append(sys.path[1] + "/modules2")
 
-
 print("Two modules of a split namespace package imported")

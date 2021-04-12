@@ -192,14 +192,14 @@ except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN,
-              Pin.PULL_UP, alt=-1)  # incorrect af
+    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN, Pin.PULL_UP,
+              alt=-1)  # incorrect af
 except Exception:
     print("Exception")
 
 try:
-    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN,
-              Pin.PULL_UP, alt=16)  # incorrect af
+    pin = Pin(pin_map[0], Pin.ALT_OPEN_DRAIN, Pin.PULL_UP,
+              alt=16)  # incorrect af
 except Exception:
     print("Exception")
 

@@ -34,6 +34,7 @@ def outer():
 
     def inner():
         return x
+
     return inner
 
 

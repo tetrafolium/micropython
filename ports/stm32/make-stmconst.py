@@ -17,7 +17,6 @@ if platform.python_version_tuple()[0] == "2":
     def convert_bytes_to_str(b):
         return b
 
-
 elif platform.python_version_tuple()[0] == "3":
 
     def convert_bytes_to_str(b):
@@ -29,6 +28,7 @@ elif platform.python_version_tuple()[0] == "3":
 
 
 # end compatibility code
+
 
 # given a list of (name,regex) pairs, find the first one that matches the given line
 def re_match_first(regexs, line):
@@ -55,8 +55,9 @@ class Lexer:
                 r"#define +(?P<id>[A-Z0-9_]+) +\(?(\(uint32_t\))?(?P<hex>0x[0-9A-F]+)U?L?\)?($| */\*)"
             ),
         ),
-        ("#define X", re.compile(
-            r"#define +(?P<id>[A-Z0-9_]+) +(?P<id2>[A-Z0-9_]+)($| +/\*)")),
+        ("#define X",
+         re.compile(
+             r"#define +(?P<id>[A-Z0-9_]+) +(?P<id2>[A-Z0-9_]+)($| +/\*)")),
         (
             "#define X+hex",
             re.compile(
@@ -75,24 +76,19 @@ class Lexer:
         (
             "} TypeDef",
             re.compile(
-                r"} *(?P<id>[A-Z][A-Za-z0-9_]+)_(?P<global>([A-Za-z0-9_]+)?)TypeDef;$"),
+                r"} *(?P<id>[A-Z][A-Za-z0-9_]+)_(?P<global>([A-Za-z0-9_]+)?)TypeDef;$"
+            ),
         ),
         (
             "IO reg",
-            re.compile(
-                re_io_reg + r" *; */\*!< *" + re_comment + r",? +" + re_addr_offset + r" *\*/"
-            ),
+            re.compile(re_io_reg + r" *; */\*!< *" + re_comment + r",? +" +
+                       re_addr_offset + r" *\*/"),
         ),
         (
             "IO reg array",
-            re.compile(
-                re_io_reg
-                + r"\[(?P<array>[2-8])\] *; */\*!< *"
-                + re_comment
-                + r",? +"
-                + re_addr_offset
-                + r"-(0x[0-9A-Z]{2,3}) *\*/"
-            ),
+            re.compile(re_io_reg + r"\[(?P<array>[2-8])\] *; */\*!< *" +
+                       re_comment + r",? +" + re_addr_offset +
+                       r"-(0x[0-9A-Z]{2,3}) *\*/"),
         ),
     )
 
@@ -157,8 +153,8 @@ def parse_file(filename):
                     regs.append((reg, offset, bits, comment))
                 else:
                     for i in range(int(d["array"])):
-                        regs.append((reg + str(i), offset + i *
-                                     bits // 8, bits, comment))
+                        regs.append((reg + str(i), offset + i * bits // 8,
+                                     bits, comment))
                 m = lexer.next_match()
             if m[0] == "}":
                 pass
@@ -212,24 +208,19 @@ def print_regs_as_submodules(reg_name, reg_defs, modules, needed_qstrs):
     mod_name_upper = mod_name_lower.upper()
     modules.append((mod_name_lower, mod_name_upper))
 
-    print(
-        """
+    print("""
 STATIC const mp_rom_map_elem_t stm_%s_globals_table[] = {
     { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_%s) },
-"""
-        % (mod_name_lower, mod_name_upper)
-    )
+""" % (mod_name_lower, mod_name_upper))
     needed_qstrs.add(mod_name_upper)
 
     for r in reg_defs:
         print(
             "    { MP_ROM_QSTR(MP_QSTR_%s), MP_ROM_INT(%#x) }, // %s-bits, %s"
-            % (r[0], r[1], r[2], r[3])
-        )
+            % (r[0], r[1], r[2], r[3]))
         needed_qstrs.add(r[0])
 
-    print(
-        """};
+    print("""};
 
 STATIC MP_DEFINE_CONST_DICT(stm_%s_globals, stm_%s_globals_table);
 
@@ -238,9 +229,8 @@ const mp_obj_module_t stm_%s_obj = {
     .name = MP_QSTR_%s,
     .globals = (mp_obj_dict_t*)&stm_%s_globals,
 };
-"""
-        % (mod_name_lower, mod_name_lower, mod_name_lower, mod_name_upper, mod_name_lower)
-    )
+""" % (mod_name_lower, mod_name_lower, mod_name_lower, mod_name_upper,
+       mod_name_lower))
 
 
 def main():
@@ -281,33 +271,33 @@ def main():
         print_periph(periph_name, periph_val, needed_qstrs, needed_mpzs)
 
     for reg in (
-        "ADC",
-        # 'ADC_Common',
-        # 'CAN_TxMailBox',
-        # 'CAN_FIFOMailBox',
-        # 'CAN_FilterRegister',
-        # 'CAN',
-        "CRC",
-        "DAC",
-        "DBGMCU",
-        "DMA_Stream",
-        "DMA",
-        "EXTI",
-        "FLASH",
-        "GPIO",
-        "SYSCFG",
-        "I2C",
-        "IWDG",
-        "PWR",
-        "RCC",
-        "RTC",
-        # 'SDIO',
-        "SPI",
-        "TIM",
-        "USART",
-        "WWDG",
-        "RNG",
-        "IPCC",
+            "ADC",
+            # 'ADC_Common',
+            # 'CAN_TxMailBox',
+            # 'CAN_FIFOMailBox',
+            # 'CAN_FilterRegister',
+            # 'CAN',
+            "CRC",
+            "DAC",
+            "DBGMCU",
+            "DMA_Stream",
+            "DMA",
+            "EXTI",
+            "FLASH",
+            "GPIO",
+            "SYSCFG",
+            "I2C",
+            "IWDG",
+            "PWR",
+            "RCC",
+            "RTC",
+            # 'SDIO',
+            "SPI",
+            "TIM",
+            "USART",
+            "WWDG",
+            "RNG",
+            "IPCC",
     ):
         if reg in reg_defs:
             print_regs(reg, reg_defs[reg], needed_qstrs, needed_mpzs)
@@ -331,8 +321,8 @@ def main():
             print(
                 "STATIC const mp_obj_int_t mpz_%08x = {{&mp_type_int}, "
                 "{.neg=0, .fixed_dig=1, .alloc=2, .len=2, "
-                ".dig=(uint16_t*)(const uint16_t[]){%#x, %#x}}};"
-                % (mpz, mpz & 0xFFFF, (mpz >> 16) & 0xFFFF),
+                ".dig=(uint16_t*)(const uint16_t[]){%#x, %#x}}};" %
+                (mpz, mpz & 0xFFFF, (mpz >> 16) & 0xFFFF),
                 file=mpz_file,
             )
 

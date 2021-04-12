@@ -1,5 +1,6 @@
 # tests for correct PEP479 behaviour (introduced in Python 3.5)
 
+
 # basic case: StopIteration is converted into a RuntimeError
 def gen():
     yield 1

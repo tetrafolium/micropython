@@ -1,5 +1,6 @@
 # yield-from a user-defined generator with a throw() method
 
+
 class Iter:
     def __iter__(self):
         return self

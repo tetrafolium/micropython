@@ -26,11 +26,11 @@ CHAR_CTRL_UUID = bluetooth.UUID("00000002-1111-2222-3333-444444444444")
 CHAR_RX_UUID = bluetooth.UUID("00000003-1111-2222-3333-444444444444")
 CHAR_TX_UUID = bluetooth.UUID("00000004-1111-2222-3333-444444444444")
 CHAR_CTRL = (CHAR_CTRL_UUID, bluetooth.FLAG_WRITE | bluetooth.FLAG_NOTIFY)
-CHAR_RX = (CHAR_RX_UUID, bluetooth.FLAG_WRITE |
-           bluetooth.FLAG_WRITE_NO_RESPONSE)
+CHAR_RX = (CHAR_RX_UUID,
+           bluetooth.FLAG_WRITE | bluetooth.FLAG_WRITE_NO_RESPONSE)
 CHAR_TX = (CHAR_TX_UUID, bluetooth.FLAG_NOTIFY)
 SERVICE = (SERVICE_UUID, (CHAR_CTRL, CHAR_RX, CHAR_TX))
-SERVICES = (SERVICE,)
+SERVICES = (SERVICE, )
 
 waiting_events = {}
 
@@ -87,8 +87,8 @@ def wait_for_event(event, timeout_ms):
 # Acting in peripheral role.
 def instance0():
     multitest.globals(BDADDR=ble.config("mac"))
-    ((char_ctrl_handle, char_rx_handle, char_tx_handle),
-     ) = ble.gatts_register_services(SERVICES)
+    ((char_ctrl_handle, char_rx_handle,
+      char_tx_handle), ) = ble.gatts_register_services(SERVICES)
 
     # Increase the size of the rx buffer and enable append mode.
     ble.gatts_set_buffer(char_rx_handle, 100, True)
@@ -134,12 +134,12 @@ def instance1():
         # Discover characteristics.
         ble.gattc_discover_characteristics(conn_handle, 1, 65535)
         wait_for_event(_IRQ_GATTC_CHARACTERISTIC_DONE, TIMEOUT_MS)
-        ctrl_value_handle = waiting_events[(
-            _IRQ_GATTC_CHARACTERISTIC_RESULT, CHAR_CTRL_UUID)]
-        rx_value_handle = waiting_events[(
-            _IRQ_GATTC_CHARACTERISTIC_RESULT, CHAR_RX_UUID)]
-        tx_value_handle = waiting_events[(
-            _IRQ_GATTC_CHARACTERISTIC_RESULT, CHAR_TX_UUID)]
+        ctrl_value_handle = waiting_events[(_IRQ_GATTC_CHARACTERISTIC_RESULT,
+                                            CHAR_CTRL_UUID)]
+        rx_value_handle = waiting_events[(_IRQ_GATTC_CHARACTERISTIC_RESULT,
+                                          CHAR_RX_UUID)]
+        tx_value_handle = waiting_events[(_IRQ_GATTC_CHARACTERISTIC_RESULT,
+                                          CHAR_TX_UUID)]
 
         # Write to the characteristic a few times, with and without response.
         for i in range(4):

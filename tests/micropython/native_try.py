@@ -1,5 +1,6 @@
 # test native try handling
 
+
 # basic try-finally
 @micropython.native
 def f():

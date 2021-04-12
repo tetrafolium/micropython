@@ -11,7 +11,6 @@ try:
 except:
     from .task import TaskQueue, Task
 
-
 ################################################################################
 # Exceptions
 
@@ -25,12 +24,15 @@ class TimeoutError(Exception):
 
 
 # Used when calling Loop.call_exception_handler
-_exc_context = {"message": "Task exception wasn't retrieved",
-                "exception": None, "future": None}
-
+_exc_context = {
+    "message": "Task exception wasn't retrieved",
+    "exception": None,
+    "future": None
+}
 
 ################################################################################
 # Sleep functions
+
 
 # "Yield" once, then raise StopIteration
 class SingletonGenerator:
@@ -79,8 +81,8 @@ class IOQueue:
             entry = [None, None, s]
             entry[idx] = cur_task
             self.map[id(s)] = entry
-            self.poller.register(s, select.POLLIN if idx ==
-                                 0 else select.POLLOUT)
+            self.poller.register(s,
+                                 select.POLLIN if idx == 0 else select.POLLOUT)
         else:
             sm = self.map[id(s)]
             assert sm[idx] is None
@@ -135,6 +137,7 @@ class IOQueue:
 
 ################################################################################
 # Main run loop
+
 
 # Ensure the awaitable is a task
 def _promote_to_task(aw):

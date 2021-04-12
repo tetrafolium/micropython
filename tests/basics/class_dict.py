@@ -4,7 +4,6 @@ if not hasattr(int, "__dict__"):
     print("SKIP")
     raise SystemExit
 
-
 # dict of a built-in type
 print("from_bytes" in int.__dict__)
 
@@ -17,7 +16,6 @@ class Foo:
 
 d = Foo.__dict__
 print(d["a"], d["b"])
-
 
 # dict of a class that has no locals_dict (return empty dict).
 d = type(type('')).__dict__

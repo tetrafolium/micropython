@@ -15,13 +15,11 @@ class GVector(object):
         self.z = z
 
     def Mag(self):
-        return math.sqrt(self.x ** 2 + self.y ** 2 + self.z ** 2)
+        return math.sqrt(self.x**2 + self.y**2 + self.z**2)
 
     def dist(self, other):
-        return math.sqrt(
-            (self.x - other.x) ** 2 + (self.y -
-                                       other.y) ** 2 + (self.z - other.z) ** 2
-        )
+        return math.sqrt((self.x - other.x)**2 + (self.y - other.y)**2 +
+                         (self.z - other.z)**2)
 
     def __add__(self, other):
         if not isinstance(other, GVector):
@@ -41,10 +39,8 @@ class GVector(object):
     def linear_combination(self, other, l1, l2=None):
         if l2 is None:
             l2 = 1 - l1
-        v = GVector(
-            self.x * l1 + other.x * l2, self.y * l1 +
-            other.y * l2, self.z * l1 + other.z * l2
-        )
+        v = GVector(self.x * l1 + other.x * l2, self.y * l1 + other.y * l2,
+                    self.z * l1 + other.z * l2)
         return v
 
     def __str__(self):
@@ -56,7 +52,6 @@ class GVector(object):
 
 class Spline(object):
     """Class for representing B-Splines and NURBS of arbitrary degree"""
-
     def __init__(self, points, degree, knots):
         """Creates a Spline.
 
@@ -77,7 +72,8 @@ class Spline(object):
 
     def GetDomain(self):
         """Returns the domain of the B-Spline"""
-        return (self.knots[self.degree - 1], self.knots[len(self.knots) - self.degree])
+        return (self.knots[self.degree - 1],
+                self.knots[len(self.knots) - self.degree])
 
     def __call__(self, u):
         """Calculates a point of the B-Spline using de Boors Algorithm"""
@@ -89,8 +85,10 @@ class Spline(object):
         if u == dom[1]:
             return self.points[-1]
         I = self.GetIndex(u)
-        d = [self.points[I - self.degree + 1 + ii]
-             for ii in range(self.degree + 1)]
+        d = [
+            self.points[I - self.degree + 1 + ii]
+            for ii in range(self.degree + 1)
+        ]
         U = self.knots
         for ik in range(1, self.degree + 1):
             for ii in range(I - self.degree + ik + 1, I + 2):
@@ -178,8 +176,10 @@ class Chaosgame(object):
             neighbour = self.splines[trafo[0]](t + 1 / 50000)
             derivative = basepoint - neighbour
         if derivative.Mag() != 0:
-            basepoint.x += derivative.y / derivative.Mag() * (y - 0.5) * self.thickness
-            basepoint.y += -derivative.x / derivative.Mag() * (y - 0.5) * self.thickness
+            basepoint.x += derivative.y / derivative.Mag() * (
+                y - 0.5) * self.thickness
+            basepoint.y += -derivative.x / derivative.Mag() * (
+                y - 0.5) * self.thickness
         else:
             # can happen, especially with single precision float
             pass

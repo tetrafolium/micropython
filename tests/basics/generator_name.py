@@ -1,5 +1,6 @@
 # test __name__ on generator functions
 
+
 def Fun():
     yield
 

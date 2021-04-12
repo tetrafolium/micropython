@@ -1,5 +1,6 @@
 # test for correct binding of self when accessing attr of an instance
 
+
 class A:
     def __init__(self, arg):
         self.val = arg
@@ -19,6 +20,7 @@ def make_closure(x_in):
 
     def closure(y):
         return x, y is c
+
     return closure
 
 
@@ -28,7 +30,9 @@ class C:
     def f1(self, arg):
         return 'C.f1', self is c, arg
 
-    def f2(self, arg): return ('C.f2', self is c, arg)
+    def f2(self, arg):
+        return ('C.f2', self is c, arg)
+
     f3 = make_closure('f3')  # closure
 
     def f4(self, arg):  # generator

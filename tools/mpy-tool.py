@@ -30,17 +30,35 @@ import makeqstrdata as qstrutil
 import platform
 
 if platform.python_version_tuple()[0] == "2":
-    def str_cons(val, enc=None): return val
-    def bytes_cons(val, enc=None): return bytearray(val)
-    def is_str_type(o): return type(o) is str
-    def is_bytes_type(o): return type(o) is bytearray
-    def is_int_type(o): return type(o) is int or type(o) is long
+
+    def str_cons(val, enc=None):
+        return val
+
+    def bytes_cons(val, enc=None):
+        return bytearray(val)
+
+    def is_str_type(o):
+        return type(o) is str
+
+    def is_bytes_type(o):
+        return type(o) is bytearray
+
+    def is_int_type(o):
+        return type(o) is int or type(o) is long
 else:
     str_cons = str
     bytes_cons = bytes
-    def is_str_type(o): return type(o) is str
-    def is_bytes_type(o): return type(o) is bytes
-    def is_int_type(o): return type(o) is int
+
+    def is_str_type(o):
+        return type(o) is str
+
+    def is_bytes_type(o):
+        return type(o) is bytes
+
+    def is_int_type(o):
+        return type(o) is int
+
+
 # end compatibility code
 
 import sys
@@ -56,7 +74,8 @@ class FreezeError(Exception):
         self.msg = msg
 
     def __str__(self):
-        return "error while freezing %s: %s" % (self.rawcode.source_file, self.msg)
+        return "error while freezing %s: %s" % (self.rawcode.source_file,
+                                                self.msg)
 
 
 class Config:
@@ -88,7 +107,7 @@ class QStrWindow:
         self.size = size
 
     def push(self, val):
-        self.window = [val] + self.window[: self.size - 1]
+        self.window = [val] + self.window[:self.size - 1]
 
     def access(self, idx):
         val = self.window[idx]
@@ -135,12 +154,9 @@ def mp_opcode_format(bytecode, ip, count_var_uint):
     f = (0x000003A4 >> (2 * ((opcode) >> 4))) & 3
     if f == MP_BC_FORMAT_QSTR:
         if config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE:
-            if (
-                opcode == MP_BC_LOAD_NAME
-                or opcode == MP_BC_LOAD_GLOBAL
-                or opcode == MP_BC_LOAD_ATTR
-                or opcode == MP_BC_STORE_ATTR
-            ):
+            if (opcode == MP_BC_LOAD_NAME or opcode == MP_BC_LOAD_GLOBAL
+                    or opcode == MP_BC_LOAD_ATTR
+                    or opcode == MP_BC_STORE_ATTR):
                 ip += 1
         ip += 3
     else:
@@ -218,7 +234,8 @@ def extract_prelude(bytecode, ip):
     ip = ip2 + n_info + n_cell
     # ip now points to first opcode
     # ip2 points to simple_name qstr
-    return ip, ip2, (n_state, n_exc_stack, scope_flags, n_pos_args, n_kwonly_args, n_def_pos_args)
+    return ip, ip2, (n_state, n_exc_stack, scope_flags, n_pos_args,
+                     n_kwonly_args, n_def_pos_args)
 
 
 class MPFunTable:
@@ -237,7 +254,8 @@ class RawCode(object):
         MP_CODE_NATIVE_ASM: "MP_CODE_NATIVE_ASM",
     }
 
-    def __init__(self, code_kind, bytecode, prelude_offset, qstrs, objs, raw_codes):
+    def __init__(self, code_kind, bytecode, prelude_offset, qstrs, objs,
+                 raw_codes):
         # set core variables
         self.code_kind = code_kind
         self.bytecode = bytecode
@@ -306,8 +324,7 @@ class RawCode(object):
                             obj, config.MICROPY_QSTR_BYTES_IN_HASH),
                         len(obj),
                         "".join(("\\x%02x" % b) for b in obj),
-                    )
-                )
+                    ))
             elif is_int_type(obj):
                 if config.MICROPY_LONGINT_IMPL == config.MICROPY_LONGINT_IMPL_NONE:
                     # TODO check if we can actually fit this long-int into a small-int
@@ -332,34 +349,30 @@ class RawCode(object):
                     print(
                         "STATIC const mp_obj_int_t %s = {{&mp_type_int}, "
                         "{.neg=%u, .fixed_dig=1, .alloc=%u, .len=%u, .dig=(uint%u_t*)(const uint%u_t[]){%s}}};"
-                        % (obj_name, neg, ndigs, ndigs, bits_per_dig, bits_per_dig, digs)
-                    )
+                        % (obj_name, neg, ndigs, ndigs, bits_per_dig,
+                           bits_per_dig, digs))
             elif type(obj) is float:
                 print(
                     "#if MICROPY_OBJ_REPR == MICROPY_OBJ_REPR_A || MICROPY_OBJ_REPR == MICROPY_OBJ_REPR_B"
                 )
                 print(
                     "STATIC const mp_obj_float_t %s = {{&mp_type_float}, (mp_float_t)%.16g};"
-                    % (obj_name, obj)
-                )
+                    % (obj_name, obj))
                 print("#endif")
             elif type(obj) is complex:
                 print(
                     "STATIC const mp_obj_complex_t %s = {{&mp_type_complex}, (mp_float_t)%.16g, (mp_float_t)%.16g};"
-                    % (obj_name, obj.real, obj.imag)
-                )
+                    % (obj_name, obj.real, obj.imag))
             else:
                 raise FreezeError(
-                    self, "freezing of object %r is not implemented" % (obj,))
+                    self, "freezing of object %r is not implemented" % (obj, ))
 
         # generate constant table, if it has any entries
         const_table_len = len(self.qstrs) + \
             len(self.objs) + len(self.raw_codes)
         if const_table_len:
-            print(
-                "STATIC const mp_rom_obj_t const_table_data_%s[%u] = {"
-                % (self.escaped_name, const_table_len)
-            )
+            print("STATIC const mp_rom_obj_t const_table_data_%s[%u] = {" %
+                  (self.escaped_name, const_table_len))
             for qst in self.qstrs:
                 print("    MP_ROM_QSTR(%s)," % global_qstrs[qst].qstr_id)
             for i in range(len(self.objs)):
@@ -374,11 +387,11 @@ class RawCode(object):
                     print("#elif MICROPY_OBJ_REPR == MICROPY_OBJ_REPR_C")
                     n = struct.unpack("<I", struct.pack("<f", self.objs[i]))[0]
                     n = ((n & ~0x3) | 2) + 0x80800000
-                    print("    (mp_rom_obj_t)(0x%08x)," % (n,))
+                    print("    (mp_rom_obj_t)(0x%08x)," % (n, ))
                     print("#elif MICROPY_OBJ_REPR == MICROPY_OBJ_REPR_D")
                     n = struct.unpack("<Q", struct.pack("<d", self.objs[i]))[0]
                     n += 0x8004000000000000
-                    print("    (mp_rom_obj_t)(0x%016x)," % (n,))
+                    print("    (mp_rom_obj_t)(0x%016x)," % (n, ))
                     print("#endif")
                 else:
                     print("    MP_ROM_PTR(&const_obj_%s_%u)," %
@@ -416,10 +429,8 @@ class RawCode(object):
             print("        .n_def_pos_args = %u," % self.prelude[5])
             print("        .qstr_block_name = %s," % self.simple_name.qstr_id)
             print("        .qstr_source_file = %s," % self.source_file.qstr_id)
-            print(
-                "        .line_info = fun_data_%s + %u,"
-                % (self.escaped_name, self.line_info_offset)
-            )
+            print("        .line_info = fun_data_%s + %u," %
+                  (self.escaped_name, self.line_info_offset))
             print("        .opcodes = fun_data_%s + %u," %
                   (self.escaped_name, self.ip))
             print("    },")
@@ -439,19 +450,16 @@ class RawCode(object):
 
 class RawCodeBytecode(RawCode):
     def __init__(self, bytecode, qstrs, objs, raw_codes):
-        super(RawCodeBytecode, self).__init__(
-            MP_CODE_BYTECODE, bytecode, 0, qstrs, objs, raw_codes
-        )
+        super(RawCodeBytecode, self).__init__(MP_CODE_BYTECODE, bytecode, 0,
+                                              qstrs, objs, raw_codes)
 
     def freeze(self, parent_name):
         self.freeze_children(parent_name)
 
         # generate bytecode data
         print()
-        print(
-            "// frozen bytecode for file %s, scope %s%s"
-            % (self.source_file.str, parent_name, self.simple_name.str)
-        )
+        print("// frozen bytecode for file %s, scope %s%s" %
+              (self.source_file.str, parent_name, self.simple_name.str))
         print("STATIC ", end="")
         if not config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE:
             print("const ", end="")
@@ -475,11 +483,12 @@ class RawCodeBytecode(RawCode):
             if f == 1:
                 qst = self._unpack_qstr(ip + 1).qstr_id
                 extra = "" if sz == 3 else " 0x%02x," % self.bytecode[ip + 3]
-                print("   ", "0x%02x," %
-                      self.bytecode[ip], qst, "& 0xff,", qst, ">> 8,", extra)
+                print("   ", "0x%02x," % self.bytecode[ip], qst, "& 0xff,",
+                      qst, ">> 8,", extra)
             else:
-                print("   ", "".join("0x%02x, " %
-                                     self.bytecode[ip + i] for i in range(sz)))
+                print(
+                    "   ", "".join("0x%02x, " % self.bytecode[ip + i]
+                                   for i in range(sz)))
             ip += sz
         print("};")
 
@@ -500,17 +509,17 @@ class RawCodeNative(RawCode):
         raw_codes,
         type_sig,
     ):
-        super(RawCodeNative, self).__init__(
-            code_kind, fun_data, prelude_offset, qstrs, objs, raw_codes
-        )
+        super(RawCodeNative,
+              self).__init__(code_kind, fun_data, prelude_offset, qstrs, objs,
+                             raw_codes)
         self.prelude = prelude
         self.qstr_links = qstr_links
         self.type_sig = type_sig
         if config.native_arch in (
-            MP_NATIVE_ARCH_X86,
-            MP_NATIVE_ARCH_X64,
-            MP_NATIVE_ARCH_XTENSA,
-            MP_NATIVE_ARCH_XTENSAWIN,
+                MP_NATIVE_ARCH_X86,
+                MP_NATIVE_ARCH_X64,
+                MP_NATIVE_ARCH_XTENSA,
+                MP_NATIVE_ARCH_XTENSAWIN,
         ):
             self.fun_data_attributes = '__attribute__((section(".text,\\"ax\\",@progbits # ")))'
         else:
@@ -520,9 +529,9 @@ class RawCodeNative(RawCode):
         # ARM needs word alignment, ARM Thumb needs halfword, due to instruction size.
         # Xtensa needs word alignment due to the 32-bit constant table embedded in the code.
         if config.native_arch in (
-            MP_NATIVE_ARCH_ARMV6,
-            MP_NATIVE_ARCH_XTENSA,
-            MP_NATIVE_ARCH_XTENSAWIN,
+                MP_NATIVE_ARCH_ARMV6,
+                MP_NATIVE_ARCH_XTENSA,
+                MP_NATIVE_ARCH_XTENSAWIN,
         ):
             # ARMV6 or Xtensa -- four byte align.
             self.fun_data_attributes += " __attribute__ ((aligned (4)))"
@@ -531,11 +540,12 @@ class RawCodeNative(RawCode):
             self.fun_data_attributes += " __attribute__ ((aligned (2)))"
 
     def _asm_thumb_rewrite_mov(self, pc, val):
-        print("    (%u & 0xf0) | (%s >> 12)," %
-              (self.bytecode[pc], val), end="")
+        print("    (%u & 0xf0) | (%s >> 12)," % (self.bytecode[pc], val),
+              end="")
         print(" (%u & 0xfb) | (%s >> 9 & 0x04)," %
-              (self.bytecode[pc + 1], val), end="")
-        print(" (%s & 0xff)," % (val,), end="")
+              (self.bytecode[pc + 1], val),
+              end="")
+        print(" (%s & 0xff)," % (val, ), end="")
         print(" (%u & 0x07) | (%s >> 4 & 0x70)," %
               (self.bytecode[pc + 3], val))
 
@@ -550,15 +560,14 @@ class RawCodeNative(RawCode):
             if is_obj:
                 qst = "((uintptr_t)MP_OBJ_NEW_QSTR(%s))" % qst
             if config.native_arch in (
-                MP_NATIVE_ARCH_X86,
-                MP_NATIVE_ARCH_X64,
-                MP_NATIVE_ARCH_XTENSA,
-                MP_NATIVE_ARCH_XTENSAWIN,
+                    MP_NATIVE_ARCH_X86,
+                    MP_NATIVE_ARCH_X64,
+                    MP_NATIVE_ARCH_XTENSA,
+                    MP_NATIVE_ARCH_XTENSAWIN,
             ):
                 print(
                     "    %s & 0xff, (%s >> 8) & 0xff, (%s >> 16) & 0xff, %s >> 24,"
-                    % (qst, qst, qst, qst)
-                )
+                    % (qst, qst, qst, qst))
                 return 4
             elif MP_NATIVE_ARCH_ARMV6M <= config.native_arch <= MP_NATIVE_ARCH_ARMV7EMDP:
                 if is_obj:
@@ -582,18 +591,15 @@ class RawCodeNative(RawCode):
         # generate native code data
         print()
         if self.code_kind == MP_CODE_NATIVE_PY:
-            print(
-                "// frozen native code for file %s, scope %s%s"
-                % (self.source_file.str, parent_name, self.simple_name.str)
-            )
+            print("// frozen native code for file %s, scope %s%s" %
+                  (self.source_file.str, parent_name, self.simple_name.str))
         elif self.code_kind == MP_CODE_NATIVE_VIPER:
-            print("// frozen viper code for scope %s" % (parent_name,))
+            print("// frozen viper code for scope %s" % (parent_name, ))
         else:
-            print("// frozen assembler code for scope %s" % (parent_name,))
+            print("// frozen assembler code for scope %s" % (parent_name, ))
         print(
-            "STATIC const byte fun_data_%s[%u] %s = {"
-            % (self.escaped_name, len(self.bytecode), self.fun_data_attributes)
-        )
+            "STATIC const byte fun_data_%s[%u] %s = {" %
+            (self.escaped_name, len(self.bytecode), self.fun_data_attributes))
 
         if self.code_kind == MP_CODE_NATIVE_PY:
             i_top = self.prelude_offset
@@ -768,8 +774,8 @@ def read_raw_code(f, qstr_win):
         type_sig = 0
         if kind == MP_CODE_NATIVE_PY:
             prelude_offset = read_uint(f)
-            _, name_idx, prelude = extract_prelude(
-                fun_data.buf, prelude_offset)
+            _, name_idx, prelude = extract_prelude(fun_data.buf,
+                                                   prelude_offset)
             fun_data.idx = name_idx  # rewind to where qstrs are in prelude
             read_qstr_and_pack(f, fun_data, qstr_win)  # simple_name
             read_qstr_and_pack(f, fun_data, qstr_win)  # source_file
@@ -789,8 +795,9 @@ def read_raw_code(f, qstr_win):
         # load constant table
         n_obj = read_uint(f)
         n_raw_code = read_uint(f)
-        qstrs = [read_qstr(f, qstr_win)
-                 for _ in range(prelude[3] + prelude[4])]
+        qstrs = [
+            read_qstr(f, qstr_win) for _ in range(prelude[3] + prelude[4])
+        ]
         if kind != MP_CODE_BYTECODE:
             objs.append(MPFunTable)
         objs.extend([read_obj(f) for _ in range(n_obj)])
@@ -821,8 +828,8 @@ def read_mpy(filename):
             raise Exception("incompatible .mpy version")
         feature_byte = header[2]
         qw_size = read_uint(f)
-        config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE = (
-            feature_byte & 1) != 0
+        config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE = (feature_byte
+                                                           & 1) != 0
         config.MICROPY_PY_BUILTINS_STR_UNICODE = (feature_byte & 2) != 0
         mpy_native_arch = feature_byte >> 2
         if mpy_native_arch != MP_NATIVE_ARCH_NONE:
@@ -860,10 +867,8 @@ def freeze_mpy(base_qstrs, raw_codes):
     print('#include "py/nativeglue.h"')
     print()
 
-    print(
-        "#if MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE != %u"
-        % config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE
-    )
+    print("#if MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE != %u" %
+          config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE)
     print('#error "incompatible MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE"')
     print("#endif")
     print()
@@ -917,12 +922,9 @@ def freeze_mpy(base_qstrs, raw_codes):
     print("    %u, // used entries" % len(new))
     print("    {")
     for _, _, qstr in new:
-        print(
-            "        %s,"
-            % qstrutil.make_bytes(
-                config.MICROPY_QSTR_BYTES_IN_LEN, config.MICROPY_QSTR_BYTES_IN_HASH, qstr
-            )
-        )
+        print("        %s," %
+              qstrutil.make_bytes(config.MICROPY_QSTR_BYTES_IN_LEN,
+                                  config.MICROPY_QSTR_BYTES_IN_HASH, qstr))
     print("    },")
     print("};")
 
@@ -946,9 +948,9 @@ def freeze_mpy(base_qstrs, raw_codes):
     for rc in raw_codes:
         module_name = rc.source_file.str
         if module_name.endswith("/__init__.py"):
-            short_name = module_name[: -len("/__init__.py")]
+            short_name = module_name[:-len("/__init__.py")]
         else:
-            short_name = module_name[: -len(".py")]
+            short_name = module_name[:-len(".py")]
         print('MICROPY_FROZEN_LIST_ITEM("%s", "%s")' %
               (short_name, module_name))
     print("#endif")
@@ -965,11 +967,9 @@ def merge_mpy(raw_codes, output_file):
         header = bytearray(5)
         header[0] = ord("M")
         header[1] = config.MPY_VERSION
-        header[2] = (
-            config.native_arch << 2
-            | config.MICROPY_PY_BUILTINS_STR_UNICODE << 1
-            | config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE
-        )
+        header[2] = (config.native_arch << 2
+                     | config.MICROPY_PY_BUILTINS_STR_UNICODE << 1
+                     | config.MICROPY_OPT_CACHE_MAP_LOOKUP_IN_BYTECODE)
         header[3] = config.mp_small_int_bits
         header[4] = 32  # qstr_win_size
         merged_mpy.extend(header)
@@ -1012,14 +1012,19 @@ def main():
 
     cmd_parser = argparse.ArgumentParser(
         description="A tool to work with MicroPython .mpy files.")
-    cmd_parser.add_argument(
-        "-d", "--dump", action="store_true", help="dump contents of files")
-    cmd_parser.add_argument(
-        "-f", "--freeze", action="store_true", help="freeze files")
-    cmd_parser.add_argument(
-        "--merge", action="store_true", help="merge multiple .mpy files into one"
-    )
-    cmd_parser.add_argument("-q", "--qstr-header",
+    cmd_parser.add_argument("-d",
+                            "--dump",
+                            action="store_true",
+                            help="dump contents of files")
+    cmd_parser.add_argument("-f",
+                            "--freeze",
+                            action="store_true",
+                            help="freeze files")
+    cmd_parser.add_argument("--merge",
+                            action="store_true",
+                            help="merge multiple .mpy files into one")
+    cmd_parser.add_argument("-q",
+                            "--qstr-header",
                             help="qstr header file to freeze against")
     cmd_parser.add_argument(
         "-mlongint-impl",

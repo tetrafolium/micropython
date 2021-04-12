@@ -9,7 +9,6 @@ except ImportError:
         print("SKIP")
         raise SystemExit
 
-
 h = hashlib.sha256()
 print(h.digest())
 

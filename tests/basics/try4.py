@@ -1,5 +1,6 @@
 # triple nested exceptions
 
+
 def f():
     try:
         foo()

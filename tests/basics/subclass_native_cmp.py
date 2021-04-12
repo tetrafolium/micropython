@@ -1,5 +1,6 @@
 # Test calling non-special method inherited from native type
 
+
 class mytuple(tuple):
     pass
 

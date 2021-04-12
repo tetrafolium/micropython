@@ -40,7 +40,7 @@ _TEMP_CHAR = (
 )
 _ENV_SENSE_SERVICE = (
     _ENV_SENSE_UUID,
-    (_TEMP_CHAR,),
+    (_TEMP_CHAR, ),
 )
 
 # org.bluetooth.characteristic.gap.appearance.xml
@@ -68,12 +68,13 @@ class BLETemperature:
         self._ble.config(io=_IO_CAPABILITY_DISPLAY_YESNO)
         self._ble.active(True)
         self._ble.config(addr_mode=2)
-        ((self._handle,),) = self._ble.gatts_register_services((_ENV_SENSE_SERVICE,))
+        ((self._handle, ), ) = self._ble.gatts_register_services(
+            (_ENV_SENSE_SERVICE, ))
         self._connections = set()
         self._payload = advertising_payload(
-            name=name, services=[
-                _ENV_SENSE_UUID], appearance=_ADV_APPEARANCE_GENERIC_THERMOMETER
-        )
+            name=name,
+            services=[_ENV_SENSE_UUID],
+            appearance=_ADV_APPEARANCE_GENERIC_THERMOMETER)
         self._advertise()
 
     def _irq(self, event, data):
@@ -89,8 +90,8 @@ class BLETemperature:
             self._advertise()
         elif event == _IRQ_ENCRYPTION_UPDATE:
             conn_handle, encrypted, authenticated, bonded, key_size = data
-            print("encryption update", conn_handle,
-                  encrypted, authenticated, bonded, key_size)
+            print("encryption update", conn_handle, encrypted, authenticated,
+                  bonded, key_size)
         elif event == _IRQ_PASSKEY_ACTION:
             conn_handle, action, passkey = data
             print("passkey action", conn_handle, action, passkey)
@@ -140,8 +141,8 @@ class BLETemperature:
     def set_temperature(self, temp_deg_c, notify=False, indicate=False):
         # Data is sint16 in degrees Celsius with a resolution of 0.01 degrees Celsius.
         # Write the local value, ready for a central to read.
-        self._ble.gatts_write(self._handle, struct.pack(
-            "<h", int(temp_deg_c * 100)))
+        self._ble.gatts_write(self._handle,
+                              struct.pack("<h", int(temp_deg_c * 100)))
         if notify or indicate:
             for conn_handle in self._connections:
                 if notify:
@@ -161,18 +162,19 @@ class BLETemperature:
             with open("secrets.json", "r") as f:
                 entries = json.load(f)
                 for sec_type, key, value in entries:
-                    self._secrets[sec_type, binascii.a2b_base64(
-                        key)] = binascii.a2b_base64(value)
+                    self._secrets[
+                        sec_type,
+                        binascii.a2b_base64(key)] = binascii.a2b_base64(value)
         except:
             print("no secrets available")
 
     def _save_secrets(self):
         try:
             with open("secrets.json", "w") as f:
-                json_secrets = [
-                    (sec_type, binascii.b2a_base64(key), binascii.b2a_base64(value))
-                    for (sec_type, key), value in self._secrets.items()
-                ]
+                json_secrets = [(sec_type, binascii.b2a_base64(key),
+                                 binascii.b2a_base64(value))
+                                for (sec_type,
+                                     key), value in self._secrets.items()]
                 json.dump(json_secrets, f)
         except:
             print("failed to save secrets")

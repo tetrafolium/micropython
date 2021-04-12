@@ -1,5 +1,6 @@
 # to test keyword-only arguments
 
+
 # simplest case
 def f(*, a):
     print(a)

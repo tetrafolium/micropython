@@ -83,9 +83,8 @@ def main():
     if resp == "E":
         if exists(CONFIG):
             resp2 = input_choice(
-                "Would you like to change WebREPL password? (y/n) ", ("y",
-                                                                      "n", "")
-            )
+                "Would you like to change WebREPL password? (y/n) ",
+                ("y", "n", ""))
         else:
             print("To enable WebREPL, you must set password for it")
             resp2 = "y"
@@ -95,7 +94,8 @@ def main():
             with open(CONFIG, "w") as f:
                 f.write("PASS = %r\n" % passwd)
 
-    if resp not in ("D", "E") or (resp == "D" and not status) or (resp == "E" and status):
+    if resp not in ("D", "E") or (resp == "D" and not status) or (resp == "E"
+                                                                  and status):
         print("No further action required")
         sys.exit()
 

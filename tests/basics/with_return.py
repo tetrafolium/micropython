@@ -9,6 +9,7 @@ class CtxMgr:
     def __exit__(self, a, b, c):
         print("__exit__", self.id, repr(a), repr(b))
 
+
 # simple case
 
 

@@ -16,7 +16,7 @@ x = 0xd48a1e2a099b1395895527112937a391d02d4a208bce5d74b281cf35a57362502726f79a63
 y = 0x3accf60bb1a5365e4250d1588eb0fe6cd81ad495e9063f90880229f2a625e98c59387238670936afb2cafc5b79448e4414d6cd5e9901aa845aa122db58ddd7b9f2b17414600a18c47494ed1f3d49d005a5
 
 print(hex(pow(2, 200, x)))  # Should not overflow, just 1 << 200
-print(hex(pow(2, x-1, x)))  # Should be 1, since x is prime
-print(hex(pow(y, x-1, x)))  # Should be 1, since x is prime
-print(hex(pow(y, y-1, x)))  # Should be a 'big value'
-print(hex(pow(y, y-1, y)))  # Should be a 'big value'
+print(hex(pow(2, x - 1, x)))  # Should be 1, since x is prime
+print(hex(pow(y, x - 1, x)))  # Should be 1, since x is prime
+print(hex(pow(y, y - 1, x)))  # Should be a 'big value'
+print(hex(pow(y, y - 1, y)))  # Should be a 'big value'

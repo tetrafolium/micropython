@@ -4,8 +4,11 @@ def bm_run(N, M):
     except ImportError:
         import time
 
-        def ticks_us(): return int(time.perf_counter() * 1000000)
-        def ticks_diff(a, b): return a - b
+        def ticks_us():
+            return int(time.perf_counter() * 1000000)
+
+        def ticks_diff(a, b):
+            return a - b
 
     # Pick sensible parameters given N, M
     cur_nm = (0, 0)

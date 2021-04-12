@@ -62,6 +62,7 @@ def viper_4args(a: int, b: int, c: int, d: int) -> int:
 # viper call with 4 args not yet supported
 # print(viper_4args(1, 2, 3, 4))
 
+
 # a local (should have automatic type int)
 @micropython.viper
 def viper_local(x: int) -> int:

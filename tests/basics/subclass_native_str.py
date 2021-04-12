@@ -1,5 +1,6 @@
 # Test subclassing built-in str
 
+
 class S(str):
     pass
 

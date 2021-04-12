@@ -43,8 +43,12 @@ class STAccel:
     def __init__(self):
         self.cs_pin = Pin("PE3", Pin.OUT_PP, Pin.PULL_NONE)
         self.cs_pin.high()
-        self.spi = SPI(1, SPI.MASTER, baudrate=328125,
-                       polarity=0, phase=1, bits=8)
+        self.spi = SPI(1,
+                       SPI.MASTER,
+                       baudrate=328125,
+                       polarity=0,
+                       phase=1,
+                       bits=8)
 
         self.who_am_i = self.read_id()
 

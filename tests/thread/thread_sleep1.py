@@ -9,7 +9,9 @@ try:
 except ImportError:
     import time
 
-    def sleep_ms(t): return time.sleep(t / 1000)
+    def sleep_ms(t):
+        return time.sleep(t / 1000)
+
 
 import _thread
 
@@ -27,7 +29,7 @@ def thread_entry(t):
 
 
 for i in range(n_thread):
-    _thread.start_new_thread(thread_entry, (10 * i,))
+    _thread.start_new_thread(thread_entry, (10 * i, ))
 
 # wait for threads to finish
 while n_finished < n_thread:

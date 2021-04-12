@@ -4,8 +4,8 @@ BLE_GAP_ADV_FLAG_LE_GENERAL_DISC_MODE = const(0x02)
 BLE_GAP_ADV_FLAG_BR_EDR_NOT_SUPPORTED = const(0x04)
 
 BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE = const(
-    BLE_GAP_ADV_FLAG_LE_GENERAL_DISC_MODE | BLE_GAP_ADV_FLAG_BR_EDR_NOT_SUPPORTED
-)
+    BLE_GAP_ADV_FLAG_LE_GENERAL_DISC_MODE
+    | BLE_GAP_ADV_FLAG_BR_EDR_NOT_SUPPORTED)
 
 EDDYSTONE_FRAME_TYPE_URL = const(0x10)
 EDDYSTONE_URL_PREFIX_HTTP_WWW = const(0x00)  # "http://www".
@@ -30,14 +30,13 @@ def gen_ad_type_content(ad_type, data):
 def generate_eddystone_adv_packet(url):
     # flags
     disc_mode = bytearray([BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE])
-    packet_flags = gen_ad_type_content(
-        constants.ad_types.AD_TYPE_FLAGS, disc_mode)
+    packet_flags = gen_ad_type_content(constants.ad_types.AD_TYPE_FLAGS,
+                                       disc_mode)
 
     # 16-bit uuid
     uuid = bytearray([0xAA, 0xFE])
     packet_uuid16 = gen_ad_type_content(
-        constants.ad_types.AD_TYPE_16BIT_SERVICE_UUID_COMPLETE, uuid
-    )
+        constants.ad_types.AD_TYPE_16BIT_SERVICE_UUID_COMPLETE, uuid)
 
     # eddystone data
     rssi = 0xEE  # -18 dB, approx signal strength at 0m.
@@ -51,8 +50,7 @@ def generate_eddystone_adv_packet(url):
     # service data
     service_data = uuid + eddystone_data
     packet_service_data = gen_ad_type_content(
-        constants.ad_types.AD_TYPE_SERVICE_DATA, service_data
-    )
+        constants.ad_types.AD_TYPE_SERVICE_DATA, service_data)
 
     # generate advertisment packet
     packet = bytearray([])

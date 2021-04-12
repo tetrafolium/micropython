@@ -1,5 +1,6 @@
 # test break within (nested) finally
 
+
 # basic case with break in finally
 def f():
     for _ in range(2):
@@ -118,4 +119,5 @@ def f(arg):
 
 f(0)  # no exception, else should execute
 f(1)  # exception caught, else should be skipped
-f(2)  # exception not caught, finally swallows exception, else should be skipped
+f(2
+  )  # exception not caught, finally swallows exception, else should be skipped
