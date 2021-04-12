@@ -10,16 +10,18 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_2(cppfunc_obj, cppfunc);
 // All identifiers and strings are written as MP_QSTR_xxx and will be
 // optimized to word-sized integers by the build system (interned strings).
 STATIC const mp_rom_map_elem_t cppexample_module_globals_table[] = {
-    { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_cppexample) },
-    { MP_ROM_QSTR(MP_QSTR_cppfunc), MP_ROM_PTR(&cppfunc_obj) },
+    {MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_cppexample)},
+    {MP_ROM_QSTR(MP_QSTR_cppfunc), MP_ROM_PTR(&cppfunc_obj)},
 };
-STATIC MP_DEFINE_CONST_DICT(cppexample_module_globals, cppexample_module_globals_table);
+STATIC MP_DEFINE_CONST_DICT(cppexample_module_globals,
+                            cppexample_module_globals_table);
 
 // Define module object.
 const mp_obj_module_t cppexample_user_cmodule = {
-    .base = { &mp_type_module },
+    .base = {&mp_type_module},
     .globals = (mp_obj_dict_t *)&cppexample_module_globals,
 };
 
 // Register the module to make it available in Python.
-MP_REGISTER_MODULE(MP_QSTR_cppexample, cppexample_user_cmodule, MODULE_CPPEXAMPLE_ENABLED);
+MP_REGISTER_MODULE(MP_QSTR_cppexample, cppexample_user_cmodule,
+                   MODULE_CPPEXAMPLE_ENABLED);

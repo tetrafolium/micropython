@@ -1,57 +1,55 @@
 /*****************************************************************************
-*
-*  netapp.c  - CC3000 Host Driver Implementation.
-*  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*    Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-*    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the
-*    distribution.
-*
-*    Neither the name of Texas Instruments Incorporated nor the names of
-*    its contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *  netapp.c  - CC3000 Host Driver Implementation.
+ *  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *    Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ *    Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ *    Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 
-#include <string.h>
 #include "netapp.h"
-#include "hci.h"
-#include "socket.h"
 #include "evnt_handler.h"
+#include "hci.h"
 #include "nvmem.h"
+#include "socket.h"
+#include <string.h>
 
-#define MIN_TIMER_VAL_SECONDS      10
-#define MIN_TIMER_SET(t)    if ((0 != t) && (t < MIN_TIMER_VAL_SECONDS)) \
-							{ \
-							t = MIN_TIMER_VAL_SECONDS; \
-							}
+#define MIN_TIMER_VAL_SECONDS 10
+#define MIN_TIMER_SET(t)                                                       \
+  if ((0 != t) && (t < MIN_TIMER_VAL_SECONDS)) {                               \
+    t = MIN_TIMER_VAL_SECONDS;                                                 \
+  }
 
-
-#define NETAPP_DHCP_PARAMS_LEN 				(20)
-#define NETAPP_SET_TIMER_PARAMS_LEN 		(20)
-#define NETAPP_SET_DEBUG_LEVEL_PARAMS_LEN	(4)
-#define NETAPP_PING_SEND_PARAMS_LEN			(16)
-
+#define NETAPP_DHCP_PARAMS_LEN (20)
+#define NETAPP_SET_TIMER_PARAMS_LEN (20)
+#define NETAPP_SET_DEBUG_LEVEL_PARAMS_LEN (4)
+#define NETAPP_PING_SEND_PARAMS_LEN (16)
 
 //*****************************************************************************
 //
@@ -63,13 +61,13 @@
 //!
 //!  @brief        Configure device MAC address and store it in NVMEM.
 //!                The value of the MAC address configured through the API will
-//!		             be stored in CC3000 non volatile memory, thus preserved
+//!		             be stored in CC3000 non volatile memory, thus
+//!preserved
 //!                over resets.
 //
 //*****************************************************************************
-INT32 netapp_config_mac_adrress(UINT8 * mac)
-{
-    return  nvmem_set_mac_address(mac);
+INT32 netapp_config_mac_adrress(UINT8 *mac) {
+  return nvmem_set_mac_address(mac);
 }
 
 //*****************************************************************************
@@ -98,32 +96,31 @@ INT32 netapp_config_mac_adrress(UINT8 * mac)
 //!               AP was established.
 //!
 //*****************************************************************************
-INT32 netapp_dhcp(UINT32 *aucIP, UINT32 *aucSubnetMask,UINT32 *aucDefaultGateway, UINT32 *aucDNSServer)
-{
-    INT8 scRet;
-    UINT8 *ptr;
-    UINT8 *args;
+INT32 netapp_dhcp(UINT32 *aucIP, UINT32 *aucSubnetMask,
+                  UINT32 *aucDefaultGateway, UINT32 *aucDNSServer) {
+  INT8 scRet;
+  UINT8 *ptr;
+  UINT8 *args;
 
-    scRet = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  scRet = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in temporary command buffer
-    ARRAY_TO_STREAM(args,aucIP,4);
-    ARRAY_TO_STREAM(args,aucSubnetMask,4);
-    ARRAY_TO_STREAM(args,aucDefaultGateway,4);
-    args = UINT32_TO_STREAM(args, 0);
-    ARRAY_TO_STREAM(args,aucDNSServer,4);
+  // Fill in temporary command buffer
+  ARRAY_TO_STREAM(args, aucIP, 4);
+  ARRAY_TO_STREAM(args, aucSubnetMask, 4);
+  ARRAY_TO_STREAM(args, aucDefaultGateway, 4);
+  args = UINT32_TO_STREAM(args, 0);
+  ARRAY_TO_STREAM(args, aucDNSServer, 4);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_NETAPP_DHCP, ptr, NETAPP_DHCP_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_NETAPP_DHCP, ptr, NETAPP_DHCP_PARAMS_LEN);
 
-    // Wait for command complete event
-    SimpleLinkWaitEvent(HCI_NETAPP_DHCP, &scRet);
+  // Wait for command complete event
+  SimpleLinkWaitEvent(HCI_NETAPP_DHCP, &scRet);
 
-    return(scRet);
+  return (scRet);
 }
-
 
 //*****************************************************************************
 //
@@ -176,38 +173,37 @@ INT32 netapp_dhcp(UINT32 *aucIP, UINT32 *aucSubnetMask,UINT32 *aucDefaultGateway
 //*****************************************************************************
 
 #ifndef CC3000_TINY_DRIVER
-INT32 netapp_timeout_values(UINT32 *aucDHCP, UINT32 *aucARP,UINT32 *aucKeepalive,	UINT32 *aucInactivity)
-{
-    INT8 scRet;
-    UINT8 *ptr;
-    UINT8 *args;
+INT32 netapp_timeout_values(UINT32 *aucDHCP, UINT32 *aucARP,
+                            UINT32 *aucKeepalive, UINT32 *aucInactivity) {
+  INT8 scRet;
+  UINT8 *ptr;
+  UINT8 *args;
 
-    scRet = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  scRet = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Set minimal values of timers
-    MIN_TIMER_SET(*aucDHCP)
-    MIN_TIMER_SET(*aucARP)
-    MIN_TIMER_SET(*aucKeepalive)
-    MIN_TIMER_SET(*aucInactivity)
+  // Set minimal values of timers
+  MIN_TIMER_SET(*aucDHCP)
+  MIN_TIMER_SET(*aucARP)
+  MIN_TIMER_SET(*aucKeepalive)
+  MIN_TIMER_SET(*aucInactivity)
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, *aucDHCP);
-    args = UINT32_TO_STREAM(args, *aucARP);
-    args = UINT32_TO_STREAM(args, *aucKeepalive);
-    args = UINT32_TO_STREAM(args, *aucInactivity);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, *aucDHCP);
+  args = UINT32_TO_STREAM(args, *aucARP);
+  args = UINT32_TO_STREAM(args, *aucKeepalive);
+  args = UINT32_TO_STREAM(args, *aucInactivity);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_NETAPP_SET_TIMERS, ptr, NETAPP_SET_TIMER_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_NETAPP_SET_TIMERS, ptr, NETAPP_SET_TIMER_PARAMS_LEN);
 
-    // Wait for command complete event
-    SimpleLinkWaitEvent(HCI_NETAPP_SET_TIMERS, &scRet);
+  // Wait for command complete event
+  SimpleLinkWaitEvent(HCI_NETAPP_SET_TIMERS, &scRet);
 
-    return(scRet);
+  return (scRet);
 }
 #endif
-
 
 //*****************************************************************************
 //
@@ -232,28 +228,28 @@ INT32 netapp_timeout_values(UINT32 *aucDHCP, UINT32 *aucARP,UINT32 *aucKeepalive
 
 #ifndef CC3000_TINY_DRIVER
 INT32
-netapp_ping_send(UINT32 *ip, UINT32 ulPingAttempts, UINT32 ulPingSize, UINT32 ulPingTimeout)
-{
-    INT8 scRet;
-    UINT8 *ptr, *args;
+netapp_ping_send(UINT32 *ip, UINT32 ulPingAttempts, UINT32 ulPingSize,
+                 UINT32 ulPingTimeout) {
+  INT8 scRet;
+  UINT8 *ptr, *args;
 
-    scRet = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  scRet = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, *ip);
-    args = UINT32_TO_STREAM(args, ulPingAttempts);
-    args = UINT32_TO_STREAM(args, ulPingSize);
-    args = UINT32_TO_STREAM(args, ulPingTimeout);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, *ip);
+  args = UINT32_TO_STREAM(args, ulPingAttempts);
+  args = UINT32_TO_STREAM(args, ulPingSize);
+  args = UINT32_TO_STREAM(args, ulPingTimeout);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_NETAPP_PING_SEND, ptr, NETAPP_PING_SEND_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_NETAPP_PING_SEND, ptr, NETAPP_PING_SEND_PARAMS_LEN);
 
-    // Wait for command complete event
-    SimpleLinkWaitEvent(HCI_NETAPP_PING_SEND, &scRet);
+  // Wait for command complete event
+  SimpleLinkWaitEvent(HCI_NETAPP_PING_SEND, &scRet);
 
-    return(scRet);
+  return (scRet);
 }
 #endif
 
@@ -280,21 +276,19 @@ netapp_ping_send(UINT32 *ip, UINT32 ulPingAttempts, UINT32 ulPingSize, UINT32 ul
 //!
 //*****************************************************************************
 
-
 #ifndef CC3000_TINY_DRIVER
-void netapp_ping_report()
-{
-    UINT8 *ptr;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    INT8 scRet;
+void netapp_ping_report() {
+  UINT8 *ptr;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  INT8 scRet;
 
-    scRet = EFAIL;
+  scRet = EFAIL;
 
-    // Initiate a HCI command
-    hci_command_send(HCI_NETAPP_PING_REPORT, ptr, 0);
+  // Initiate a HCI command
+  hci_command_send(HCI_NETAPP_PING_REPORT, ptr, 0);
 
-    // Wait for command complete event
-    SimpleLinkWaitEvent(HCI_NETAPP_PING_REPORT, &scRet);
+  // Wait for command complete event
+  SimpleLinkWaitEvent(HCI_NETAPP_PING_REPORT, &scRet);
 }
 #endif
 
@@ -312,21 +306,20 @@ void netapp_ping_report()
 //*****************************************************************************
 
 #ifndef CC3000_TINY_DRIVER
-INT32 netapp_ping_stop()
-{
-    INT8 scRet;
-    UINT8 *ptr;
+INT32 netapp_ping_stop() {
+  INT8 scRet;
+  UINT8 *ptr;
 
-    scRet = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
+  scRet = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
 
-    // Initiate a HCI command
-    hci_command_send(HCI_NETAPP_PING_STOP, ptr, 0);
+  // Initiate a HCI command
+  hci_command_send(HCI_NETAPP_PING_STOP, ptr, 0);
 
-    // Wait for command complete event
-    SimpleLinkWaitEvent(HCI_NETAPP_PING_STOP, &scRet);
+  // Wait for command complete event
+  SimpleLinkWaitEvent(HCI_NETAPP_PING_STOP, &scRet);
 
-    return(scRet);
+  return (scRet);
 }
 #endif
 
@@ -351,30 +344,25 @@ INT32 netapp_ping_stop()
 //!           associated, will cause non-defined values to be returned.
 //!
 //! @note     The function is useful for figuring out the IP Configuration of
-//!       		the device when DHCP is used and for figuring out the SSID of
-//!       		the Wireless network the device is associated with.
+//!       		the device when DHCP is used and for figuring out the SSID
+//!       of 		the Wireless network the device is associated with.
 //!
 //*****************************************************************************
 
 #ifndef CC3000_TINY_DRIVER
-void netapp_ipconfig( tNetappIpconfigRetArgs * ipconfig )
-{
-    UINT8 *ptr;
+void netapp_ipconfig(tNetappIpconfigRetArgs *ipconfig) {
+  UINT8 *ptr;
 
-    ptr = tSLInformation.pucTxCommandBuffer;
+  ptr = tSLInformation.pucTxCommandBuffer;
 
-    // Initiate a HCI command
-    hci_command_send(HCI_NETAPP_IPCONFIG, ptr, 0);
+  // Initiate a HCI command
+  hci_command_send(HCI_NETAPP_IPCONFIG, ptr, 0);
 
-    // Wait for command complete event
-    SimpleLinkWaitEvent(HCI_NETAPP_IPCONFIG, ipconfig );
-
+  // Wait for command complete event
+  SimpleLinkWaitEvent(HCI_NETAPP_IPCONFIG, ipconfig);
 }
 #else
-void netapp_ipconfig( tNetappIpconfigRetArgs * ipconfig )
-{
-
-}
+void netapp_ipconfig(tNetappIpconfigRetArgs *ipconfig) {}
 #endif
 
 //*****************************************************************************
@@ -390,21 +378,20 @@ void netapp_ipconfig( tNetappIpconfigRetArgs * ipconfig )
 //*****************************************************************************
 
 #ifndef CC3000_TINY_DRIVER
-INT32 netapp_arp_flush(void)
-{
-    INT8 scRet;
-    UINT8 *ptr;
+INT32 netapp_arp_flush(void) {
+  INT8 scRet;
+  UINT8 *ptr;
 
-    scRet = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
+  scRet = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
 
-    // Initiate a HCI command
-    hci_command_send(HCI_NETAPP_ARP_FLUSH, ptr, 0);
+  // Initiate a HCI command
+  hci_command_send(HCI_NETAPP_ARP_FLUSH, ptr, 0);
 
-    // Wait for command complete event
-    SimpleLinkWaitEvent(HCI_NETAPP_ARP_FLUSH, &scRet);
+  // Wait for command complete event
+  SimpleLinkWaitEvent(HCI_NETAPP_ARP_FLUSH, &scRet);
 
-    return(scRet);
+  return (scRet);
 }
 #endif
 
@@ -414,10 +401,11 @@ INT32 netapp_arp_flush(void)
 //!
 //!  @param[in]      level    debug level. Bitwise [0-8],
 //!                         0(disable)or 1(enable).\n Bitwise map: 0 - Critical
-//!                         message, 1 information message, 2 - core messages, 3 -
-//!                         HCI messages, 4 - Network stack messages, 5 - wlan
-//!                         messages, 6 - wlan driver messages, 7 - epprom messages,
-//!                         8 - general messages. Default: 0x13f. Saved: no
+//!                         message, 1 information message, 2 - core messages, 3
+//!                         - HCI messages, 4 - Network stack messages, 5 - wlan
+//!                         messages, 6 - wlan driver messages, 7 - epprom
+//!                         messages, 8 - general messages. Default: 0x13f.
+//!                         Saved: no
 //!
 //!  @return  On success, zero is returned. On error, -1 is returned
 //!
@@ -426,34 +414,31 @@ INT32 netapp_arp_flush(void)
 //!
 //*****************************************************************************
 
-
 #ifndef CC3000_TINY_DRIVER
-INT32 netapp_set_debug_level(UINT32 ulLevel)
-{
-    INT8 scRet;
-    UINT8 *ptr, *args;
+INT32 netapp_set_debug_level(UINT32 ulLevel) {
+  INT8 scRet;
+  UINT8 *ptr, *args;
 
-    scRet = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  scRet = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    //
-    // Fill in temporary command buffer
-    //
-    args = UINT32_TO_STREAM(args, ulLevel);
+  //
+  // Fill in temporary command buffer
+  //
+  args = UINT32_TO_STREAM(args, ulLevel);
 
+  //
+  // Initiate a HCI command
+  //
+  hci_command_send(HCI_NETAPP_SET_DEBUG_LEVEL, ptr,
+                   NETAPP_SET_DEBUG_LEVEL_PARAMS_LEN);
 
-    //
-    // Initiate a HCI command
-    //
-    hci_command_send(HCI_NETAPP_SET_DEBUG_LEVEL, ptr, NETAPP_SET_DEBUG_LEVEL_PARAMS_LEN);
+  //
+  // Wait for command complete event
+  //
+  SimpleLinkWaitEvent(HCI_NETAPP_SET_DEBUG_LEVEL, &scRet);
 
-    //
-    // Wait for command complete event
-    //
-    SimpleLinkWaitEvent(HCI_NETAPP_SET_DEBUG_LEVEL, &scRet);
-
-    return(scRet);
-
+  return (scRet);
 }
 #endif

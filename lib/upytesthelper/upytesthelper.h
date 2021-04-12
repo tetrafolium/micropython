@@ -24,11 +24,11 @@
  * THE SOFTWARE.
  */
 
-#include <stdbool.h>
-#include <stdio.h>
-#include "py/mpconfig.h"
 #include "lib/tinytest/tinytest.h"
 #include "lib/tinytest/tinytest_macros.h"
+#include "py/mpconfig.h"
+#include <stdbool.h>
+#include <stdio.h>
 
 void upytest_set_heap(void *start, void *end);
 void upytest_set_expected_output(const char *output, unsigned len);

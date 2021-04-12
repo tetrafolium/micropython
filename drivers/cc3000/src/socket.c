@@ -1,37 +1,37 @@
 /*****************************************************************************
-*
-*  socket.c  - CC3000 Host Driver Implementation.
-*  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*    Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-*    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the
-*    distribution.
-*
-*    Neither the name of Texas Instruments Incorporated nor the names of
-*    its contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *  socket.c  - CC3000 Host Driver Implementation.
+ *  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *    Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ *    Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ *    Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 
 //*****************************************************************************
 //
@@ -40,57 +40,54 @@
 //
 //*****************************************************************************
 
-#include <string.h>
-#include <stdlib.h>
-#include "hci.h"
 #include "socket.h"
 #include "evnt_handler.h"
+#include "hci.h"
 #include "netapp.h"
+#include <stdlib.h>
+#include <string.h>
 
-
-
-//Enable this flag if and only if you must comply with BSD socket
-//close() function
+// Enable this flag if and only if you must comply with BSD socket
+// close() function
 #ifdef _API_USE_BSD_CLOSE
 #define close(sd) closesocket(sd)
 #endif
 
-//Enable this flag if and only if you must comply with BSD socket read() and
-//write() functions
+// Enable this flag if and only if you must comply with BSD socket read() and
+// write() functions
 #ifdef _API_USE_BSD_READ_WRITE
 #define read(sd, buf, len, flags) recv(sd, buf, len, flags)
 #define write(sd, buf, len, flags) send(sd, buf, len, flags)
 #endif
 
-#define SOCKET_OPEN_PARAMS_LEN				(12)
-#define SOCKET_CLOSE_PARAMS_LEN				(4)
-#define SOCKET_ACCEPT_PARAMS_LEN			(4)
-#define SOCKET_BIND_PARAMS_LEN				(20)
-#define SOCKET_LISTEN_PARAMS_LEN			(8)
-#define SOCKET_GET_HOST_BY_NAME_PARAMS_LEN	(9)
-#define SOCKET_CONNECT_PARAMS_LEN			(20)
-#define SOCKET_SELECT_PARAMS_LEN			(44)
-#define SOCKET_SET_SOCK_OPT_PARAMS_LEN		(20)
-#define SOCKET_GET_SOCK_OPT_PARAMS_LEN		(12)
-#define SOCKET_RECV_FROM_PARAMS_LEN			(12)
-#define SOCKET_SENDTO_PARAMS_LEN			(24)
-#define SOCKET_MDNS_ADVERTISE_PARAMS_LEN	(12)
-#define SOCKET_GET_MSS_VALUE_PARAMS_LEN		(4)
+#define SOCKET_OPEN_PARAMS_LEN (12)
+#define SOCKET_CLOSE_PARAMS_LEN (4)
+#define SOCKET_ACCEPT_PARAMS_LEN (4)
+#define SOCKET_BIND_PARAMS_LEN (20)
+#define SOCKET_LISTEN_PARAMS_LEN (8)
+#define SOCKET_GET_HOST_BY_NAME_PARAMS_LEN (9)
+#define SOCKET_CONNECT_PARAMS_LEN (20)
+#define SOCKET_SELECT_PARAMS_LEN (44)
+#define SOCKET_SET_SOCK_OPT_PARAMS_LEN (20)
+#define SOCKET_GET_SOCK_OPT_PARAMS_LEN (12)
+#define SOCKET_RECV_FROM_PARAMS_LEN (12)
+#define SOCKET_SENDTO_PARAMS_LEN (24)
+#define SOCKET_MDNS_ADVERTISE_PARAMS_LEN (12)
+#define SOCKET_GET_MSS_VALUE_PARAMS_LEN (4)
 
 // The legnth of arguments for the SEND command: sd + buff_offset + len + flags,
 // while size of each parameter is 32 bit - so the total length is 16 bytes;
 
-#define HCI_CMND_SEND_ARG_LENGTH	(16)
+#define HCI_CMND_SEND_ARG_LENGTH (16)
 
+#define SELECT_TIMEOUT_MIN_MICRO_SECONDS 5000
 
-#define SELECT_TIMEOUT_MIN_MICRO_SECONDS  5000
+#define HEADERS_SIZE_DATA (SPI_HEADER_SIZE + 5)
 
-#define HEADERS_SIZE_DATA       (SPI_HEADER_SIZE + 5)
+#define SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE                             \
+  (SPI_HEADER_SIZE + SIMPLE_LINK_HCI_CMND_HEADER_SIZE)
 
-#define SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE  (SPI_HEADER_SIZE + SIMPLE_LINK_HCI_CMND_HEADER_SIZE)
-
-#define MDNS_DEVICE_SERVICE_MAX_LENGTH 	(32)
-
+#define MDNS_DEVICE_SERVICE_MAX_LENGTH (32)
 
 //*****************************************************************************
 //
@@ -108,55 +105,48 @@
 //!          regarding the buffers available.
 //
 //*****************************************************************************
-static INT16 HostFlowControlConsumeBuff(INT16 sd)
-{
+static INT16 HostFlowControlConsumeBuff(INT16 sd) {
 #ifndef SEND_NON_BLOCKING
-    /* wait in busy loop */
-    do
-    {
-        // In case last transmission failed then we will return the last failure
-        // reason here.
-        // Note that the buffer will not be allocated in this case
-        if (tSLInformation.slTransmitDataError != 0)
-        {
-            CC3000_EXPORT(errno) = tSLInformation.slTransmitDataError;
-            tSLInformation.slTransmitDataError = 0;
-            return CC3000_EXPORT(errno);
-        }
-
-        if(SOCKET_STATUS_ACTIVE != get_socket_active_status(sd))
-            return -1;
-    } while(0 == tSLInformation.usNumberOfFreeBuffers);
-
-    tSLInformation.usNumberOfFreeBuffers--;
-
-    return 0;
-#else
-
+  /* wait in busy loop */
+  do {
     // In case last transmission failed then we will return the last failure
     // reason here.
     // Note that the buffer will not be allocated in this case
-    if (tSLInformation.slTransmitDataError != 0)
-    {
-        CC3000_EXPORT(errno) = tSLInformation.slTransmitDataError;
-        tSLInformation.slTransmitDataError = 0;
-        return CC3000_EXPORT(errno);
+    if (tSLInformation.slTransmitDataError != 0) {
+      CC3000_EXPORT(errno) = tSLInformation.slTransmitDataError;
+      tSLInformation.slTransmitDataError = 0;
+      return CC3000_EXPORT(errno);
     }
-    if(SOCKET_STATUS_ACTIVE != get_socket_active_status(sd))
-        return -1;
 
-    //If there are no available buffers, return -2. It is recommended to use
-    // select or receive to see if there is any buffer occupied with received data
-    // If so, call receive() to release the buffer.
-    if(0 == tSLInformation.usNumberOfFreeBuffers)
-    {
-        return -2;
-    }
-    else
-    {
-        tSLInformation.usNumberOfFreeBuffers--;
-        return 0;
-    }
+    if (SOCKET_STATUS_ACTIVE != get_socket_active_status(sd))
+      return -1;
+  } while (0 == tSLInformation.usNumberOfFreeBuffers);
+
+  tSLInformation.usNumberOfFreeBuffers--;
+
+  return 0;
+#else
+
+  // In case last transmission failed then we will return the last failure
+  // reason here.
+  // Note that the buffer will not be allocated in this case
+  if (tSLInformation.slTransmitDataError != 0) {
+    CC3000_EXPORT(errno) = tSLInformation.slTransmitDataError;
+    tSLInformation.slTransmitDataError = 0;
+    return CC3000_EXPORT(errno);
+  }
+  if (SOCKET_STATUS_ACTIVE != get_socket_active_status(sd))
+    return -1;
+
+  // If there are no available buffers, return -2. It is recommended to use
+  // select or receive to see if there is any buffer occupied with received data
+  // If so, call receive() to release the buffer.
+  if (0 == tSLInformation.usNumberOfFreeBuffers) {
+    return -2;
+  } else {
+    tSLInformation.usNumberOfFreeBuffers--;
+    return 0;
+  }
 #endif
 }
 
@@ -182,32 +172,31 @@ static INT16 HostFlowControlConsumeBuff(INT16 sd)
 //
 //*****************************************************************************
 
-INT16 CC3000_EXPORT(socket)(INT32 domain, INT32 type, INT32 protocol)
-{
-    INT32 ret;
-    UINT8 *ptr, *args;
+INT16 CC3000_EXPORT(socket)(INT32 domain, INT32 type, INT32 protocol) {
+  INT32 ret;
+  UINT8 *ptr, *args;
 
-    ret = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ret = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in HCI packet structure
-    args = UINT32_TO_STREAM(args, domain);
-    args = UINT32_TO_STREAM(args, type);
-    args = UINT32_TO_STREAM(args, protocol);
+  // Fill in HCI packet structure
+  args = UINT32_TO_STREAM(args, domain);
+  args = UINT32_TO_STREAM(args, type);
+  args = UINT32_TO_STREAM(args, protocol);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_SOCKET, ptr, SOCKET_OPEN_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_SOCKET, ptr, SOCKET_OPEN_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_SOCKET, &ret);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_SOCKET, &ret);
 
-    // Process the event
-    CC3000_EXPORT(errno) = ret;
+  // Process the event
+  CC3000_EXPORT(errno) = ret;
 
-    set_socket_active_status(ret, SOCKET_STATUS_ACTIVE);
+  set_socket_active_status(ret, SOCKET_STATUS_ACTIVE);
 
-    return(ret);
+  return (ret);
 }
 
 //*****************************************************************************
@@ -222,31 +211,29 @@ INT16 CC3000_EXPORT(socket)(INT32 domain, INT32 type, INT32 protocol)
 //
 //*****************************************************************************
 
-INT32 CC3000_EXPORT(closesocket)(INT32 sd)
-{
-    INT32 ret;
-    UINT8 *ptr, *args;
+INT32 CC3000_EXPORT(closesocket)(INT32 sd) {
+  INT32 ret;
+  UINT8 *ptr, *args;
 
-    ret = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ret = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in HCI packet structure
-    args = UINT32_TO_STREAM(args, sd);
+  // Fill in HCI packet structure
+  args = UINT32_TO_STREAM(args, sd);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_CLOSE_SOCKET,
-                     ptr, SOCKET_CLOSE_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_CLOSE_SOCKET, ptr, SOCKET_CLOSE_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_CLOSE_SOCKET, &ret);
-    CC3000_EXPORT(errno) = ret;
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_CLOSE_SOCKET, &ret);
+  CC3000_EXPORT(errno) = ret;
 
-    // since 'close' call may result in either OK (and then it closed) or error
-    // mark this socket as invalid
-    set_socket_active_status(sd, SOCKET_STATUS_INACTIVE);
+  // since 'close' call may result in either OK (and then it closed) or error
+  // mark this socket as invalid
+  set_socket_active_status(sd, SOCKET_STATUS_INACTIVE);
 
-    return(ret);
+  return (ret);
 }
 
 //*****************************************************************************
@@ -266,10 +253,12 @@ INT32 CC3000_EXPORT(closesocket)(INT32 sd)
 //!                       pointed to by addr.
 //!
 //!  @return  For socket in blocking mode:
-//!				      On success, socket handle. on failure negative
-//!			      For socket in non-blocking mode:
-//!				     - On connection establishment, socket handle
-//!				     - On connection pending, SOC_IN_PROGRESS (-2)
+//!				      On success, socket handle. on failure
+//!negative 			      For socket in non-blocking mode:
+//!				     - On connection establishment, socket
+//!handle
+//!				     - On connection pending, SOC_IN_PROGRESS
+//!(-2)
 //!			       - On failure, SOC_ERROR	(-1)
 //!
 //!  @brief  accept a connection on a socket:
@@ -294,44 +283,38 @@ INT32 CC3000_EXPORT(closesocket)(INT32 sd)
 //
 //*****************************************************************************
 
-INT32 CC3000_EXPORT(accept)(INT32 sd, sockaddr *addr, socklen_t *addrlen)
-{
-    INT32 ret;
-    UINT8 *ptr, *args;
-    tBsdReturnParams tAcceptReturnArguments;
+INT32 CC3000_EXPORT(accept)(INT32 sd, sockaddr *addr, socklen_t *addrlen) {
+  INT32 ret;
+  UINT8 *ptr, *args;
+  tBsdReturnParams tAcceptReturnArguments;
 
-    ret = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ret = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_ACCEPT,
-                     ptr, SOCKET_ACCEPT_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_ACCEPT, ptr, SOCKET_ACCEPT_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_ACCEPT, &tAcceptReturnArguments);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_ACCEPT, &tAcceptReturnArguments);
 
+  // need specify return parameters!!!
+  memcpy(addr, &tAcceptReturnArguments.tSocketAddress, ASIC_ADDR_LEN);
+  *addrlen = ASIC_ADDR_LEN;
+  CC3000_EXPORT(errno) = tAcceptReturnArguments.iStatus;
+  ret = CC3000_EXPORT(errno);
 
-    // need specify return parameters!!!
-    memcpy(addr, &tAcceptReturnArguments.tSocketAddress, ASIC_ADDR_LEN);
-    *addrlen = ASIC_ADDR_LEN;
-    CC3000_EXPORT(errno) = tAcceptReturnArguments.iStatus;
-    ret = CC3000_EXPORT(errno);
+  // if succeeded, iStatus = new socket descriptor. otherwise - error number
+  if (M_IS_VALID_SD(ret)) {
+    set_socket_active_status(ret, SOCKET_STATUS_ACTIVE);
+  } else {
+    set_socket_active_status(sd, SOCKET_STATUS_INACTIVE);
+  }
 
-    // if succeeded, iStatus = new socket descriptor. otherwise - error number
-    if(M_IS_VALID_SD(ret))
-    {
-        set_socket_active_status(ret, SOCKET_STATUS_ACTIVE);
-    }
-    else
-    {
-        set_socket_active_status(sd, SOCKET_STATUS_INACTIVE);
-    }
-
-    return(ret);
+  return (ret);
 }
 
 //*****************************************************************************
@@ -357,33 +340,31 @@ INT32 CC3000_EXPORT(accept)(INT32 sd, sockaddr *addr, socklen_t *addrlen)
 //
 //*****************************************************************************
 
-INT32 CC3000_EXPORT(bind)(INT32 sd, const sockaddr *addr, INT32 addrlen)
-{
-    INT32 ret;
-    UINT8 *ptr, *args;
+INT32 CC3000_EXPORT(bind)(INT32 sd, const sockaddr *addr, INT32 addrlen) {
+  INT32 ret;
+  UINT8 *ptr, *args;
 
-    ret = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ret = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    addrlen = ASIC_ADDR_LEN;
+  addrlen = ASIC_ADDR_LEN;
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
-    args = UINT32_TO_STREAM(args, 0x00000008);
-    args = UINT32_TO_STREAM(args, addrlen);
-    ARRAY_TO_STREAM(args, ((UINT8 *)addr), addrlen);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
+  args = UINT32_TO_STREAM(args, 0x00000008);
+  args = UINT32_TO_STREAM(args, addrlen);
+  ARRAY_TO_STREAM(args, ((UINT8 *)addr), addrlen);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_BIND,
-                     ptr, SOCKET_BIND_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_BIND, ptr, SOCKET_BIND_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_BIND, &ret);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_BIND, &ret);
 
-    CC3000_EXPORT(errno) = ret;
+  CC3000_EXPORT(errno) = ret;
 
-    return(ret);
+  return (ret);
 }
 
 //*****************************************************************************
@@ -409,28 +390,26 @@ INT32 CC3000_EXPORT(bind)(INT32 sd, const sockaddr *addr, INT32 addrlen)
 //
 //*****************************************************************************
 
-INT32 CC3000_EXPORT(listen)(INT32 sd, INT32 backlog)
-{
-    INT32 ret;
-    UINT8 *ptr, *args;
+INT32 CC3000_EXPORT(listen)(INT32 sd, INT32 backlog) {
+  INT32 ret;
+  UINT8 *ptr, *args;
 
-    ret = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ret = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
-    args = UINT32_TO_STREAM(args, backlog);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
+  args = UINT32_TO_STREAM(args, backlog);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_LISTEN,
-                     ptr, SOCKET_LISTEN_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_LISTEN, ptr, SOCKET_LISTEN_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_LISTEN, &ret);
-    CC3000_EXPORT(errno) = ret;
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_LISTEN, &ret);
+  CC3000_EXPORT(errno) = ret;
 
-    return(ret);
+  return (ret);
 }
 
 //*****************************************************************************
@@ -448,45 +427,43 @@ INT32 CC3000_EXPORT(listen)(INT32 sd, INT32 backlog)
 //!          by its name.
 //!
 //!  @note  On this version, only blocking mode is supported. Also note that
-//!		     the function requires DNS server to be configured prior to its usage.
+//!		     the function requires DNS server to be configured prior to its
+//!usage.
 //
 //*****************************************************************************
 
 #ifndef CC3000_TINY_DRIVER
-INT16 CC3000_EXPORT(gethostbyname)(CHAR * hostname, UINT16 usNameLen,
-                                   UINT32* out_ip_addr)
-{
-    tBsdGethostbynameParams ret;
-    UINT8 *ptr, *args;
+INT16 CC3000_EXPORT(gethostbyname)(CHAR *hostname, UINT16 usNameLen,
+                                   UINT32 *out_ip_addr) {
+  tBsdGethostbynameParams ret;
+  UINT8 *ptr, *args;
 
-    CC3000_EXPORT(errno) = EFAIL;
+  CC3000_EXPORT(errno) = EFAIL;
 
-    if (usNameLen > HOSTNAME_MAX_LENGTH)
-    {
-        return CC3000_EXPORT(errno);
-    }
-
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE);
-
-    // Fill in HCI packet structure
-    args = UINT32_TO_STREAM(args, 8);
-    args = UINT32_TO_STREAM(args, usNameLen);
-    ARRAY_TO_STREAM(args, hostname, usNameLen);
-
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_GETHOSTNAME, ptr, SOCKET_GET_HOST_BY_NAME_PARAMS_LEN
-                     + usNameLen - 1);
-
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_EVNT_BSD_GETHOSTBYNAME, &ret);
-
-    CC3000_EXPORT(errno) = ret.retVal;
-
-    (*((INT32*)out_ip_addr)) = ret.outputAddress;
-
+  if (usNameLen > HOSTNAME_MAX_LENGTH) {
     return CC3000_EXPORT(errno);
+  }
 
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE);
+
+  // Fill in HCI packet structure
+  args = UINT32_TO_STREAM(args, 8);
+  args = UINT32_TO_STREAM(args, usNameLen);
+  ARRAY_TO_STREAM(args, hostname, usNameLen);
+
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_GETHOSTNAME, ptr,
+                   SOCKET_GET_HOST_BY_NAME_PARAMS_LEN + usNameLen - 1);
+
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_EVNT_BSD_GETHOSTBYNAME, &ret);
+
+  CC3000_EXPORT(errno) = ret.retVal;
+
+  (*((INT32 *)out_ip_addr)) = ret.outputAddress;
+
+  return CC3000_EXPORT(errno);
 }
 #endif
 
@@ -519,34 +496,31 @@ INT16 CC3000_EXPORT(gethostbyname)(CHAR * hostname, UINT16 usNameLen,
 //
 //*****************************************************************************
 
-INT32 CC3000_EXPORT(connect)(INT32 sd, const sockaddr *addr, INT32 addrlen)
-{
-    INT32 ret;
-    UINT8 *ptr, *args;
+INT32 CC3000_EXPORT(connect)(INT32 sd, const sockaddr *addr, INT32 addrlen) {
+  INT32 ret;
+  UINT8 *ptr, *args;
 
-    ret = EFAIL;
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE);
-    addrlen = 8;
+  ret = EFAIL;
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE);
+  addrlen = 8;
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
-    args = UINT32_TO_STREAM(args, 0x00000008);
-    args = UINT32_TO_STREAM(args, addrlen);
-    ARRAY_TO_STREAM(args, ((UINT8 *)addr), addrlen);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
+  args = UINT32_TO_STREAM(args, 0x00000008);
+  args = UINT32_TO_STREAM(args, addrlen);
+  ARRAY_TO_STREAM(args, ((UINT8 *)addr), addrlen);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_CONNECT,
-                     ptr, SOCKET_CONNECT_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_CONNECT, ptr, SOCKET_CONNECT_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_CONNECT, &ret);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_CONNECT, &ret);
 
-    CC3000_EXPORT(errno) = ret;
+  CC3000_EXPORT(errno) = ret;
 
-    return((INT32)ret);
+  return ((INT32)ret);
 }
-
 
 //*****************************************************************************
 //
@@ -586,80 +560,68 @@ INT32 CC3000_EXPORT(connect)(INT32 sd, const sockaddr *addr, INT32 addrlen)
 //
 //*****************************************************************************
 
-INT16 CC3000_EXPORT(select)(INT32 nfds, fd_set *readsds, fd_set *writesds, fd_set *exceptsds,
-                            struct cc3000_timeval *timeout)
-{
-    UINT8 *ptr, *args;
-    tBsdSelectRecvParams tParams;
-    UINT32 is_blocking;
+INT16 CC3000_EXPORT(select)(INT32 nfds, fd_set *readsds, fd_set *writesds,
+                            fd_set *exceptsds, struct cc3000_timeval *timeout) {
+  UINT8 *ptr, *args;
+  tBsdSelectRecvParams tParams;
+  UINT32 is_blocking;
 
-    if( timeout == NULL)
-    {
-        is_blocking = 1; /* blocking , infinity timeout */
+  if (timeout == NULL) {
+    is_blocking = 1; /* blocking , infinity timeout */
+  } else {
+    is_blocking = 0; /* no blocking, timeout */
+  }
+
+  // Fill in HCI packet structure
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
+
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, nfds);
+  args = UINT32_TO_STREAM(args, 0x00000014);
+  args = UINT32_TO_STREAM(args, 0x00000014);
+  args = UINT32_TO_STREAM(args, 0x00000014);
+  args = UINT32_TO_STREAM(args, 0x00000014);
+  args = UINT32_TO_STREAM(args, is_blocking);
+  args = UINT32_TO_STREAM(args, ((readsds) ? *(UINT32 *)readsds : 0));
+  args = UINT32_TO_STREAM(args, ((writesds) ? *(UINT32 *)writesds : 0));
+  args = UINT32_TO_STREAM(args, ((exceptsds) ? *(UINT32 *)exceptsds : 0));
+
+  if (timeout) {
+    if (0 == timeout->tv_sec &&
+        timeout->tv_usec < SELECT_TIMEOUT_MIN_MICRO_SECONDS) {
+      timeout->tv_usec = SELECT_TIMEOUT_MIN_MICRO_SECONDS;
     }
-    else
-    {
-        is_blocking = 0; /* no blocking, timeout */
+    args = UINT32_TO_STREAM(args, timeout->tv_sec);
+    args = UINT32_TO_STREAM(args, timeout->tv_usec);
+  }
+
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_BSD_SELECT, ptr, SOCKET_SELECT_PARAMS_LEN);
+
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_EVNT_SELECT, &tParams);
+
+  // Update actually read FD
+  if (tParams.iStatus >= 0) {
+    if (readsds) {
+      memcpy(readsds, &tParams.uiRdfd, sizeof(tParams.uiRdfd));
     }
 
-    // Fill in HCI packet structure
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
-
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, nfds);
-    args = UINT32_TO_STREAM(args, 0x00000014);
-    args = UINT32_TO_STREAM(args, 0x00000014);
-    args = UINT32_TO_STREAM(args, 0x00000014);
-    args = UINT32_TO_STREAM(args, 0x00000014);
-    args = UINT32_TO_STREAM(args, is_blocking);
-    args = UINT32_TO_STREAM(args, ((readsds) ? *(UINT32*)readsds : 0));
-    args = UINT32_TO_STREAM(args, ((writesds) ? *(UINT32*)writesds : 0));
-    args = UINT32_TO_STREAM(args, ((exceptsds) ? *(UINT32*)exceptsds : 0));
-
-    if (timeout)
-    {
-        if ( 0 == timeout->tv_sec && timeout->tv_usec <
-                SELECT_TIMEOUT_MIN_MICRO_SECONDS)
-        {
-            timeout->tv_usec = SELECT_TIMEOUT_MIN_MICRO_SECONDS;
-        }
-        args = UINT32_TO_STREAM(args, timeout->tv_sec);
-        args = UINT32_TO_STREAM(args, timeout->tv_usec);
+    if (writesds) {
+      memcpy(writesds, &tParams.uiWrfd, sizeof(tParams.uiWrfd));
     }
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_BSD_SELECT, ptr, SOCKET_SELECT_PARAMS_LEN);
-
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_EVNT_SELECT, &tParams);
-
-    // Update actually read FD
-    if (tParams.iStatus >= 0)
-    {
-        if (readsds)
-        {
-            memcpy(readsds, &tParams.uiRdfd, sizeof(tParams.uiRdfd));
-        }
-
-        if (writesds)
-        {
-            memcpy(writesds, &tParams.uiWrfd, sizeof(tParams.uiWrfd));
-        }
-
-        if (exceptsds)
-        {
-            memcpy(exceptsds, &tParams.uiExfd, sizeof(tParams.uiExfd));
-        }
-
-        return(tParams.iStatus);
-
+    if (exceptsds) {
+      memcpy(exceptsds, &tParams.uiExfd, sizeof(tParams.uiExfd));
     }
-    else
-    {
-        CC3000_EXPORT(errno) = tParams.iStatus;
-        return(-1);
-    }
+
+    return (tParams.iStatus);
+
+  } else {
+    CC3000_EXPORT(errno) = tParams.iStatus;
+    return (-1);
+  }
 }
 
 //*****************************************************************************
@@ -698,51 +660,50 @@ INT16 CC3000_EXPORT(select)(INT32 nfds, fd_set *readsds, fd_set *writesds, fd_se
 //!    			 The only protocol level supported in this version
 //!          is SOL_SOCKET (level).
 //!		       1. SOCKOPT_RECV_TIMEOUT (optname)
-//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom timeout
+//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom
+//!timeout
 //!           in milliseconds.
 //!		        In that case optval should be pointer to UINT32.
-//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking mode on
+//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking
+//!mode on
 //!           or off.
-//!		        In that case optval should be SOCK_ON or SOCK_OFF (optval).
+//!		        In that case optval should be SOCK_ON or SOCK_OFF
+//!(optval).
 //!
 //!  @sa getsockopt
 //
 //*****************************************************************************
 
 #ifndef CC3000_TINY_DRIVER
-INT16 CC3000_EXPORT(setsockopt)(INT32 sd, INT32 level, INT32 optname, const void *optval,
-                                socklen_t optlen)
-{
-    INT32 ret;
-    UINT8 *ptr, *args;
+INT16 CC3000_EXPORT(setsockopt)(INT32 sd, INT32 level, INT32 optname,
+                                const void *optval, socklen_t optlen) {
+  INT32 ret;
+  UINT8 *ptr, *args;
 
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
-    args = UINT32_TO_STREAM(args, level);
-    args = UINT32_TO_STREAM(args, optname);
-    args = UINT32_TO_STREAM(args, 0x00000008);
-    args = UINT32_TO_STREAM(args, optlen);
-    ARRAY_TO_STREAM(args, ((UINT8 *)optval), optlen);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
+  args = UINT32_TO_STREAM(args, level);
+  args = UINT32_TO_STREAM(args, optname);
+  args = UINT32_TO_STREAM(args, 0x00000008);
+  args = UINT32_TO_STREAM(args, optlen);
+  ARRAY_TO_STREAM(args, ((UINT8 *)optval), optlen);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_SETSOCKOPT,
-                     ptr, SOCKET_SET_SOCK_OPT_PARAMS_LEN  + optlen);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_SETSOCKOPT, ptr,
+                   SOCKET_SET_SOCK_OPT_PARAMS_LEN + optlen);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_SETSOCKOPT, &ret);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_SETSOCKOPT, &ret);
 
-    if (ret >= 0)
-    {
-        return (0);
-    }
-    else
-    {
-        CC3000_EXPORT(errno) = ret;
-        return ret;
-    }
+  if (ret >= 0) {
+    return (0);
+  } else {
+    CC3000_EXPORT(errno) = ret;
+    return ret;
+  }
 }
 #endif
 
@@ -782,48 +743,47 @@ INT16 CC3000_EXPORT(setsockopt)(INT32 sd, INT32 level, INT32 optname, const void
 //!    			 The only protocol level supported in this version
 //!          is SOL_SOCKET (level).
 //!		       1. SOCKOPT_RECV_TIMEOUT (optname)
-//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom timeout
+//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom
+//!timeout
 //!           in milliseconds.
 //!		        In that case optval should be pointer to UINT32.
-//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking mode on
+//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking
+//!mode on
 //!           or off.
-//!		        In that case optval should be SOCK_ON or SOCK_OFF (optval).
+//!		        In that case optval should be SOCK_ON or SOCK_OFF
+//!(optval).
 //!
 //!  @sa setsockopt
 //
 //*****************************************************************************
 
-INT16 CC3000_EXPORT(getsockopt) (INT32 sd, INT32 level, INT32 optname, void *optval, socklen_t *optlen)
-{
-    UINT8 *ptr, *args;
-    tBsdGetSockOptReturnParams  tRetParams;
+INT16 CC3000_EXPORT(getsockopt)(INT32 sd, INT32 level, INT32 optname,
+                                void *optval, socklen_t *optlen) {
+  UINT8 *ptr, *args;
+  tBsdGetSockOptReturnParams tRetParams;
 
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
-    args = UINT32_TO_STREAM(args, level);
-    args = UINT32_TO_STREAM(args, optname);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
+  args = UINT32_TO_STREAM(args, level);
+  args = UINT32_TO_STREAM(args, optname);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_GETSOCKOPT,
-                     ptr, SOCKET_GET_SOCK_OPT_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_GETSOCKOPT, ptr, SOCKET_GET_SOCK_OPT_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_CMND_GETSOCKOPT, &tRetParams);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_CMND_GETSOCKOPT, &tRetParams);
 
-    if (((INT8)tRetParams.iStatus) >= 0)
-    {
-        *optlen = 4;
-        memcpy(optval, tRetParams.ucOptValue, 4);
-        return (0);
-    }
-    else
-    {
-        CC3000_EXPORT(errno) = tRetParams.iStatus;
-        return CC3000_EXPORT(errno);
-    }
+  if (((INT8)tRetParams.iStatus) >= 0) {
+    *optlen = 4;
+    memcpy(optval, tRetParams.ucOptValue, 4);
+    return (0);
+  } else {
+    CC3000_EXPORT(errno) = tRetParams.iStatus;
+    return CC3000_EXPORT(errno);
+  }
 }
 
 //*****************************************************************************
@@ -847,37 +807,36 @@ INT16 CC3000_EXPORT(getsockopt) (INT32 sd, INT32 level, INT32 optname, void *opt
 //!                  socket the message is received from
 //
 //*****************************************************************************
-static INT16 simple_link_recv(INT32 sd, void *buf, INT32 len, INT32 flags, sockaddr *from,
-                              socklen_t *fromlen, INT32 opcode)
-{
-    UINT8 *ptr, *args;
-    tBsdReadReturnParams tSocketReadEvent;
+static INT16 simple_link_recv(INT32 sd, void *buf, INT32 len, INT32 flags,
+                              sockaddr *from, socklen_t *fromlen,
+                              INT32 opcode) {
+  UINT8 *ptr, *args;
+  tBsdReadReturnParams tSocketReadEvent;
 
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in HCI packet structure
-    args = UINT32_TO_STREAM(args, sd);
-    args = UINT32_TO_STREAM(args, len);
-    args = UINT32_TO_STREAM(args, flags);
+  // Fill in HCI packet structure
+  args = UINT32_TO_STREAM(args, sd);
+  args = UINT32_TO_STREAM(args, len);
+  args = UINT32_TO_STREAM(args, flags);
 
-    // Generate the read command, and wait for the
-    hci_command_send(opcode,  ptr, SOCKET_RECV_FROM_PARAMS_LEN);
+  // Generate the read command, and wait for the
+  hci_command_send(opcode, ptr, SOCKET_RECV_FROM_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(opcode, &tSocketReadEvent);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(opcode, &tSocketReadEvent);
 
-    // In case the number of bytes is more then zero - read data
-    if (tSocketReadEvent.iNumberOfBytes > 0)
-    {
-        // Wait for the data in a synchronous way. Here we assume that the bug is
-        // big enough to store also parameters of receive from too....
-        SimpleLinkWaitData(buf, (UINT8 *)from, (UINT8 *)fromlen);
-    }
+  // In case the number of bytes is more then zero - read data
+  if (tSocketReadEvent.iNumberOfBytes > 0) {
+    // Wait for the data in a synchronous way. Here we assume that the bug is
+    // big enough to store also parameters of receive from too....
+    SimpleLinkWaitData(buf, (UINT8 *)from, (UINT8 *)fromlen);
+  }
 
-    CC3000_EXPORT(errno) = tSocketReadEvent.iNumberOfBytes;
+  CC3000_EXPORT(errno) = tSocketReadEvent.iNumberOfBytes;
 
-    return(tSocketReadEvent.iNumberOfBytes);
+  return (tSocketReadEvent.iNumberOfBytes);
 }
 
 //*****************************************************************************
@@ -902,9 +861,8 @@ static INT16 simple_link_recv(INT32 sd, void *buf, INT32 len, INT32 flags, socka
 //
 //*****************************************************************************
 
-INT16 CC3000_EXPORT(recv)(INT32 sd, void *buf, INT32 len, INT32 flags)
-{
-    return(simple_link_recv(sd, buf, len, flags, NULL, NULL, HCI_CMND_RECV));
+INT16 CC3000_EXPORT(recv)(INT32 sd, void *buf, INT32 len, INT32 flags) {
+  return (simple_link_recv(sd, buf, len, flags, NULL, NULL, HCI_CMND_RECV));
 }
 
 //*****************************************************************************
@@ -935,11 +893,10 @@ INT16 CC3000_EXPORT(recv)(INT32 sd, void *buf, INT32 len, INT32 flags)
 //!  @Note On this version, only blocking mode is supported.
 //
 //*****************************************************************************
-INT16 CC3000_EXPORT(recvfrom)(INT32 sd, void *buf, INT32 len, INT32 flags, sockaddr *from,
-                              socklen_t *fromlen)
-{
-    return(simple_link_recv(sd, buf, len, flags, from, fromlen,
-                            HCI_CMND_RECVFROM));
+INT16 CC3000_EXPORT(recvfrom)(INT32 sd, void *buf, INT32 len, INT32 flags,
+                              sockaddr *from, socklen_t *fromlen) {
+  return (
+      simple_link_recv(sd, buf, len, flags, from, fromlen, HCI_CMND_RECVFROM));
 }
 
 //*****************************************************************************
@@ -963,86 +920,77 @@ INT16 CC3000_EXPORT(recvfrom)(INT32 sd, void *buf, INT32 len, INT32 flags, socka
 //
 //*****************************************************************************
 static INT16 simple_link_send(INT32 sd, const void *buf, INT32 len, INT32 flags,
-                              const sockaddr *to, INT32 tolen, INT32 opcode)
-{
-    UINT8 uArgSize=0,  addrlen;
-    UINT8 *ptr, *pDataPtr=0, *args;
-    UINT32 addr_offset=0;
-    INT16 res;
-    tBsdReadReturnParams tSocketSendEvent;
+                              const sockaddr *to, INT32 tolen, INT32 opcode) {
+  UINT8 uArgSize = 0, addrlen;
+  UINT8 *ptr, *pDataPtr = 0, *args;
+  UINT32 addr_offset = 0;
+  INT16 res;
+  tBsdReadReturnParams tSocketSendEvent;
 
-    // Check the bsd_arguments
-    if (0 != (res = HostFlowControlConsumeBuff(sd)))
-    {
-        return res;
-    }
+  // Check the bsd_arguments
+  if (0 != (res = HostFlowControlConsumeBuff(sd))) {
+    return res;
+  }
 
-    //Update the number of sent packets
-    tSLInformation.NumberOfSentPackets++;
+  // Update the number of sent packets
+  tSLInformation.NumberOfSentPackets++;
 
-    // Allocate a buffer and construct a packet and send it over spi
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_DATA);
+  // Allocate a buffer and construct a packet and send it over spi
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_DATA);
 
-    // Update the offset of data and parameters according to the command
-    switch(opcode)
-    {
-    case HCI_CMND_SENDTO:
-    {
-        addr_offset = len + sizeof(len) + sizeof(len);
-        addrlen = 8;
-        uArgSize = SOCKET_SENDTO_PARAMS_LEN;
-        pDataPtr = ptr + HEADERS_SIZE_DATA + SOCKET_SENDTO_PARAMS_LEN;
-        break;
-    }
+  // Update the offset of data and parameters according to the command
+  switch (opcode) {
+  case HCI_CMND_SENDTO: {
+    addr_offset = len + sizeof(len) + sizeof(len);
+    addrlen = 8;
+    uArgSize = SOCKET_SENDTO_PARAMS_LEN;
+    pDataPtr = ptr + HEADERS_SIZE_DATA + SOCKET_SENDTO_PARAMS_LEN;
+    break;
+  }
 
-    case HCI_CMND_SEND:
-    {
-        tolen = 0;
-        to = NULL;
-        uArgSize = HCI_CMND_SEND_ARG_LENGTH;
-        pDataPtr = ptr + HEADERS_SIZE_DATA + HCI_CMND_SEND_ARG_LENGTH;
-        break;
-    }
+  case HCI_CMND_SEND: {
+    tolen = 0;
+    to = NULL;
+    uArgSize = HCI_CMND_SEND_ARG_LENGTH;
+    pDataPtr = ptr + HEADERS_SIZE_DATA + HCI_CMND_SEND_ARG_LENGTH;
+    break;
+  }
 
-    default:
-    {
-        break;
-    }
-    }
+  default: {
+    break;
+  }
+  }
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
-    args = UINT32_TO_STREAM(args, uArgSize - sizeof(sd));
-    args = UINT32_TO_STREAM(args, len);
-    args = UINT32_TO_STREAM(args, flags);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
+  args = UINT32_TO_STREAM(args, uArgSize - sizeof(sd));
+  args = UINT32_TO_STREAM(args, len);
+  args = UINT32_TO_STREAM(args, flags);
 
-    if (opcode == HCI_CMND_SENDTO)
-    {
-        args = UINT32_TO_STREAM(args, addr_offset);
-        args = UINT32_TO_STREAM(args, addrlen);
-    }
+  if (opcode == HCI_CMND_SENDTO) {
+    args = UINT32_TO_STREAM(args, addr_offset);
+    args = UINT32_TO_STREAM(args, addrlen);
+  }
 
-    // Copy the data received from user into the TX Buffer
-    ARRAY_TO_STREAM(pDataPtr, ((UINT8 *)buf), len);
+  // Copy the data received from user into the TX Buffer
+  ARRAY_TO_STREAM(pDataPtr, ((UINT8 *)buf), len);
 
-    // In case we are using SendTo, copy the to parameters
-    if (opcode == HCI_CMND_SENDTO)
-    {
-        ARRAY_TO_STREAM(pDataPtr, ((UINT8 *)to), tolen);
-    }
+  // In case we are using SendTo, copy the to parameters
+  if (opcode == HCI_CMND_SENDTO) {
+    ARRAY_TO_STREAM(pDataPtr, ((UINT8 *)to), tolen);
+  }
 
-    // Initiate a HCI command
-    hci_data_send(opcode, ptr, uArgSize, len,(UINT8*)to, tolen);
+  // Initiate a HCI command
+  hci_data_send(opcode, ptr, uArgSize, len, (UINT8 *)to, tolen);
 
-    if (opcode == HCI_CMND_SENDTO)
-        SimpleLinkWaitEvent(HCI_EVNT_SENDTO, &tSocketSendEvent);
-    else
-        SimpleLinkWaitEvent(HCI_EVNT_SEND, &tSocketSendEvent);
+  if (opcode == HCI_CMND_SENDTO)
+    SimpleLinkWaitEvent(HCI_EVNT_SENDTO, &tSocketSendEvent);
+  else
+    SimpleLinkWaitEvent(HCI_EVNT_SEND, &tSocketSendEvent);
 
-    return	(len);
+  return (len);
 }
-
 
 //*****************************************************************************
 //
@@ -1066,9 +1014,8 @@ static INT16 simple_link_send(INT32 sd, const void *buf, INT32 len, INT32 flags,
 //
 //*****************************************************************************
 
-INT16 CC3000_EXPORT(send)(INT32 sd, const void *buf, INT32 len, INT32 flags)
-{
-    return(simple_link_send(sd, buf, len, flags, NULL, 0, HCI_CMND_SEND));
+INT16 CC3000_EXPORT(send)(INT32 sd, const void *buf, INT32 len, INT32 flags) {
+  return (simple_link_send(sd, buf, len, flags, NULL, 0, HCI_CMND_SEND));
 }
 
 //*****************************************************************************
@@ -1097,10 +1044,9 @@ INT16 CC3000_EXPORT(send)(INT32 sd, const void *buf, INT32 len, INT32 flags)
 //
 //*****************************************************************************
 
-INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len, INT32 flags, const sockaddr *to,
-                            socklen_t tolen)
-{
-    return(simple_link_send(sd, buf, len, flags, to, tolen, HCI_CMND_SENDTO));
+INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len, INT32 flags,
+                            const sockaddr *to, socklen_t tolen) {
+  return (simple_link_send(sd, buf, len, flags, to, tolen, HCI_CMND_SENDTO));
 }
 
 //*****************************************************************************
@@ -1110,7 +1056,8 @@ INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len, INT32 flags, c
 //!  @param[in] mdnsEnabled         flag to enable/disable the mDNS feature
 //!  @param[in] deviceServiceName   Service name as part of the published
 //!                                 canonical domain name
-//!  @param[in] deviceServiceNameLength   Length of the service name - up to 32 chars
+//!  @param[in] deviceServiceNameLength   Length of the service name - up to 32
+//!  chars
 //!
 //!
 //!  @return   On success, zero is returned, return SOC_ERROR if socket was not
@@ -1120,35 +1067,33 @@ INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len, INT32 flags, c
 //
 //*****************************************************************************
 
-INT16 CC3000_EXPORT(mdnsAdvertiser)(UINT16 mdnsEnabled, CHAR * deviceServiceName, UINT16 deviceServiceNameLength)
-{
-    INT8 ret;
-    UINT8 *pTxBuffer, *pArgs;
+INT16 CC3000_EXPORT(mdnsAdvertiser)(UINT16 mdnsEnabled, CHAR *deviceServiceName,
+                                    UINT16 deviceServiceNameLength) {
+  INT8 ret;
+  UINT8 *pTxBuffer, *pArgs;
 
-    if (deviceServiceNameLength > MDNS_DEVICE_SERVICE_MAX_LENGTH)
-    {
-        return EFAIL;
-    }
+  if (deviceServiceNameLength > MDNS_DEVICE_SERVICE_MAX_LENGTH) {
+    return EFAIL;
+  }
 
-    pTxBuffer = tSLInformation.pucTxCommandBuffer;
-    pArgs = (pTxBuffer + SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE);
+  pTxBuffer = tSLInformation.pucTxCommandBuffer;
+  pArgs = (pTxBuffer + SIMPLE_LINK_HCI_CMND_TRANSPORT_HEADER_SIZE);
 
-    // Fill in HCI packet structure
-    pArgs = UINT32_TO_STREAM(pArgs, mdnsEnabled);
-    pArgs = UINT32_TO_STREAM(pArgs, 8);
-    pArgs = UINT32_TO_STREAM(pArgs, deviceServiceNameLength);
-    ARRAY_TO_STREAM(pArgs, deviceServiceName, deviceServiceNameLength);
+  // Fill in HCI packet structure
+  pArgs = UINT32_TO_STREAM(pArgs, mdnsEnabled);
+  pArgs = UINT32_TO_STREAM(pArgs, 8);
+  pArgs = UINT32_TO_STREAM(pArgs, deviceServiceNameLength);
+  ARRAY_TO_STREAM(pArgs, deviceServiceName, deviceServiceNameLength);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_MDNS_ADVERTISE, pTxBuffer, SOCKET_MDNS_ADVERTISE_PARAMS_LEN + deviceServiceNameLength);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_MDNS_ADVERTISE, pTxBuffer,
+                   SOCKET_MDNS_ADVERTISE_PARAMS_LEN + deviceServiceNameLength);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_EVNT_MDNS_ADVERTISE, &ret);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_EVNT_MDNS_ADVERTISE, &ret);
 
-    return ret;
-
+  return ret;
 }
-
 
 //*****************************************************************************
 //
@@ -1158,25 +1103,25 @@ INT16 CC3000_EXPORT(mdnsAdvertiser)(UINT16 mdnsEnabled, CHAR * deviceServiceName
 //!
 //!  @return   On success, returns the MSS value of a TCP connection
 //!
-//!  @brief    Returns the MSS value of a TCP connection according to the socket descriptor
+//!  @brief    Returns the MSS value of a TCP connection according to the socket
+//!  descriptor
 //
 //*****************************************************************************
-UINT16 CC3000_EXPORT(getmssvalue) (INT32 sd)
-{
-    UINT8 *ptr, *args;
-    UINT16 ret;
+UINT16 CC3000_EXPORT(getmssvalue)(INT32 sd) {
+  UINT8 *ptr, *args;
+  UINT16 ret;
 
-    ptr = tSLInformation.pucTxCommandBuffer;
-    args = (ptr + HEADERS_SIZE_CMD);
+  ptr = tSLInformation.pucTxCommandBuffer;
+  args = (ptr + HEADERS_SIZE_CMD);
 
-    // Fill in temporary command buffer
-    args = UINT32_TO_STREAM(args, sd);
+  // Fill in temporary command buffer
+  args = UINT32_TO_STREAM(args, sd);
 
-    // Initiate a HCI command
-    hci_command_send(HCI_CMND_GETMSSVALUE, ptr, SOCKET_GET_MSS_VALUE_PARAMS_LEN);
+  // Initiate a HCI command
+  hci_command_send(HCI_CMND_GETMSSVALUE, ptr, SOCKET_GET_MSS_VALUE_PARAMS_LEN);
 
-    // Since we are in blocking state - wait for event complete
-    SimpleLinkWaitEvent(HCI_EVNT_GETMSSVALUE, &ret);
+  // Since we are in blocking state - wait for event complete
+  SimpleLinkWaitEvent(HCI_EVNT_GETMSSVALUE, &ret);
 
-    return ret;
+  return ret;
 }

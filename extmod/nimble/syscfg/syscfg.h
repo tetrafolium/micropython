@@ -17,7 +17,7 @@ void *nimble_realloc(void *ptr, size_t size);
 int nimble_sprintf(char *str, const char *fmt, ...);
 #define sprintf(str, fmt, ...) nimble_sprintf(str, fmt, __VA_ARGS__)
 
-#define MYNEWT_VAL(x) MYNEWT_VAL_ ## x
+#define MYNEWT_VAL(x) MYNEWT_VAL_##x
 
 #define MYNEWT_VAL_LOG_LEVEL (255)
 
@@ -124,7 +124,8 @@ int nimble_sprintf(char *str, const char *fmt, ...);
 #define MYNEWT_VAL_BLE_SM_THEIR_KEY_DIST (7)
 #define MYNEWT_VAL_BLE_STORE_MAX_BONDS (3)
 #define MYNEWT_VAL_BLE_STORE_MAX_CCCDS (8)
-// These can be overridden at runtime with ble.config(le_secure, mitm, bond, io).
+// These can be overridden at runtime with ble.config(le_secure, mitm, bond,
+// io).
 #define MYNEWT_VAL_BLE_SM_SC (1)
 #define MYNEWT_VAL_BLE_SM_MITM (0)
 #define MYNEWT_VAL_BLE_SM_BONDING (0)

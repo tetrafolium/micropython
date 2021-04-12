@@ -1,42 +1,41 @@
 /*****************************************************************************
-*
-*  nvmem.h  - CC3000 Host Driver Implementation.
-*  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*    Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-*    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the
-*    distribution.
-*
-*    Neither the name of Texas Instruments Incorporated nor the names of
-*    its contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *  nvmem.h  - CC3000 Host Driver Implementation.
+ *  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *    Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ *    Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ *    Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 #ifndef __CC3000_NVRAM_H__
 #define __CC3000_NVRAM_H__
 
 #include "cc3000_common.h"
-
 
 //*****************************************************************************
 //
@@ -44,10 +43,9 @@
 // have a C binding.
 //
 //*****************************************************************************
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
-
 
 //*****************************************************************************
 //
@@ -62,26 +60,25 @@ extern "C" {
 **
 ****************************************************************************/
 /* NVMEM file ID - system files*/
-#define NVMEM_NVS_FILEID 							(0)
-#define NVMEM_NVS_SHADOW_FILEID 					(1)
-#define NVMEM_WLAN_CONFIG_FILEID 					(2)
-#define NVMEM_WLAN_CONFIG_SHADOW_FILEID 			(3)
-#define NVMEM_WLAN_DRIVER_SP_FILEID					(4)
-#define NVMEM_WLAN_FW_SP_FILEID						(5)
-#define NVMEM_MAC_FILEID 							(6)
-#define NVMEM_FRONTEND_VARS_FILEID 					(7)
-#define NVMEM_IP_CONFIG_FILEID 						(8)
-#define NVMEM_IP_CONFIG_SHADOW_FILEID 				(9)
-#define NVMEM_BOOTLOADER_SP_FILEID 					(10)
-#define NVMEM_RM_FILEID			 					(11)
+#define NVMEM_NVS_FILEID (0)
+#define NVMEM_NVS_SHADOW_FILEID (1)
+#define NVMEM_WLAN_CONFIG_FILEID (2)
+#define NVMEM_WLAN_CONFIG_SHADOW_FILEID (3)
+#define NVMEM_WLAN_DRIVER_SP_FILEID (4)
+#define NVMEM_WLAN_FW_SP_FILEID (5)
+#define NVMEM_MAC_FILEID (6)
+#define NVMEM_FRONTEND_VARS_FILEID (7)
+#define NVMEM_IP_CONFIG_FILEID (8)
+#define NVMEM_IP_CONFIG_SHADOW_FILEID (9)
+#define NVMEM_BOOTLOADER_SP_FILEID (10)
+#define NVMEM_RM_FILEID (11)
 
 /* NVMEM file ID - user files*/
-#define NVMEM_AES128_KEY_FILEID	 					(12)
-#define NVMEM_SHARED_MEM_FILEID	 					(13)
+#define NVMEM_AES128_KEY_FILEID (12)
+#define NVMEM_SHARED_MEM_FILEID (13)
 
 /*  max entry in order to invalid nvmem              */
-#define NVMEM_MAX_ENTRY                              (16)
-
+#define NVMEM_MAX_ENTRY (16)
 
 //*****************************************************************************
 //
@@ -89,7 +86,8 @@ extern "C" {
 //!
 //!  @param  ulFileId   nvmem file id:\n
 //!                     NVMEM_NVS_FILEID, NVMEM_NVS_SHADOW_FILEID,
-//!                     NVMEM_WLAN_CONFIG_FILEID, NVMEM_WLAN_CONFIG_SHADOW_FILEID,
+//!                     NVMEM_WLAN_CONFIG_FILEID,
+//!                     NVMEM_WLAN_CONFIG_SHADOW_FILEID,
 //!                     NVMEM_WLAN_DRIVER_SP_FILEID, NVMEM_WLAN_FW_SP_FILEID,
 //!                     NVMEM_MAC_FILEID, NVMEM_FRONTEND_VARS_FILEID,
 //!                     NVMEM_IP_CONFIG_FILEID, NVMEM_IP_CONFIG_SHADOW_FILEID,
@@ -102,12 +100,13 @@ extern "C" {
 //!  @return       on success 0, error otherwise.
 //!
 //!  @brief       Reads data from the file referred by the ulFileId parameter.
-//!               Reads data from file ulOffset till length. Err if the file can't
-//!               be used, is invalid, or if the read is out of bounds.
+//!               Reads data from file ulOffset till length. Err if the file
+//!               can't be used, is invalid, or if the read is out of bounds.
 //!
 //*****************************************************************************
 
-extern INT32 nvmem_read(UINT32 file_id, UINT32 length, UINT32 offset, UINT8 *buff);
+extern INT32 nvmem_read(UINT32 file_id, UINT32 length, UINT32 offset,
+                        UINT8 *buff);
 
 //*****************************************************************************
 //
@@ -131,8 +130,8 @@ extern INT32 nvmem_read(UINT32 file_id, UINT32 length, UINT32 offset, UINT8 *buf
 //!
 //*****************************************************************************
 
-extern INT32 nvmem_write(UINT32 ulFileId, UINT32 ulLength, UINT32 ulEntryOffset, UINT8 *buff);
-
+extern INT32 nvmem_write(UINT32 ulFileId, UINT32 ulLength, UINT32 ulEntryOffset,
+                         UINT8 *buff);
 
 //*****************************************************************************
 //
@@ -148,7 +147,6 @@ extern INT32 nvmem_write(UINT32 ulFileId, UINT32 ulLength, UINT32 ulEntryOffset,
 //*****************************************************************************
 extern UINT8 nvmem_set_mac_address(UINT8 *mac);
 
-
 //*****************************************************************************
 //
 //!  nvmem_get_mac_address
@@ -162,7 +160,6 @@ extern UINT8 nvmem_set_mac_address(UINT8 *mac);
 //!
 //*****************************************************************************
 extern UINT8 nvmem_get_mac_address(UINT8 *mac);
-
 
 //*****************************************************************************
 //
@@ -181,8 +178,8 @@ extern UINT8 nvmem_get_mac_address(UINT8 *mac);
 //!              applied in SP_PORTION_SIZE bytes portions.
 //!
 //*****************************************************************************
-extern UINT8 nvmem_write_patch(UINT32 ulFileId, UINT32 spLength, const UINT8 *spData);
-
+extern UINT8 nvmem_write_patch(UINT32 ulFileId, UINT32 spLength,
+                               const UINT8 *spData);
 
 //*****************************************************************************
 //
@@ -198,7 +195,7 @@ extern UINT8 nvmem_write_patch(UINT32 ulFileId, UINT32 spLength, const UINT8 *sp
 //!
 //*****************************************************************************
 #ifndef CC3000_TINY_DRIVER
-extern UINT8 nvmem_read_sp_version(UINT8* patchVer);
+extern UINT8 nvmem_read_sp_version(UINT8 *patchVer);
 #endif
 
 //*****************************************************************************
@@ -225,13 +222,11 @@ extern UINT8 nvmem_read_sp_version(UINT8* patchVer);
 //*****************************************************************************
 extern INT32 nvmem_create_entry(UINT32 file_id, UINT32 newlen);
 
-
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.
 //
 //*****************************************************************************
-
 
 //*****************************************************************************
 //
@@ -240,8 +235,7 @@ extern INT32 nvmem_create_entry(UINT32 file_id, UINT32 newlen);
 //
 //*****************************************************************************
 
-
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif // __cplusplus
 

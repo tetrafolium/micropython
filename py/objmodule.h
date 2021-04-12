@@ -39,8 +39,8 @@ mp_obj_t mp_module_search_umodule(const char *module_str);
 void mp_module_call_init(qstr module_name, mp_obj_t module_obj);
 #else
 static inline void mp_module_call_init(qstr module_name, mp_obj_t module_obj) {
-    (void)module_name;
-    (void)module_obj;
+  (void)module_name;
+  (void)module_obj;
 }
 #endif
 

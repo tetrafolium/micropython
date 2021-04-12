@@ -19,7 +19,6 @@
  * ====================================================
  */
 
-
 #include "libm.h"
 
 static const float atanhi[] = {
@@ -37,64 +36,60 @@ static const float atanlo[] = {
 };
 
 static const float aT[] = {
-    3.3333328366e-01f,
-    -1.9999158382e-01f,
-    1.4253635705e-01f,
-    -1.0648017377e-01f,
-    6.1687607318e-02f,
+    3.3333328366e-01f,  -1.9999158382e-01f, 1.4253635705e-01f,
+    -1.0648017377e-01f, 6.1687607318e-02f,
 };
 
-float atanf(float x)
-{
-    float_t w,s1,s2,z;
-    uint32_t ix,sign;
-    int id;
+float atanf(float x) {
+  float_t w, s1, s2, z;
+  uint32_t ix, sign;
+  int id;
 
-    GET_FLOAT_WORD(ix, x);
-    sign = ix>>31;
-    ix &= 0x7fffffff;
-    if (ix >= 0x4c800000) {  /* if |x| >= 2**26 */
-        if (isnan(x))
-            return x;
-        z = atanhi[3] + 0x1p-120f;
-        return sign ? -z : z;
-    }
-    if (ix < 0x3ee00000) {   /* |x| < 0.4375 */
-        if (ix < 0x39800000) {  /* |x| < 2**-12 */
-            if (ix < 0x00800000)
-                /* raise underflow for subnormal x */
-                FORCE_EVAL(x*x);
-            return x;
-        }
-        id = -1;
-    } else {
-        x = fabsf(x);
-        if (ix < 0x3f980000) {  /* |x| < 1.1875 */
-            if (ix < 0x3f300000) {  /*  7/16 <= |x| < 11/16 */
-                id = 0;
-                x = (2.0f*x - 1.0f)/(2.0f + x);
-            } else {                /* 11/16 <= |x| < 19/16 */
-                id = 1;
-                x = (x - 1.0f)/(x + 1.0f);
-            }
-        } else {
-            if (ix < 0x401c0000) {  /* |x| < 2.4375 */
-                id = 2;
-                x = (x - 1.5f)/(1.0f + 1.5f*x);
-            } else {                /* 2.4375 <= |x| < 2**26 */
-                id = 3;
-                x = -1.0f/x;
-            }
-        }
-    }
-    /* end of argument reduction */
-    z = x*x;
-    w = z*z;
-    /* break sum from i=0 to 10 aT[i]z**(i+1) into odd and even poly */
-    s1 = z*(aT[0]+w*(aT[2]+w*aT[4]));
-    s2 = w*(aT[1]+w*aT[3]);
-    if (id < 0)
-        return x - x*(s1+s2);
-    z = atanhi[id] - ((x*(s1+s2) - atanlo[id]) - x);
+  GET_FLOAT_WORD(ix, x);
+  sign = ix >> 31;
+  ix &= 0x7fffffff;
+  if (ix >= 0x4c800000) { /* if |x| >= 2**26 */
+    if (isnan(x))
+      return x;
+    z = atanhi[3] + 0x1p-120f;
     return sign ? -z : z;
+  }
+  if (ix < 0x3ee00000) {   /* |x| < 0.4375 */
+    if (ix < 0x39800000) { /* |x| < 2**-12 */
+      if (ix < 0x00800000)
+        /* raise underflow for subnormal x */
+        FORCE_EVAL(x * x);
+      return x;
+    }
+    id = -1;
+  } else {
+    x = fabsf(x);
+    if (ix < 0x3f980000) {   /* |x| < 1.1875 */
+      if (ix < 0x3f300000) { /*  7/16 <= |x| < 11/16 */
+        id = 0;
+        x = (2.0f * x - 1.0f) / (2.0f + x);
+      } else { /* 11/16 <= |x| < 19/16 */
+        id = 1;
+        x = (x - 1.0f) / (x + 1.0f);
+      }
+    } else {
+      if (ix < 0x401c0000) { /* |x| < 2.4375 */
+        id = 2;
+        x = (x - 1.5f) / (1.0f + 1.5f * x);
+      } else { /* 2.4375 <= |x| < 2**26 */
+        id = 3;
+        x = -1.0f / x;
+      }
+    }
+  }
+  /* end of argument reduction */
+  z = x * x;
+  w = z * z;
+  /* break sum from i=0 to 10 aT[i]z**(i+1) into odd and even poly */
+  s1 = z * (aT[0] + w * (aT[2] + w * aT[4]));
+  s2 = w * (aT[1] + w * aT[3]);
+  if (id < 0)
+    return x - x * (s1 + s2);
+  z = atanhi[id] - ((x * (s1 + s2) - atanlo[id]) - x);
+  return sign ? -z : z;
 }

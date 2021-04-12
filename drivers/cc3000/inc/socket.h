@@ -1,37 +1,37 @@
 /*****************************************************************************
-*
-*  socket.h  - CC3000 Host Driver Implementation.
-*  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*    Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-*    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the
-*    distribution.
-*
-*    Neither the name of Texas Instruments Incorporated nor the names of
-*    its contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *  socket.h  - CC3000 Host Driver Implementation.
+ *  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *    Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ *    Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ *    Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 #ifndef __CC3000_SOCKET_H__
 #define __CC3000_SOCKET_H__
 
@@ -44,88 +44,89 @@
 //
 //*****************************************************************************
 
-
 //*****************************************************************************
 //
 // If building with a C++ compiler, make all of the definitions in this header
 // have a C binding.
 //
 //*****************************************************************************
-#ifdef  __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
-#define HOSTNAME_MAX_LENGTH (230)  // 230 bytes + header shouldn't exceed 8 bit value
+#define HOSTNAME_MAX_LENGTH                                                    \
+  (230) // 230 bytes + header shouldn't exceed 8 bit value
 
 //--------- Address Families --------
 
-#define  AF_INET                2
-#define  AF_INET6               23
+#define AF_INET 2
+#define AF_INET6 23
 
 //------------ Socket Types ------------
 
-#define  SOCK_STREAM            1
-#define  SOCK_DGRAM             2
-#define  SOCK_RAW               3           // Raw sockets allow new IPv4 protocols to be implemented in user space. A raw socket receives or sends the raw datagram not including link level headers
-#define  SOCK_RDM               4
-#define  SOCK_SEQPACKET         5
+#define SOCK_STREAM 1
+#define SOCK_DGRAM 2
+#define SOCK_RAW                                                               \
+  3 // Raw sockets allow new IPv4 protocols to be implemented in user space. A
+    // raw socket receives or sends the raw datagram not including link level
+    // headers
+#define SOCK_RDM 4
+#define SOCK_SEQPACKET 5
 
 //----------- Socket Protocol ----------
 
-#define IPPROTO_IP              0           // dummy for IP
-#define IPPROTO_ICMP            1           // control message protocol
-#define IPPROTO_IPV4            IPPROTO_IP  // IP inside IP
-#define IPPROTO_TCP             6           // tcp
-#define IPPROTO_UDP             17          // user datagram protocol
-#define IPPROTO_IPV6            41          // IPv6 in IPv6
-#define IPPROTO_NONE            59          // No next header
-#define IPPROTO_RAW             255         // raw IP packet
-#define IPPROTO_MAX             256
+#define IPPROTO_IP 0            // dummy for IP
+#define IPPROTO_ICMP 1          // control message protocol
+#define IPPROTO_IPV4 IPPROTO_IP // IP inside IP
+#define IPPROTO_TCP 6           // tcp
+#define IPPROTO_UDP 17          // user datagram protocol
+#define IPPROTO_IPV6 41         // IPv6 in IPv6
+#define IPPROTO_NONE 59         // No next header
+#define IPPROTO_RAW 255         // raw IP packet
+#define IPPROTO_MAX 256
 
 //----------- Socket retunr codes  -----------
 
-#define SOC_ERROR				(-1)		// error 
-#define SOC_IN_PROGRESS			(-2)		// socket in progress
+#define SOC_ERROR (-1)       // error
+#define SOC_IN_PROGRESS (-2) // socket in progress
 
 //----------- Socket Options -----------
-#define  SOL_SOCKET             0xffff		//  socket level
-#define  SOCKOPT_RECV_NONBLOCK         	0	// recv non block mode, set SOCK_ON or SOCK_OFF (default block mode)
-#define  SOCKOPT_RECV_TIMEOUT			1	// optname to configure recv and recvfromtimeout
-#define  SOCKOPT_ACCEPT_NONBLOCK		2	// accept non block mode, set SOCK_ON or SOCK_OFF (default block mode)
-#define  SOCK_ON                0			// socket non-blocking mode	is enabled		
-#define  SOCK_OFF               1			// socket blocking mode is enabled
+#define SOL_SOCKET 0xffff //  socket level
+#define SOCKOPT_RECV_NONBLOCK                                                  \
+  0 // recv non block mode, set SOCK_ON or SOCK_OFF (default block mode)
+#define SOCKOPT_RECV_TIMEOUT 1 // optname to configure recv and recvfromtimeout
+#define SOCKOPT_ACCEPT_NONBLOCK                                                \
+  2 // accept non block mode, set SOCK_ON or SOCK_OFF (default block mode)
+#define SOCK_ON 0  // socket non-blocking mode	is enabled
+#define SOCK_OFF 1 // socket blocking mode is enabled
 
-#define  MAX_PACKET_SIZE        1500
-#define  MAX_LISTEN_QUEUE       4
+#define MAX_PACKET_SIZE 1500
+#define MAX_LISTEN_QUEUE 4
 
-#define  IOCTL_SOCKET_EVENTMASK
+#define IOCTL_SOCKET_EVENTMASK
 
-#define ENOBUFS                 55          // No buffer space available
+#define ENOBUFS 55 // No buffer space available
 
-#define __FD_SETSIZE            32
+#define __FD_SETSIZE 32
 
-#define  ASIC_ADDR_LEN          8
+#define ASIC_ADDR_LEN 8
 
-#define NO_QUERY_RECIVED        -3
+#define NO_QUERY_RECIVED -3
 
-
-typedef struct _in_addr_t
-{
-    UINT32 s_addr;                   // load with inet_aton()
+typedef struct _in_addr_t {
+  UINT32 s_addr; // load with inet_aton()
 } in_addr;
 
-typedef struct _sockaddr_t
-{
-    UINT16   sa_family;
-    UINT8     sa_data[14];
+typedef struct _sockaddr_t {
+  UINT16 sa_family;
+  UINT8 sa_data[14];
 } sockaddr;
 
-typedef struct _sockaddr_in_t
-{
-    INT16            sin_family;            // e.g. AF_INET
-    UINT16   sin_port;              // e.g. htons(3490)
-    in_addr          sin_addr;              // see struct in_addr, below
-    CHAR             sin_zero[8];           // zero this if you want to
+typedef struct _sockaddr_in_t {
+  INT16 sin_family; // e.g. AF_INET
+  UINT16 sin_port;  // e.g. htons(3490)
+  in_addr sin_addr; // see struct in_addr, below
+  CHAR sin_zero[8]; // zero this if you want to
 } sockaddr_in;
 
 typedef UINT32 socklen_t;
@@ -134,60 +135,56 @@ typedef UINT32 socklen_t;
 typedef INT32 __fd_mask;
 
 // It's easier to assume 8-bit bytes than to get CHAR_BIT.
-#define __NFDBITS               (8 * sizeof (__fd_mask))
-#define __FDELT(d)              ((d) / __NFDBITS)
-#define __FDMASK(d)             ((__fd_mask) 1 << ((d) % __NFDBITS))
+#define __NFDBITS (8 * sizeof(__fd_mask))
+#define __FDELT(d) ((d) / __NFDBITS)
+#define __FDMASK(d) ((__fd_mask)1 << ((d) % __NFDBITS))
 
 // fd_set for select and pselect.
-typedef struct
-{
-    __fd_mask fds_bits[__FD_SETSIZE / __NFDBITS];
-#define __FDS_BITS(set)        ((set)->fds_bits)
+typedef struct {
+  __fd_mask fds_bits[__FD_SETSIZE / __NFDBITS];
+#define __FDS_BITS(set) ((set)->fds_bits)
 } fd_set;
 
 // We don't use `memset' because this would require a prototype and
 //   the array isn't too big.
-#define __FD_ZERO(set)                               \
-  do {                                                \
-    UINT16 __i;                                 \
-    fd_set *__arr = (set);                            \
-    for (__i = 0; __i < sizeof (fd_set) / sizeof (__fd_mask); ++__i) \
-      __FDS_BITS (__arr)[__i] = 0;                    \
+#define __FD_ZERO(set)                                                         \
+  do {                                                                         \
+    UINT16 __i;                                                                \
+    fd_set *__arr = (set);                                                     \
+    for (__i = 0; __i < sizeof(fd_set) / sizeof(__fd_mask); ++__i)             \
+      __FDS_BITS(__arr)[__i] = 0;                                              \
   } while (0)
-#define __FD_SET(d, set)       (__FDS_BITS (set)[__FDELT (d)] |= __FDMASK (d))
-#define __FD_CLR(d, set)       (__FDS_BITS (set)[__FDELT (d)] &= ~__FDMASK (d))
-#define __FD_ISSET(d, set)     (__FDS_BITS (set)[__FDELT (d)] & __FDMASK (d))
+#define __FD_SET(d, set) (__FDS_BITS(set)[__FDELT(d)] |= __FDMASK(d))
+#define __FD_CLR(d, set) (__FDS_BITS(set)[__FDELT(d)] &= ~__FDMASK(d))
+#define __FD_ISSET(d, set) (__FDS_BITS(set)[__FDELT(d)] & __FDMASK(d))
 
 // Access macros for 'fd_set'.
-#define FD_SET(fd, fdsetp)      __FD_SET (fd, fdsetp)
-#define FD_CLR(fd, fdsetp)      __FD_CLR (fd, fdsetp)
-#define FD_ISSET(fd, fdsetp)    __FD_ISSET (fd, fdsetp)
-#define FD_ZERO(fdsetp)         __FD_ZERO (fdsetp)
+#define FD_SET(fd, fdsetp) __FD_SET(fd, fdsetp)
+#define FD_CLR(fd, fdsetp) __FD_CLR(fd, fdsetp)
+#define FD_ISSET(fd, fdsetp) __FD_ISSET(fd, fdsetp)
+#define FD_ZERO(fdsetp) __FD_ZERO(fdsetp)
 
-//Use in case of Big Endian only
+// Use in case of Big Endian only
 
-#define htonl(A)    ((((UINT32)(A) & 0xff000000) >> 24) | \
-                     (((UINT32)(A) & 0x00ff0000) >> 8) | \
-                     (((UINT32)(A) & 0x0000ff00) << 8) | \
-                     (((UINT32)(A) & 0x000000ff) << 24))
+#define htonl(A)                                                               \
+  ((((UINT32)(A)&0xff000000) >> 24) | (((UINT32)(A)&0x00ff0000) >> 8) |        \
+   (((UINT32)(A)&0x0000ff00) << 8) | (((UINT32)(A)&0x000000ff) << 24))
 
-#define ntohl                   htonl
+#define ntohl htonl
 
-//Use in case of Big Endian only
-#define htons(A)     ((((UINT32)(A) & 0xff00) >> 8) | \
-                      (((UINT32)(A) & 0x00ff) << 8))
+// Use in case of Big Endian only
+#define htons(A) ((((UINT32)(A)&0xff00) >> 8) | (((UINT32)(A)&0x00ff) << 8))
 
-
-#define ntohs                   htons
+#define ntohs htons
 
 // mDNS port - 5353    mDNS multicast address - 224.0.0.251
-#define SET_mDNS_ADD(sockaddr)     	   	sockaddr.sa_data[0] = 0x14; \
-																								sockaddr.sa_data[1] = 0xe9; \
-																								sockaddr.sa_data[2] = 0xe0; \
-																								sockaddr.sa_data[3] = 0x0; \
-																								sockaddr.sa_data[4] = 0x0; \
-																								sockaddr.sa_data[5] = 0xfb;
-
+#define SET_mDNS_ADD(sockaddr)                                                 \
+  sockaddr.sa_data[0] = 0x14;                                                  \
+  sockaddr.sa_data[1] = 0xe9;                                                  \
+  sockaddr.sa_data[2] = 0xe0;                                                  \
+  sockaddr.sa_data[3] = 0x0;                                                   \
+  sockaddr.sa_data[4] = 0x0;                                                   \
+  sockaddr.sa_data[5] = 0xfb;
 
 //*****************************************************************************
 //
@@ -248,10 +245,12 @@ extern INT32 CC3000_EXPORT(closesocket)(INT32 sd);
 //!                       pointed to by addr.
 //!
 //!  @return  For socket in blocking mode:
-//!				      On success, socket handle. on failure negative
-//!			      For socket in non-blocking mode:
-//!				     - On connection establishment, socket handle
-//!				     - On connection pending, SOC_IN_PROGRESS (-2)
+//!				      On success, socket handle. on failure
+//!negative 			      For socket in non-blocking mode:
+//!				     - On connection establishment, socket
+//!handle
+//!				     - On connection pending, SOC_IN_PROGRESS
+//!(-2)
 //!			       - On failure, SOC_ERROR	(-1)
 //!
 //!  @brief  accept a connection on a socket:
@@ -275,7 +274,8 @@ extern INT32 CC3000_EXPORT(closesocket)(INT32 sd);
 //! @sa     socket ; bind ; listen
 //
 //*****************************************************************************
-extern INT32 CC3000_EXPORT(accept)(INT32 sd, sockaddr *addr, socklen_t *addrlen);
+extern INT32 CC3000_EXPORT(accept)(INT32 sd, sockaddr *addr,
+                                   socklen_t *addrlen);
 
 //*****************************************************************************
 //
@@ -340,13 +340,14 @@ extern INT32 CC3000_EXPORT(listen)(INT32 sd, INT32 backlog);
 //!          by its name.
 //!
 //!  @note  On this version, only blocking mode is supported. Also note that
-//!		     the function requires DNS server to be configured prior to its usage.
+//!		     the function requires DNS server to be configured prior to its
+//!usage.
 //
 //*****************************************************************************
 #ifndef CC3000_TINY_DRIVER
-extern INT16 CC3000_EXPORT(gethostbyname)(CHAR * hostname, UINT16 usNameLen, UINT32* out_ip_addr);
+extern INT16 CC3000_EXPORT(gethostbyname)(CHAR *hostname, UINT16 usNameLen,
+                                          UINT32 *out_ip_addr);
 #endif
-
 
 //*****************************************************************************
 //
@@ -376,7 +377,8 @@ extern INT16 CC3000_EXPORT(gethostbyname)(CHAR * hostname, UINT16 usNameLen, UIN
 //!  @sa socket
 //
 //*****************************************************************************
-extern INT32 CC3000_EXPORT(connect)(INT32 sd, const sockaddr *addr, INT32 addrlen);
+extern INT32 CC3000_EXPORT(connect)(INT32 sd, const sockaddr *addr,
+                                    INT32 addrlen);
 
 //*****************************************************************************
 //
@@ -415,8 +417,9 @@ extern INT32 CC3000_EXPORT(connect)(INT32 sd, const sockaddr *addr, INT32 addrle
 //!  @sa socket
 //
 //*****************************************************************************
-extern INT16 CC3000_EXPORT(select)(INT32 nfds, fd_set *readsds, fd_set *writesds,
-                                   fd_set *exceptsds, struct cc3000_timeval *timeout);
+extern INT16 CC3000_EXPORT(select)(INT32 nfds, fd_set *readsds,
+                                   fd_set *writesds, fd_set *exceptsds,
+                                   struct cc3000_timeval *timeout);
 
 //*****************************************************************************
 //
@@ -454,19 +457,22 @@ extern INT16 CC3000_EXPORT(select)(INT32 nfds, fd_set *readsds, fd_set *writesds
 //!    			 The only protocol level supported in this version
 //!          is SOL_SOCKET (level).
 //!		       1. SOCKOPT_RECV_TIMEOUT (optname)
-//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom timeout
+//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom
+//!timeout
 //!           in milliseconds.
 //!		        In that case optval should be pointer to UINT32.
-//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking mode on
+//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking
+//!mode on
 //!           or off.
-//!		        In that case optval should be SOCK_ON or SOCK_OFF (optval).
+//!		        In that case optval should be SOCK_ON or SOCK_OFF
+//!(optval).
 //!
 //!  @sa getsockopt
 //
 //*****************************************************************************
 #ifndef CC3000_TINY_DRIVER
-extern INT16 CC3000_EXPORT(setsockopt)(INT32 sd, INT32 level, INT32 optname, const void *optval,
-                                       socklen_t optlen);
+extern INT16 CC3000_EXPORT(setsockopt)(INT32 sd, INT32 level, INT32 optname,
+                                       const void *optval, socklen_t optlen);
 #endif
 //*****************************************************************************
 //
@@ -504,18 +510,21 @@ extern INT16 CC3000_EXPORT(setsockopt)(INT32 sd, INT32 level, INT32 optname, con
 //!    			 The only protocol level supported in this version
 //!          is SOL_SOCKET (level).
 //!		       1. SOCKOPT_RECV_TIMEOUT (optname)
-//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom timeout
+//!			      SOCKOPT_RECV_TIMEOUT configures recv and recvfrom
+//!timeout
 //!           in milliseconds.
 //!		        In that case optval should be pointer to UINT32.
-//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking mode on
+//!		       2. SOCKOPT_NONBLOCK (optname). sets the socket non-blocking
+//!mode on
 //!           or off.
-//!		        In that case optval should be SOCK_ON or SOCK_OFF (optval).
+//!		        In that case optval should be SOCK_ON or SOCK_OFF
+//!(optval).
 //!
 //!  @sa setsockopt
 //
 //*****************************************************************************
-extern INT16 CC3000_EXPORT(getsockopt)(INT32 sd, INT32 level, INT32 optname, void *optval,
-                                       socklen_t *optlen);
+extern INT16 CC3000_EXPORT(getsockopt)(INT32 sd, INT32 level, INT32 optname,
+                                       void *optval, socklen_t *optlen);
 
 //*****************************************************************************
 //
@@ -568,7 +577,8 @@ extern INT16 CC3000_EXPORT(recv)(INT32 sd, void *buf, INT32 len, INT32 flags);
 //!  @Note On this version, only blocking mode is supported.
 //
 //*****************************************************************************
-extern INT16 CC3000_EXPORT(recvfrom)(INT32 sd, void *buf, INT32 len, INT32 flags, sockaddr *from,
+extern INT16 CC3000_EXPORT(recvfrom)(INT32 sd, void *buf, INT32 len,
+                                     INT32 flags, sockaddr *from,
                                      socklen_t *fromlen);
 
 //*****************************************************************************
@@ -593,7 +603,8 @@ extern INT16 CC3000_EXPORT(recvfrom)(INT32 sd, void *buf, INT32 len, INT32 flags
 //
 //*****************************************************************************
 
-extern INT16 CC3000_EXPORT(send)(INT32 sd, const void *buf, INT32 len, INT32 flags);
+extern INT16 CC3000_EXPORT(send)(INT32 sd, const void *buf, INT32 len,
+                                 INT32 flags);
 
 //*****************************************************************************
 //
@@ -621,8 +632,9 @@ extern INT16 CC3000_EXPORT(send)(INT32 sd, const void *buf, INT32 len, INT32 fla
 //
 //*****************************************************************************
 
-extern INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len, INT32 flags,
-                                   const sockaddr *to, socklen_t tolen);
+extern INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len,
+                                   INT32 flags, const sockaddr *to,
+                                   socklen_t tolen);
 
 //*****************************************************************************
 //
@@ -631,7 +643,8 @@ extern INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len, INT32 f
 //!  @param[in] mdnsEnabled         flag to enable/disable the mDNS feature
 //!  @param[in] deviceServiceName   Service name as part of the published
 //!                                 canonical domain name
-//!  @param[in] deviceServiceNameLength   Length of the service name - up to 32 chars
+//!  @param[in] deviceServiceNameLength   Length of the service name - up to 32
+//!  chars
 //!
 //!
 //!  @return   On success, zero is returned, return SOC_ERROR if socket was not
@@ -640,8 +653,9 @@ extern INT16 CC3000_EXPORT(sendto)(INT32 sd, const void *buf, INT32 len, INT32 f
 //!  @brief    Set CC3000 in mDNS advertiser mode in order to advertise itself.
 //
 //*****************************************************************************
-extern INT16 CC3000_EXPORT(mdnsAdvertiser)(UINT16 mdnsEnabled, CHAR * deviceServiceName, UINT16 deviceServiceNameLength);
-
+extern INT16 CC3000_EXPORT(mdnsAdvertiser)(UINT16 mdnsEnabled,
+                                           CHAR *deviceServiceName,
+                                           UINT16 deviceServiceNameLength);
 
 //*****************************************************************************
 //
@@ -651,10 +665,11 @@ extern INT16 CC3000_EXPORT(mdnsAdvertiser)(UINT16 mdnsEnabled, CHAR * deviceServ
 //!
 //!  @return   On success, returns the MSS value of a TCP connection
 //!
-//!  @brief    Returns the MSS value of a TCP connection according to the socket descriptor
+//!  @brief    Returns the MSS value of a TCP connection according to the socket
+//!  descriptor
 //
 //*****************************************************************************
-extern UINT16 CC3000_EXPORT(getmssvalue) (INT32 sd);
+extern UINT16 CC3000_EXPORT(getmssvalue)(INT32 sd);
 
 //*****************************************************************************
 //
@@ -663,13 +678,12 @@ extern UINT16 CC3000_EXPORT(getmssvalue) (INT32 sd);
 //
 //*****************************************************************************
 
-
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.
 //
 //*****************************************************************************
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif // __cplusplus
 

@@ -26,9 +26,9 @@
 
 #include <stdio.h>
 
-#include "py/mpstate.h"
-#include "py/gc.h"
 #include "lib/utils/gchelper.h"
+#include "py/gc.h"
+#include "py/mpstate.h"
 
 #if MICROPY_ENABLE_GC
 
@@ -36,12 +36,14 @@
 uintptr_t gc_helper_get_regs_and_sp(uintptr_t *regs);
 
 MP_NOINLINE void gc_helper_collect_regs_and_stack(void) {
-    // get the registers and the sp
-    gc_helper_regs_t regs;
-    uintptr_t sp = gc_helper_get_regs_and_sp(regs);
+  // get the registers and the sp
+  gc_helper_regs_t regs;
+  uintptr_t sp = gc_helper_get_regs_and_sp(regs);
 
-    // trace the stack, including the registers (since they live on the stack in this function)
-    gc_collect_root((void **)sp, ((uint32_t)MP_STATE_THREAD(stack_top) - sp) / sizeof(uint32_t));
+  // trace the stack, including the registers (since they live on the stack in
+  // this function)
+  gc_collect_root((void **)sp, ((uint32_t)MP_STATE_THREAD(stack_top) - sp) /
+                                   sizeof(uint32_t));
 }
 
 #endif

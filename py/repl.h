@@ -26,13 +26,14 @@
 #ifndef MICROPY_INCLUDED_PY_REPL_H
 #define MICROPY_INCLUDED_PY_REPL_H
 
-#include "py/mpconfig.h"
 #include "py/misc.h"
+#include "py/mpconfig.h"
 #include "py/mpprint.h"
 
 #if MICROPY_HELPER_REPL
 bool mp_repl_continue_with_input(const char *input);
-size_t mp_repl_autocomplete(const char *str, size_t len, const mp_print_t *print, const char **compl_str);
+size_t mp_repl_autocomplete(const char *str, size_t len,
+                            const mp_print_t *print, const char **compl_str);
 #endif
 
 #endif // MICROPY_INCLUDED_PY_REPL_H

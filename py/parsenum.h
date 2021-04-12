@@ -26,12 +26,14 @@
 #ifndef MICROPY_INCLUDED_PY_PARSENUM_H
 #define MICROPY_INCLUDED_PY_PARSENUM_H
 
-#include "py/mpconfig.h"
 #include "py/lexer.h"
+#include "py/mpconfig.h"
 #include "py/obj.h"
 
 // these functions raise a SyntaxError if lex!=NULL, else a ValueError
-mp_obj_t mp_parse_num_integer(const char *restrict str, size_t len, int base, mp_lexer_t *lex);
-mp_obj_t mp_parse_num_decimal(const char *str, size_t len, bool allow_imag, bool force_complex, mp_lexer_t *lex);
+mp_obj_t mp_parse_num_integer(const char *restrict str, size_t len, int base,
+                              mp_lexer_t *lex);
+mp_obj_t mp_parse_num_decimal(const char *str, size_t len, bool allow_imag,
+                              bool force_complex, mp_lexer_t *lex);
 
 #endif // MICROPY_INCLUDED_PY_PARSENUM_H

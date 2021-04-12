@@ -5,9 +5,9 @@
 #ifndef MICROPY_INCLUDED_EXTMOD_NIMBLE_LOGCFG_LOGCFG_H
 #define MICROPY_INCLUDED_EXTMOD_NIMBLE_LOGCFG_LOGCFG_H
 
-#include "py/mphal.h"
-#include "modlog/modlog.h"
 #include "log_common/log_common.h"
+#include "modlog/modlog.h"
+#include "py/mphal.h"
 
 #define MICROPY_PY_BLUETOOTH_DIAGNOSTIC_LOGGING (1)
 

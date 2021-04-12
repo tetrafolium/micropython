@@ -32,13 +32,12 @@
  *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
-*/
+ */
 
 #ifndef __FLOWCONT_H__
 #define __FLOWCONT_H__
 
-
-#ifdef	__cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -53,9 +52,8 @@ extern "C" {
 extern void _SlDrvFlowContInit(void);
 extern void _SlDrvFlowContDeinit(void);
 
-#ifdef  __cplusplus
+#ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
 #endif /* __FLOWCONT_H__ */
-

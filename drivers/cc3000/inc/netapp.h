@@ -1,39 +1,39 @@
 /*****************************************************************************
-*
-*  netapp.h  - CC3000 Host Driver Implementation.
-*  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
-*
-*  Redistribution and use in source and binary forms, with or without
-*  modification, are permitted provided that the following conditions
-*  are met:
-*
-*    Redistributions of source code must retain the above copyright
-*    notice, this list of conditions and the following disclaimer.
-*
-*    Redistributions in binary form must reproduce the above copyright
-*    notice, this list of conditions and the following disclaimer in the
-*    documentation and/or other materials provided with the
-*    distribution.
-*
-*    Neither the name of Texas Instruments Incorporated nor the names of
-*    its contributors may be used to endorse or promote products derived
-*    from this software without specific prior written permission.
-*
-*  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
-*  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
-*  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-*  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-*  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-*  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-*  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-*  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-*  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-*  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-*  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*
-*****************************************************************************/
+ *
+ *  netapp.h  - CC3000 Host Driver Implementation.
+ *  Copyright (C) 2011 Texas Instruments Incorporated - http://www.ti.com/
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *    Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ *    Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the
+ *    distribution.
+ *
+ *    Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ *  A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+ *  OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+ *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+ *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+ *  DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ *  THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ *  OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ *****************************************************************************/
 #ifndef __CC3000_NETAPP_H__
-#define	__CC3000_NETAPP_H__
+#define __CC3000_NETAPP_H__
 
 #include "data_types.h"
 
@@ -43,7 +43,7 @@
 // have a C binding.
 //
 //*****************************************************************************
-#ifdef	__cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -54,37 +54,32 @@ extern "C" {
 //
 //*****************************************************************************
 
-typedef struct _netapp_dhcp_ret_args_t
-{
-    UINT8 aucIP[4];
-    UINT8 aucSubnetMask[4];
-    UINT8 aucDefaultGateway[4];
-    UINT8 aucDHCPServer[4];
-    UINT8 aucDNSServer[4];
+typedef struct _netapp_dhcp_ret_args_t {
+  UINT8 aucIP[4];
+  UINT8 aucSubnetMask[4];
+  UINT8 aucDefaultGateway[4];
+  UINT8 aucDHCPServer[4];
+  UINT8 aucDNSServer[4];
 } tNetappDhcpParams;
 
-typedef struct _netapp_ipconfig_ret_args_t
-{
-    UINT8 aucIP[4];
-    UINT8 aucSubnetMask[4];
-    UINT8 aucDefaultGateway[4];
-    UINT8 aucDHCPServer[4];
-    UINT8 aucDNSServer[4];
-    UINT8 uaMacAddr[6];
-    UINT8 uaSSID[32];
+typedef struct _netapp_ipconfig_ret_args_t {
+  UINT8 aucIP[4];
+  UINT8 aucSubnetMask[4];
+  UINT8 aucDefaultGateway[4];
+  UINT8 aucDHCPServer[4];
+  UINT8 aucDNSServer[4];
+  UINT8 uaMacAddr[6];
+  UINT8 uaSSID[32];
 } tNetappIpconfigRetArgs;
 
-
 /*Ping send report parameters*/
-typedef struct _netapp_pingreport_args
-{
-    UINT32 packets_sent;
-    UINT32 packets_received;
-    UINT32 min_round_time;
-    UINT32 max_round_time;
-    UINT32 avg_round_time;
+typedef struct _netapp_pingreport_args {
+  UINT32 packets_sent;
+  UINT32 packets_received;
+  UINT32 min_round_time;
+  UINT32 max_round_time;
+  UINT32 avg_round_time;
 } netapp_pingreport_args_t;
-
 
 //*****************************************************************************
 //
@@ -96,11 +91,12 @@ typedef struct _netapp_pingreport_args
 //!
 //!  @brief        Configure device MAC address and store it in NVMEM.
 //!                The value of the MAC address configured through the API will
-//!		             be stored in CC3000 non volatile memory, thus preserved
+//!		             be stored in CC3000 non volatile memory, thus
+//!preserved
 //!                over resets.
 //
 //*****************************************************************************
-extern INT32  netapp_config_mac_adrress( UINT8 *mac );
+extern INT32 netapp_config_mac_adrress(UINT8 *mac);
 
 //*****************************************************************************
 //
@@ -128,9 +124,8 @@ extern INT32  netapp_config_mac_adrress( UINT8 *mac );
 //!               AP was established.
 //!
 //*****************************************************************************
-extern 	INT32 netapp_dhcp(UINT32 *aucIP, UINT32 *aucSubnetMask,UINT32 *aucDefaultGateway, UINT32 *aucDNSServer);
-
-
+extern INT32 netapp_dhcp(UINT32 *aucIP, UINT32 *aucSubnetMask,
+                         UINT32 *aucDefaultGateway, UINT32 *aucDNSServer);
 
 //*****************************************************************************
 //
@@ -182,7 +177,8 @@ extern 	INT32 netapp_dhcp(UINT32 *aucIP, UINT32 *aucSubnetMask,UINT32 *aucDefaul
 //!
 //*****************************************************************************
 #ifndef CC3000_TINY_DRIVER
-extern INT32 netapp_timeout_values(UINT32 *aucDHCP, UINT32 *aucARP, UINT32 *aucKeepalive, UINT32 *aucInactivity);
+extern INT32 netapp_timeout_values(UINT32 *aucDHCP, UINT32 *aucARP,
+                                   UINT32 *aucKeepalive, UINT32 *aucInactivity);
 #endif
 
 //*****************************************************************************
@@ -207,7 +203,8 @@ extern INT32 netapp_timeout_values(UINT32 *aucDHCP, UINT32 *aucARP, UINT32 *aucK
 //*****************************************************************************
 
 #ifndef CC3000_TINY_DRIVER
-extern INT32 netapp_ping_send(UINT32 *ip, UINT32 ulPingAttempts, UINT32 ulPingSize, UINT32 ulPingTimeout);
+extern INT32 netapp_ping_send(UINT32 *ip, UINT32 ulPingAttempts,
+                              UINT32 ulPingSize, UINT32 ulPingTimeout);
 #endif
 
 //*****************************************************************************
@@ -252,7 +249,6 @@ extern INT32 netapp_ping_stop();
 extern void netapp_ping_report();
 #endif
 
-
 //*****************************************************************************
 //
 //!  netapp_ipconfig
@@ -274,13 +270,12 @@ extern void netapp_ping_report();
 //!           associated, will cause non-defined values to be returned.
 //!
 //! @note     The function is useful for figuring out the IP Configuration of
-//!       		the device when DHCP is used and for figuring out the SSID of
-//!       		the Wireless network the device is associated with.
+//!       		the device when DHCP is used and for figuring out the SSID
+//!       of 		the Wireless network the device is associated with.
 //!
 //*****************************************************************************
 
-extern void netapp_ipconfig( tNetappIpconfigRetArgs * ipconfig );
-
+extern void netapp_ipconfig(tNetappIpconfigRetArgs *ipconfig);
 
 //*****************************************************************************
 //
@@ -298,17 +293,17 @@ extern void netapp_ipconfig( tNetappIpconfigRetArgs * ipconfig );
 extern INT32 netapp_arp_flush();
 #endif
 
-
 //*****************************************************************************
 //
 //!  netapp_set_debug_level
 //!
 //!  @param[in]      level    debug level. Bitwise [0-8],
 //!                         0(disable)or 1(enable).\n Bitwise map: 0 - Critical
-//!                         message, 1 information message, 2 - core messages, 3 -
-//!                         HCI messages, 4 - Network stack messages, 5 - wlan
-//!                         messages, 6 - wlan driver messages, 7 - epprom messages,
-//!                         8 - general messages. Default: 0x13f. Saved: no
+//!                         message, 1 information message, 2 - core messages, 3
+//!                         - HCI messages, 4 - Network stack messages, 5 - wlan
+//!                         messages, 6 - wlan driver messages, 7 - epprom
+//!                         messages, 8 - general messages. Default: 0x13f.
+//!                         Saved: no
 //!
 //!  @return  On success, zero is returned. On error, -1 is returned
 //!
@@ -316,7 +311,6 @@ extern INT32 netapp_arp_flush();
 //!              enable/disable the debug level
 //!
 //*****************************************************************************
-
 
 #ifndef CC3000_TINY_DRIVER
 INT32 netapp_set_debug_level(UINT32 ulLevel);
@@ -328,16 +322,13 @@ INT32 netapp_set_debug_level(UINT32 ulLevel);
 //
 //*****************************************************************************
 
-
-
 //*****************************************************************************
 //
 // Mark the end of the C bindings section for C++ compilers.
 //
 //*****************************************************************************
-#ifdef	__cplusplus
+#ifdef __cplusplus
 }
 #endif // __cplusplus
 
-#endif	// __CC3000_NETAPP_H__
-
+#endif // __CC3000_NETAPP_H__
