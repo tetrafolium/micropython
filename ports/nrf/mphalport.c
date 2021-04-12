@@ -332,7 +332,7 @@ static const char nrfx_error_forbidden[] = "NRFX_ERROR_FORBIDDEN";
 static const char nrfx_error_null[] = "NRFX_ERROR_NULL";
 static const char nrfx_error_invalid_addr[] = "NRFX_ERROR_INVALID_ADDR";
 static const char nrfx_error_busy[] = "NRFX_ERROR_BUSY";
-static const char nrfx_error_already_initalized[] =
+static const char nrfx_error_already_initialized[] =
     "NRFX_ERROR_ALREADY_INITIALIZED";
 
 static const char *nrfx_error_strings[13] = {nrfx_error_success,
@@ -347,7 +347,7 @@ static const char *nrfx_error_strings[13] = {nrfx_error_success,
                                              nrfx_error_null,
                                              nrfx_error_invalid_addr,
                                              nrfx_error_busy,
-                                             nrfx_error_already_initalized};
+                                             nrfx_error_already_initialized};
 
 static const char nrfx_drv_error_twi_err_overrun[] =
     "NRFX_ERROR_DRV_TWI_ERR_OVERRUN";

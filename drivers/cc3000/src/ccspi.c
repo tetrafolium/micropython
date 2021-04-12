@@ -83,7 +83,7 @@ STATIC const pin_obj_t *PIN_IRQ = NULL;
 // The magic number that resides at the end of the TX/RX buffer (1 byte after
 // the allocated size) for the purpose of detection of the overrun. The location
 // of the memory where the magic number resides shall never be written. In case
-// it is written - the overrun occured and either recevie function or send
+// it is written - the overrun occurred and either recevie function or send
 // function will stuck forever.
 #define CC3000_BUFFER_MAGIC_NUMBER (0xDE)
 
@@ -174,9 +174,9 @@ void SpiOpen(gcSpiHandleRx pfRxHandler) {
   CS_HIGH();
 
   // register EXTI
-  extint_register((mp_obj_t)PIN_IRQ, GPIO_MODE_IT_FALLING, GPIO_PULLUP,
+  extinct_register((mp_obj_t)PIN_IRQ, GPIO_MODE_IT_FALLING, GPIO_PULLUP,
                   (mp_obj_t)&irq_callback_obj, true);
-  extint_enable(PIN_IRQ->pin);
+  extinct_enable(PIN_IRQ->pin);
 
   DEBUG_printf("SpiOpen finished; IRQ.pin=%d IRQ_LINE=%d\n", PIN_IRQ->pin,
                PIN_IRQ->pin);
@@ -458,10 +458,10 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_1(irq_callback_obj, irq_callback);
 
 void SpiPauseSpi(void) {
   DEBUG_printf("SpiPauseSpi\n");
-  extint_disable(PIN_IRQ->pin);
+  extinct_disable(PIN_IRQ->pin);
 }
 
 void SpiResumeSpi(void) {
   DEBUG_printf("SpiResumeSpi\n");
-  extint_enable(PIN_IRQ->pin);
+  extinct_enable(PIN_IRQ->pin);
 }

@@ -153,7 +153,7 @@ int spi_Read_CPU(unsigned char *pBuff, int len) {
    and return only upon successful completion of writing the whole buffer, but
    in cases that memory allocation is not too tight, the function could copy the
    data to internal buffer, return back and complete the write in parallel to
-   other activities as long as the other SPI activities would be blocked untill
+   other activities as long as the other SPI activities would be blocked until
                                         the entire buffer write would be
    completed \warning
 */
@@ -329,7 +329,7 @@ int spi_Read(Fd_t fd, unsigned char *pBuff, int len) {
    and return only upon successful completion of writing the whole buffer, but
    in cases that memory allocation is not too tight, the function could copy the
    data to internal buffer, return back and complete the write in parallel to
-   other activities as long as the other SPI activities would be blocked untill
+   other activities as long as the other SPI activities would be blocked until
                                         the entire buffer write would be
    completed \warning
 */

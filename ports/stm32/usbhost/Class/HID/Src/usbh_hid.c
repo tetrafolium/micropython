@@ -150,7 +150,7 @@ static USBH_StatusTypeDef USBH_HID_InterfaceInit(USBH_HandleTypeDef *phost) {
     HID_Handle = phost->pActiveClass->pData;
     HID_Handle->state = HID_ERROR;
 
-    /*Decode Bootclass Protocl: Mouse or Keyboard*/
+    /*Decode Bootclass Protocol: Mouse or Keyboard*/
     if (phost->device.CfgDesc.Itf_Desc[phost->device.current_interface]
             .bInterfaceProtocol == HID_KEYBRD_BOOT_CODE) {
       USBH_UsrLog("KeyBoard device found!");
@@ -474,7 +474,7 @@ USBH_StatusTypeDef USBH_HID_GetHIDDescriptor(USBH_HandleTypeDef *phost,
  *         Set Idle State.
  * @param  phost: Host handle
  * @param  duration: Duration for HID Idle request
- * @param  reportId : Targetted report ID for Set Idle request
+ * @param  reportId : Targeted report ID for Set Idle request
  * @retval USBH Status
  */
 USBH_StatusTypeDef USBH_HID_SetIdle(USBH_HandleTypeDef *phost, uint8_t duration,
@@ -497,7 +497,7 @@ USBH_StatusTypeDef USBH_HID_SetIdle(USBH_HandleTypeDef *phost, uint8_t duration,
  *         Issues Set Report
  * @param  phost: Host handle
  * @param  reportType  : Report type to be sent
- * @param  reportId    : Targetted report ID for Set Report request
+ * @param  reportId    : Targeted report ID for Set Report request
  * @param  reportBuff  : Report Buffer
  * @param  reportLen   : Length of data report to be send
  * @retval USBH Status
@@ -520,10 +520,10 @@ USBH_StatusTypeDef USBH_HID_SetReport(USBH_HandleTypeDef *phost,
 
 /**
  * @brief  USBH_HID_GetReport
- *         retreive Set Report
+ *         retrieve Set Report
  * @param  phost: Host handle
  * @param  reportType  : Report type to be sent
- * @param  reportId    : Targetted report ID for Set Report request
+ * @param  reportId    : Targeted report ID for Set Report request
  * @param  reportBuff  : Report Buffer
  * @param  reportLen   : Length of data report to be send
  * @retval USBH Status

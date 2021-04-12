@@ -76,11 +76,11 @@
 // of input data to internal FIFO of
 // the engine
 #define DTHE_SHAMD5_IMST_COUT 0x00000002 // Context out: this interrupt is
-// raised when DMA complets the
+// raised when DMA completes the
 // output context movement from
 // internal register
 #define DTHE_SHAMD5_IMST_CIN 0x00000001 // context in: this interrupt is
-// raised when DMA complets Context
+// raised when DMA completes Context
 // write to internal register
 //******************************************************************************
 //
@@ -124,11 +124,11 @@
 // of input data to internal FIFO of
 // the engine
 #define DTHE_AES_IMST_COUT 0x00000002 // Context out: this interrupt is
-// raised when DMA complets the
+// raised when DMA completes the
 // output context movement from
 // internal register
 #define DTHE_AES_IMST_CIN 0x00000001 // context in: this interrupt is
-// raised when DMA complets Context
+// raised when DMA completes Context
 // write to internal register
 //******************************************************************************
 //
@@ -176,7 +176,7 @@
 // of input data to internal FIFO of
 // the engine
 #define DTHE_DES_IMST_CIN 0x00000001 // context in: this interrupt is
-// raised when DMA complets Context
+// raised when DMA completes Context
 // write to internal register
 //******************************************************************************
 //

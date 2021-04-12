@@ -153,7 +153,7 @@ typedef struct {
 
 #define MAX_BULK_STALL_COUNT_LIMIT                                             \
   0x04 /* If STALL is seen on Bulk                                             \
-Endpoint continously, this means                                               \
+Endpoint continuously, this means                                               \
 that device and Host has phase error                                           \
 Hence a Reset is needed */
 

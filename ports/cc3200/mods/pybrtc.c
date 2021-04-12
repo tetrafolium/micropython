@@ -62,7 +62,7 @@ STATIC pyb_rtc_obj_t pyb_rtc_obj;
  ******************************************************************************/
 STATIC void pyb_rtc_set_time(uint32_t secs, uint16_t msecs);
 STATIC uint32_t pyb_rtc_reset(void);
-STATIC void pyb_rtc_disable_interupt(void);
+STATIC void pyb_rtc_disable_interrupt(void);
 STATIC void pyb_rtc_irq_enable(mp_obj_t self_in);
 STATIC void pyb_rtc_irq_disable(mp_obj_t self_in);
 STATIC int pyb_rtc_irq_flags(mp_obj_t self_in);
@@ -76,7 +76,7 @@ STATIC void rtc_msec_add(uint16_t msecs_1, uint32_t *secs, uint16_t *msecs_2);
  DECLARE PUBLIC FUNCTIONS
  ******************************************************************************/
 __attribute__((section(".boot"))) void pyb_rtc_pre_init(void) {
-  // only if comming out of a power-on reset
+  // only if coming out of a power-on reset
   if (MAP_PRCMSysResetCauseGet() == PRCM_POWER_ON) {
     // Mark the RTC in use first
     MAP_PRCMRTCInUseSet();
@@ -119,7 +119,7 @@ void pyb_rtc_repeat_alarm(pyb_rtc_obj_t *self) {
 
     pyb_rtc_get_time(&c_seconds, &c_mseconds);
 
-    // substract the time elapsed between waking up and setting up the alarm
+    // subtract the time elapsed between waking up and setting up the alarm
     // again
     int32_t wake_ms = ((c_seconds * 1000) + c_mseconds) -
                       ((self->alarm_time_s * 1000) + self->alarm_time_ms);
@@ -134,7 +134,7 @@ void pyb_rtc_repeat_alarm(pyb_rtc_obj_t *self) {
 
 void pyb_rtc_disable_alarm(void) {
   pyb_rtc_obj.alarmset = false;
-  pyb_rtc_disable_interupt();
+  pyb_rtc_disable_interrupt();
 }
 
 /******************************************************************************
@@ -161,7 +161,7 @@ STATIC uint32_t pyb_rtc_reset(void) {
   return seconds;
 }
 
-STATIC void pyb_rtc_disable_interupt(void) {
+STATIC void pyb_rtc_disable_interrupt(void) {
   uint primsk = disable_irq();
   MAP_PRCMIntDisable(PRCM_INT_SLOW_CLK_CTR);
   (void)MAP_PRCMIntStatus();
@@ -183,7 +183,7 @@ STATIC void pyb_rtc_irq_disable(mp_obj_t self_in) {
   pyb_rtc_obj_t *self = self_in;
   self->irq_enabled = false;
   if (!self->repeat) { // we always need interrupts if repeat is enabled
-    pyb_rtc_disable_interupt();
+    pyb_rtc_disable_interrupt();
   }
 }
 

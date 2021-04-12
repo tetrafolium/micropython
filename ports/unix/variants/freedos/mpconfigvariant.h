@@ -30,7 +30,7 @@
 
 #define MICROPY_STREAMS_NON_BLOCK (0)
 
-#define MICROPY_PY_SYS_PLATFORM "freedos"
+#define MICROPY_PY_SYS_PLATFORM "freedoms"
 
 // djgpp dirent struct does not have d_ino field
 #undef _DIRENT_HAVE_D_INO

@@ -975,7 +975,7 @@ USBH_StatusTypeDef USBH_AUDIO_BuildHeadphonePath(USBH_HandleTypeDef *phost) {
 
   AUDIO_Handle = phost->pActiveClass->pData;
 
-  /*Find association betwen audio streaming and microphone*/
+  /*Find association between audio streaming and microphone*/
   for (terminalIndex = 0;
        terminalIndex < AUDIO_Handle->class_desc.InputTerminalNum;
        terminalIndex++) {
@@ -1690,7 +1690,7 @@ USBH_StatusTypeDef USBH_AUDIO_Resume(USBH_HandleTypeDef *phost) {
 }
 /**
  * @brief  USBH_AUDIO_GetOutOffset
- *         return the current buffer pointer for OUT proces
+ *         return the current buffer pointer for OUT process
  * @param  phost: Host handle
  * @retval USBH Status
  */

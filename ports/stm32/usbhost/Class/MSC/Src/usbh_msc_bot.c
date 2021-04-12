@@ -448,7 +448,7 @@ static BOT_CSWStatusTypeDef USBH_MSC_DecodeCSW(USBH_HandleTypeDef *phost) {
   MSC_HandleTypeDef *MSC_Handle = phost->pActiveClass->pData;
   BOT_CSWStatusTypeDef status = BOT_CSW_CMD_FAILED;
 
-  /*Checking if the transfer length is diffrent than 13*/
+  /*Checking if the transfer length is different than 13*/
   if (USBH_LL_GetLastXferSize(phost, MSC_Handle->InPipe) != BOT_CSW_LENGTH) {
     /*(4) Hi > Dn (Host expects to receive data from the device,
     Device intends to transfer no data)

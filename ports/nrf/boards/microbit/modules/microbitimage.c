@@ -329,7 +329,7 @@ STATIC void image_blit(microbit_image_obj_t *src, greyscale_t *dest, mp_int_t x,
       greyscaleSetPixelValue(dest, i + xdest - x, j + ydest - y, val);
     }
   }
-  // Adjust intersection rectange to dest
+  // Adjust intersection rectangle to dest
   intersect_x0 += xdest - x;
   intersect_y0 += ydest - y;
   intersect_x1 += xdest - x;

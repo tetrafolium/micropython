@@ -485,7 +485,7 @@ USBH_StatusTypeDef USBH_CDC_GetLineCoding(USBH_HandleTypeDef *phost,
 }
 
 /**
- * @brief  This function return last recieved data size
+ * @brief  This function return last received data size
  * @param  None
  * @retval None
  */

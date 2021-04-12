@@ -1772,7 +1772,7 @@
 
 #define GPRCM_MEM_SYS_OPP_REQ_OVERRIDE_reserved_S 5
 #define GPRCM_MEM_SYS_OPP_REQ_OVERRIDE_mem_sys_opp_req_override_ctrl           \
-  0x00000010 // 1 - Override the sytem-opp
+  0x00000010 // 1 - Override the system-opp
 // request to ANATOP using bit0 of
 // this register
 
@@ -2098,7 +2098,7 @@
   0x00000001 // 1 - When 1, disable the reboot
 // of APPS after DevInit is
 // completed. In this case, APPS
-// will permanantly help in reset. 0
+// will permanently help in reset. 0
 // - When 0, enable the reboot of
 // APPS after DevInit is completed.
 

@@ -187,7 +187,7 @@
   0x00000200 // 1= disable corresponding
 // interrupt;0 = interrupt enabled
 
-#define APPS_CONFIG_DMA_DONE_INT_MASK_CAM_THRESHHOLD_DMA_DONE_INT_MASK         \
+#define APPS_CONFIG_DMA_DONE_INT_MASK_CAM_THRESHOLD_DMA_DONE_INT_MASK         \
   0x00000100 // 1= disable corresponding
 // interrupt;0 = interrupt enabled
 
@@ -254,7 +254,7 @@
 // corresponding DMA DONE IRQ;0 = no
 // effect
 
-#define APPS_CONFIG_DMA_DONE_INT_MASK_SET_CAM_THRESHHOLD_DMA_DONE_INT_MASK_SET \
+#define APPS_CONFIG_DMA_DONE_INT_MASK_SET_CAM_THRESHOLD_DMA_DONE_INT_MASK_SET \
   0x00000100 // write 1 to set mask of the
 // corresponding DMA DONE IRQ;0 = no
 // effect
@@ -331,7 +331,7 @@
 // corresponding DMA DONE IRQ;0 = no
 // effect
 
-#define APPS_CONFIG_DMA_DONE_INT_MASK_CLR_CAM_THRESHHOLD_DMA_DONE_INT_MASK_CLR \
+#define APPS_CONFIG_DMA_DONE_INT_MASK_CLR_CAM_THRESHOLD_DMA_DONE_INT_MASK_CLR \
   0x00000100 // write 1 to clear mask of the
 // corresponding DMA DONE IRQ;0 = no
 // effect
@@ -415,7 +415,7 @@
   0x00000200 // write 1 to clear corresponding
 // interrupt; 0 = no effect;
 
-#define APPS_CONFIG_DMA_DONE_INT_ACK_CAM_THRESHHOLD_DMA_DONE_INT_ACK           \
+#define APPS_CONFIG_DMA_DONE_INT_ACK_CAM_THRESHOLD_DMA_DONE_INT_ACK           \
   0x00000100 // write 1 to clear corresponding
 // interrupt; 0 = no effect;
 
@@ -491,7 +491,7 @@
 // interrupt is inactive or masked
 // by DMA_DONE_INT mask
 
-#define APPS_CONFIG_DMA_DONE_INT_STS_MASKED_CAM_THRESHHOLD_DMA_DONE_INT_STS_MASKED \
+#define APPS_CONFIG_DMA_DONE_INT_STS_MASKED_CAM_THRESHOLD_DMA_DONE_INT_STS_MASKED \
   0x00000100 // 1= corresponding interrupt is
 // active and not masked. read is
 // non-destructive;0 = corresponding
@@ -589,7 +589,7 @@
 // = corresponding interrupt is
 // inactive
 
-#define APPS_CONFIG_DMA_DONE_INT_STS_RAW_CAM_THRESHHOLD_DMA_DONE_INT_STS_RAW   \
+#define APPS_CONFIG_DMA_DONE_INT_STS_RAW_CAM_THRESHOLD_DMA_DONE_INT_STS_RAW   \
   0x00000100 // 1= corresponding interrupt is
 // active. read is non-destructive;0
 // = corresponding interrupt is

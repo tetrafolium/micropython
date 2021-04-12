@@ -3987,7 +3987,7 @@ static int lfs2_fs_relocate(lfs2_t *lfs2, const lfs2_block_t oldpair[2],
       lfs2_fs_prepmove(lfs2, 0x3ff, NULL);
     }
 
-    // replace bad pair, either we clean up desync, or no desync occured
+    // replace bad pair, either we clean up desync, or no desync occurred
     lfs2_pair_tole32(newpair);
     err = lfs2_dir_commit(
         lfs2, &parent,

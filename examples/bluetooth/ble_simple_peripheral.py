@@ -1,4 +1,4 @@
-# This example demonstrates a UART periperhal.
+# This example demonstrates a UART peripheral.
 
 import bluetooth
 import random

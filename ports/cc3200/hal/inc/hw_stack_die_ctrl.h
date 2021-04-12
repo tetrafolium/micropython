@@ -227,7 +227,7 @@
 // entering into this mode and wait
 // for an interrupt.
 
-#define STACK_DIE_CTRL_O_MISC_CTL 0x0000005C // Miscellanious control register.
+#define STACK_DIE_CTRL_O_MISC_CTL 0x0000005C // Miscellaneous control register.
 
 #define STACK_DIE_CTRL_O_SW_DFT_CTL 0x000000FC // DFT control and status bits
 
@@ -602,7 +602,7 @@
 //******************************************************************************
 #define STACK_DIE_CTRL_MISC_CTL_WDOG_RESET                                     \
   0x00000080 // 1 : will reset the async wdog
-// timer runing on piosc clock
+// timer running on piosc clock
 
 #define STACK_DIE_CTRL_MISC_CTL_FW_IRQ2 0x00000020 // Setting this Will send to
 // interttupt to CM3

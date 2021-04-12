@@ -465,7 +465,7 @@
 // circuitry for the corresponding
 // GPIO signal.
 #define GPIO_O_GPIO_PCTL 0x0000052C // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) 0x4000 552C
@@ -800,7 +800,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_DR2R_DRV2_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Output Pad
@@ -828,7 +828,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_DR4R_DRV4_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Output Pad
@@ -856,7 +856,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_DR8R_DRV8_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Output Pad
@@ -883,7 +883,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_ODR_ODE_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Output Pad
@@ -899,7 +899,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_PUR_PUE_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Pad Weak
@@ -924,7 +924,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_PDR_PDE_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Pad Weak
@@ -949,7 +949,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_SLR_SRL_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Slew Rate
@@ -966,7 +966,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_DEN_DEN_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Digital Enable
@@ -1003,7 +1003,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_CR_CR_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) GPIO Commit
@@ -1051,7 +1051,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_AMSEL_GPIO_AMSEL_M 0x000000FF // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) GPIO Analog
@@ -1080,7 +1080,7 @@
 //
 //******************************************************************************
 #define GPIO_GPIO_PCTL_PMC7_M 0xF0000000 // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
@@ -1088,7 +1088,7 @@
 // configuration for GPIO pin 7.
 #define GPIO_GPIO_PCTL_PMC7_S 28
 #define GPIO_GPIO_PCTL_PMC6_M 0x0F000000 // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
@@ -1096,7 +1096,7 @@
 // configuration for GPIO pin 6.
 #define GPIO_GPIO_PCTL_PMC6_S 24
 #define GPIO_GPIO_PCTL_PMC5_M 0x00F00000 // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
@@ -1104,7 +1104,7 @@
 // configuration for GPIO pin 5.
 #define GPIO_GPIO_PCTL_PMC5_S 20
 #define GPIO_GPIO_PCTL_PMC4_M 0x000F0000 // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
@@ -1112,7 +1112,7 @@
 // configuration for GPIO pin 4.
 #define GPIO_GPIO_PCTL_PMC4_S 16
 #define GPIO_GPIO_PCTL_PMC3_M 0x0000F000 // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
@@ -1120,7 +1120,7 @@
 // the configuration for GPIO pin 3.
 #define GPIO_GPIO_PCTL_PMC3_S 12
 #define GPIO_GPIO_PCTL_PMC1_M 0x00000F00 // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
@@ -1128,7 +1128,7 @@
 // configuration for GPIO pin 1.
 #define GPIO_GPIO_PCTL_PMC1_S 8
 #define GPIO_GPIO_PCTL_PMC2_M 0x000000F0 // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux
@@ -1136,7 +1136,7 @@
 // configuration for GPIO pin 2.
 #define GPIO_GPIO_PCTL_PMC2_S 4
 #define GPIO_GPIO_PCTL_PMC0_M 0x0000000F // This register is not used in
-// cc3xx. equivalant register exsist
+// cc3xx. equivalent register exsist
 // outside GPIO IP (refer
 // PAD*_config register in the
 // shared comn space) Port Mux

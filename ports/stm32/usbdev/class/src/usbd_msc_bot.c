@@ -175,7 +175,7 @@ void MSC_BOT_DataIn(USBD_HandleTypeDef *pdev, uint8_t epnum) {
 }
 /**
  * @brief  MSC_BOT_DataOut
- *         Proccess MSC OUT data
+ *         Process MSC OUT data
  * @param  pdev: device instance
  * @param  epnum: endpoint index
  * @retval None

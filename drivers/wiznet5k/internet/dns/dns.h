@@ -2,7 +2,7 @@
 //
 //! \file dns.h
 //! \brief DNS APIs Header file.
-//! \details Send DNS query & Receive DNS reponse.
+//! \details Send DNS query & Receive DNS response.
 //! \version 1.1.0
 //! \date 2013/11/18
 //! \par  Revision history

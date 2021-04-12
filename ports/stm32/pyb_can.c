@@ -882,7 +882,7 @@ STATIC mp_obj_t pyb_can_setfilter(size_t n_args, const mp_obj_t *pos_args,
     }
   } else {
     if (filter.FilterNumber >
-        13) { // CAN3 is independant and has its own 14 filters.
+        13) { // CAN3 is independent and has its own 14 filters.
       goto error;
     }
   }

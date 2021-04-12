@@ -45,7 +45,7 @@ static int inet_pton6(const char *src, unsigned char *dst);
  *      On Windows we store the error in the thread errno, not
  *      in the winsock error code. This is to avoid loosing the
  *      actual last winsock error. So use macro ERRNO to fetch the
- *      errno this funtion sets when returning (-1), not SOCKERRNO.
+ *      errno this function sets when returning (-1), not SOCKERRNO.
  * author:
  *      Paul Vixie, 1996.
  */

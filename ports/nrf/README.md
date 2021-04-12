@@ -185,7 +185,7 @@ Install the necessary Python packages that will be used for flashing using the b
 The `intelhex` provides the `hexmerge.py` utility which is used by the Makefile
 to trim of the MBR in case SoftDevice flashing is requested.
 
-`nrfutil` as flashing backend also requires a serial port paramter to be defined
+`nrfutil` as flashing backend also requires a serial port parameter to be defined
 in addition to the `deploy` target of make. For example:
 
     make BOARD=nrf52840-mdk-usb-dongle NRFUTIL_PORT=/dev/ttyACM0 deploy

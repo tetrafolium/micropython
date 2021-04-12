@@ -154,7 +154,7 @@
   0x01 ///< Socket nonblock io mode. It used parameter in \ref socket().
 
 /*
- * UDP & MACRAW Packet Infomation
+ * UDP & MACRAW Packet Information
  */
 #define PACK_FIRST                                                             \
   0x80 ///< In Non-TCP packet, It indicates to start receiving a packet.

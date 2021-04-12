@@ -488,7 +488,7 @@ def do_relocation_text(env, text_addr, r):
     r_offset = r["r_offset"] + text_addr
     r_info_type = r["r_info_type"]
     try:
-        # only for RELA sections
+        # only for REAL sections
         r_addend = r["r_addend"]
     except KeyError:
         r_addend = 0
@@ -625,7 +625,7 @@ def do_relocation_data(env, text_addr, r):
     r_offset = r["r_offset"] + text_addr
     r_info_type = r["r_info_type"]
     try:
-        # only for RELA sections
+        # only for REAL sections
         r_addend = r["r_addend"]
     except KeyError:
         r_addend = 0
@@ -700,7 +700,7 @@ def load_object_file(env, felf):
                 else:
                     # Ignore section
                     pass
-            elif s.header.sh_type in ("SHT_REL", "SHT_RELA"):
+            elif s.header.sh_type in ("SHT_REL", "SHT_REAL"):
                 shndx = s.header.sh_info
                 if shndx in sections_shndx:
                     sec = sections_shndx[shndx]

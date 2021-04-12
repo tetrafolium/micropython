@@ -54,7 +54,7 @@
 
 //*****************************************************************************
 //
-// A mapping of SPI base address to interupt number.
+// A mapping of SPI base address to interrupt number.
 //
 //*****************************************************************************
 static const unsigned long g_ppulSPIIntMap[][3] = {
@@ -351,7 +351,7 @@ static long SPITransfer32(unsigned long ulBase, unsigned long *ulDout,
   }
 
   //
-  // Compute the number of words to be transferd
+  // Compute the number of words to be transferred
   //
   ulCount = ulCount / 4;
 
@@ -549,7 +549,7 @@ void SPIDisable(unsigned long ulBase) {
 
 //*****************************************************************************
 //
-//! Enables the SPI DMA operation for transmitting and/or receving.
+//! Enables the SPI DMA operation for transmitting and/or receiving.
 //!
 //! \param ulBase is the base address of the SPI module
 //! \param ulFlags selectes the DMA signal for transmit and/or receive.
@@ -574,7 +574,7 @@ void SPIDmaEnable(unsigned long ulBase, unsigned long ulFlags) {
 
 //*****************************************************************************
 //
-//! Disables the SPI DMA operation for transmitting and/or receving.
+//! Disables the SPI DMA operation for transmitting and/or receiving.
 //!
 //! \param ulBase is the base address of the SPI module
 //! \param ulFlags selectes the DMA signal for transmit and/or receive.
@@ -631,7 +631,7 @@ void SPIReset(unsigned long ulBase) {
 //! \param ulBitRate is the desired bit rate.(master mode)
 //! \param ulMode is the mode of operation.
 //! \param ulSubMode is one of the valid sub-modes.
-//! \param ulConfig is logical OR of configuration paramaters.
+//! \param ulConfig is logical OR of configuration parameters.
 //!
 //! This function configures SPI port for operation in specified sub-mode and
 //! required bit rated as specified by \e ulMode and \e ulBitRate parameters
@@ -660,7 +660,7 @@ void SPIReset(unsigned long ulBase) {
 //! - \b SPI_SUB_MODE_3
 //!
 //! The parameter \e ulConfig is logical OR of five values: the word length,
-//! active level for chip select, software or hardware controled chip select,
+//! active level for chip select, software or hardware controlled chip select,
 //! 3 or 4 pin mode and turbo mode.
 //! mode.
 //!
@@ -1333,7 +1333,7 @@ void SPICSDisable(unsigned long ulBase) {
 //! \param ucDout is the pointer to Tx data buffer or 0.
 //! \param ucDin is pointer to Rx data buffer or 0
 //! \param ulCount is the size of data in bytes.
-//! \param ulFlags controlls chip select toggling.
+//! \param ulFlags controls chip select toggling.
 //!
 //! This function transfers \e ulCount bytes of data over SPI channel. Since
 //! the API sends a SPI word at a time \e ulCount should be a multiple of

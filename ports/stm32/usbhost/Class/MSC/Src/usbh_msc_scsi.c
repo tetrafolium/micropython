@@ -103,7 +103,7 @@ USBH_StatusTypeDef USBH_MSC_SCSI_TestUnitReady(USBH_HandleTypeDef *phost,
   switch (MSC_Handle->hbot.cmd_state) {
   case BOT_CMD_SEND:
 
-    /*Prepare the CBW and relevent field*/
+    /*Prepare the CBW and relevant field*/
     MSC_Handle->hbot.cbw.field.DataTransferLength =
         DATA_LEN_MODE_TEST_UNIT_READY;
     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_OUT;
@@ -145,7 +145,7 @@ USBH_StatusTypeDef USBH_MSC_SCSI_ReadCapacity(USBH_HandleTypeDef *phost,
   switch (MSC_Handle->hbot.cmd_state) {
   case BOT_CMD_SEND:
 
-    /*Prepare the CBW and relevent field*/
+    /*Prepare the CBW and relevant field*/
     MSC_Handle->hbot.cbw.field.DataTransferLength = DATA_LEN_READ_CAPACITY10;
     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_IN;
     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
@@ -198,7 +198,7 @@ USBH_StatusTypeDef USBH_MSC_SCSI_Inquiry(USBH_HandleTypeDef *phost, uint8_t lun,
   switch (MSC_Handle->hbot.cmd_state) {
   case BOT_CMD_SEND:
 
-    /*Prepare the CBW and relevent field*/
+    /*Prepare the CBW and relevant field*/
     MSC_Handle->hbot.cbw.field.DataTransferLength = DATA_LEN_INQUIRY;
     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_IN;
     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
@@ -258,7 +258,7 @@ USBH_StatusTypeDef USBH_MSC_SCSI_RequestSense(USBH_HandleTypeDef *phost,
   switch (MSC_Handle->hbot.cmd_state) {
   case BOT_CMD_SEND:
 
-    /*Prepare the CBW and relevent field*/
+    /*Prepare the CBW and relevant field*/
     MSC_Handle->hbot.cbw.field.DataTransferLength = DATA_LEN_REQUEST_SENSE;
     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_IN;
     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
@@ -315,7 +315,7 @@ USBH_StatusTypeDef USBH_MSC_SCSI_Write(USBH_HandleTypeDef *phost, uint8_t lun,
   switch (MSC_Handle->hbot.cmd_state) {
   case BOT_CMD_SEND:
 
-    /*Prepare the CBW and relevent field*/
+    /*Prepare the CBW and relevant field*/
     MSC_Handle->hbot.cbw.field.DataTransferLength = length * 512;
     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_OUT;
     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;
@@ -369,7 +369,7 @@ USBH_StatusTypeDef USBH_MSC_SCSI_Read(USBH_HandleTypeDef *phost, uint8_t lun,
   switch (MSC_Handle->hbot.cmd_state) {
   case BOT_CMD_SEND:
 
-    /*Prepare the CBW and relevent field*/
+    /*Prepare the CBW and relevant field*/
     MSC_Handle->hbot.cbw.field.DataTransferLength = length * 512;
     MSC_Handle->hbot.cbw.field.Flags = USB_EP_DIR_IN;
     MSC_Handle->hbot.cbw.field.CBLength = CBW_LENGTH;

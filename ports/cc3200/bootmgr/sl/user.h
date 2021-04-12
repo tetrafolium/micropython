@@ -139,7 +139,7 @@ extern "C" {
     \brief      Defines whether SimpleLink driver should expose standard BSD
                 APIs or not
 
-                When defined, the SimpleLink driver in addtion to its
+                When defined, the SimpleLink driver in addition to its
    alternative BSD APIs expose also standard BSD APIs. Stadrad BSD API includs
    the following functions:
                 socket , close , accept , bind , listen	, connect , select ,
@@ -678,7 +678,7 @@ typedef OsiSyncObj_t _SlSyncObj_t;
 /*!
         \brief 	This function creates a sync object
 
-        The sync object is used for synchronization between diffrent thread or
+        The sync object is used for synchronization between different thread or
    ISR and a thread.
 
         \param	pSyncObj	-	pointer to the sync object control block

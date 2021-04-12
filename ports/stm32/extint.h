@@ -23,8 +23,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-#ifndef MICROPY_INCLUDED_STM32_EXTINT_H
-#define MICROPY_INCLUDED_STM32_EXTINT_H
+#ifndef MICROPY_INCLUDED_STM32_EXTINCT_H
+#define MICROPY_INCLUDED_STM32_EXTINCT_H
 
 #include "py/mphal.h"
 
@@ -59,20 +59,20 @@
 
 #define EXTI_NUM_VECTORS (PYB_EXTI_NUM_VECTORS)
 
-void extint_init0(void);
+void extinct_init0(void);
 
-uint extint_register(mp_obj_t pin_obj, uint32_t mode, uint32_t pull,
+uint extinct_register(mp_obj_t pin_obj, uint32_t mode, uint32_t pull,
                      mp_obj_t callback_obj, bool override_callback_obj);
-void extint_register_pin(const pin_obj_t *pin, uint32_t mode, bool hard_irq,
+void extinct_register_pin(const pin_obj_t *pin, uint32_t mode, bool hard_irq,
                          mp_obj_t callback_obj);
 
-void extint_enable(uint line);
-void extint_disable(uint line);
-void extint_swint(uint line);
-void extint_trigger_mode(uint line, uint32_t mode);
+void extinct_enable(uint line);
+void extinct_disable(uint line);
+void extinct_swint(uint line);
+void extinct_trigger_mode(uint line, uint32_t mode);
 
 void Handle_EXTI_Irq(uint32_t line);
 
-extern const mp_obj_type_t extint_type;
+extern const mp_obj_type_t extinct_type;
 
-#endif // MICROPY_INCLUDED_STM32_EXTINT_H
+#endif // MICROPY_INCLUDED_STM32_EXTINCT_H
