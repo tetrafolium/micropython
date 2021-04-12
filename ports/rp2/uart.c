@@ -24,40 +24,40 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
-#include "py/ringbuf.h"
-#include "py/mphal.h"
 #include "uart.h"
+#include "py/mphal.h"
+#include "py/ringbuf.h"
+#include "py/runtime.h"
 
-#include "hardware/uart.h"
 #include "hardware/irq.h"
 #include "hardware/regs/uart.h"
+#include "hardware/uart.h"
 
 #if MICROPY_HW_ENABLE_UART_REPL
 
 void uart_irq(void) {
-    uart_get_hw(uart_default)->icr = UART_UARTICR_BITS; // clear interrupt flags
-    if (uart_is_readable(uart_default)) {
-        int c = uart_getc(uart_default);
+  uart_get_hw(uart_default)->icr = UART_UARTICR_BITS; // clear interrupt flags
+  if (uart_is_readable(uart_default)) {
+    int c = uart_getc(uart_default);
 #if MICROPY_KBD_EXCEPTION
-        if (c == mp_interrupt_char) {
-            mp_keyboard_interrupt();
-            return;
-        }
-#endif
-        ringbuf_put(&stdin_ringbuf, c);
+    if (c == mp_interrupt_char) {
+      mp_keyboard_interrupt();
+      return;
     }
+#endif
+    ringbuf_put(&stdin_ringbuf, c);
+  }
 }
 
 void mp_uart_init(void) {
-    uart_get_hw(uart_default)->imsc = UART_UARTIMSC_BITS; // enable mask
-    uint irq_num = uart_get_index(uart_default) ? UART1_IRQ : UART0_IRQ;
-    irq_set_exclusive_handler(irq_num, uart_irq);
-    irq_set_enabled(irq_num, true); // enable irq
+  uart_get_hw(uart_default)->imsc = UART_UARTIMSC_BITS; // enable mask
+  uint irq_num = uart_get_index(uart_default) ? UART1_IRQ : UART0_IRQ;
+  irq_set_exclusive_handler(irq_num, uart_irq);
+  irq_set_enabled(irq_num, true); // enable irq
 }
 
 void mp_uart_write_strn(const char *str, size_t len) {
-    uart_write_blocking(uart_default, (const uint8_t *)str, len);
+  uart_write_blocking(uart_default, (const uint8_t *)str, len);
 }
 
 #endif

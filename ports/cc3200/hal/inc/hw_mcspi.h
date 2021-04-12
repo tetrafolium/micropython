@@ -41,45 +41,45 @@
 // The following are defines for the MCSPI register offsets.
 //
 //*****************************************************************************
-#define MCSPI_O_HL_REV          0x00000000  // IP Revision Identifier (X.Y.R)
+#define MCSPI_O_HL_REV 0x00000000 // IP Revision Identifier (X.Y.R)
 // Used by software to track
 // features bugs and compatibility
-#define MCSPI_O_HL_HWINFO       0x00000004  // Information about the IP
+#define MCSPI_O_HL_HWINFO 0x00000004 // Information about the IP
 // module's hardware configuration
 // i.e. typically the module's HDL
 // generics (if any). Actual field
 // format and encoding is up to the
 // module's designer to decide.
-#define MCSPI_O_HL_SYSCONFIG    0x00000010  // 0x4402 1010 0x4402 2010 Clock
+#define MCSPI_O_HL_SYSCONFIG 0x00000010 // 0x4402 1010 0x4402 2010 Clock
 // management configuration
-#define MCSPI_O_REVISION        0x00000100  // 0x4402 1100 0x4402 2100 This
+#define MCSPI_O_REVISION 0x00000100 // 0x4402 1100 0x4402 2100 This
 // register contains the hard coded
 // RTL revision number.
-#define MCSPI_O_SYSCONFIG       0x00000110  // 0x4402 1110 0x4402 2110 This
+#define MCSPI_O_SYSCONFIG 0x00000110 // 0x4402 1110 0x4402 2110 This
 // register allows controlling
 // various parameters of the OCP
 // interface.
-#define MCSPI_O_SYSSTATUS       0x00000114  // 0x4402 1114 0x4402 2114 This
+#define MCSPI_O_SYSSTATUS 0x00000114 // 0x4402 1114 0x4402 2114 This
 // register provides status
 // information about the module
 // excluding the interrupt status
 // information
-#define MCSPI_O_IRQSTATUS       0x00000118  // 0x4402 1118 0x4402 2118 The
+#define MCSPI_O_IRQSTATUS 0x00000118 // 0x4402 1118 0x4402 2118 The
 // interrupt status regroups all the
 // status of the module internal
 // events that can generate an
 // interrupt
-#define MCSPI_O_IRQENABLE       0x0000011C  // 0x4402 111C 0x4402 211C This
+#define MCSPI_O_IRQENABLE 0x0000011C // 0x4402 111C 0x4402 211C This
 // register allows to enable/disable
 // the module internal sources of
 // interrupt on an event-by-event
 // basis.
-#define MCSPI_O_WAKEUPENABLE    0x00000120  // 0x4402 1120 0x4402 2120 The
+#define MCSPI_O_WAKEUPENABLE 0x00000120 // 0x4402 1120 0x4402 2120 The
 // wakeup enable register allows to
 // enable/disable the module
 // internal sources of wakeup on
 // event-by-event basis.
-#define MCSPI_O_SYST            0x00000124  // 0x4402 1124 0x4402 2124 This
+#define MCSPI_O_SYST 0x00000124 // 0x4402 1124 0x4402 2124 This
 // register is used to check the
 // correctness of the system
 // interconnect either internally to
@@ -87,95 +87,95 @@
 // device IO pads when the module is
 // configured in system test
 // (SYSTEST) mode.
-#define MCSPI_O_MODULCTRL       0x00000128  // 0x4402 1128 0x4402 2128 This
+#define MCSPI_O_MODULCTRL 0x00000128 // 0x4402 1128 0x4402 2128 This
 // register is dedicated to the
 // configuration of the serial port
 // interface.
-#define MCSPI_O_CH0CONF         0x0000012C  // 0x4402 112C 0x4402 212C This
+#define MCSPI_O_CH0CONF 0x0000012C // 0x4402 112C 0x4402 212C This
 // register is dedicated to the
 // configuration of the channel 0
-#define MCSPI_O_CH0STAT         0x00000130  // 0x4402 1130 0x4402 2130 This
+#define MCSPI_O_CH0STAT 0x00000130 // 0x4402 1130 0x4402 2130 This
 // register provides status
 // information about transmitter and
 // receiver registers of channel 0
-#define MCSPI_O_CH0CTRL         0x00000134  // 0x4402 1134 0x4402 2134 This
+#define MCSPI_O_CH0CTRL 0x00000134 // 0x4402 1134 0x4402 2134 This
 // register is dedicated to enable
 // the channel 0
-#define MCSPI_O_TX0             0x00000138  // 0x4402 1138 0x4402 2138 This
+#define MCSPI_O_TX0 0x00000138 // 0x4402 1138 0x4402 2138 This
 // register contains a single SPI
 // word to transmit on the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_RX0             0x0000013C  // 0x4402 113C 0x4402 213C This
+#define MCSPI_O_RX0 0x0000013C // 0x4402 113C 0x4402 213C This
 // register contains a single SPI
 // word received through the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_CH1CONF         0x00000140  // 0x4402 1140 0x4402 2140 This
+#define MCSPI_O_CH1CONF 0x00000140 // 0x4402 1140 0x4402 2140 This
 // register is dedicated to the
 // configuration of the channel.
-#define MCSPI_O_CH1STAT         0x00000144  // 0x4402 1144 0x4402 2144 This
+#define MCSPI_O_CH1STAT 0x00000144 // 0x4402 1144 0x4402 2144 This
 // register provides status
 // information about transmitter and
 // receiver registers of channel 1
-#define MCSPI_O_CH1CTRL         0x00000148  // 0x4402 1148 0x4402 2148 This
+#define MCSPI_O_CH1CTRL 0x00000148 // 0x4402 1148 0x4402 2148 This
 // register is dedicated to enable
 // the channel 1
-#define MCSPI_O_TX1             0x0000014C  // 0x4402 114C 0x4402 214C This
+#define MCSPI_O_TX1 0x0000014C // 0x4402 114C 0x4402 214C This
 // register contains a single SPI
 // word to transmit on the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_RX1             0x00000150  // 0x4402 1150 0x4402 2150 This
+#define MCSPI_O_RX1 0x00000150 // 0x4402 1150 0x4402 2150 This
 // register contains a single SPI
 // word received through the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_CH2CONF         0x00000154  // 0x4402 1154 0x4402 2154 This
+#define MCSPI_O_CH2CONF 0x00000154 // 0x4402 1154 0x4402 2154 This
 // register is dedicated to the
 // configuration of the channel 2
-#define MCSPI_O_CH2STAT         0x00000158  // 0x4402 1158 0x4402 2158 This
+#define MCSPI_O_CH2STAT 0x00000158 // 0x4402 1158 0x4402 2158 This
 // register provides status
 // information about transmitter and
 // receiver registers of channel 2
-#define MCSPI_O_CH2CTRL         0x0000015C  // 0x4402 115C 0x4402 215C This
+#define MCSPI_O_CH2CTRL 0x0000015C // 0x4402 115C 0x4402 215C This
 // register is dedicated to enable
 // the channel 2
-#define MCSPI_O_TX2             0x00000160  // 0x4402 1160 0x4402 2160 This
+#define MCSPI_O_TX2 0x00000160 // 0x4402 1160 0x4402 2160 This
 // register contains a single SPI
 // word to transmit on the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_RX2             0x00000164  // 0x4402 1164 0x4402 2164 This
+#define MCSPI_O_RX2 0x00000164 // 0x4402 1164 0x4402 2164 This
 // register contains a single SPI
 // word received through the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_CH3CONF         0x00000168  // 0x4402 1168 0x4402 2168 This
+#define MCSPI_O_CH3CONF 0x00000168 // 0x4402 1168 0x4402 2168 This
 // register is dedicated to the
 // configuration of the channel 3
-#define MCSPI_O_CH3STAT         0x0000016C  // 0x4402 116C 0x4402 216C This
+#define MCSPI_O_CH3STAT 0x0000016C // 0x4402 116C 0x4402 216C This
 // register provides status
 // information about transmitter and
 // receiver registers of channel 3
-#define MCSPI_O_CH3CTRL         0x00000170  // 0x4402 1170 0x4402 2170 This
+#define MCSPI_O_CH3CTRL 0x00000170 // 0x4402 1170 0x4402 2170 This
 // register is dedicated to enable
 // the channel 3
-#define MCSPI_O_TX3             0x00000174  // 0x4402 1174 0x4402 2174 This
+#define MCSPI_O_TX3 0x00000174 // 0x4402 1174 0x4402 2174 This
 // register contains a single SPI
 // word to transmit on the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_RX3             0x00000178  // 0x4402 1178 0x4402 2178 This
+#define MCSPI_O_RX3 0x00000178 // 0x4402 1178 0x4402 2178 This
 // register contains a single SPI
 // word received through the serial
 // link what ever SPI word length
 // is.
-#define MCSPI_O_XFERLEVEL       0x0000017C  // 0x4402 117C 0x4402 217C This
+#define MCSPI_O_XFERLEVEL 0x0000017C // 0x4402 117C 0x4402 217C This
 // register provides transfer levels
 // needed while using FIFO buffer
 // during transfer.
-#define MCSPI_O_DAFTX           0x00000180  // 0x4402 1180 0x4402 2180 This
+#define MCSPI_O_DAFTX 0x00000180 // 0x4402 1180 0x4402 2180 This
 // register contains the SPI words
 // to transmit on the serial link
 // when FIFO used and DMA address is
@@ -184,7 +184,7 @@
 // register corresponding to the
 // channel which have its FIFO
 // enabled.
-#define MCSPI_O_DAFRX           0x000001A0  // 0x4402 11A0 0x4402 21A0 This
+#define MCSPI_O_DAFRX 0x000001A0 // 0x4402 11A0 0x4402 21A0 This
 // register contains the SPI words
 // to received on the serial link
 // when FIFO used and DMA address is
@@ -194,27 +194,25 @@
 // channel which have its FIFO
 // enabled.
 
-
-
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_HL_REV register.
 //
 //******************************************************************************
-#define MCSPI_HL_REV_SCHEME_M   0xC0000000
-#define MCSPI_HL_REV_SCHEME_S   30
-#define MCSPI_HL_REV_RSVD_M     0x30000000  // Reserved These bits are
+#define MCSPI_HL_REV_SCHEME_M 0xC0000000
+#define MCSPI_HL_REV_SCHEME_S 30
+#define MCSPI_HL_REV_RSVD_M 0x30000000 // Reserved These bits are
 // initialized to zero and writes to
 // them are ignored.
-#define MCSPI_HL_REV_RSVD_S     28
-#define MCSPI_HL_REV_FUNC_M     0x0FFF0000  // Function indicates a software
+#define MCSPI_HL_REV_RSVD_S 28
+#define MCSPI_HL_REV_FUNC_M 0x0FFF0000 // Function indicates a software
 // compatible module family. If
 // there is no level of software
 // compatibility a new Func number
 // (and hence REVISION) should be
 // assigned.
-#define MCSPI_HL_REV_FUNC_S     16
-#define MCSPI_HL_REV_R_RTL_M    0x0000F800  // RTL Version (R) maintained by IP
+#define MCSPI_HL_REV_FUNC_S 16
+#define MCSPI_HL_REV_R_RTL_M 0x0000F800 // RTL Version (R) maintained by IP
 // design owner. RTL follows a
 // numbering such as X.Y.R.Z which
 // are explained in this table. R
@@ -228,8 +226,8 @@
 // drop that happens due to DV and
 // RTL updates. Z resets to 0 when R
 // increments.
-#define MCSPI_HL_REV_R_RTL_S    11
-#define MCSPI_HL_REV_X_MAJOR_M  0x00000700  // Major Revision (X) maintained by
+#define MCSPI_HL_REV_R_RTL_S 11
+#define MCSPI_HL_REV_X_MAJOR_M 0x00000700 // Major Revision (X) maintained by
 // IP specification owner. X changes
 // ONLY when: (1) There is a major
 // feature addition. An example
@@ -239,10 +237,10 @@
 // will remain the same. X does NOT
 // change due to: (1) Bug fixes (2)
 // Change in feature parameters.
-#define MCSPI_HL_REV_X_MAJOR_S  8
-#define MCSPI_HL_REV_CUSTOM_M   0x000000C0
-#define MCSPI_HL_REV_CUSTOM_S   6
-#define MCSPI_HL_REV_Y_MINOR_M  0x0000003F  // Minor Revision (Y) maintained by
+#define MCSPI_HL_REV_X_MAJOR_S 8
+#define MCSPI_HL_REV_CUSTOM_M 0x000000C0
+#define MCSPI_HL_REV_CUSTOM_S 6
+#define MCSPI_HL_REV_Y_MINOR_M 0x0000003F // Minor Revision (Y) maintained by
 // IP specification owner. Y changes
 // ONLY when: (1) Features are
 // scaled (up or down). Flexibility
@@ -275,15 +273,15 @@
 // bug fix should document the
 // corresponding spec number (X.Y.S)
 // in its release notes.
-#define MCSPI_HL_REV_Y_MINOR_S  0
+#define MCSPI_HL_REV_Y_MINOR_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MCSPI_O_HL_HWINFO register.
+// The following are defines for the bit fields in the MCSPI_O_HL_HWINFO
+// register.
 //
 //******************************************************************************
 #define MCSPI_HL_HWINFO_RETMODE 0x00000040
-#define MCSPI_HL_HWINFO_FFNBYTE_M \
-                                0x0000003E
+#define MCSPI_HL_HWINFO_FFNBYTE_M 0x0000003E
 
 #define MCSPI_HL_HWINFO_FFNBYTE_S 1
 #define MCSPI_HL_HWINFO_USEFIFO 0x00000001
@@ -293,8 +291,7 @@
 // MCSPI_O_HL_SYSCONFIG register.
 //
 //******************************************************************************
-#define MCSPI_HL_SYSCONFIG_IDLEMODE_M \
-                                0x0000000C  // Configuration of the local
+#define MCSPI_HL_SYSCONFIG_IDLEMODE_M 0x0000000C // Configuration of the local
 // target state management mode. By
 // definition target can handle
 // read/write transaction as long as
@@ -331,32 +328,33 @@
 // is (are) implemented."
 
 #define MCSPI_HL_SYSCONFIG_IDLEMODE_S 2
-#define MCSPI_HL_SYSCONFIG_FREEEMU \
-                                0x00000002  // Sensitivity to emulation (debug)
+#define MCSPI_HL_SYSCONFIG_FREEEMU                                             \
+  0x00000002 // Sensitivity to emulation (debug)
 // suspend input signal. 0 IP module
 // is sensitive to emulation suspend
 // 1 IP module is not sensitive to
 // emulation suspend
 
-#define MCSPI_HL_SYSCONFIG_SOFTRESET \
-                                0x00000001
+#define MCSPI_HL_SYSCONFIG_SOFTRESET 0x00000001
 
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MCSPI_O_REVISION register.
+// The following are defines for the bit fields in the MCSPI_O_REVISION
+// register.
 //
 //******************************************************************************
-#define MCSPI_REVISION_REV_M    0x000000FF  // IP revision [7:4] Major revision
+#define MCSPI_REVISION_REV_M 0x000000FF // IP revision [7:4] Major revision
 // [3:0] Minor revision Examples:
 // 0x10 for 1.0 0x21 for 2.1
-#define MCSPI_REVISION_REV_S    0
+#define MCSPI_REVISION_REV_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MCSPI_O_SYSCONFIG register.
+// The following are defines for the bit fields in the MCSPI_O_SYSCONFIG
+// register.
 //
 //******************************************************************************
-#define MCSPI_SYSCONFIG_CLOCKACTIVITY_M \
-                                0x00000300  // Clocks activity during wake up
+#define MCSPI_SYSCONFIG_CLOCKACTIVITY_M                                        \
+  0x00000300 // Clocks activity during wake up
 // mode period 0x0 OCP and
 // Functional clocks may be switched
 // off. 0x1 OCP clock is maintained.
@@ -367,8 +365,8 @@
 // Functional clocks are maintained.
 
 #define MCSPI_SYSCONFIG_CLOCKACTIVITY_S 8
-#define MCSPI_SYSCONFIG_SIDLEMODE_M \
-                                0x00000018  // Power management 0x0 If an idle
+#define MCSPI_SYSCONFIG_SIDLEMODE_M                                            \
+  0x00000018 // Power management 0x0 If an idle
 // request is detected the McSPI
 // acknowledges it unconditionally
 // and goes in Inactive mode.
@@ -396,21 +394,18 @@
 // set.
 
 #define MCSPI_SYSCONFIG_SIDLEMODE_S 3
-#define MCSPI_SYSCONFIG_ENAWAKEUP \
-                                0x00000004  // WakeUp feature control 0 WakeUp
+#define MCSPI_SYSCONFIG_ENAWAKEUP 0x00000004 // WakeUp feature control 0 WakeUp
 // capability is disabled 1 WakeUp
 // capability is enabled
 
-#define MCSPI_SYSCONFIG_SOFTRESET \
-                                0x00000002  // Software reset. During reads it
+#define MCSPI_SYSCONFIG_SOFTRESET 0x00000002 // Software reset. During reads it
 // always returns 0. 0 (write)
 // Normal mode 1 (write) Set this
 // bit to 1 to trigger a module
 // reset.The bit is automatically
 // reset by the hardware.
 
-#define MCSPI_SYSCONFIG_AUTOIDLE \
-                                0x00000001  // Internal OCP Clock gating
+#define MCSPI_SYSCONFIG_AUTOIDLE 0x00000001 // Internal OCP Clock gating
 // strategy 0 OCP clock is
 // free-running 1 Automatic OCP
 // clock gating strategy is applied
@@ -419,144 +414,132 @@
 
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MCSPI_O_SYSSTATUS register.
+// The following are defines for the bit fields in the MCSPI_O_SYSSTATUS
+// register.
 //
 //******************************************************************************
-#define MCSPI_SYSSTATUS_RESETDONE \
-                                0x00000001
-
-//******************************************************************************
-//
-// The following are defines for the bit fields in the MCSPI_O_IRQSTATUS register.
-//
-//******************************************************************************
-#define MCSPI_IRQSTATUS_EOW     0x00020000
-#define MCSPI_IRQSTATUS_WKS     0x00010000
-#define MCSPI_IRQSTATUS_RX3_FULL \
-                                0x00004000
-
-#define MCSPI_IRQSTATUS_TX3_UNDERFLOW \
-                                0x00002000
-
-#define MCSPI_IRQSTATUS_TX3_EMPTY \
-                                0x00001000
-
-#define MCSPI_IRQSTATUS_RX2_FULL \
-                                0x00000400
-
-#define MCSPI_IRQSTATUS_TX2_UNDERFLOW \
-                                0x00000200
-
-#define MCSPI_IRQSTATUS_TX2_EMPTY \
-                                0x00000100
-
-#define MCSPI_IRQSTATUS_RX1_FULL \
-                                0x00000040
-
-#define MCSPI_IRQSTATUS_TX1_UNDERFLOW \
-                                0x00000020
-
-#define MCSPI_IRQSTATUS_TX1_EMPTY \
-                                0x00000010
-
-#define MCSPI_IRQSTATUS_RX0_OVERFLOW \
-                                0x00000008
-
-#define MCSPI_IRQSTATUS_RX0_FULL \
-                                0x00000004
-
-#define MCSPI_IRQSTATUS_TX0_UNDERFLOW \
-                                0x00000002
-
-#define MCSPI_IRQSTATUS_TX0_EMPTY \
-                                0x00000001
+#define MCSPI_SYSSTATUS_RESETDONE 0x00000001
 
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MCSPI_O_IRQENABLE register.
+// The following are defines for the bit fields in the MCSPI_O_IRQSTATUS
+// register.
 //
 //******************************************************************************
-#define MCSPI_IRQENABLE_EOW_ENABLE \
-                                0x00020000  // End of Word count Interrupt
+#define MCSPI_IRQSTATUS_EOW 0x00020000
+#define MCSPI_IRQSTATUS_WKS 0x00010000
+#define MCSPI_IRQSTATUS_RX3_FULL 0x00004000
+
+#define MCSPI_IRQSTATUS_TX3_UNDERFLOW 0x00002000
+
+#define MCSPI_IRQSTATUS_TX3_EMPTY 0x00001000
+
+#define MCSPI_IRQSTATUS_RX2_FULL 0x00000400
+
+#define MCSPI_IRQSTATUS_TX2_UNDERFLOW 0x00000200
+
+#define MCSPI_IRQSTATUS_TX2_EMPTY 0x00000100
+
+#define MCSPI_IRQSTATUS_RX1_FULL 0x00000040
+
+#define MCSPI_IRQSTATUS_TX1_UNDERFLOW 0x00000020
+
+#define MCSPI_IRQSTATUS_TX1_EMPTY 0x00000010
+
+#define MCSPI_IRQSTATUS_RX0_OVERFLOW 0x00000008
+
+#define MCSPI_IRQSTATUS_RX0_FULL 0x00000004
+
+#define MCSPI_IRQSTATUS_TX0_UNDERFLOW 0x00000002
+
+#define MCSPI_IRQSTATUS_TX0_EMPTY 0x00000001
+
+//******************************************************************************
+//
+// The following are defines for the bit fields in the MCSPI_O_IRQENABLE
+// register.
+//
+//******************************************************************************
+#define MCSPI_IRQENABLE_EOW_ENABLE 0x00020000 // End of Word count Interrupt
 // Enable. 0 Interrupt disabled 1
 // Interrupt enabled
 
-#define MCSPI_IRQENABLE_WKE     0x00010000  // Wake Up event interrupt Enable
+#define MCSPI_IRQENABLE_WKE 0x00010000 // Wake Up event interrupt Enable
 // in slave mode when an active
 // control signal is detected on the
 // SPIEN line programmed in the
 // field MCSPI_CH0CONF[SPIENSLV] 0
 // Interrupt disabled 1 Interrupt
 // enabled
-#define MCSPI_IRQENABLE_RX3_FULL_ENABLE \
-                                0x00004000  // Receiver register Full Interrupt
+#define MCSPI_IRQENABLE_RX3_FULL_ENABLE                                        \
+  0x00004000 // Receiver register Full Interrupt
 // Enable. Ch 3 0 Interrupt disabled
 // 1 Interrupt enabled
 
-#define MCSPI_IRQENABLE_TX3_UNDERFLOW_ENABLE \
-                                0x00002000  // Transmitter register Underflow
+#define MCSPI_IRQENABLE_TX3_UNDERFLOW_ENABLE                                   \
+  0x00002000 // Transmitter register Underflow
 // Interrupt Enable. Ch 3 0
 // Interrupt disabled 1 Interrupt
 // enabled
 
-#define MCSPI_IRQENABLE_TX3_EMPTY_ENABLE \
-                                0x00001000  // Transmitter register Empty
+#define MCSPI_IRQENABLE_TX3_EMPTY_ENABLE                                       \
+  0x00001000 // Transmitter register Empty
 // Interrupt Enable. Ch3 0 Interrupt
 // disabled 1 Interrupt enabled
 
-#define MCSPI_IRQENABLE_RX2_FULL_ENABLE \
-                                0x00000400  // Receiver register Full Interrupt
+#define MCSPI_IRQENABLE_RX2_FULL_ENABLE                                        \
+  0x00000400 // Receiver register Full Interrupt
 // Enable. Ch 2 0 Interrupt disabled
 // 1 Interrupt enabled
 
-#define MCSPI_IRQENABLE_TX2_UNDERFLOW_ENABLE \
-                                0x00000200  // Transmitter register Underflow
+#define MCSPI_IRQENABLE_TX2_UNDERFLOW_ENABLE                                   \
+  0x00000200 // Transmitter register Underflow
 // Interrupt Enable. Ch 2 0
 // Interrupt disabled 1 Interrupt
 // enabled
 
-#define MCSPI_IRQENABLE_TX2_EMPTY_ENABLE \
-                                0x00000100  // Transmitter register Empty
+#define MCSPI_IRQENABLE_TX2_EMPTY_ENABLE                                       \
+  0x00000100 // Transmitter register Empty
 // Interrupt Enable. Ch 2 0
 // Interrupt disabled 1 Interrupt
 // enabled
 
-#define MCSPI_IRQENABLE_RX1_FULL_ENABLE \
-                                0x00000040  // Receiver register Full Interrupt
+#define MCSPI_IRQENABLE_RX1_FULL_ENABLE                                        \
+  0x00000040 // Receiver register Full Interrupt
 // Enable. Ch 1 0 Interrupt disabled
 // 1 Interrupt enabled
 
-#define MCSPI_IRQENABLE_TX1_UNDERFLOW_ENABLE \
-                                0x00000020  // Transmitter register Underflow
+#define MCSPI_IRQENABLE_TX1_UNDERFLOW_ENABLE                                   \
+  0x00000020 // Transmitter register Underflow
 // Interrupt Enable. Ch 1 0
 // Interrupt disabled 1 Interrupt
 // enabled
 
-#define MCSPI_IRQENABLE_TX1_EMPTY_ENABLE \
-                                0x00000010  // Transmitter register Empty
+#define MCSPI_IRQENABLE_TX1_EMPTY_ENABLE                                       \
+  0x00000010 // Transmitter register Empty
 // Interrupt Enable. Ch 1 0
 // Interrupt disabled 1 Interrupt
 // enabled
 
-#define MCSPI_IRQENABLE_RX0_OVERFLOW_ENABLE \
-                                0x00000008  // Receiver register Overflow
+#define MCSPI_IRQENABLE_RX0_OVERFLOW_ENABLE                                    \
+  0x00000008 // Receiver register Overflow
 // Interrupt Enable. Ch 0 0
 // Interrupt disabled 1 Interrupt
 // enabled
 
-#define MCSPI_IRQENABLE_RX0_FULL_ENABLE \
-                                0x00000004  // Receiver register Full Interrupt
+#define MCSPI_IRQENABLE_RX0_FULL_ENABLE                                        \
+  0x00000004 // Receiver register Full Interrupt
 // Enable. Ch 0 0 Interrupt disabled
 // 1 Interrupt enabled
 
-#define MCSPI_IRQENABLE_TX0_UNDERFLOW_ENABLE \
-                                0x00000002  // Transmitter register Underflow
+#define MCSPI_IRQENABLE_TX0_UNDERFLOW_ENABLE                                   \
+  0x00000002 // Transmitter register Underflow
 // Interrupt Enable. Ch 0 0
 // Interrupt disabled 1 Interrupt
 // enabled
 
-#define MCSPI_IRQENABLE_TX0_EMPTY_ENABLE \
-                                0x00000001  // Transmitter register Empty
+#define MCSPI_IRQENABLE_TX0_EMPTY_ENABLE                                       \
+  0x00000001 // Transmitter register Empty
 // Interrupt Enable. Ch 0 0
 // Interrupt disabled 1 Interrupt
 // enabled
@@ -567,7 +550,7 @@
 // MCSPI_O_WAKEUPENABLE register.
 //
 //******************************************************************************
-#define MCSPI_WAKEUPENABLE_WKEN 0x00000001  // WakeUp functionality in slave
+#define MCSPI_WAKEUPENABLE_WKEN 0x00000001 // WakeUp functionality in slave
 // mode when an active control
 // signal is detected on the SPIEN
 // line programmed in the field
@@ -585,7 +568,7 @@
 // The following are defines for the bit fields in the MCSPI_O_SYST register.
 //
 //******************************************************************************
-#define MCSPI_SYST_SSB          0x00000800  // Set status bit 0 No action.
+#define MCSPI_SYST_SSB 0x00000800 // Set status bit 0 No action.
 // Writing 0 does not clear already
 // set status bits; This bit must be
 // cleared prior attempting to clear
@@ -596,22 +579,22 @@
 // 1 into this bit sets to 1 all
 // status bits contained in the
 // <MCSPI_IRQSTATUS> register.
-#define MCSPI_SYST_SPIENDIR     0x00000400  // Set the direction of the
+#define MCSPI_SYST_SPIENDIR 0x00000400 // Set the direction of the
 // SPIEN[3:0] lines and SPICLK line
 // 0 output (as in master mode) 1
 // input (as in slave mode)
-#define MCSPI_SYST_SPIDATDIR1   0x00000200  // Set the direction of the
+#define MCSPI_SYST_SPIDATDIR1 0x00000200 // Set the direction of the
 // SPIDAT[1] 0 output 1 input
-#define MCSPI_SYST_SPIDATDIR0   0x00000100  // Set the direction of the
+#define MCSPI_SYST_SPIDATDIR0 0x00000100 // Set the direction of the
 // SPIDAT[0] 0 output 1 input
-#define MCSPI_SYST_WAKD         0x00000080  // SWAKEUP output (signal data
+#define MCSPI_SYST_WAKD 0x00000080 // SWAKEUP output (signal data
 // value of internal signal to
 // system). The signal is driven
 // high or low according to the
 // value written into this register
 // bit. 0 The pin is driven low. 1
 // The pin is driven high.
-#define MCSPI_SYST_SPICLK       0x00000040  // SPICLK line (signal data value)
+#define MCSPI_SYST_SPICLK 0x00000040 // SPICLK line (signal data value)
 // If MCSPI_SYST[SPIENDIR] = 1
 // (input mode direction) this bit
 // returns the value on the CLKSPI
@@ -622,7 +605,7 @@
 // is driven high or low according
 // to the value written into this
 // register.
-#define MCSPI_SYST_SPIDAT_1     0x00000020  // SPIDAT[1] line (signal data
+#define MCSPI_SYST_SPIDAT_1 0x00000020 // SPIDAT[1] line (signal data
 // value) If MCSPI_SYST[SPIDATDIR1]
 // = 0 (output mode direction) the
 // SPIDAT[1] line is driven high or
@@ -633,7 +616,7 @@
 // the value on the SPIDAT[1] line
 // (high or low) and a write into
 // this bit has no effect.
-#define MCSPI_SYST_SPIDAT_0     0x00000010  // SPIDAT[0] line (signal data
+#define MCSPI_SYST_SPIDAT_0 0x00000010 // SPIDAT[0] line (signal data
 // value) If MCSPI_SYST[SPIDATDIR0]
 // = 0 (output mode direction) the
 // SPIDAT[0] line is driven high or
@@ -644,7 +627,7 @@
 // the value on the SPIDAT[0] line
 // (high or low) and a write into
 // this bit has no effect.
-#define MCSPI_SYST_SPIEN_3      0x00000008  // SPIEN[3] line (signal data
+#define MCSPI_SYST_SPIEN_3 0x00000008 // SPIEN[3] line (signal data
 // value) If MCSPI_SYST[SPIENDIR] =
 // 0 (output mode direction) the
 // SPIENT[3] line is driven high or
@@ -655,7 +638,7 @@
 // the value on the SPIEN[3] line
 // (high or low) and a write into
 // this bit has no effect.
-#define MCSPI_SYST_SPIEN_2      0x00000004  // SPIEN[2] line (signal data
+#define MCSPI_SYST_SPIEN_2 0x00000004 // SPIEN[2] line (signal data
 // value) If MCSPI_SYST[SPIENDIR] =
 // 0 (output mode direction) the
 // SPIENT[2] line is driven high or
@@ -666,7 +649,7 @@
 // the value on the SPIEN[2] line
 // (high or low) and a write into
 // this bit has no effect.
-#define MCSPI_SYST_SPIEN_1      0x00000002  // SPIEN[1] line (signal data
+#define MCSPI_SYST_SPIEN_1 0x00000002 // SPIEN[1] line (signal data
 // value) If MCSPI_SYST[SPIENDIR] =
 // 0 (output mode direction) the
 // SPIENT[1] line is driven high or
@@ -677,7 +660,7 @@
 // the value on the SPIEN[1] line
 // (high or low) and a write into
 // this bit has no effect.
-#define MCSPI_SYST_SPIEN_0      0x00000001  // SPIEN[0] line (signal data
+#define MCSPI_SYST_SPIEN_0 0x00000001 // SPIEN[0] line (signal data
 // value) If MCSPI_SYST[SPIENDIR] =
 // 0 (output mode direction) the
 // SPIENT[0] line is driven high or
@@ -690,10 +673,11 @@
 // this bit has no effect.
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MCSPI_O_MODULCTRL register.
+// The following are defines for the bit fields in the MCSPI_O_MODULCTRL
+// register.
 //
 //******************************************************************************
-#define MCSPI_MODULCTRL_FDAA    0x00000100  // FIFO DMA Address 256-bit aligned
+#define MCSPI_MODULCTRL_FDAA 0x00000100 // FIFO DMA Address 256-bit aligned
 // This register is used when a FIFO
 // is managed by the module and DMA
 // connected to the controller
@@ -709,7 +693,7 @@
 // registers. 1 FIFO data managed by
 // MCSPI_DAFTX and MCSPI_DAFRX
 // registers.
-#define MCSPI_MODULCTRL_MOA     0x00000080  // Multiple word ocp access: This
+#define MCSPI_MODULCTRL_MOA 0x00000080 // Multiple word ocp access: This
 // register can only be used when a
 // channel is enabled using a FIFO.
 // It allows the system to perform
@@ -719,8 +703,7 @@
 // Multiple word access disabled 1
 // Multiple word access enabled with
 // FIFO
-#define MCSPI_MODULCTRL_INITDLY_M \
-                                0x00000070  // Initial spi delay for first
+#define MCSPI_MODULCTRL_INITDLY_M 0x00000070 // Initial spi delay for first
 // transfer: This register is an
 // option only available in SINGLE
 // master mode The controller waits
@@ -741,17 +724,16 @@
 // 32 spi bus clock
 
 #define MCSPI_MODULCTRL_INITDLY_S 4
-#define MCSPI_MODULCTRL_SYSTEM_TEST \
-                                0x00000008  // Enables the system test mode 0
+#define MCSPI_MODULCTRL_SYSTEM_TEST 0x00000008 // Enables the system test mode 0
 // Functional mode 1 System test
 // mode (SYSTEST)
 
-#define MCSPI_MODULCTRL_MS      0x00000004  // Master/ Slave 0 Master - The
+#define MCSPI_MODULCTRL_MS 0x00000004 // Master/ Slave 0 Master - The
 // module generates the SPICLK and
 // SPIEN[3:0] 1 Slave - The module
 // receives the SPICLK and
 // SPIEN[3:0]
-#define MCSPI_MODULCTRL_PIN34   0x00000002  // Pin mode selection: This
+#define MCSPI_MODULCTRL_PIN34 0x00000002 // Pin mode selection: This
 // register is used to configure the
 // SPI pin mode in master or slave
 // mode. If asserted the controller
@@ -761,7 +743,7 @@
 // SPIEN is not used.In this mode
 // all related option to chip select
 // have no meaning.
-#define MCSPI_MODULCTRL_SINGLE  0x00000001  // Single channel / Multi Channel
+#define MCSPI_MODULCTRL_SINGLE 0x00000001 // Single channel / Multi Channel
 // (master mode only) 0 More than
 // one channel will be used in
 // master mode. 1 Only one channel
@@ -773,7 +755,7 @@
 // The following are defines for the bit fields in the MCSPI_O_CH0CONF register.
 //
 //******************************************************************************
-#define MCSPI_CH0CONF_CLKG      0x20000000  // Clock divider granularity This
+#define MCSPI_CH0CONF_CLKG 0x20000000 // Clock divider granularity This
 // register defines the granularity
 // of channel clock divider: power
 // of two or one clock cycle
@@ -787,36 +769,35 @@
 // MCSPI_CHCTRL[EXTCLK] values 0
 // Clock granularity of power of two
 // 1 One clock cycle ganularity
-#define MCSPI_CH0CONF_FFER      0x10000000  // FIFO enabled for receive:Only
+#define MCSPI_CH0CONF_FFER 0x10000000 // FIFO enabled for receive:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to receive data. 1 The
 // buffer is used to receive data.
-#define MCSPI_CH0CONF_FFEW      0x08000000  // FIFO enabled for Transmit:Only
+#define MCSPI_CH0CONF_FFEW 0x08000000 // FIFO enabled for Transmit:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to transmit data. 1 The
 // buffer is used to transmit data.
-#define MCSPI_CH0CONF_TCS0_M    0x06000000  // Chip Select Time Control This
+#define MCSPI_CH0CONF_TCS0_M 0x06000000 // Chip Select Time Control This
 // 2-bits field defines the number
 // of interface clock cycles between
 // CS toggling and first or last
 // edge of SPI clock. 0x0 0.5 clock
 // cycle 0x1 1.5 clock cycle 0x2 2.5
 // clock cycle 0x3 3.5 clock cycle
-#define MCSPI_CH0CONF_TCS0_S    25
-#define MCSPI_CH0CONF_SBPOL     0x01000000  // Start bit polarity 0 Start bit
+#define MCSPI_CH0CONF_TCS0_S 25
+#define MCSPI_CH0CONF_SBPOL 0x01000000 // Start bit polarity 0 Start bit
 // polarity is held to 0 during SPI
 // transfer. 1 Start bit polarity is
 // held to 1 during SPI transfer.
-#define MCSPI_CH0CONF_SBE       0x00800000  // Start bit enable for SPI
+#define MCSPI_CH0CONF_SBE 0x00800000 // Start bit enable for SPI
 // transfer 0 Default SPI transfer
 // length as specified by WL bit
 // field 1 Start bit D/CX added
 // before SPI transfer polarity is
 // defined by MCSPI_CH0CONF[SBPOL]
-#define MCSPI_CH0CONF_SPIENSLV_M \
-                                0x00600000  // Channel 0 only and slave mode
+#define MCSPI_CH0CONF_SPIENSLV_M 0x00600000 // Channel 0 only and slave mode
 // only: SPI slave select signal
 // detection. Reserved bits for
 // other cases. 0x0 Detection
@@ -827,7 +808,7 @@
 // enabled only on SPIEN[3]
 
 #define MCSPI_CH0CONF_SPIENSLV_S 21
-#define MCSPI_CH0CONF_FORCE     0x00100000  // Manual SPIEN assertion to keep
+#define MCSPI_CH0CONF_FORCE 0x00100000 // Manual SPIEN assertion to keep
 // SPIEN active between SPI words.
 // (single channel master mode only)
 // 0 Writing 0 into this bit drives
@@ -840,28 +821,28 @@
 // MCSPI_CHCONF(i)[EPOL]=0 and
 // drives it low when
 // MCSPI_CHCONF(i)[EPOL]=1
-#define MCSPI_CH0CONF_TURBO     0x00080000  // Turbo mode 0 Turbo is
+#define MCSPI_CH0CONF_TURBO 0x00080000 // Turbo mode 0 Turbo is
 // deactivated (recommended for
 // single SPI word transfer) 1 Turbo
 // is activated to maximize the
 // throughput for multi SPI words
 // transfer.
-#define MCSPI_CH0CONF_IS        0x00040000  // Input Select 0 Data Line0
+#define MCSPI_CH0CONF_IS 0x00040000 // Input Select 0 Data Line0
 // (SPIDAT[0]) selected for
 // reception. 1 Data Line1
 // (SPIDAT[1]) selected for
 // reception
-#define MCSPI_CH0CONF_DPE1      0x00020000  // Transmission Enable for data
+#define MCSPI_CH0CONF_DPE1 0x00020000 // Transmission Enable for data
 // line 1 (SPIDATAGZEN[1]) 0 Data
 // Line1 (SPIDAT[1]) selected for
 // transmission 1 No transmission on
 // Data Line1 (SPIDAT[1])
-#define MCSPI_CH0CONF_DPE0      0x00010000  // Transmission Enable for data
+#define MCSPI_CH0CONF_DPE0 0x00010000 // Transmission Enable for data
 // line 0 (SPIDATAGZEN[0]) 0 Data
 // Line0 (SPIDAT[0]) selected for
 // transmission 1 No transmission on
 // Data Line0 (SPIDAT[0])
-#define MCSPI_CH0CONF_DMAR      0x00008000  // DMA Read request The DMA Read
+#define MCSPI_CH0CONF_DMAR 0x00008000 // DMA Read request The DMA Read
 // request line is asserted when the
 // channel is enabled and a new data
 // is available in the receive
@@ -871,7 +852,7 @@
 // register of the channel. 0 DMA
 // Read Request disabled 1 DMA Read
 // Request enabled
-#define MCSPI_CH0CONF_DMAW      0x00004000  // DMA Write request. The DMA Write
+#define MCSPI_CH0CONF_DMAW 0x00004000 // DMA Write request. The DMA Write
 // request line is asserted when The
 // channel is enabled and the
 // transmitter register of the
@@ -882,12 +863,12 @@
 // channel. 0 DMA Write Request
 // disabled 1 DMA Write Request
 // enabled
-#define MCSPI_CH0CONF_TRM_M     0x00003000  // Transmit/Receive modes 0x0
+#define MCSPI_CH0CONF_TRM_M 0x00003000 // Transmit/Receive modes 0x0
 // Transmit and Receive mode 0x1
 // Receive only mode 0x2 Transmit
 // only mode 0x3 Reserved
-#define MCSPI_CH0CONF_TRM_S     12
-#define MCSPI_CH0CONF_WL_M      0x00000F80  // SPI word length 0x00 Reserved
+#define MCSPI_CH0CONF_TRM_S 12
+#define MCSPI_CH0CONF_WL_M 0x00000F80 // SPI word length 0x00 Reserved
 // 0x01 Reserved 0x02 Reserved 0x03
 // The SPI word is 4-bits long 0x04
 // The SPI word is 5-bits long 0x05
@@ -918,12 +899,12 @@
 // The SPI word is 30-bits long 0x1E
 // The SPI word is 31-bits long 0x1F
 // The SPI word is 32-bits long
-#define MCSPI_CH0CONF_WL_S      7
-#define MCSPI_CH0CONF_EPOL      0x00000040  // SPIEN polarity 0 SPIEN is held
+#define MCSPI_CH0CONF_WL_S 7
+#define MCSPI_CH0CONF_EPOL 0x00000040 // SPIEN polarity 0 SPIEN is held
 // high during the active state. 1
 // SPIEN is held low during the
 // active state.
-#define MCSPI_CH0CONF_CLKD_M    0x0000003C  // Frequency divider for SPICLK.
+#define MCSPI_CH0CONF_CLKD_M 0x0000003C // Frequency divider for SPICLK.
 // (only when the module is a Master
 // SPI device). A programmable clock
 // divider divides the SPI reference
@@ -945,12 +926,12 @@
 // 0x5 32 0x6 64 0x7 128 0x8 256 0x9
 // 512 0xA 1024 0xB 2048 0xC 4096
 // 0xD 8192 0xE 16384 0xF 32768
-#define MCSPI_CH0CONF_CLKD_S    2
-#define MCSPI_CH0CONF_POL       0x00000002  // SPICLK polarity 0 SPICLK is held
+#define MCSPI_CH0CONF_CLKD_S 2
+#define MCSPI_CH0CONF_POL 0x00000002 // SPICLK polarity 0 SPICLK is held
 // high during the active state 1
 // SPICLK is held low during the
 // active state
-#define MCSPI_CH0CONF_PHA       0x00000001  // SPICLK phase 0 Data are latched
+#define MCSPI_CH0CONF_PHA 0x00000001 // SPICLK phase 0 Data are latched
 // on odd numbered edges of SPICLK.
 // 1 Data are latched on even
 // numbered edges of SPICLK.
@@ -959,19 +940,19 @@
 // The following are defines for the bit fields in the MCSPI_O_CH0STAT register.
 //
 //******************************************************************************
-#define MCSPI_CH0STAT_RXFFF     0x00000040
-#define MCSPI_CH0STAT_RXFFE     0x00000020
-#define MCSPI_CH0STAT_TXFFF     0x00000010
-#define MCSPI_CH0STAT_TXFFE     0x00000008
-#define MCSPI_CH0STAT_EOT       0x00000004
-#define MCSPI_CH0STAT_TXS       0x00000002
-#define MCSPI_CH0STAT_RXS       0x00000001
+#define MCSPI_CH0STAT_RXFFF 0x00000040
+#define MCSPI_CH0STAT_RXFFE 0x00000020
+#define MCSPI_CH0STAT_TXFFF 0x00000010
+#define MCSPI_CH0STAT_TXFFE 0x00000008
+#define MCSPI_CH0STAT_EOT 0x00000004
+#define MCSPI_CH0STAT_TXS 0x00000002
+#define MCSPI_CH0STAT_RXS 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_CH0CTRL register.
 //
 //******************************************************************************
-#define MCSPI_CH0CTRL_EXTCLK_M  0x0000FF00  // Clock ratio extension: This
+#define MCSPI_CH0CTRL_EXTCLK_M 0x0000FF00 // Clock ratio extension: This
 // register is used to concatenate
 // with MCSPI_CHCONF[CLKD] register
 // for clock ratio only when
@@ -982,8 +963,8 @@
 // Clock ratio is CLKD + 1 0x01
 // Clock ratio is CLKD + 1 + 16 0xFF
 // Clock ratio is CLKD + 1 + 4080
-#define MCSPI_CH0CTRL_EXTCLK_S  8
-#define MCSPI_CH0CTRL_EN        0x00000001  // Channel Enable 0 "Channel ""i""
+#define MCSPI_CH0CTRL_EXTCLK_S 8
+#define MCSPI_CH0CTRL_EN 0x00000001 // Channel Enable 0 "Channel ""i""
 // is not active" 1 "Channel ""i""
 // is active"
 //******************************************************************************
@@ -991,21 +972,21 @@
 // The following are defines for the bit fields in the MCSPI_O_TX0 register.
 //
 //******************************************************************************
-#define MCSPI_TX0_TDATA_M       0xFFFFFFFF  // Channel 0 Data to transmit
-#define MCSPI_TX0_TDATA_S       0
+#define MCSPI_TX0_TDATA_M 0xFFFFFFFF // Channel 0 Data to transmit
+#define MCSPI_TX0_TDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_RX0 register.
 //
 //******************************************************************************
-#define MCSPI_RX0_RDATA_M       0xFFFFFFFF  // Channel 0 Received Data
-#define MCSPI_RX0_RDATA_S       0
+#define MCSPI_RX0_RDATA_M 0xFFFFFFFF // Channel 0 Received Data
+#define MCSPI_RX0_RDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_CH1CONF register.
 //
 //******************************************************************************
-#define MCSPI_CH1CONF_CLKG      0x20000000  // Clock divider granularity This
+#define MCSPI_CH1CONF_CLKG 0x20000000 // Clock divider granularity This
 // register defines the granularity
 // of channel clock divider: power
 // of two or one clock cycle
@@ -1019,35 +1000,35 @@
 // MCSPI_CHCTRL[EXTCLK] values 0
 // Clock granularity of power of two
 // 1 One clock cycle ganularity
-#define MCSPI_CH1CONF_FFER      0x10000000  // FIFO enabled for receive:Only
+#define MCSPI_CH1CONF_FFER 0x10000000 // FIFO enabled for receive:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to receive data. 1 The
 // buffer is used to receive data.
-#define MCSPI_CH1CONF_FFEW      0x08000000  // FIFO enabled for Transmit:Only
+#define MCSPI_CH1CONF_FFEW 0x08000000 // FIFO enabled for Transmit:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to transmit data. 1 The
 // buffer is used to transmit data.
-#define MCSPI_CH1CONF_TCS1_M    0x06000000  // Chip Select Time Control This
+#define MCSPI_CH1CONF_TCS1_M 0x06000000 // Chip Select Time Control This
 // 2-bits field defines the number
 // of interface clock cycles between
 // CS toggling and first or last
 // edge of SPI clock. 0x0 0.5 clock
 // cycle 0x1 1.5 clock cycle 0x2 2.5
 // clock cycle 0x3 3.5 clock cycle
-#define MCSPI_CH1CONF_TCS1_S    25
-#define MCSPI_CH1CONF_SBPOL     0x01000000  // Start bit polarity 0 Start bit
+#define MCSPI_CH1CONF_TCS1_S 25
+#define MCSPI_CH1CONF_SBPOL 0x01000000 // Start bit polarity 0 Start bit
 // polarity is held to 0 during SPI
 // transfer. 1 Start bit polarity is
 // held to 1 during SPI transfer.
-#define MCSPI_CH1CONF_SBE       0x00800000  // Start bit enable for SPI
+#define MCSPI_CH1CONF_SBE 0x00800000 // Start bit enable for SPI
 // transfer 0 Default SPI transfer
 // length as specified by WL bit
 // field 1 Start bit D/CX added
 // before SPI transfer polarity is
 // defined by MCSPI_CH1CONF[SBPOL]
-#define MCSPI_CH1CONF_FORCE     0x00100000  // Manual SPIEN assertion to keep
+#define MCSPI_CH1CONF_FORCE 0x00100000 // Manual SPIEN assertion to keep
 // SPIEN active between SPI words.
 // (single channel master mode only)
 // 0 Writing 0 into this bit drives
@@ -1060,28 +1041,28 @@
 // MCSPI_CHCONF(i)[EPOL]=0 and
 // drives it low when
 // MCSPI_CHCONF(i)[EPOL]=1
-#define MCSPI_CH1CONF_TURBO     0x00080000  // Turbo mode 0 Turbo is
+#define MCSPI_CH1CONF_TURBO 0x00080000 // Turbo mode 0 Turbo is
 // deactivated (recommended for
 // single SPI word transfer) 1 Turbo
 // is activated to maximize the
 // throughput for multi SPI words
 // transfer.
-#define MCSPI_CH1CONF_IS        0x00040000  // Input Select 0 Data Line0
+#define MCSPI_CH1CONF_IS 0x00040000 // Input Select 0 Data Line0
 // (SPIDAT[0]) selected for
 // reception. 1 Data Line1
 // (SPIDAT[1]) selected for
 // reception
-#define MCSPI_CH1CONF_DPE1      0x00020000  // Transmission Enable for data
+#define MCSPI_CH1CONF_DPE1 0x00020000 // Transmission Enable for data
 // line 1 (SPIDATAGZEN[1]) 0 Data
 // Line1 (SPIDAT[1]) selected for
 // transmission 1 No transmission on
 // Data Line1 (SPIDAT[1])
-#define MCSPI_CH1CONF_DPE0      0x00010000  // Transmission Enable for data
+#define MCSPI_CH1CONF_DPE0 0x00010000 // Transmission Enable for data
 // line 0 (SPIDATAGZEN[0]) 0 Data
 // Line0 (SPIDAT[0]) selected for
 // transmission 1 No transmission on
 // Data Line0 (SPIDAT[0])
-#define MCSPI_CH1CONF_DMAR      0x00008000  // DMA Read request The DMA Read
+#define MCSPI_CH1CONF_DMAR 0x00008000 // DMA Read request The DMA Read
 // request line is asserted when the
 // channel is enabled and a new data
 // is available in the receive
@@ -1091,7 +1072,7 @@
 // register of the channel. 0 DMA
 // Read Request disabled 1 DMA Read
 // Request enabled
-#define MCSPI_CH1CONF_DMAW      0x00004000  // DMA Write request. The DMA Write
+#define MCSPI_CH1CONF_DMAW 0x00004000 // DMA Write request. The DMA Write
 // request line is asserted when The
 // channel is enabled and the
 // transmitter register of the
@@ -1102,12 +1083,12 @@
 // channel. 0 DMA Write Request
 // disabled 1 DMA Write Request
 // enabled
-#define MCSPI_CH1CONF_TRM_M     0x00003000  // Transmit/Receive modes 0x0
+#define MCSPI_CH1CONF_TRM_M 0x00003000 // Transmit/Receive modes 0x0
 // Transmit and Receive mode 0x1
 // Receive only mode 0x2 Transmit
 // only mode 0x3 Reserved
-#define MCSPI_CH1CONF_TRM_S     12
-#define MCSPI_CH1CONF_WL_M      0x00000F80  // SPI word length 0x00 Reserved
+#define MCSPI_CH1CONF_TRM_S 12
+#define MCSPI_CH1CONF_WL_M 0x00000F80 // SPI word length 0x00 Reserved
 // 0x01 Reserved 0x02 Reserved 0x03
 // The SPI word is 4-bits long 0x04
 // The SPI word is 5-bits long 0x05
@@ -1138,12 +1119,12 @@
 // The SPI word is 30-bits long 0x1E
 // The SPI word is 31-bits long 0x1F
 // The SPI word is 32-bits long
-#define MCSPI_CH1CONF_WL_S      7
-#define MCSPI_CH1CONF_EPOL      0x00000040  // SPIEN polarity 0 SPIEN is held
+#define MCSPI_CH1CONF_WL_S 7
+#define MCSPI_CH1CONF_EPOL 0x00000040 // SPIEN polarity 0 SPIEN is held
 // high during the active state. 1
 // SPIEN is held low during the
 // active state.
-#define MCSPI_CH1CONF_CLKD_M    0x0000003C  // Frequency divider for SPICLK.
+#define MCSPI_CH1CONF_CLKD_M 0x0000003C // Frequency divider for SPICLK.
 // (only when the module is a Master
 // SPI device). A programmable clock
 // divider divides the SPI reference
@@ -1165,12 +1146,12 @@
 // 0x5 32 0x6 64 0x7 128 0x8 256 0x9
 // 512 0xA 1024 0xB 2048 0xC 4096
 // 0xD 8192 0xE 16384 0xF 32768
-#define MCSPI_CH1CONF_CLKD_S    2
-#define MCSPI_CH1CONF_POL       0x00000002  // SPICLK polarity 0 SPICLK is held
+#define MCSPI_CH1CONF_CLKD_S 2
+#define MCSPI_CH1CONF_POL 0x00000002 // SPICLK polarity 0 SPICLK is held
 // high during the active state 1
 // SPICLK is held low during the
 // active state
-#define MCSPI_CH1CONF_PHA       0x00000001  // SPICLK phase 0 Data are latched
+#define MCSPI_CH1CONF_PHA 0x00000001 // SPICLK phase 0 Data are latched
 // on odd numbered edges of SPICLK.
 // 1 Data are latched on even
 // numbered edges of SPICLK.
@@ -1179,19 +1160,19 @@
 // The following are defines for the bit fields in the MCSPI_O_CH1STAT register.
 //
 //******************************************************************************
-#define MCSPI_CH1STAT_RXFFF     0x00000040
-#define MCSPI_CH1STAT_RXFFE     0x00000020
-#define MCSPI_CH1STAT_TXFFF     0x00000010
-#define MCSPI_CH1STAT_TXFFE     0x00000008
-#define MCSPI_CH1STAT_EOT       0x00000004
-#define MCSPI_CH1STAT_TXS       0x00000002
-#define MCSPI_CH1STAT_RXS       0x00000001
+#define MCSPI_CH1STAT_RXFFF 0x00000040
+#define MCSPI_CH1STAT_RXFFE 0x00000020
+#define MCSPI_CH1STAT_TXFFF 0x00000010
+#define MCSPI_CH1STAT_TXFFE 0x00000008
+#define MCSPI_CH1STAT_EOT 0x00000004
+#define MCSPI_CH1STAT_TXS 0x00000002
+#define MCSPI_CH1STAT_RXS 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_CH1CTRL register.
 //
 //******************************************************************************
-#define MCSPI_CH1CTRL_EXTCLK_M  0x0000FF00  // Clock ratio extension: This
+#define MCSPI_CH1CTRL_EXTCLK_M 0x0000FF00 // Clock ratio extension: This
 // register is used to concatenate
 // with MCSPI_CHCONF[CLKD] register
 // for clock ratio only when
@@ -1202,8 +1183,8 @@
 // Clock ratio is CLKD + 1 0x01
 // Clock ratio is CLKD + 1 + 16 0xFF
 // Clock ratio is CLKD + 1 + 4080
-#define MCSPI_CH1CTRL_EXTCLK_S  8
-#define MCSPI_CH1CTRL_EN        0x00000001  // Channel Enable 0 "Channel ""i""
+#define MCSPI_CH1CTRL_EXTCLK_S 8
+#define MCSPI_CH1CTRL_EN 0x00000001 // Channel Enable 0 "Channel ""i""
 // is not active" 1 "Channel ""i""
 // is active"
 //******************************************************************************
@@ -1211,21 +1192,21 @@
 // The following are defines for the bit fields in the MCSPI_O_TX1 register.
 //
 //******************************************************************************
-#define MCSPI_TX1_TDATA_M       0xFFFFFFFF  // Channel 1 Data to transmit
-#define MCSPI_TX1_TDATA_S       0
+#define MCSPI_TX1_TDATA_M 0xFFFFFFFF // Channel 1 Data to transmit
+#define MCSPI_TX1_TDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_RX1 register.
 //
 //******************************************************************************
-#define MCSPI_RX1_RDATA_M       0xFFFFFFFF  // Channel 1 Received Data
-#define MCSPI_RX1_RDATA_S       0
+#define MCSPI_RX1_RDATA_M 0xFFFFFFFF // Channel 1 Received Data
+#define MCSPI_RX1_RDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_CH2CONF register.
 //
 //******************************************************************************
-#define MCSPI_CH2CONF_CLKG      0x20000000  // Clock divider granularity This
+#define MCSPI_CH2CONF_CLKG 0x20000000 // Clock divider granularity This
 // register defines the granularity
 // of channel clock divider: power
 // of two or one clock cycle
@@ -1239,35 +1220,35 @@
 // MCSPI_CHCTRL[EXTCLK] values 0
 // Clock granularity of power of two
 // 1 One clock cycle ganularity
-#define MCSPI_CH2CONF_FFER      0x10000000  // FIFO enabled for receive:Only
+#define MCSPI_CH2CONF_FFER 0x10000000 // FIFO enabled for receive:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to receive data. 1 The
 // buffer is used to receive data.
-#define MCSPI_CH2CONF_FFEW      0x08000000  // FIFO enabled for Transmit:Only
+#define MCSPI_CH2CONF_FFEW 0x08000000 // FIFO enabled for Transmit:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to transmit data. 1 The
 // buffer is used to transmit data.
-#define MCSPI_CH2CONF_TCS2_M    0x06000000  // Chip Select Time Control This
+#define MCSPI_CH2CONF_TCS2_M 0x06000000 // Chip Select Time Control This
 // 2-bits field defines the number
 // of interface clock cycles between
 // CS toggling and first or last
 // edge of SPI clock. 0x0 0.5 clock
 // cycle 0x1 1.5 clock cycle 0x2 2.5
 // clock cycle 0x3 3.5 clock cycle
-#define MCSPI_CH2CONF_TCS2_S    25
-#define MCSPI_CH2CONF_SBPOL     0x01000000  // Start bit polarity 0 Start bit
+#define MCSPI_CH2CONF_TCS2_S 25
+#define MCSPI_CH2CONF_SBPOL 0x01000000 // Start bit polarity 0 Start bit
 // polarity is held to 0 during SPI
 // transfer. 1 Start bit polarity is
 // held to 1 during SPI transfer.
-#define MCSPI_CH2CONF_SBE       0x00800000  // Start bit enable for SPI
+#define MCSPI_CH2CONF_SBE 0x00800000 // Start bit enable for SPI
 // transfer 0 Default SPI transfer
 // length as specified by WL bit
 // field 1 Start bit D/CX added
 // before SPI transfer polarity is
 // defined by MCSPI_CH2CONF[SBPOL]
-#define MCSPI_CH2CONF_FORCE     0x00100000  // Manual SPIEN assertion to keep
+#define MCSPI_CH2CONF_FORCE 0x00100000 // Manual SPIEN assertion to keep
 // SPIEN active between SPI words.
 // (single channel master mode only)
 // 0 Writing 0 into this bit drives
@@ -1280,28 +1261,28 @@
 // MCSPI_CHCONF(i)[EPOL]=0 and
 // drives it low when
 // MCSPI_CHCONF(i)[EPOL]=1
-#define MCSPI_CH2CONF_TURBO     0x00080000  // Turbo mode 0 Turbo is
+#define MCSPI_CH2CONF_TURBO 0x00080000 // Turbo mode 0 Turbo is
 // deactivated (recommended for
 // single SPI word transfer) 1 Turbo
 // is activated to maximize the
 // throughput for multi SPI words
 // transfer.
-#define MCSPI_CH2CONF_IS        0x00040000  // Input Select 0 Data Line0
+#define MCSPI_CH2CONF_IS 0x00040000 // Input Select 0 Data Line0
 // (SPIDAT[0]) selected for
 // reception. 1 Data Line1
 // (SPIDAT[1]) selected for
 // reception
-#define MCSPI_CH2CONF_DPE1      0x00020000  // Transmission Enable for data
+#define MCSPI_CH2CONF_DPE1 0x00020000 // Transmission Enable for data
 // line 1 (SPIDATAGZEN[1]) 0 Data
 // Line1 (SPIDAT[1]) selected for
 // transmission 1 No transmission on
 // Data Line1 (SPIDAT[1])
-#define MCSPI_CH2CONF_DPE0      0x00010000  // Transmission Enable for data
+#define MCSPI_CH2CONF_DPE0 0x00010000 // Transmission Enable for data
 // line 0 (SPIDATAGZEN[0]) 0 Data
 // Line0 (SPIDAT[0]) selected for
 // transmission 1 No transmission on
 // Data Line0 (SPIDAT[0])
-#define MCSPI_CH2CONF_DMAR      0x00008000  // DMA Read request The DMA Read
+#define MCSPI_CH2CONF_DMAR 0x00008000 // DMA Read request The DMA Read
 // request line is asserted when the
 // channel is enabled and a new data
 // is available in the receive
@@ -1311,7 +1292,7 @@
 // register of the channel. 0 DMA
 // Read Request disabled 1 DMA Read
 // Request enabled
-#define MCSPI_CH2CONF_DMAW      0x00004000  // DMA Write request. The DMA Write
+#define MCSPI_CH2CONF_DMAW 0x00004000 // DMA Write request. The DMA Write
 // request line is asserted when The
 // channel is enabled and the
 // transmitter register of the
@@ -1322,12 +1303,12 @@
 // channel. 0 DMA Write Request
 // disabled 1 DMA Write Request
 // enabled
-#define MCSPI_CH2CONF_TRM_M     0x00003000  // Transmit/Receive modes 0x0
+#define MCSPI_CH2CONF_TRM_M 0x00003000 // Transmit/Receive modes 0x0
 // Transmit and Receive mode 0x1
 // Receive only mode 0x2 Transmit
 // only mode 0x3 Reserved
-#define MCSPI_CH2CONF_TRM_S     12
-#define MCSPI_CH2CONF_WL_M      0x00000F80  // SPI word length 0x00 Reserved
+#define MCSPI_CH2CONF_TRM_S 12
+#define MCSPI_CH2CONF_WL_M 0x00000F80 // SPI word length 0x00 Reserved
 // 0x01 Reserved 0x02 Reserved 0x03
 // The SPI word is 4-bits long 0x04
 // The SPI word is 5-bits long 0x05
@@ -1358,12 +1339,12 @@
 // The SPI word is 30-bits long 0x1E
 // The SPI word is 31-bits long 0x1F
 // The SPI word is 32-bits long
-#define MCSPI_CH2CONF_WL_S      7
-#define MCSPI_CH2CONF_EPOL      0x00000040  // SPIEN polarity 0 SPIEN is held
+#define MCSPI_CH2CONF_WL_S 7
+#define MCSPI_CH2CONF_EPOL 0x00000040 // SPIEN polarity 0 SPIEN is held
 // high during the active state. 1
 // SPIEN is held low during the
 // active state.
-#define MCSPI_CH2CONF_CLKD_M    0x0000003C  // Frequency divider for SPICLK.
+#define MCSPI_CH2CONF_CLKD_M 0x0000003C // Frequency divider for SPICLK.
 // (only when the module is a Master
 // SPI device). A programmable clock
 // divider divides the SPI reference
@@ -1385,12 +1366,12 @@
 // 0x5 32 0x6 64 0x7 128 0x8 256 0x9
 // 512 0xA 1024 0xB 2048 0xC 4096
 // 0xD 8192 0xE 16384 0xF 32768
-#define MCSPI_CH2CONF_CLKD_S    2
-#define MCSPI_CH2CONF_POL       0x00000002  // SPICLK polarity 0 SPICLK is held
+#define MCSPI_CH2CONF_CLKD_S 2
+#define MCSPI_CH2CONF_POL 0x00000002 // SPICLK polarity 0 SPICLK is held
 // high during the active state 1
 // SPICLK is held low during the
 // active state
-#define MCSPI_CH2CONF_PHA       0x00000001  // SPICLK phase 0 Data are latched
+#define MCSPI_CH2CONF_PHA 0x00000001 // SPICLK phase 0 Data are latched
 // on odd numbered edges of SPICLK.
 // 1 Data are latched on even
 // numbered edges of SPICLK.
@@ -1399,19 +1380,19 @@
 // The following are defines for the bit fields in the MCSPI_O_CH2STAT register.
 //
 //******************************************************************************
-#define MCSPI_CH2STAT_RXFFF     0x00000040
-#define MCSPI_CH2STAT_RXFFE     0x00000020
-#define MCSPI_CH2STAT_TXFFF     0x00000010
-#define MCSPI_CH2STAT_TXFFE     0x00000008
-#define MCSPI_CH2STAT_EOT       0x00000004
-#define MCSPI_CH2STAT_TXS       0x00000002
-#define MCSPI_CH2STAT_RXS       0x00000001
+#define MCSPI_CH2STAT_RXFFF 0x00000040
+#define MCSPI_CH2STAT_RXFFE 0x00000020
+#define MCSPI_CH2STAT_TXFFF 0x00000010
+#define MCSPI_CH2STAT_TXFFE 0x00000008
+#define MCSPI_CH2STAT_EOT 0x00000004
+#define MCSPI_CH2STAT_TXS 0x00000002
+#define MCSPI_CH2STAT_RXS 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_CH2CTRL register.
 //
 //******************************************************************************
-#define MCSPI_CH2CTRL_EXTCLK_M  0x0000FF00  // Clock ratio extension: This
+#define MCSPI_CH2CTRL_EXTCLK_M 0x0000FF00 // Clock ratio extension: This
 // register is used to concatenate
 // with MCSPI_CHCONF[CLKD] register
 // for clock ratio only when
@@ -1422,8 +1403,8 @@
 // Clock ratio is CLKD + 1 0x01
 // Clock ratio is CLKD + 1 + 16 0xFF
 // Clock ratio is CLKD + 1 + 4080
-#define MCSPI_CH2CTRL_EXTCLK_S  8
-#define MCSPI_CH2CTRL_EN        0x00000001  // Channel Enable 0 "Channel ""i""
+#define MCSPI_CH2CTRL_EXTCLK_S 8
+#define MCSPI_CH2CTRL_EN 0x00000001 // Channel Enable 0 "Channel ""i""
 // is not active" 1 "Channel ""i""
 // is active"
 //******************************************************************************
@@ -1431,21 +1412,21 @@
 // The following are defines for the bit fields in the MCSPI_O_TX2 register.
 //
 //******************************************************************************
-#define MCSPI_TX2_TDATA_M       0xFFFFFFFF  // Channel 2 Data to transmit
-#define MCSPI_TX2_TDATA_S       0
+#define MCSPI_TX2_TDATA_M 0xFFFFFFFF // Channel 2 Data to transmit
+#define MCSPI_TX2_TDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_RX2 register.
 //
 //******************************************************************************
-#define MCSPI_RX2_RDATA_M       0xFFFFFFFF  // Channel 2 Received Data
-#define MCSPI_RX2_RDATA_S       0
+#define MCSPI_RX2_RDATA_M 0xFFFFFFFF // Channel 2 Received Data
+#define MCSPI_RX2_RDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_CH3CONF register.
 //
 //******************************************************************************
-#define MCSPI_CH3CONF_CLKG      0x20000000  // Clock divider granularity This
+#define MCSPI_CH3CONF_CLKG 0x20000000 // Clock divider granularity This
 // register defines the granularity
 // of channel clock divider: power
 // of two or one clock cycle
@@ -1459,35 +1440,35 @@
 // MCSPI_CHCTRL[EXTCLK] values 0
 // Clock granularity of power of two
 // 1 One clock cycle ganularity
-#define MCSPI_CH3CONF_FFER      0x10000000  // FIFO enabled for receive:Only
+#define MCSPI_CH3CONF_FFER 0x10000000 // FIFO enabled for receive:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to receive data. 1 The
 // buffer is used to receive data.
-#define MCSPI_CH3CONF_FFEW      0x08000000  // FIFO enabled for Transmit:Only
+#define MCSPI_CH3CONF_FFEW 0x08000000 // FIFO enabled for Transmit:Only
 // one channel can have this bit
 // field set. 0 The buffer is not
 // used to transmit data. 1 The
 // buffer is used to transmit data.
-#define MCSPI_CH3CONF_TCS3_M    0x06000000  // Chip Select Time Control This
+#define MCSPI_CH3CONF_TCS3_M 0x06000000 // Chip Select Time Control This
 // 2-bits field defines the number
 // of interface clock cycles between
 // CS toggling and first or last
 // edge of SPI clock. 0x0 0.5 clock
 // cycle 0x1 1.5 clock cycle 0x2 2.5
 // clock cycle 0x3 3.5 clock cycle
-#define MCSPI_CH3CONF_TCS3_S    25
-#define MCSPI_CH3CONF_SBPOL     0x01000000  // Start bit polarity 0 Start bit
+#define MCSPI_CH3CONF_TCS3_S 25
+#define MCSPI_CH3CONF_SBPOL 0x01000000 // Start bit polarity 0 Start bit
 // polarity is held to 0 during SPI
 // transfer. 1 Start bit polarity is
 // held to 1 during SPI transfer.
-#define MCSPI_CH3CONF_SBE       0x00800000  // Start bit enable for SPI
+#define MCSPI_CH3CONF_SBE 0x00800000 // Start bit enable for SPI
 // transfer 0 Default SPI transfer
 // length as specified by WL bit
 // field 1 Start bit D/CX added
 // before SPI transfer polarity is
 // defined by MCSPI_CH3CONF[SBPOL]
-#define MCSPI_CH3CONF_FORCE     0x00100000  // Manual SPIEN assertion to keep
+#define MCSPI_CH3CONF_FORCE 0x00100000 // Manual SPIEN assertion to keep
 // SPIEN active between SPI words.
 // (single channel master mode only)
 // 0 Writing 0 into this bit drives
@@ -1500,28 +1481,28 @@
 // MCSPI_CHCONF(i)[EPOL]=0 and
 // drives it low when
 // MCSPI_CHCONF(i)[EPOL]=1
-#define MCSPI_CH3CONF_TURBO     0x00080000  // Turbo mode 0 Turbo is
+#define MCSPI_CH3CONF_TURBO 0x00080000 // Turbo mode 0 Turbo is
 // deactivated (recommended for
 // single SPI word transfer) 1 Turbo
 // is activated to maximize the
 // throughput for multi SPI words
 // transfer.
-#define MCSPI_CH3CONF_IS        0x00040000  // Input Select 0 Data Line0
+#define MCSPI_CH3CONF_IS 0x00040000 // Input Select 0 Data Line0
 // (SPIDAT[0]) selected for
 // reception. 1 Data Line1
 // (SPIDAT[1]) selected for
 // reception
-#define MCSPI_CH3CONF_DPE1      0x00020000  // Transmission Enable for data
+#define MCSPI_CH3CONF_DPE1 0x00020000 // Transmission Enable for data
 // line 1 (SPIDATAGZEN[1]) 0 Data
 // Line1 (SPIDAT[1]) selected for
 // transmission 1 No transmission on
 // Data Line1 (SPIDAT[1])
-#define MCSPI_CH3CONF_DPE0      0x00010000  // Transmission Enable for data
+#define MCSPI_CH3CONF_DPE0 0x00010000 // Transmission Enable for data
 // line 0 (SPIDATAGZEN[0]) 0 Data
 // Line0 (SPIDAT[0]) selected for
 // transmission 1 No transmission on
 // Data Line0 (SPIDAT[0])
-#define MCSPI_CH3CONF_DMAR      0x00008000  // DMA Read request The DMA Read
+#define MCSPI_CH3CONF_DMAR 0x00008000 // DMA Read request The DMA Read
 // request line is asserted when the
 // channel is enabled and a new data
 // is available in the receive
@@ -1531,7 +1512,7 @@
 // register of the channel. 0 DMA
 // Read Request disabled 1 DMA Read
 // Request enabled
-#define MCSPI_CH3CONF_DMAW      0x00004000  // DMA Write request. The DMA Write
+#define MCSPI_CH3CONF_DMAW 0x00004000 // DMA Write request. The DMA Write
 // request line is asserted when The
 // channel is enabled and the
 // transmitter register of the
@@ -1542,12 +1523,12 @@
 // channel. 0 DMA Write Request
 // disabled 1 DMA Write Request
 // enabled
-#define MCSPI_CH3CONF_TRM_M     0x00003000  // Transmit/Receive modes 0x0
+#define MCSPI_CH3CONF_TRM_M 0x00003000 // Transmit/Receive modes 0x0
 // Transmit and Receive mode 0x1
 // Receive only mode 0x2 Transmit
 // only mode 0x3 Reserved
-#define MCSPI_CH3CONF_TRM_S     12
-#define MCSPI_CH3CONF_WL_M      0x00000F80  // SPI word length 0x00 Reserved
+#define MCSPI_CH3CONF_TRM_S 12
+#define MCSPI_CH3CONF_WL_M 0x00000F80 // SPI word length 0x00 Reserved
 // 0x01 Reserved 0x02 Reserved 0x03
 // The SPI word is 4-bits long 0x04
 // The SPI word is 5-bits long 0x05
@@ -1578,12 +1559,12 @@
 // The SPI word is 30-bits long 0x1E
 // The SPI word is 31-bits long 0x1F
 // The SPI word is 32-bits long
-#define MCSPI_CH3CONF_WL_S      7
-#define MCSPI_CH3CONF_EPOL      0x00000040  // SPIEN polarity 0 SPIEN is held
+#define MCSPI_CH3CONF_WL_S 7
+#define MCSPI_CH3CONF_EPOL 0x00000040 // SPIEN polarity 0 SPIEN is held
 // high during the active state. 1
 // SPIEN is held low during the
 // active state.
-#define MCSPI_CH3CONF_CLKD_M    0x0000003C  // Frequency divider for SPICLK.
+#define MCSPI_CH3CONF_CLKD_M 0x0000003C // Frequency divider for SPICLK.
 // (only when the module is a Master
 // SPI device). A programmable clock
 // divider divides the SPI reference
@@ -1605,12 +1586,12 @@
 // 0x5 32 0x6 64 0x7 128 0x8 256 0x9
 // 512 0xA 1024 0xB 2048 0xC 4096
 // 0xD 8192 0xE 16384 0xF 32768
-#define MCSPI_CH3CONF_CLKD_S    2
-#define MCSPI_CH3CONF_POL       0x00000002  // SPICLK polarity 0 SPICLK is held
+#define MCSPI_CH3CONF_CLKD_S 2
+#define MCSPI_CH3CONF_POL 0x00000002 // SPICLK polarity 0 SPICLK is held
 // high during the active state 1
 // SPICLK is held low during the
 // active state
-#define MCSPI_CH3CONF_PHA       0x00000001  // SPICLK phase 0 Data are latched
+#define MCSPI_CH3CONF_PHA 0x00000001 // SPICLK phase 0 Data are latched
 // on odd numbered edges of SPICLK.
 // 1 Data are latched on even
 // numbered edges of SPICLK.
@@ -1619,19 +1600,19 @@
 // The following are defines for the bit fields in the MCSPI_O_CH3STAT register.
 //
 //******************************************************************************
-#define MCSPI_CH3STAT_RXFFF     0x00000040
-#define MCSPI_CH3STAT_RXFFE     0x00000020
-#define MCSPI_CH3STAT_TXFFF     0x00000010
-#define MCSPI_CH3STAT_TXFFE     0x00000008
-#define MCSPI_CH3STAT_EOT       0x00000004
-#define MCSPI_CH3STAT_TXS       0x00000002
-#define MCSPI_CH3STAT_RXS       0x00000001
+#define MCSPI_CH3STAT_RXFFF 0x00000040
+#define MCSPI_CH3STAT_RXFFE 0x00000020
+#define MCSPI_CH3STAT_TXFFF 0x00000010
+#define MCSPI_CH3STAT_TXFFE 0x00000008
+#define MCSPI_CH3STAT_EOT 0x00000004
+#define MCSPI_CH3STAT_TXS 0x00000002
+#define MCSPI_CH3STAT_RXS 0x00000001
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_CH3CTRL register.
 //
 //******************************************************************************
-#define MCSPI_CH3CTRL_EXTCLK_M  0x0000FF00  // Clock ratio extension: This
+#define MCSPI_CH3CTRL_EXTCLK_M 0x0000FF00 // Clock ratio extension: This
 // register is used to concatenate
 // with MCSPI_CHCONF[CLKD] register
 // for clock ratio only when
@@ -1642,8 +1623,8 @@
 // Clock ratio is CLKD + 1 0x01
 // Clock ratio is CLKD + 1 + 16 0xFF
 // Clock ratio is CLKD + 1 + 4080
-#define MCSPI_CH3CTRL_EXTCLK_S  8
-#define MCSPI_CH3CTRL_EN        0x00000001  // Channel Enable 0 "Channel ""i""
+#define MCSPI_CH3CTRL_EXTCLK_S 8
+#define MCSPI_CH3CTRL_EN 0x00000001 // Channel Enable 0 "Channel ""i""
 // is not active" 1 "Channel ""i""
 // is active"
 //******************************************************************************
@@ -1651,21 +1632,22 @@
 // The following are defines for the bit fields in the MCSPI_O_TX3 register.
 //
 //******************************************************************************
-#define MCSPI_TX3_TDATA_M       0xFFFFFFFF  // Channel 3 Data to transmit
-#define MCSPI_TX3_TDATA_S       0
+#define MCSPI_TX3_TDATA_M 0xFFFFFFFF // Channel 3 Data to transmit
+#define MCSPI_TX3_TDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_RX3 register.
 //
 //******************************************************************************
-#define MCSPI_RX3_RDATA_M       0xFFFFFFFF  // Channel 3 Received Data
-#define MCSPI_RX3_RDATA_S       0
+#define MCSPI_RX3_RDATA_M 0xFFFFFFFF // Channel 3 Received Data
+#define MCSPI_RX3_RDATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the MCSPI_O_XFERLEVEL register.
+// The following are defines for the bit fields in the MCSPI_O_XFERLEVEL
+// register.
 //
 //******************************************************************************
-#define MCSPI_XFERLEVEL_WCNT_M  0xFFFF0000  // Spi word counterThis register
+#define MCSPI_XFERLEVEL_WCNT_M 0xFFFF0000 // Spi word counterThis register
 // holds the programmable value of
 // number of SPI word to be
 // transferred on channel which is
@@ -1676,8 +1658,8 @@
 // 0x0000 Counter not used 0x0001
 // one word 0xFFFE 65534 spi word
 // 0xFFFF 65535 spi word
-#define MCSPI_XFERLEVEL_WCNT_S  16
-#define MCSPI_XFERLEVEL_AFL_M   0x0000FF00  // Buffer Almost Full This register
+#define MCSPI_XFERLEVEL_WCNT_S 16
+#define MCSPI_XFERLEVEL_AFL_M 0x0000FF00 // Buffer Almost Full This register
 // holds the programmable almost
 // full level value used to
 // determine almost full buffer
@@ -1692,8 +1674,8 @@
 // generic parameter FFNBYTE. 0x00
 // one byte 0x01 2 bytes 0xFE
 // 255bytes 0xFF 256bytes
-#define MCSPI_XFERLEVEL_AFL_S   8
-#define MCSPI_XFERLEVEL_AEL_M   0x000000FF  // Buffer Almost EmptyThis register
+#define MCSPI_XFERLEVEL_AFL_S 8
+#define MCSPI_XFERLEVEL_AEL_M 0x000000FF // Buffer Almost EmptyThis register
 // holds the programmable almost
 // empty level value used to
 // determine almost empty buffer
@@ -1706,13 +1688,13 @@
 // be set with n-1. 0x00 one byte
 // 0x01 2 bytes 0xFE 255 bytes 0xFF
 // 256bytes
-#define MCSPI_XFERLEVEL_AEL_S   0
+#define MCSPI_XFERLEVEL_AEL_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_DAFTX register.
 //
 //******************************************************************************
-#define MCSPI_DAFTX_DAFTDATA_M  0xFFFFFFFF  // FIFO Data to transmit with DMA
+#define MCSPI_DAFTX_DAFTDATA_M 0xFFFFFFFF // FIFO Data to transmit with DMA
 // 256 bit aligned address. "This
 // Register is only is used when
 // MCSPI_MODULCTRL[FDAA] is set to
@@ -1722,13 +1704,13 @@
 // conditions are not respected any
 // access to this register return a
 // null value."
-#define MCSPI_DAFTX_DAFTDATA_S  0
+#define MCSPI_DAFTX_DAFTDATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the MCSPI_O_DAFRX register.
 //
 //******************************************************************************
-#define MCSPI_DAFRX_DAFRDATA_M  0xFFFFFFFF  // FIFO Data to transmit with DMA
+#define MCSPI_DAFRX_DAFRDATA_M 0xFFFFFFFF // FIFO Data to transmit with DMA
 // 256 bit aligned address. "This
 // Register is only is used when
 // MCSPI_MODULCTRL[FDAA] is set to
@@ -1738,8 +1720,6 @@
 // conditions are not respected any
 // access to this register return a
 // null value."
-#define MCSPI_DAFRX_DAFRDATA_S  0
-
-
+#define MCSPI_DAFRX_DAFRDATA_S 0
 
 #endif // __HW_MCSPI_H__

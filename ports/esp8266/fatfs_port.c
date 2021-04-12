@@ -24,20 +24,21 @@
  * THE SOFTWARE.
  */
 
-#include "py/obj.h"
-#include "lib/timeutils/timeutils.h"
 #include "lib/oofatfs/ff.h"
+#include "lib/timeutils/timeutils.h"
 #include "modmachine.h"
+#include "py/obj.h"
 
 DWORD get_fattime(void) {
 
-    // TODO: Optimize division (there's no HW division support on ESP8266,
-    // so it's expensive).
-    uint32_t secs = (uint32_t)(pyb_rtc_get_us_since_epoch() / 1000000);
+  // TODO: Optimize division (there's no HW division support on ESP8266,
+  // so it's expensive).
+  uint32_t secs = (uint32_t)(pyb_rtc_get_us_since_epoch() / 1000000);
 
-    timeutils_struct_time_t tm;
-    timeutils_seconds_since_epoch_to_struct_time(secs, &tm);
+  timeutils_struct_time_t tm;
+  timeutils_seconds_since_epoch_to_struct_time(secs, &tm);
 
-    return ((DWORD)(tm.tm_year - 1980) << 25) | ((DWORD)tm.tm_mon << 21) | ((DWORD)tm.tm_mday << 16) |
-           ((DWORD)tm.tm_hour << 11) | ((DWORD)tm.tm_min << 5) | ((DWORD)tm.tm_sec >> 1);
+  return ((DWORD)(tm.tm_year - 1980) << 25) | ((DWORD)tm.tm_mon << 21) |
+         ((DWORD)tm.tm_mday << 16) | ((DWORD)tm.tm_hour << 11) |
+         ((DWORD)tm.tm_min << 5) | ((DWORD)tm.tm_sec >> 1);
 }

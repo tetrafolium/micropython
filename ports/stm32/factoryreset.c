@@ -24,13 +24,13 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
-#include "py/mperrno.h"
-#include "extmod/vfs_fat.h"
-#include "systick.h"
-#include "led.h"
-#include "storage.h"
 #include "factoryreset.h"
+#include "extmod/vfs_fat.h"
+#include "led.h"
+#include "py/mperrno.h"
+#include "py/runtime.h"
+#include "storage.h"
+#include "systick.h"
 
 #if MICROPY_HW_ENABLE_STORAGE
 
@@ -50,9 +50,7 @@ static const char fresh_boot_py[] =
 #endif
     ;
 
-static const char fresh_main_py[] =
-    "# main.py -- put your code here!\r\n"
-    ;
+static const char fresh_main_py[] = "# main.py -- put your code here!\r\n";
 
 #if MICROPY_HW_ENABLE_USB
 static const char fresh_pybcdc_inf[] =
@@ -62,23 +60,25 @@ static const char fresh_pybcdc_inf[] =
 static const char fresh_readme_txt[] =
     "This is a MicroPython board\r\n"
     "\r\n"
-    "You can get started right away by writing your Python code in 'main.py'.\r\n"
+    "You can get started right away by writing your Python code in "
+    "'main.py'.\r\n"
     "\r\n"
     "For a serial prompt:\r\n"
-    " - Windows: you need to go to 'Device manager', right click on the unknown device,\r\n"
-    "   then update the driver software, using the 'pybcdc.inf' file found on this drive.\r\n"
+    " - Windows: you need to go to 'Device manager', right click on the "
+    "unknown device,\r\n"
+    "   then update the driver software, using the 'pybcdc.inf' file found on "
+    "this drive.\r\n"
     "   Then use a terminal program like Hyperterminal or putty.\r\n"
     " - Mac OS X: use the command: screen /dev/tty.usbmodem*\r\n"
     " - Linux: use the command: screen /dev/ttyACM0\r\n"
     "\r\n"
-    "Please visit http://micropython.org/help/ for further help.\r\n"
-    ;
+    "Please visit http://micropython.org/help/ for further help.\r\n";
 #endif
 
 typedef struct _factory_file_t {
-    const char *name;
-    size_t len;
-    const char *data;
+  const char *name;
+  size_t len;
+  const char *data;
 } factory_file_t;
 
 static const factory_file_t factory_files[] = {
@@ -91,50 +91,50 @@ static const factory_file_t factory_files[] = {
 };
 
 MP_WEAK void factory_reset_make_files(FATFS *fatfs) {
-    for (int i = 0; i < MP_ARRAY_SIZE(factory_files); ++i) {
-        const factory_file_t *f = &factory_files[i];
-        FIL fp;
-        FRESULT res = f_open(fatfs, &fp, f->name, FA_WRITE | FA_CREATE_ALWAYS);
-        if (res == FR_OK) {
-            UINT n;
-            f_write(&fp, f->data, f->len, &n);
-            f_close(&fp);
-        }
+  for (int i = 0; i < MP_ARRAY_SIZE(factory_files); ++i) {
+    const factory_file_t *f = &factory_files[i];
+    FIL fp;
+    FRESULT res = f_open(fatfs, &fp, f->name, FA_WRITE | FA_CREATE_ALWAYS);
+    if (res == FR_OK) {
+      UINT n;
+      f_write(&fp, f->data, f->len, &n);
+      f_close(&fp);
     }
+  }
 }
 
 MP_WEAK int factory_reset_create_filesystem(void) {
-    // LED on to indicate creation of local filesystem
-    led_state(PYB_LED_GREEN, 1);
-    uint32_t start_tick = HAL_GetTick();
+  // LED on to indicate creation of local filesystem
+  led_state(PYB_LED_GREEN, 1);
+  uint32_t start_tick = HAL_GetTick();
 
-    fs_user_mount_t vfs;
-    pyb_flash_init_vfs(&vfs);
-    uint8_t working_buf[FF_MAX_SS];
-    FRESULT res = f_mkfs(&vfs.fatfs, FM_FAT, 0, working_buf, sizeof(working_buf));
-    if (res != FR_OK) {
-        mp_printf(&mp_plat_print, "MPY: can't create flash filesystem\n");
-        return -MP_ENODEV;
-    }
+  fs_user_mount_t vfs;
+  pyb_flash_init_vfs(&vfs);
+  uint8_t working_buf[FF_MAX_SS];
+  FRESULT res = f_mkfs(&vfs.fatfs, FM_FAT, 0, working_buf, sizeof(working_buf));
+  if (res != FR_OK) {
+    mp_printf(&mp_plat_print, "MPY: can't create flash filesystem\n");
+    return -MP_ENODEV;
+  }
 
-    // Set label
-    f_setlabel(&vfs.fatfs, MICROPY_HW_FLASH_FS_LABEL);
+  // Set label
+  f_setlabel(&vfs.fatfs, MICROPY_HW_FLASH_FS_LABEL);
 
-    // Populate the filesystem with factory files
-    factory_reset_make_files(&vfs.fatfs);
+  // Populate the filesystem with factory files
+  factory_reset_make_files(&vfs.fatfs);
 
-    // Keep LED on for at least 200ms
-    systick_wait_at_least(start_tick, 200);
-    led_state(PYB_LED_GREEN, 0);
+  // Keep LED on for at least 200ms
+  systick_wait_at_least(start_tick, 200);
+  led_state(PYB_LED_GREEN, 0);
 
-    return 0; // success
+  return 0; // success
 }
 
 #else
 
 // If FAT is not enabled then it's up to the board to create a fresh filesystem.
 MP_WEAK int factory_reset_create_filesystem(void) {
-    return 0; // success
+  return 0; // success
 }
 
 #endif

@@ -64,50 +64,55 @@ const static uint8_t LED_BUILTIN = 13;
 const static uint8_t SDA = 18;
 const static uint8_t SCL = 19;
 
-
 #define NUM_DIGITAL_PINS 34
 #define NUM_ANALOG_INPUTS 14
 
 #define analogInputToDigitalPin(p) (((p) < 10) ? (p) + 14 : -1)
-#define digitalPinHasPWM(p) (((p) >= 3 && (p) <= 6) || (p) == 9 || (p) == 10 || ((p) >= 20 && (p) <= 23))
+#define digitalPinHasPWM(p)                                                    \
+  (((p) >= 3 && (p) <= 6) || (p) == 9 || (p) == 10 || ((p) >= 20 && (p) <= 23))
 
 #define NOT_AN_INTERRUPT -1
-#define digitalPinToInterrupt(p)  ((p) < NUM_DIGITAL_PINS ? (p) : -1)
-
+#define digitalPinToInterrupt(p) ((p) < NUM_DIGITAL_PINS ? (p) : -1)
 
 struct digital_pin_bitband_and_config_table_struct {
-    volatile uint32_t *reg;
-    volatile uint32_t *config;
+  volatile uint32_t *reg;
+  volatile uint32_t *config;
 };
-extern const struct digital_pin_bitband_and_config_table_struct digital_pin_to_info_PGM[];
+extern const struct digital_pin_bitband_and_config_table_struct
+    digital_pin_to_info_PGM[];
 
 // compatibility macros
 #define digitalPinToPort(pin) (pin)
 #define digitalPinToBitMask(pin) (1)
-#define portOutputRegister(pin) ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 0))
-#define portSetRegister(pin)    ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 32))
-#define portClearRegister(pin)  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 64))
-#define portToggleRegister(pin) ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 96))
-#define portInputRegister(pin)  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 128))
-#define portModeRegister(pin)   ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 160))
-#define portConfigRegister(pin) ((volatile uint32_t *)(digital_pin_to_info_PGM[(pin)].config))
-
+#define portOutputRegister(pin)                                                \
+  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 0))
+#define portSetRegister(pin)                                                   \
+  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 32))
+#define portClearRegister(pin)                                                 \
+  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 64))
+#define portToggleRegister(pin)                                                \
+  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 96))
+#define portInputRegister(pin)                                                 \
+  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 128))
+#define portModeRegister(pin)                                                  \
+  ((volatile uint8_t *)(digital_pin_to_info_PGM[(pin)].reg + 160))
+#define portConfigRegister(pin)                                                \
+  ((volatile uint32_t *)(digital_pin_to_info_PGM[(pin)].config))
 
 #define digitalPinToPortReg(pin) (portOutputRegister(pin))
 #define digitalPinToBit(pin) (1)
 
-
 #define NOT_ON_TIMER 0
-static inline uint8_t digitalPinToTimer(uint8_t) __attribute__((always_inline, unused));
-static inline uint8_t digitalPinToTimer(uint8_t pin)
-{
-    if (pin >= 3 && pin <= 6) return pin - 2;
-    if (pin >= 9 && pin <= 10) return pin - 4;
-    if (pin >= 20 && pin <= 23) return pin - 13;
-    return NOT_ON_TIMER;
+static inline uint8_t digitalPinToTimer(uint8_t)
+    __attribute__((always_inline, unused));
+static inline uint8_t digitalPinToTimer(uint8_t pin) {
+  if (pin >= 3 && pin <= 6)
+    return pin - 2;
+  if (pin >= 9 && pin <= 10)
+    return pin - 4;
+  if (pin >= 20 && pin <= 23)
+    return pin - 13;
+  return NOT_ON_TIMER;
 }
-
-
-
 
 #endif

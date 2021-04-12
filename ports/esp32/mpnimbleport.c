@@ -24,9 +24,9 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
 #include "py/mperrno.h"
 #include "py/mphal.h"
+#include "py/runtime.h"
 
 #if MICROPY_PY_BLUETOOTH && MICROPY_BLUETOOTH_NIMBLE
 
@@ -39,39 +39,40 @@
 #include "extmod/nimble/modbluetooth_nimble.h"
 
 STATIC void ble_host_task(void *param) {
-    DEBUG_printf("ble_host_task\n");
-    nimble_port_run(); // This function will return only when nimble_port_stop() is executed.
-    nimble_port_freertos_deinit();
+  DEBUG_printf("ble_host_task\n");
+  nimble_port_run(); // This function will return only when nimble_port_stop()
+                     // is executed.
+  nimble_port_freertos_deinit();
 }
 
 void mp_bluetooth_nimble_port_hci_init(void) {
-    DEBUG_printf("mp_bluetooth_nimble_port_hci_init\n");
-    esp_nimble_hci_and_controller_init();
+  DEBUG_printf("mp_bluetooth_nimble_port_hci_init\n");
+  esp_nimble_hci_and_controller_init();
 }
 
 void mp_bluetooth_nimble_port_hci_deinit(void) {
-    DEBUG_printf("mp_bluetooth_nimble_port_hci_deinit\n");
+  DEBUG_printf("mp_bluetooth_nimble_port_hci_deinit\n");
 
-    esp_nimble_hci_and_controller_deinit();
+  esp_nimble_hci_and_controller_deinit();
 }
 
 void mp_bluetooth_nimble_port_start(void) {
-    DEBUG_printf("mp_bluetooth_nimble_port_start\n");
-    nimble_port_freertos_init(ble_host_task);
+  DEBUG_printf("mp_bluetooth_nimble_port_start\n");
+  nimble_port_freertos_init(ble_host_task);
 }
 
 void mp_bluetooth_nimble_port_shutdown(void) {
-    DEBUG_printf("mp_bluetooth_nimble_port_shutdown\n");
+  DEBUG_printf("mp_bluetooth_nimble_port_shutdown\n");
 
-    // Despite the name, these is an ESP32-specific (no other NimBLE ports have these functions).
-    // Calls ble_hs_stop() and waits for stack shutdown.
-    nimble_port_stop();
+  // Despite the name, these is an ESP32-specific (no other NimBLE ports have
+  // these functions). Calls ble_hs_stop() and waits for stack shutdown.
+  nimble_port_stop();
 
-    // Shuts down the event queue.
-    nimble_port_deinit();
+  // Shuts down the event queue.
+  nimble_port_deinit();
 
-    // Mark stack as shutdown.
-    mp_bluetooth_nimble_ble_state = MP_BLUETOOTH_NIMBLE_BLE_STATE_OFF;
+  // Mark stack as shutdown.
+  mp_bluetooth_nimble_ble_state = MP_BLUETOOTH_NIMBLE_BLE_STATE_OFF;
 }
 
 #endif

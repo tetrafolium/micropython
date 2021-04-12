@@ -24,9 +24,9 @@
  * THE SOFTWARE.
  */
 
-#include "user_interface.h"
-#include "py/ringbuf.h"
 #include "lib/utils/interrupt_char.h"
+#include "py/ringbuf.h"
+#include "user_interface.h"
 #include "xtirq.h"
 
 void mp_keyboard_interrupt(void);
@@ -48,13 +48,13 @@ void mp_hal_init(void);
 void mp_hal_rtc_init(void);
 
 __attribute__((always_inline)) static inline uint32_t mp_hal_ticks_us(void) {
-    return system_get_time();
+  return system_get_time();
 }
 
 __attribute__((always_inline)) static inline uint32_t mp_hal_ticks_cpu(void) {
-    uint32_t ccount;
-    __asm__ __volatile__ ("rsr %0,ccount" : "=a" (ccount));
-    return ccount;
+  uint32_t ccount;
+  __asm__ __volatile__("rsr %0,ccount" : "=a"(ccount));
+  return ccount;
 }
 
 void mp_hal_delay_us(uint32_t);
@@ -67,7 +67,11 @@ void uart_task_init();
 void dupterm_task_init();
 
 void ets_event_poll(void);
-#define ETS_POLL_WHILE(cond) { while (cond) ets_event_poll(); }
+#define ETS_POLL_WHILE(cond)                                                   \
+  {                                                                            \
+    while (cond)                                                               \
+      ets_event_poll();                                                        \
+  }
 
 // needed for machine.I2C
 #include "osapi.h"
@@ -87,19 +91,33 @@ void ets_event_poll(void);
 void mp_hal_pin_input(mp_hal_pin_obj_t pin);
 void mp_hal_pin_output(mp_hal_pin_obj_t pin);
 void mp_hal_pin_open_drain(mp_hal_pin_obj_t pin);
-#define mp_hal_pin_od_low(p) do { \
-        if ((p) == 16) { WRITE_PERI_REG(RTC_GPIO_ENABLE, (READ_PERI_REG(RTC_GPIO_ENABLE) & ~1) | 1); } \
-        else { gpio_output_set(0, 1 << (p), 1 << (p), 0); } \
-} while (0)
-#define mp_hal_pin_od_high(p) do { \
-        if ((p) == 16) { WRITE_PERI_REG(RTC_GPIO_ENABLE, (READ_PERI_REG(RTC_GPIO_ENABLE) & ~1)); } \
-        else { gpio_output_set(0, 0, 0, 1 << (p)); /* set as input to avoid glitches */ } \
-} while (0)
-// The DHT driver requires using the open-drain feature of the GPIO to get it to work reliably
-#define mp_hal_pin_od_high_dht(p) do { \
-        if ((p) == 16) { WRITE_PERI_REG(RTC_GPIO_ENABLE, (READ_PERI_REG(RTC_GPIO_ENABLE) & ~1)); } \
-        else { gpio_output_set(1 << (p), 0, 1 << (p), 0); } \
-} while (0)
+#define mp_hal_pin_od_low(p)                                                   \
+  do {                                                                         \
+    if ((p) == 16) {                                                           \
+      WRITE_PERI_REG(RTC_GPIO_ENABLE,                                          \
+                     (READ_PERI_REG(RTC_GPIO_ENABLE) & ~1) | 1);               \
+    } else {                                                                   \
+      gpio_output_set(0, 1 << (p), 1 << (p), 0);                               \
+    }                                                                          \
+  } while (0)
+#define mp_hal_pin_od_high(p)                                                  \
+  do {                                                                         \
+    if ((p) == 16) {                                                           \
+      WRITE_PERI_REG(RTC_GPIO_ENABLE, (READ_PERI_REG(RTC_GPIO_ENABLE) & ~1));  \
+    } else {                                                                   \
+      gpio_output_set(0, 0, 0, 1 << (p)); /* set as input to avoid glitches */ \
+    }                                                                          \
+  } while (0)
+// The DHT driver requires using the open-drain feature of the GPIO to get it to
+// work reliably
+#define mp_hal_pin_od_high_dht(p)                                              \
+  do {                                                                         \
+    if ((p) == 16) {                                                           \
+      WRITE_PERI_REG(RTC_GPIO_ENABLE, (READ_PERI_REG(RTC_GPIO_ENABLE) & ~1));  \
+    } else {                                                                   \
+      gpio_output_set(1 << (p), 0, 1 << (p), 0);                               \
+    }                                                                          \
+  } while (0)
 #define mp_hal_pin_read(p) pin_get(p)
 #define mp_hal_pin_write(p, v) pin_set((p), (v))
 

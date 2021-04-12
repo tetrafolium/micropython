@@ -36,13 +36,13 @@
 #endif
 
 typedef enum {
-    MACHINE_BOARD_LED = 1,
+  MACHINE_BOARD_LED = 1,
 } machine_led_t;
 
 typedef struct _machine_led_obj_t {
-    mp_obj_base_t base;
-    mp_uint_t led_id;
-    const pin_obj_t *led_pin;
+  mp_obj_base_t base;
+  mp_uint_t led_id;
+  const pin_obj_t *led_pin;
 } machine_led_obj_t;
 
 void led_init(void);

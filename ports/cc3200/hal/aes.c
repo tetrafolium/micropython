@@ -44,17 +44,17 @@
 //
 //*****************************************************************************
 
-#include <stdbool.h>
-#include <stdint.h>
+#include "aes.h"
+#include "debug.h"
 #include "inc/hw_aes.h"
 #include "inc/hw_dthe.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_nvic.h"
 #include "inc/hw_types.h"
-#include "aes.h"
-#include "debug.h"
 #include "interrupt.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 #define AES_BLOCK_SIZE_IN_BYTES 16
 
@@ -140,67 +140,57 @@
 //! \return None.
 //
 //*****************************************************************************
-void
-AESConfigSet(uint32_t ui32Base, uint32_t ui32Config)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32Config & AES_CFG_DIR_ENCRYPT) ||
-           (ui32Config & AES_CFG_DIR_DECRYPT));
-    ASSERT((ui32Config & AES_CFG_KEY_SIZE_128BIT) ||
-           (ui32Config & AES_CFG_KEY_SIZE_192BIT) ||
-           (ui32Config & AES_CFG_KEY_SIZE_256BIT));
-    ASSERT((ui32Config & AES_CFG_MODE_ECB) ||
-           (ui32Config & AES_CFG_MODE_CBC) ||
-           (ui32Config & AES_CFG_MODE_CTR) ||
-           (ui32Config & AES_CFG_MODE_ICM) ||
-           (ui32Config & AES_CFG_MODE_CFB) ||
-           (ui32Config & AES_CFG_MODE_XTS_TWEAKJL) ||
-           (ui32Config & AES_CFG_MODE_XTS_K2IJL) ||
-           (ui32Config & AES_CFG_MODE_XTS_K2ILJ0) ||
-           (ui32Config & AES_CFG_MODE_F8) ||
-           (ui32Config & AES_CFG_MODE_F9) ||
-           (ui32Config & AES_CFG_MODE_CTR) ||
-           (ui32Config & AES_CFG_MODE_CBCMAC) ||
-           (ui32Config & AES_CFG_MODE_GCM_HLY0ZERO) ||
-           (ui32Config & AES_CFG_MODE_GCM_HLY0CALC) ||
-           (ui32Config & AES_CFG_MODE_GCM_HY0CALC) ||
-           (ui32Config & AES_CFG_MODE_CCM));
-    ASSERT(((ui32Config & AES_CFG_MODE_CTR) ||
-            (ui32Config & AES_CFG_MODE_GCM_HLY0ZERO) ||
-            (ui32Config & AES_CFG_MODE_GCM_HLY0CALC) ||
-            (ui32Config & AES_CFG_MODE_GCM_HY0CALC) ||
-            (ui32Config & AES_CFG_MODE_CCM)) &&
-           ((ui32Config & AES_CFG_CTR_WIDTH_32) ||
-            (ui32Config & AES_CFG_CTR_WIDTH_64) ||
-            (ui32Config & AES_CFG_CTR_WIDTH_96) ||
-            (ui32Config & AES_CFG_CTR_WIDTH_128)));
-    ASSERT((ui32Config & AES_CFG_MODE_CCM) &&
-           ((ui32Config & AES_CFG_CCM_L_2) ||
-            (ui32Config & AES_CFG_CCM_L_4) ||
-            (ui32Config & AES_CFG_CCM_L_8)) &&
-           ((ui32Config & AES_CFG_CCM_M_4) ||
-            (ui32Config & AES_CFG_CCM_M_6) ||
-            (ui32Config & AES_CFG_CCM_M_8) ||
-            (ui32Config & AES_CFG_CCM_M_10) ||
-            (ui32Config & AES_CFG_CCM_M_12) ||
-            (ui32Config & AES_CFG_CCM_M_14) ||
-            (ui32Config & AES_CFG_CCM_M_16)));
+void AESConfigSet(uint32_t ui32Base, uint32_t ui32Config) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32Config & AES_CFG_DIR_ENCRYPT) ||
+         (ui32Config & AES_CFG_DIR_DECRYPT));
+  ASSERT((ui32Config & AES_CFG_KEY_SIZE_128BIT) ||
+         (ui32Config & AES_CFG_KEY_SIZE_192BIT) ||
+         (ui32Config & AES_CFG_KEY_SIZE_256BIT));
+  ASSERT((ui32Config & AES_CFG_MODE_ECB) || (ui32Config & AES_CFG_MODE_CBC) ||
+         (ui32Config & AES_CFG_MODE_CTR) || (ui32Config & AES_CFG_MODE_ICM) ||
+         (ui32Config & AES_CFG_MODE_CFB) ||
+         (ui32Config & AES_CFG_MODE_XTS_TWEAKJL) ||
+         (ui32Config & AES_CFG_MODE_XTS_K2IJL) ||
+         (ui32Config & AES_CFG_MODE_XTS_K2ILJ0) ||
+         (ui32Config & AES_CFG_MODE_F8) || (ui32Config & AES_CFG_MODE_F9) ||
+         (ui32Config & AES_CFG_MODE_CTR) ||
+         (ui32Config & AES_CFG_MODE_CBCMAC) ||
+         (ui32Config & AES_CFG_MODE_GCM_HLY0ZERO) ||
+         (ui32Config & AES_CFG_MODE_GCM_HLY0CALC) ||
+         (ui32Config & AES_CFG_MODE_GCM_HY0CALC) ||
+         (ui32Config & AES_CFG_MODE_CCM));
+  ASSERT(((ui32Config & AES_CFG_MODE_CTR) ||
+          (ui32Config & AES_CFG_MODE_GCM_HLY0ZERO) ||
+          (ui32Config & AES_CFG_MODE_GCM_HLY0CALC) ||
+          (ui32Config & AES_CFG_MODE_GCM_HY0CALC) ||
+          (ui32Config & AES_CFG_MODE_CCM)) &&
+         ((ui32Config & AES_CFG_CTR_WIDTH_32) ||
+          (ui32Config & AES_CFG_CTR_WIDTH_64) ||
+          (ui32Config & AES_CFG_CTR_WIDTH_96) ||
+          (ui32Config & AES_CFG_CTR_WIDTH_128)));
+  ASSERT((ui32Config & AES_CFG_MODE_CCM) &&
+         ((ui32Config & AES_CFG_CCM_L_2) || (ui32Config & AES_CFG_CCM_L_4) ||
+          (ui32Config & AES_CFG_CCM_L_8)) &&
+         ((ui32Config & AES_CFG_CCM_M_4) || (ui32Config & AES_CFG_CCM_M_6) ||
+          (ui32Config & AES_CFG_CCM_M_8) || (ui32Config & AES_CFG_CCM_M_10) ||
+          (ui32Config & AES_CFG_CCM_M_12) || (ui32Config & AES_CFG_CCM_M_14) ||
+          (ui32Config & AES_CFG_CCM_M_16)));
 
-    //
-    // Backup the save context field before updating the register.
-    //
-    if(HWREG(ui32Base + AES_O_CTRL) & AES_CTRL_SAVE_CONTEXT)
-    {
-        ui32Config |= AES_CTRL_SAVE_CONTEXT;
-    }
+  //
+  // Backup the save context field before updating the register.
+  //
+  if (HWREG(ui32Base + AES_O_CTRL) & AES_CTRL_SAVE_CONTEXT) {
+    ui32Config |= AES_CTRL_SAVE_CONTEXT;
+  }
 
-    //
-    // Write the CTRL register with the new value
-    //
-    HWREG(ui32Base + AES_O_CTRL) = ui32Config;
+  //
+  // Write the CTRL register with the new value
+  //
+  HWREG(ui32Base + AES_O_CTRL) = ui32Config;
 }
 
 //*****************************************************************************
@@ -221,42 +211,38 @@ AESConfigSet(uint32_t ui32Base, uint32_t ui32Config)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESKey1Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32Keysize == AES_CFG_KEY_SIZE_128BIT) ||
-           (ui32Keysize == AES_CFG_KEY_SIZE_192BIT) ||
-           (ui32Keysize == AES_CFG_KEY_SIZE_256BIT));
+void AESKey1Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32Keysize == AES_CFG_KEY_SIZE_128BIT) ||
+         (ui32Keysize == AES_CFG_KEY_SIZE_192BIT) ||
+         (ui32Keysize == AES_CFG_KEY_SIZE_256BIT));
 
-    //
-    // With all key sizes, the first 4 words are written.
-    //
-    HWREG(ui32Base + AES_O_KEY1_0) = * ((uint32_t *)(pui8Key + 0));
-    HWREG(ui32Base + AES_O_KEY1_1) = * ((uint32_t *)(pui8Key + 4));
-    HWREG(ui32Base + AES_O_KEY1_2) = * ((uint32_t *)(pui8Key + 8));
-    HWREG(ui32Base + AES_O_KEY1_3) = * ((uint32_t *)(pui8Key + 12));
+  //
+  // With all key sizes, the first 4 words are written.
+  //
+  HWREG(ui32Base + AES_O_KEY1_0) = *((uint32_t *)(pui8Key + 0));
+  HWREG(ui32Base + AES_O_KEY1_1) = *((uint32_t *)(pui8Key + 4));
+  HWREG(ui32Base + AES_O_KEY1_2) = *((uint32_t *)(pui8Key + 8));
+  HWREG(ui32Base + AES_O_KEY1_3) = *((uint32_t *)(pui8Key + 12));
 
-    //
-    // The key is 192 or 256 bits.  Write the next 2 words.
-    //
-    if(ui32Keysize != AES_CFG_KEY_SIZE_128BIT)
-    {
-        HWREG(ui32Base + AES_O_KEY1_4) = * ((uint32_t *)(pui8Key + 16));
-        HWREG(ui32Base + AES_O_KEY1_5) = * ((uint32_t *)(pui8Key + 20));
-    }
+  //
+  // The key is 192 or 256 bits.  Write the next 2 words.
+  //
+  if (ui32Keysize != AES_CFG_KEY_SIZE_128BIT) {
+    HWREG(ui32Base + AES_O_KEY1_4) = *((uint32_t *)(pui8Key + 16));
+    HWREG(ui32Base + AES_O_KEY1_5) = *((uint32_t *)(pui8Key + 20));
+  }
 
-    //
-    // The key is 256 bits.  Write the last 2 words.
-    //
-    if(ui32Keysize == AES_CFG_KEY_SIZE_256BIT)
-    {
-        HWREG(ui32Base + AES_O_KEY1_6) = * ((uint32_t *)(pui8Key + 24));
-        HWREG(ui32Base + AES_O_KEY1_7) = * ((uint32_t *)(pui8Key + 28));
-    }
+  //
+  // The key is 256 bits.  Write the last 2 words.
+  //
+  if (ui32Keysize == AES_CFG_KEY_SIZE_256BIT) {
+    HWREG(ui32Base + AES_O_KEY1_6) = *((uint32_t *)(pui8Key + 24));
+    HWREG(ui32Base + AES_O_KEY1_7) = *((uint32_t *)(pui8Key + 28));
+  }
 }
 
 //*****************************************************************************
@@ -277,42 +263,38 @@ AESKey1Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESKey2Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32Keysize == AES_CFG_KEY_SIZE_128BIT) ||
-           (ui32Keysize == AES_CFG_KEY_SIZE_192BIT) ||
-           (ui32Keysize == AES_CFG_KEY_SIZE_256BIT));
+void AESKey2Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32Keysize == AES_CFG_KEY_SIZE_128BIT) ||
+         (ui32Keysize == AES_CFG_KEY_SIZE_192BIT) ||
+         (ui32Keysize == AES_CFG_KEY_SIZE_256BIT));
 
-    //
-    // With all key sizes, the first 4 words are written.
-    //
-    HWREG(ui32Base + AES_O_KEY2_0) = * ((uint32_t *)(pui8Key + 0));
-    HWREG(ui32Base + AES_O_KEY2_1) = * ((uint32_t *)(pui8Key + 4));
-    HWREG(ui32Base + AES_O_KEY2_2) = * ((uint32_t *)(pui8Key + 8));
-    HWREG(ui32Base + AES_O_KEY2_3) = * ((uint32_t *)(pui8Key + 12));
+  //
+  // With all key sizes, the first 4 words are written.
+  //
+  HWREG(ui32Base + AES_O_KEY2_0) = *((uint32_t *)(pui8Key + 0));
+  HWREG(ui32Base + AES_O_KEY2_1) = *((uint32_t *)(pui8Key + 4));
+  HWREG(ui32Base + AES_O_KEY2_2) = *((uint32_t *)(pui8Key + 8));
+  HWREG(ui32Base + AES_O_KEY2_3) = *((uint32_t *)(pui8Key + 12));
 
-    //
-    // The key is 192 or 256 bits.  Write the next 2 words.
-    //
-    if(ui32Keysize != AES_CFG_KEY_SIZE_128BIT)
-    {
-        HWREG(ui32Base + AES_O_KEY2_4) = * ((uint32_t *)(pui8Key + 16));
-        HWREG(ui32Base + AES_O_KEY2_5) = * ((uint32_t *)(pui8Key + 20));
-    }
+  //
+  // The key is 192 or 256 bits.  Write the next 2 words.
+  //
+  if (ui32Keysize != AES_CFG_KEY_SIZE_128BIT) {
+    HWREG(ui32Base + AES_O_KEY2_4) = *((uint32_t *)(pui8Key + 16));
+    HWREG(ui32Base + AES_O_KEY2_5) = *((uint32_t *)(pui8Key + 20));
+  }
 
-    //
-    // The key is 256 bits.  Write the last 2 words.
-    //
-    if(ui32Keysize == AES_CFG_KEY_SIZE_256BIT)
-    {
-        HWREG(ui32Base + AES_O_KEY2_6) = * ((uint32_t *)(pui8Key + 24));
-        HWREG(ui32Base + AES_O_KEY2_7) = * ((uint32_t *)(pui8Key + 28));
-    }
+  //
+  // The key is 256 bits.  Write the last 2 words.
+  //
+  if (ui32Keysize == AES_CFG_KEY_SIZE_256BIT) {
+    HWREG(ui32Base + AES_O_KEY2_6) = *((uint32_t *)(pui8Key + 24));
+    HWREG(ui32Base + AES_O_KEY2_7) = *((uint32_t *)(pui8Key + 28));
+  }
 }
 
 //*****************************************************************************
@@ -330,21 +312,19 @@ AESKey2Set(uint32_t ui32Base, uint8_t *pui8Key, uint32_t ui32Keysize)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESKey3Set(uint32_t ui32Base, uint8_t *pui8Key)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESKey3Set(uint32_t ui32Base, uint8_t *pui8Key) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Write the key into the upper 4 key registers
-    //
-    HWREG(ui32Base + AES_O_KEY2_4) = * ((uint32_t *)(pui8Key + 0));
-    HWREG(ui32Base + AES_O_KEY2_5) = * ((uint32_t *)(pui8Key + 4));
-    HWREG(ui32Base + AES_O_KEY2_6) = * ((uint32_t *)(pui8Key + 8));
-    HWREG(ui32Base + AES_O_KEY2_7) = * ((uint32_t *)(pui8Key + 12));
+  //
+  // Write the key into the upper 4 key registers
+  //
+  HWREG(ui32Base + AES_O_KEY2_4) = *((uint32_t *)(pui8Key + 0));
+  HWREG(ui32Base + AES_O_KEY2_5) = *((uint32_t *)(pui8Key + 4));
+  HWREG(ui32Base + AES_O_KEY2_6) = *((uint32_t *)(pui8Key + 8));
+  HWREG(ui32Base + AES_O_KEY2_7) = *((uint32_t *)(pui8Key + 12));
 }
 
 //*****************************************************************************
@@ -360,23 +340,20 @@ AESKey3Set(uint32_t ui32Base, uint8_t *pui8Key)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESIVSet(uint32_t ui32Base, uint8_t *pui8IVdata)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESIVSet(uint32_t ui32Base, uint8_t *pui8IVdata) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Write the initial vector registers.
-    //
-    HWREG(ui32Base + AES_O_IV_IN_0) = *((uint32_t *)(pui8IVdata+0));
-    HWREG(ui32Base + AES_O_IV_IN_1) = *((uint32_t *)(pui8IVdata+4));
-    HWREG(ui32Base + AES_O_IV_IN_2) = *((uint32_t *)(pui8IVdata+8));
-    HWREG(ui32Base + AES_O_IV_IN_3) = *((uint32_t *)(pui8IVdata+12));
+  //
+  // Write the initial vector registers.
+  //
+  HWREG(ui32Base + AES_O_IV_IN_0) = *((uint32_t *)(pui8IVdata + 0));
+  HWREG(ui32Base + AES_O_IV_IN_1) = *((uint32_t *)(pui8IVdata + 4));
+  HWREG(ui32Base + AES_O_IV_IN_2) = *((uint32_t *)(pui8IVdata + 8));
+  HWREG(ui32Base + AES_O_IV_IN_3) = *((uint32_t *)(pui8IVdata + 12));
 }
-
 
 //*****************************************************************************
 //
@@ -390,21 +367,19 @@ AESIVSet(uint32_t ui32Base, uint8_t *pui8IVdata)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESIVGet(uint32_t ui32Base, uint8_t *pui8IVdata)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESIVGet(uint32_t ui32Base, uint8_t *pui8IVdata) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Write the initial vector registers.
-    //
-    *((uint32_t *)(pui8IVdata+ 0)) = HWREG(ui32Base + AES_O_IV_IN_0);
-    *((uint32_t *)(pui8IVdata+ 4)) = HWREG(ui32Base + AES_O_IV_IN_1);
-    *((uint32_t *)(pui8IVdata+ 8)) = HWREG(ui32Base + AES_O_IV_IN_2);
-    *((uint32_t *)(pui8IVdata+12)) = HWREG(ui32Base + AES_O_IV_IN_3);
+  //
+  // Write the initial vector registers.
+  //
+  *((uint32_t *)(pui8IVdata + 0)) = HWREG(ui32Base + AES_O_IV_IN_0);
+  *((uint32_t *)(pui8IVdata + 4)) = HWREG(ui32Base + AES_O_IV_IN_1);
+  *((uint32_t *)(pui8IVdata + 8)) = HWREG(ui32Base + AES_O_IV_IN_2);
+  *((uint32_t *)(pui8IVdata + 12)) = HWREG(ui32Base + AES_O_IV_IN_3);
 }
 
 //*****************************************************************************
@@ -420,21 +395,19 @@ AESIVGet(uint32_t ui32Base, uint8_t *pui8IVdata)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESTagRead(uint32_t ui32Base, uint8_t *pui8TagData)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESTagRead(uint32_t ui32Base, uint8_t *pui8TagData) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Read the tag data.
-    //
-    *((uint32_t *)(pui8TagData+0)) = HWREG((ui32Base + AES_O_TAG_OUT_0));
-    *((uint32_t *)(pui8TagData+4)) = HWREG((ui32Base + AES_O_TAG_OUT_1));
-    *((uint32_t *)(pui8TagData+8)) = HWREG((ui32Base + AES_O_TAG_OUT_2));
-    *((uint32_t *)(pui8TagData+12)) = HWREG((ui32Base + AES_O_TAG_OUT_3));
+  //
+  // Read the tag data.
+  //
+  *((uint32_t *)(pui8TagData + 0)) = HWREG((ui32Base + AES_O_TAG_OUT_0));
+  *((uint32_t *)(pui8TagData + 4)) = HWREG((ui32Base + AES_O_TAG_OUT_1));
+  *((uint32_t *)(pui8TagData + 8)) = HWREG((ui32Base + AES_O_TAG_OUT_2));
+  *((uint32_t *)(pui8TagData + 12)) = HWREG((ui32Base + AES_O_TAG_OUT_3));
 }
 
 //*****************************************************************************
@@ -460,19 +433,17 @@ AESTagRead(uint32_t ui32Base, uint8_t *pui8TagData)
 //! \return None
 //
 //*****************************************************************************
-void
-AESDataLengthSet(uint32_t ui32Base, uint64_t ui64Length)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESDataLengthSet(uint32_t ui32Base, uint64_t ui64Length) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Write the length register by shifting the 64-bit ui64Length.
-    //
-    HWREG(ui32Base + AES_O_C_LENGTH_0) = (uint32_t)(ui64Length);
-    HWREG(ui32Base + AES_O_C_LENGTH_1) = (uint32_t)(ui64Length >> 32);
+  //
+  // Write the length register by shifting the 64-bit ui64Length.
+  //
+  HWREG(ui32Base + AES_O_C_LENGTH_0) = (uint32_t)(ui64Length);
+  HWREG(ui32Base + AES_O_C_LENGTH_1) = (uint32_t)(ui64Length >> 32);
 }
 
 //*****************************************************************************
@@ -497,18 +468,16 @@ AESDataLengthSet(uint32_t ui32Base, uint64_t ui64Length)
 //! \return None
 //
 //*****************************************************************************
-void
-AESAuthDataLengthSet(uint32_t ui32Base, uint32_t ui32Length)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESAuthDataLengthSet(uint32_t ui32Base, uint32_t ui32Length) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Write the length into the register.
-    //
-    HWREG(ui32Base + AES_O_AUTH_LENGTH) = ui32Length;
+  //
+  // Write the length into the register.
+  //
+  HWREG(ui32Base + AES_O_AUTH_LENGTH) = ui32Length;
 }
 
 //*****************************************************************************
@@ -528,52 +497,47 @@ AESAuthDataLengthSet(uint32_t ui32Base, uint32_t ui32Length)
 //! \return true or false.
 //
 //*****************************************************************************
-bool
-AESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
-{
-    volatile uint32_t pui32Dest[4];
-    uint8_t ui8BytCnt;
-    uint8_t *pui8DestTemp;
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    if((ui8Length == 0)||(ui8Length>16))
-    {
-        return(false);
-    }
+bool AESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest,
+                            uint8_t ui8Length) {
+  volatile uint32_t pui32Dest[4];
+  uint8_t ui8BytCnt;
+  uint8_t *pui8DestTemp;
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  if ((ui8Length == 0) || (ui8Length > 16)) {
+    return (false);
+  }
 
-    //
-    // Check if the output is ready before reading the data.  If it not ready,
-    // return false.
-    //
-    if((AES_CTRL_OUTPUT_READY & (HWREG(ui32Base + AES_O_CTRL))) == 0)
-    {
-        return(false);
-    }
+  //
+  // Check if the output is ready before reading the data.  If it not ready,
+  // return false.
+  //
+  if ((AES_CTRL_OUTPUT_READY & (HWREG(ui32Base + AES_O_CTRL))) == 0) {
+    return (false);
+  }
 
-    //
-    // Read a block of data from the data registers
-    //
-    pui32Dest[0] = HWREG(ui32Base + AES_O_DATA_IN_3);
-    pui32Dest[1] = HWREG(ui32Base + AES_O_DATA_IN_2);
-    pui32Dest[2] = HWREG(ui32Base + AES_O_DATA_IN_1);
-    pui32Dest[3] = HWREG(ui32Base + AES_O_DATA_IN_0);
+  //
+  // Read a block of data from the data registers
+  //
+  pui32Dest[0] = HWREG(ui32Base + AES_O_DATA_IN_3);
+  pui32Dest[1] = HWREG(ui32Base + AES_O_DATA_IN_2);
+  pui32Dest[2] = HWREG(ui32Base + AES_O_DATA_IN_1);
+  pui32Dest[3] = HWREG(ui32Base + AES_O_DATA_IN_0);
 
-    //
-    //Copy the data to a block memory
-    //
-    pui8DestTemp = (uint8_t *)pui32Dest;
-    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
-    {
-        *(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
-    }
-    //
-    // Read successful, return true.
-    //
-    return(true);
+  //
+  // Copy the data to a block memory
+  //
+  pui8DestTemp = (uint8_t *)pui32Dest;
+  for (ui8BytCnt = 0; ui8BytCnt < ui8Length; ui8BytCnt++) {
+    *(pui8Dest + ui8BytCnt) = *(pui8DestTemp + ui8BytCnt);
+  }
+  //
+  // Read successful, return true.
+  //
+  return (true);
 }
-
 
 //*****************************************************************************
 //
@@ -593,47 +557,41 @@ AESDataReadNonBlocking(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 //
 //*****************************************************************************
 
-void
-AESDataRead(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
-{
-    volatile uint32_t pui32Dest[4];
-    uint8_t ui8BytCnt;
-    uint8_t *pui8DestTemp;
+void AESDataRead(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length) {
+  volatile uint32_t pui32Dest[4];
+  uint8_t ui8BytCnt;
+  uint8_t *pui8DestTemp;
 
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    if((ui8Length == 0)||(ui8Length>16))
-    {
-        return;
-    }
-
-
-    //
-    // Wait for the output to be ready before reading the data.
-    //
-    while((AES_CTRL_OUTPUT_READY & (HWREG(ui32Base + AES_O_CTRL))) == 0)
-    {
-    }
-
-    //
-    // Read a block of data from the data registers
-    //
-    pui32Dest[0] = HWREG(ui32Base + AES_O_DATA_IN_3);
-    pui32Dest[1] = HWREG(ui32Base + AES_O_DATA_IN_2);
-    pui32Dest[2] = HWREG(ui32Base + AES_O_DATA_IN_1);
-    pui32Dest[3] = HWREG(ui32Base + AES_O_DATA_IN_0);
-    //
-    //Copy the data to a block memory
-    //
-    pui8DestTemp = (uint8_t *)pui32Dest;
-    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
-    {
-        *(pui8Dest+ui8BytCnt) = *(pui8DestTemp+ui8BytCnt);
-    }
-
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  if ((ui8Length == 0) || (ui8Length > 16)) {
     return;
+  }
+
+  //
+  // Wait for the output to be ready before reading the data.
+  //
+  while ((AES_CTRL_OUTPUT_READY & (HWREG(ui32Base + AES_O_CTRL))) == 0) {
+  }
+
+  //
+  // Read a block of data from the data registers
+  //
+  pui32Dest[0] = HWREG(ui32Base + AES_O_DATA_IN_3);
+  pui32Dest[1] = HWREG(ui32Base + AES_O_DATA_IN_2);
+  pui32Dest[2] = HWREG(ui32Base + AES_O_DATA_IN_1);
+  pui32Dest[3] = HWREG(ui32Base + AES_O_DATA_IN_0);
+  //
+  // Copy the data to a block memory
+  //
+  pui8DestTemp = (uint8_t *)pui32Dest;
+  for (ui8BytCnt = 0; ui8BytCnt < ui8Length; ui8BytCnt++) {
+    *(pui8Dest + ui8BytCnt) = *(pui8DestTemp + ui8BytCnt);
+  }
+
+  return;
 }
 
 //*****************************************************************************
@@ -651,53 +609,47 @@ AESDataRead(uint32_t ui32Base, uint8_t *pui8Dest, uint8_t ui8Length)
 //! \return True or false.
 //
 //*****************************************************************************
-bool
-AESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
-{
-    volatile uint32_t pui32Src[4]= {0,0,0,0};
-    uint8_t ui8BytCnt;
-    uint8_t *pui8SrcTemp;
+bool AESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src,
+                             uint8_t ui8Length) {
+  volatile uint32_t pui32Src[4] = {0, 0, 0, 0};
+  uint8_t ui8BytCnt;
+  uint8_t *pui8SrcTemp;
 
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    if((ui8Length == 0)||(ui8Length>16))
-    {
-        return(false);
-    }
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  if ((ui8Length == 0) || (ui8Length > 16)) {
+    return (false);
+  }
 
-    //
-    // Check if the input is ready.  If not, then return false.
-    //
-    if(!(AES_CTRL_INPUT_READY & (HWREG(ui32Base + AES_O_CTRL))))
-    {
-        return(false);
-    }
+  //
+  // Check if the input is ready.  If not, then return false.
+  //
+  if (!(AES_CTRL_INPUT_READY & (HWREG(ui32Base + AES_O_CTRL)))) {
+    return (false);
+  }
 
+  //
+  // Copy the data to a block memory
+  //
+  pui8SrcTemp = (uint8_t *)pui32Src;
+  for (ui8BytCnt = 0; ui8BytCnt < ui8Length; ui8BytCnt++) {
+    *(pui8SrcTemp + ui8BytCnt) = *(pui8Src + ui8BytCnt);
+  }
+  //
+  // Write a block of data into the data registers.
+  //
+  HWREG(ui32Base + AES_O_DATA_IN_3) = pui32Src[0];
+  HWREG(ui32Base + AES_O_DATA_IN_2) = pui32Src[1];
+  HWREG(ui32Base + AES_O_DATA_IN_1) = pui32Src[2];
+  HWREG(ui32Base + AES_O_DATA_IN_0) = pui32Src[3];
 
-    //
-    //Copy the data to a block memory
-    //
-    pui8SrcTemp = (uint8_t *)pui32Src;
-    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
-    {
-        *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
-    }
-    //
-    // Write a block of data into the data registers.
-    //
-    HWREG(ui32Base + AES_O_DATA_IN_3) = pui32Src[0];
-    HWREG(ui32Base + AES_O_DATA_IN_2) = pui32Src[1];
-    HWREG(ui32Base + AES_O_DATA_IN_1) = pui32Src[2];
-    HWREG(ui32Base + AES_O_DATA_IN_0) = pui32Src[3];
-
-    //
-    // Write successful, return true.
-    //
-    return(true);
+  //
+  // Write successful, return true.
+  //
+  return (true);
 }
-
 
 //*****************************************************************************
 //
@@ -715,45 +667,39 @@ AESDataWriteNonBlocking(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 //
 //*****************************************************************************
 
-void
-AESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
-{
-    volatile uint32_t pui32Src[4]= {0,0,0,0};
-    uint8_t ui8BytCnt;
-    uint8_t *pui8SrcTemp;
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    if((ui8Length == 0)||(ui8Length>16))
-    {
-        return;
-    }
-    //
-    // Wait for input ready.
-    //
-    while((AES_CTRL_INPUT_READY & (HWREG(ui32Base + AES_O_CTRL))) == 0)
-    {
-    }
+void AESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length) {
+  volatile uint32_t pui32Src[4] = {0, 0, 0, 0};
+  uint8_t ui8BytCnt;
+  uint8_t *pui8SrcTemp;
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  if ((ui8Length == 0) || (ui8Length > 16)) {
+    return;
+  }
+  //
+  // Wait for input ready.
+  //
+  while ((AES_CTRL_INPUT_READY & (HWREG(ui32Base + AES_O_CTRL))) == 0) {
+  }
 
-    //
-    //Copy the data to a block memory
-    //
-    pui8SrcTemp = (uint8_t *)pui32Src;
-    for(ui8BytCnt = 0; ui8BytCnt < ui8Length ; ui8BytCnt++)
-    {
-        *(pui8SrcTemp+ui8BytCnt) = *(pui8Src+ui8BytCnt);
-    }
+  //
+  // Copy the data to a block memory
+  //
+  pui8SrcTemp = (uint8_t *)pui32Src;
+  for (ui8BytCnt = 0; ui8BytCnt < ui8Length; ui8BytCnt++) {
+    *(pui8SrcTemp + ui8BytCnt) = *(pui8Src + ui8BytCnt);
+  }
 
-    //
-    // Write a block of data into the data registers.
-    //
-    HWREG(ui32Base + AES_O_DATA_IN_3) = pui32Src[0];
-    HWREG(ui32Base + AES_O_DATA_IN_2) = pui32Src[1];
-    HWREG(ui32Base + AES_O_DATA_IN_1) = pui32Src[2];
-    HWREG(ui32Base + AES_O_DATA_IN_0) = pui32Src[3];
+  //
+  // Write a block of data into the data registers.
+  //
+  HWREG(ui32Base + AES_O_DATA_IN_3) = pui32Src[0];
+  HWREG(ui32Base + AES_O_DATA_IN_2) = pui32Src[1];
+  HWREG(ui32Base + AES_O_DATA_IN_1) = pui32Src[2];
+  HWREG(ui32Base + AES_O_DATA_IN_0) = pui32Src[3];
 }
-
 
 //*****************************************************************************
 //
@@ -778,68 +724,62 @@ AESDataWrite(uint32_t ui32Base, uint8_t *pui8Src, uint8_t ui8Length)
 //! if data processing failed.
 //
 //*****************************************************************************
-bool
-AESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
-               uint32_t ui32Length)
-{
-    uint32_t ui32Count, ui32BlkCount, ui32ByteCount;
+bool AESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
+                    uint32_t ui32Length) {
+  uint32_t ui32Count, ui32BlkCount, ui32ByteCount;
+
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+
+  //
+  // Write the length register first, which triggers the engine to start
+  // using this context.
+  //
+  AESDataLengthSet(AES_BASE, (uint64_t)ui32Length);
+
+  //
+  // Now loop until the blocks are written.
+  //
+  ui32BlkCount = ui32Length / 16;
+  for (ui32Count = 0; ui32Count < ui32BlkCount; ui32Count += 1) {
+    //
+    // Write the data registers.
+    //
+    AESDataWrite(ui32Base, pui8Src + (ui32Count * 16), 16);
 
     //
-    // Check the arguments.
+    // Read the data registers.
     //
-    ASSERT(ui32Base == AES_BASE);
+    AESDataRead(ui32Base, pui8Dest + (ui32Count * 16), 16);
+  }
+
+  //
+  // Now handle the residue bytes
+  //
+  ui32ByteCount = ui32Length % 16;
+  if (ui32ByteCount) {
+    //
+    // Write the data registers.
+    //
+    AESDataWrite(ui32Base, pui8Src + (16 * ui32BlkCount), ui32ByteCount);
 
     //
-    // Write the length register first, which triggers the engine to start
-    // using this context.
+    // Read the data registers.
     //
-    AESDataLengthSet(AES_BASE, (uint64_t) ui32Length);
+    AESDataRead(ui32Base, pui8Dest + (16 * ui32BlkCount), ui32ByteCount);
+  }
 
-    //
-    // Now loop until the blocks are written.
-    //
-    ui32BlkCount = ui32Length/16;
-    for(ui32Count = 0; ui32Count < ui32BlkCount; ui32Count += 1)
-    {
-        //
-        // Write the data registers.
-        //
-        AESDataWrite(ui32Base, pui8Src + (ui32Count*16),16);
-
-        //
-        // Read the data registers.
-        //
-        AESDataRead(ui32Base, pui8Dest + (ui32Count*16),16);
-
-    }
-
-    //
-    //Now handle the residue bytes
-    //
-    ui32ByteCount = ui32Length%16;
-    if(ui32ByteCount)
-    {
-        //
-        // Write the data registers.
-        //
-        AESDataWrite(ui32Base, pui8Src + (16*ui32BlkCount),ui32ByteCount);
-
-        //
-        // Read the data registers.
-        //
-        AESDataRead(ui32Base, pui8Dest + (16*ui32BlkCount),ui32ByteCount);
-    }
-
-
-
-    //
-    // Return true to indicate successful completion of the function.
-    //
-    return(true);
+  //
+  // Return true to indicate successful completion of the function.
+  //
+  return (true);
 }
 //*****************************************************************************
 //
-//! Used to generate message authentication code (MAC) using CBC-MAC and F9 mode.
+//! Used to generate message authentication code (MAC) using CBC-MAC and F9
+//! mode.
 //!
 //! \param ui32Base is the base address of the AES module.
 //! \param pui8Src is a pointer to the memory location where the input data
@@ -857,72 +797,67 @@ AESDataProcess(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
 //! if data processing failed.
 //
 //*****************************************************************************
-bool
-AESDataMAC(uint32_t ui32Base, uint8_t *pui8Src, uint32_t ui32Length,
-           uint8_t *pui8Tag)
-{
-    uint32_t ui32Count, ui32BlkCount, ui32ByteCount;
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+bool AESDataMAC(uint32_t ui32Base, uint8_t *pui8Src, uint32_t ui32Length,
+                uint8_t *pui8Tag) {
+  uint32_t ui32Count, ui32BlkCount, ui32ByteCount;
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Write the length register first, which triggers the engine to start
-    // using this context.
-    //
-    AESDataLengthSet(AES_BASE, (uint64_t) ui32Length);
+  //
+  // Write the length register first, which triggers the engine to start
+  // using this context.
+  //
+  AESDataLengthSet(AES_BASE, (uint64_t)ui32Length);
 
+  //
+  // Write the data registers.
+  //
+
+  //
+  // Now loop until the blocks are written.
+  //
+  ui32BlkCount = ui32Length / 16;
+  for (ui32Count = 0; ui32Count < ui32BlkCount; ui32Count += 1) {
     //
     // Write the data registers.
     //
+    AESDataWrite(ui32Base, pui8Src + ui32Count * 16, 16);
+  }
 
+  //
+  // Now handle the residue bytes
+  //
+  ui32ByteCount = ui32Length % 16;
+  if (ui32ByteCount) {
     //
-    // Now loop until the blocks are written.
+    // Write the data registers.
     //
-    ui32BlkCount = ui32Length/16;
-    for(ui32Count = 0; ui32Count < ui32BlkCount; ui32Count += 1)
-    {
-        //
-        // Write the data registers.
-        //
-        AESDataWrite(ui32Base, pui8Src + ui32Count*16,16);
-    }
+    AESDataWrite(ui32Base, pui8Src + (ui32Count * ui32BlkCount), ui32ByteCount);
+  }
 
-    //
-    //Now handle the residue bytes
-    //
-    ui32ByteCount = ui32Length%16;
-    if(ui32ByteCount)
-    {
-        //
-        // Write the data registers.
-        //
-        AESDataWrite(ui32Base, pui8Src + (ui32Count*ui32BlkCount),ui32ByteCount);
-    }
+  //
+  // Wait for the context data regsiters to be ready.
+  //
+  while ((AES_CTRL_SVCTXTRDY & (HWREG(AES_BASE + AES_O_CTRL))) == 0) {
+  }
 
-    //
-    // Wait for the context data regsiters to be ready.
-    //
-    while((AES_CTRL_SVCTXTRDY & (HWREG(AES_BASE + AES_O_CTRL))) == 0)
-    {
-    }
+  //
+  // Read the hash tag value.
+  //
+  AESTagRead(AES_BASE, pui8Tag);
 
-    //
-    // Read the hash tag value.
-    //
-    AESTagRead(AES_BASE, pui8Tag);
-
-    //
-    // Return true to indicate successful completion of the function.
-    //
-    return(true);
+  //
+  // Return true to indicate successful completion of the function.
+  //
+  return (true);
 }
 
 //*****************************************************************************
 //
-//! Used for Authenticated encryption (AE) of the data. Processes and authenticates blocks of data,
-//! either encrypt the data or decrypt the data.
+//! Used for Authenticated encryption (AE) of the data. Processes and
+//! authenticates blocks of data, either encrypt the data or decrypt the data.
 //!
 //! \param ui32Base  is the base address of the AES module.
 //! \param pui8Src is a pointer to the memory location where the input data
@@ -947,72 +882,67 @@ AESDataMAC(uint32_t ui32Base, uint8_t *pui8Src, uint32_t ui32Length,
 //! if data processing failed.
 //
 //*****************************************************************************
-bool
-AESDataProcessAE(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
-                 uint32_t ui32Length, uint8_t *pui8AuthSrc,
-                 uint32_t ui32AuthLength, uint8_t *pui8Tag)
-{
-    uint32_t ui32Count;
+bool AESDataProcessAE(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
+                      uint32_t ui32Length, uint8_t *pui8AuthSrc,
+                      uint32_t ui32AuthLength, uint8_t *pui8Tag) {
+  uint32_t ui32Count;
+
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+
+  //
+  // Set the data length.
+  //
+  AESDataLengthSet(AES_BASE, (uint64_t)ui32Length);
+
+  //
+  // Set the additional authentication data length.
+  //
+  AESAuthDataLengthSet(AES_BASE, ui32AuthLength);
+
+  //
+  // Now loop until the authentication data blocks are written.
+  //
+  for (ui32Count = 0; ui32Count < ui32AuthLength; ui32Count += 16) {
+    //
+    // Write the data registers.
+    //
+    AESDataWrite(ui32Base, pui8AuthSrc + (ui32Count), 16);
+  }
+
+  //
+  // Now loop until the data blocks are written.
+  //
+  for (ui32Count = 0; ui32Count < ui32Length; ui32Count += 16) {
+    //
+    // Write the data registers.
+    //
+    AESDataWrite(ui32Base, pui8Src + (ui32Count), 16);
 
     //
-    // Check the arguments.
     //
-    ASSERT(ui32Base == AES_BASE);
+    // Read the data registers.
+    //
+    AESDataRead(ui32Base, pui8Dest + (ui32Count), 16);
+  }
 
-    //
-    // Set the data length.
-    //
-    AESDataLengthSet(AES_BASE, (uint64_t) ui32Length);
+  //
+  // Wait for the context data regsiters to be ready.
+  //
+  while ((AES_CTRL_SVCTXTRDY & (HWREG(AES_BASE + AES_O_CTRL))) == 0) {
+  }
 
-    //
-    // Set the additional authentication data length.
-    //
-    AESAuthDataLengthSet(AES_BASE, ui32AuthLength);
+  //
+  // Read the hash tag value.
+  //
+  AESTagRead(AES_BASE, pui8Tag);
 
-    //
-    // Now loop until the authentication data blocks are written.
-    //
-    for(ui32Count = 0; ui32Count < ui32AuthLength; ui32Count += 16)
-    {
-        //
-        // Write the data registers.
-        //
-        AESDataWrite(ui32Base, pui8AuthSrc + (ui32Count),16);
-    }
-
-    //
-    // Now loop until the data blocks are written.
-    //
-    for(ui32Count = 0; ui32Count < ui32Length; ui32Count += 16)
-    {
-        //
-        // Write the data registers.
-        //
-        AESDataWrite(ui32Base, pui8Src + (ui32Count),16);
-
-        //
-        //
-        // Read the data registers.
-        //
-        AESDataRead(ui32Base, pui8Dest + (ui32Count),16);
-    }
-
-    //
-    // Wait for the context data regsiters to be ready.
-    //
-    while((AES_CTRL_SVCTXTRDY & (HWREG(AES_BASE + AES_O_CTRL))) == 0)
-    {
-    }
-
-    //
-    // Read the hash tag value.
-    //
-    AESTagRead(AES_BASE, pui8Tag);
-
-    //
-    // Return true to indicate successful completion of the function.
-    //
-    return(true);
+  //
+  // Return true to indicate successful completion of the function.
+  //
+  return (true);
 }
 
 //*****************************************************************************
@@ -1037,33 +967,28 @@ AESDataProcessAE(uint32_t ui32Base, uint8_t *pui8Src, uint8_t *pui8Dest,
 //! - \b AES_INT_DMA_DATA_OUT - Data output DMA done interrupt
 //
 //*****************************************************************************
-uint32_t
-AESIntStatus(uint32_t ui32Base, bool bMasked)
-{
-    uint32_t ui32Temp;
-    uint32_t ui32IrqEnable;
+uint32_t AESIntStatus(uint32_t ui32Base, bool bMasked) {
+  uint32_t ui32Temp;
+  uint32_t ui32IrqEnable;
 
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Read the IRQ status register and return the value.
-    //
-    if(bMasked)
-    {
-        ui32Temp = HWREG(DTHE_BASE + DTHE_O_AES_MIS);
-        ui32IrqEnable = HWREG(ui32Base + AES_O_IRQENABLE);
-        return((HWREG(ui32Base + AES_O_IRQSTATUS) &
-                ui32IrqEnable) | ((ui32Temp & 0x0000000F) << 16));
-    }
-    else
-    {
-        ui32Temp = HWREG(DTHE_BASE + DTHE_O_AES_RIS);
-        return(HWREG(ui32Base + AES_O_IRQSTATUS) |
-               ((ui32Temp & 0x0000000F) << 16));
-    }
+  //
+  // Read the IRQ status register and return the value.
+  //
+  if (bMasked) {
+    ui32Temp = HWREG(DTHE_BASE + DTHE_O_AES_MIS);
+    ui32IrqEnable = HWREG(ui32Base + AES_O_IRQENABLE);
+    return ((HWREG(ui32Base + AES_O_IRQSTATUS) & ui32IrqEnable) |
+            ((ui32Temp & 0x0000000F) << 16));
+  } else {
+    ui32Temp = HWREG(DTHE_BASE + DTHE_O_AES_RIS);
+    return (HWREG(ui32Base + AES_O_IRQSTATUS) |
+            ((ui32Temp & 0x0000000F) << 16));
+  }
 }
 
 //*****************************************************************************
@@ -1092,27 +1017,25 @@ AESIntStatus(uint32_t ui32Base, bool bMasked)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32IntFlags == AES_INT_CONTEXT_IN) ||
-           (ui32IntFlags == AES_INT_CONTEXT_OUT) ||
-           (ui32IntFlags == AES_INT_DATA_IN) ||
-           (ui32IntFlags == AES_INT_DATA_OUT) ||
-           (ui32IntFlags == AES_INT_DMA_CONTEXT_IN) ||
-           (ui32IntFlags == AES_INT_DMA_CONTEXT_OUT) ||
-           (ui32IntFlags == AES_INT_DMA_DATA_IN) ||
-           (ui32IntFlags == AES_INT_DMA_DATA_OUT));
+void AESIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32IntFlags == AES_INT_CONTEXT_IN) ||
+         (ui32IntFlags == AES_INT_CONTEXT_OUT) ||
+         (ui32IntFlags == AES_INT_DATA_IN) ||
+         (ui32IntFlags == AES_INT_DATA_OUT) ||
+         (ui32IntFlags == AES_INT_DMA_CONTEXT_IN) ||
+         (ui32IntFlags == AES_INT_DMA_CONTEXT_OUT) ||
+         (ui32IntFlags == AES_INT_DMA_DATA_IN) ||
+         (ui32IntFlags == AES_INT_DMA_DATA_OUT));
 
-    //
-    // Set the flags.
-    //
-    HWREG(DTHE_BASE + DTHE_O_AES_IM) &= ~((ui32IntFlags & 0x000F0000) >> 16);
-    HWREG(ui32Base + AES_O_IRQENABLE) |= ui32IntFlags & 0x0000ffff;
+  //
+  // Set the flags.
+  //
+  HWREG(DTHE_BASE + DTHE_O_AES_IM) &= ~((ui32IntFlags & 0x000F0000) >> 16);
+  HWREG(ui32Base + AES_O_IRQENABLE) |= ui32IntFlags & 0x0000ffff;
 }
 
 //*****************************************************************************
@@ -1141,27 +1064,25 @@ AESIntEnable(uint32_t ui32Base, uint32_t ui32IntFlags)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32IntFlags == AES_INT_CONTEXT_IN) ||
-           (ui32IntFlags == AES_INT_CONTEXT_OUT) ||
-           (ui32IntFlags == AES_INT_DATA_IN) ||
-           (ui32IntFlags == AES_INT_DATA_OUT) ||
-           (ui32IntFlags == AES_INT_DMA_CONTEXT_IN) ||
-           (ui32IntFlags == AES_INT_DMA_CONTEXT_OUT) ||
-           (ui32IntFlags == AES_INT_DMA_DATA_IN) ||
-           (ui32IntFlags == AES_INT_DMA_DATA_OUT));
+void AESIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32IntFlags == AES_INT_CONTEXT_IN) ||
+         (ui32IntFlags == AES_INT_CONTEXT_OUT) ||
+         (ui32IntFlags == AES_INT_DATA_IN) ||
+         (ui32IntFlags == AES_INT_DATA_OUT) ||
+         (ui32IntFlags == AES_INT_DMA_CONTEXT_IN) ||
+         (ui32IntFlags == AES_INT_DMA_CONTEXT_OUT) ||
+         (ui32IntFlags == AES_INT_DMA_DATA_IN) ||
+         (ui32IntFlags == AES_INT_DMA_DATA_OUT));
 
-    //
-    // Clear the flags.
-    //
-    HWREG(DTHE_BASE + DTHE_O_AES_IM) |= ((ui32IntFlags & 0x000F0000) >> 16);
-    HWREG(ui32Base + AES_O_IRQENABLE) &= ~(ui32IntFlags & 0x0000ffff);
+  //
+  // Clear the flags.
+  //
+  HWREG(DTHE_BASE + DTHE_O_AES_IM) |= ((ui32IntFlags & 0x000F0000) >> 16);
+  HWREG(ui32Base + AES_O_IRQENABLE) &= ~(ui32IntFlags & 0x0000ffff);
 }
 
 //*****************************************************************************
@@ -1186,19 +1107,17 @@ AESIntDisable(uint32_t ui32Base, uint32_t ui32IntFlags)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESIntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32IntFlags == AES_INT_DMA_CONTEXT_IN) ||
-           (ui32IntFlags == AES_INT_DMA_CONTEXT_OUT) ||
-           (ui32IntFlags == AES_INT_DMA_DATA_IN) ||
-           (ui32IntFlags == AES_INT_DMA_DATA_OUT));
+void AESIntClear(uint32_t ui32Base, uint32_t ui32IntFlags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32IntFlags == AES_INT_DMA_CONTEXT_IN) ||
+         (ui32IntFlags == AES_INT_DMA_CONTEXT_OUT) ||
+         (ui32IntFlags == AES_INT_DMA_DATA_IN) ||
+         (ui32IntFlags == AES_INT_DMA_DATA_OUT));
 
-    HWREG(DTHE_BASE + DTHE_O_AES_IC) = ((ui32IntFlags >> 16) & 0x0000000F);
+  HWREG(DTHE_BASE + DTHE_O_AES_IC) = ((ui32IntFlags >> 16) & 0x0000000F);
 }
 
 //*****************************************************************************
@@ -1226,23 +1145,21 @@ AESIntClear(uint32_t ui32Base, uint32_t ui32IntFlags)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESIntRegister(uint32_t ui32Base, void(*pfnHandler)(void))
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESIntRegister(uint32_t ui32Base, void (*pfnHandler)(void)) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Register the interrupt handler.
-    //
-    IntRegister(INT_AES, pfnHandler);
+  //
+  // Register the interrupt handler.
+  //
+  IntRegister(INT_AES, pfnHandler);
 
-    //
-    // Enable the interrupt
-    //
-    IntEnable(INT_AES);
+  //
+  // Enable the interrupt
+  //
+  IntEnable(INT_AES);
 }
 
 //*****************************************************************************
@@ -1260,23 +1177,21 @@ AESIntRegister(uint32_t ui32Base, void(*pfnHandler)(void))
 //! \return None.
 //
 //*****************************************************************************
-void
-AESIntUnregister(uint32_t ui32Base)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
+void AESIntUnregister(uint32_t ui32Base) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
 
-    //
-    // Disable the interrupt.
-    //
-    IntDisable(INT_AES);
+  //
+  // Disable the interrupt.
+  //
+  IntDisable(INT_AES);
 
-    //
-    // Unregister the interrupt handler.
-    //
-    IntUnregister(INT_AES);
+  //
+  // Unregister the interrupt handler.
+  //
+  IntUnregister(INT_AES);
 }
 
 //*****************************************************************************
@@ -1297,22 +1212,19 @@ AESIntUnregister(uint32_t ui32Base)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESDMAEnable(uint32_t ui32Base, uint32_t ui32Flags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32Flags == AES_DMA_DATA_IN) ||
-           (ui32Flags == AES_DMA_DATA_OUT) ||
-           (ui32Flags == AES_DMA_CONTEXT_IN) ||
-           (ui32Flags == AES_DMA_CONTEXT_OUT));
+void AESDMAEnable(uint32_t ui32Base, uint32_t ui32Flags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32Flags == AES_DMA_DATA_IN) || (ui32Flags == AES_DMA_DATA_OUT) ||
+         (ui32Flags == AES_DMA_CONTEXT_IN) ||
+         (ui32Flags == AES_DMA_CONTEXT_OUT));
 
-    //
-    // Set the flags in the current register value.
-    //
-    HWREG(ui32Base + AES_O_SYSCONFIG) |= ui32Flags;
+  //
+  // Set the flags in the current register value.
+  //
+  HWREG(ui32Base + AES_O_SYSCONFIG) |= ui32Flags;
 }
 
 //*****************************************************************************
@@ -1334,22 +1246,19 @@ AESDMAEnable(uint32_t ui32Base, uint32_t ui32Flags)
 //! \return None.
 //
 //*****************************************************************************
-void
-AESDMADisable(uint32_t ui32Base, uint32_t ui32Flags)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT(ui32Base == AES_BASE);
-    ASSERT((ui32Flags == AES_DMA_DATA_IN) ||
-           (ui32Flags == AES_DMA_DATA_OUT) ||
-           (ui32Flags == AES_DMA_CONTEXT_IN) ||
-           (ui32Flags == AES_DMA_CONTEXT_OUT));
+void AESDMADisable(uint32_t ui32Base, uint32_t ui32Flags) {
+  //
+  // Check the arguments.
+  //
+  ASSERT(ui32Base == AES_BASE);
+  ASSERT((ui32Flags == AES_DMA_DATA_IN) || (ui32Flags == AES_DMA_DATA_OUT) ||
+         (ui32Flags == AES_DMA_CONTEXT_IN) ||
+         (ui32Flags == AES_DMA_CONTEXT_OUT));
 
-    //
-    // Clear the flags in the current register value.
-    //
-    HWREG(ui32Base + AES_O_SYSCONFIG) &= ~ui32Flags;
+  //
+  // Clear the flags in the current register value.
+  //
+  HWREG(ui32Base + AES_O_SYSCONFIG) &= ~ui32Flags;
 }
 
 //*****************************************************************************

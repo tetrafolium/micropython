@@ -33,7 +33,6 @@
 //
 //*****************************************************************************
 
-
 #ifndef __HW_STACK_DIE_CTRL_H__
 #define __HW_STACK_DIE_CTRL_H__
 
@@ -42,23 +41,22 @@
 // The following are defines for the STACK_DIE_CTRL register offsets.
 //
 //*****************************************************************************
-#define STACK_DIE_CTRL_O_STK_UP_RESET \
-                                0x00000000  // Can be written only by Base
+#define STACK_DIE_CTRL_O_STK_UP_RESET 0x00000000 // Can be written only by Base
 // Processor. Writing to this
 // register will reset the stack
 // processor reset will be
 // de-asserted upon clearing this
 // register.
 
-#define STACK_DIE_CTRL_O_SR_MASTER_PRIORITY \
-                                0x00000004  // This register defines who among
+#define STACK_DIE_CTRL_O_SR_MASTER_PRIORITY                                    \
+  0x00000004 // This register defines who among
 // base processor and stack
 // processor have highest priority
 // for Sram Access. Can be written
 // only by Base Processor.
 
-#define STACK_DIE_CTRL_O_STK_SR_ACC_CTL_BK2 \
-                                0x00000008  // In Spinlock mode this Register
+#define STACK_DIE_CTRL_O_STK_SR_ACC_CTL_BK2                                    \
+  0x00000008 // In Spinlock mode this Register
 // defines who among base processor
 // and stack processor have access
 // to Sram Bank2 right now. In
@@ -72,8 +70,8 @@
 // and Upper bit Cleared only by the
 // Stack processor.
 
-#define STACK_DIE_CTRL_O_BASE_UP_ACC_REQ_BK2 \
-                                0x0000000C  // In Spinlock mode whenever Base
+#define STACK_DIE_CTRL_O_BASE_UP_ACC_REQ_BK2                                   \
+  0x0000000C // In Spinlock mode whenever Base
 // processor wants the access to
 // Sram Bank2 it should request for
 // it by writing into this register.
@@ -84,8 +82,8 @@
 // is cleared by HW when the request
 // is granted.
 
-#define STACK_DIE_CTRL_O_STK_UP_ACC_REQ_BK2 \
-                                0x00000010  // In Spinlock mode Whenever Stack
+#define STACK_DIE_CTRL_O_STK_UP_ACC_REQ_BK2                                    \
+  0x00000010 // In Spinlock mode Whenever Stack
 // processor wants the access to
 // Sram Bank2 it should request for
 // it by writing into this register.
@@ -96,8 +94,8 @@
 // is cleared by HW when the request
 // is granted.
 
-#define STACK_DIE_CTRL_O_STK_SR_ACC_CTL_BK3 \
-                                0x00000014  // Register defines who among base
+#define STACK_DIE_CTRL_O_STK_SR_ACC_CTL_BK3                                    \
+  0x00000014 // Register defines who among base
 // processor and stack processor
 // have access to Sram Bank3 right
 // now. Its Clear only register and
@@ -106,8 +104,8 @@
 // and Upper bit Cleared only by the
 // Stack processor.
 
-#define STACK_DIE_CTRL_O_BASE_UP_ACC_REQ_BK3 \
-                                0x00000018  // In Spinlock mode whenever Base
+#define STACK_DIE_CTRL_O_BASE_UP_ACC_REQ_BK3                                   \
+  0x00000018 // In Spinlock mode whenever Base
 // processor wants the access to
 // Sram Bank3 it should request for
 // it by writing into this register.
@@ -118,8 +116,8 @@
 // is cleared by HW when the request
 // is granted.
 
-#define STACK_DIE_CTRL_O_STK_UP_ACC_REQ_BK3 \
-                                0x0000001C  // In Spinlock mode Whenever Stack
+#define STACK_DIE_CTRL_O_STK_UP_ACC_REQ_BK3                                    \
+  0x0000001C // In Spinlock mode Whenever Stack
 // processor wants the access to
 // Sram Bank3 it should request for
 // it by writing into this register.
@@ -130,22 +128,20 @@
 // is cleared by HW when the request
 // is granted.
 
-#define STACK_DIE_CTRL_O_RDSM_CFG_CPU \
-                                0x00000020  // Read State Machine timing
+#define STACK_DIE_CTRL_O_RDSM_CFG_CPU 0x00000020 // Read State Machine timing
 // configuration register. Generally
 // Bit 4 and 3 will be identical.
 // For stacked die always 43 are 0
 // and 6:5 == 1 for 120Mhz.
 
-#define STACK_DIE_CTRL_O_RDSM_CFG_EE \
-                                0x00000024  // Read State Machine timing
+#define STACK_DIE_CTRL_O_RDSM_CFG_EE 0x00000024 // Read State Machine timing
 // configuration register. Generally
 // Bit 4 and 3 will be identical.
 // For stacked die always 43 are 0
 // and 6:5 == 1 for 120Mhz.
 
-#define STACK_DIE_CTRL_O_BASE_UP_IRQ_LOG \
-                                0x00000028  // Reading this register Base
+#define STACK_DIE_CTRL_O_BASE_UP_IRQ_LOG                                       \
+  0x00000028 // Reading this register Base
 // procesor will able to know the
 // reason for the interrupt. This is
 // clear only register - set by HW
@@ -153,8 +149,8 @@
 // processor and can be cleared only
 // by BASE processor.
 
-#define STACK_DIE_CTRL_O_STK_UP_IRQ_LOG \
-                                0x0000002C  // Reading this register Stack
+#define STACK_DIE_CTRL_O_STK_UP_IRQ_LOG                                        \
+  0x0000002C // Reading this register Stack
 // procesor will able to know the
 // reason for the interrupt. This is
 // clear only register - set by HW
@@ -162,49 +158,45 @@
 // processor and can be cleared only
 // by Stack processor.
 
-#define STACK_DIE_CTRL_O_STK_CLK_EN \
-                                0x00000030  // Can be written only by base
+#define STACK_DIE_CTRL_O_STK_CLK_EN 0x00000030 // Can be written only by base
 // processor. Controls the enable
 // pin of the cgcs for the clocks
 // going to CM3 dft ctrl block and
 // Sram.
 
-#define STACK_DIE_CTRL_O_SPIN_LOCK_MODE \
-                                0x00000034  // Can be written only by the base
+#define STACK_DIE_CTRL_O_SPIN_LOCK_MODE                                        \
+  0x00000034 // Can be written only by the base
 // processor. Decides the ram
 // sharing mode :: handshake or
 // Spinlock mode.
 
-#define STACK_DIE_CTRL_O_BUS_FAULT_ADDR \
-                                0x00000038  // Stores the last bus fault
+#define STACK_DIE_CTRL_O_BUS_FAULT_ADDR 0x00000038 // Stores the last bus fault
 // address.
 
-#define STACK_DIE_CTRL_O_BUS_FAULT_CLR \
-                                0x0000003C  // write only registers on read
+#define STACK_DIE_CTRL_O_BUS_FAULT_CLR                                         \
+  0x0000003C // write only registers on read
 // returns 0.W Write 1 to clear the
 // bust fault to store the new bus
 // fault address
 
-#define STACK_DIE_CTRL_O_RESET_CAUSE \
-                                0x00000040  // Reset cause value captured from
+#define STACK_DIE_CTRL_O_RESET_CAUSE                                           \
+  0x00000040 // Reset cause value captured from
 // the ICR_CLKRST block.
 
-#define STACK_DIE_CTRL_O_WDOG_TIMER_EVENT \
-                                0x00000044  // Watchdog timer event value
+#define STACK_DIE_CTRL_O_WDOG_TIMER_EVENT                                      \
+  0x00000044 // Watchdog timer event value
 // captured from the ICR_CLKRST
 // block
 
-#define STACK_DIE_CTRL_O_DMA_REQ \
-                                0x00000048  // To send Dma Request to bottom
+#define STACK_DIE_CTRL_O_DMA_REQ 0x00000048 // To send Dma Request to bottom
 // die.
 
-#define STACK_DIE_CTRL_O_SRAM_JUMP_OFFSET_ADDR \
-                                0x0000004C  // Address offset within SRAM to
+#define STACK_DIE_CTRL_O_SRAM_JUMP_OFFSET_ADDR                                 \
+  0x0000004C // Address offset within SRAM to
 // which CM3 should jump after
 // reset.
 
-#define STACK_DIE_CTRL_O_SW_REG1 \
-                                0x00000050  // These are sw registers for
+#define STACK_DIE_CTRL_O_SW_REG1 0x00000050 // These are sw registers for
 // topdie processor and bottom die
 // processor to communicate. Both
 // can set and read these registers.
@@ -212,8 +204,7 @@
 // die's processor wins and top die
 // processor access is ignored.
 
-#define STACK_DIE_CTRL_O_SW_REG2 \
-                                0x00000054  // These are sw registers for
+#define STACK_DIE_CTRL_O_SW_REG2 0x00000054 // These are sw registers for
 // topdie processor and bottom die
 // processor to communicate. Both
 // can set and read these registers.
@@ -221,8 +212,8 @@
 // die's processor wins and top die
 // processor access is ignored.
 
-#define STACK_DIE_CTRL_O_FMC_SLEEP_CTL \
-                                0x00000058  // By posting the request Flash can
+#define STACK_DIE_CTRL_O_FMC_SLEEP_CTL                                         \
+  0x00000058 // By posting the request Flash can
 // be put into low-power mode
 // (Sleep) without powering down the
 // Flash. Earlier (in Garnet) this
@@ -236,14 +227,11 @@
 // entering into this mode and wait
 // for an interrupt.
 
-#define STACK_DIE_CTRL_O_MISC_CTL \
-                                0x0000005C  // Miscellanious control register.
+#define STACK_DIE_CTRL_O_MISC_CTL 0x0000005C // Miscellanious control register.
 
-#define STACK_DIE_CTRL_O_SW_DFT_CTL \
-                                0x000000FC  // DFT control and status bits
+#define STACK_DIE_CTRL_O_SW_DFT_CTL 0x000000FC // DFT control and status bits
 
-#define STACK_DIE_CTRL_O_PADN_CTL_0 \
-                                0x00000100  // Mainly for For controlling the
+#define STACK_DIE_CTRL_O_PADN_CTL_0 0x00000100 // Mainly for For controlling the
 // pads OEN pins. There are total 60
 // pads and hence 60 control registe
 // i.e n value varies from 0 to 59.
@@ -262,17 +250,14 @@
 // D2DPAD_SPARE [D2D_SPARE_PAD_SIZE
 // -1:0] 0:00
 
-
-
-
 //******************************************************************************
 //
 // The following are defines for the bit fields in the
 // STACK_DIE_CTRL_O_STK_UP_RESET register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_STK_UP_RESET_UP_RESET \
-                                0x00000001  // 1 :Assert Reset 0 : Deassert the
+#define STACK_DIE_CTRL_STK_UP_RESET_UP_RESET                                   \
+  0x00000001 // 1 :Assert Reset 0 : Deassert the
 // Reset
 
 //******************************************************************************
@@ -281,8 +266,8 @@
 // STACK_DIE_CTRL_O_SR_MASTER_PRIORITY register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_SR_MASTER_PRIORITY_PRIORITY_M \
-                                0x00000003  // 00 : Equal Priority 01 : Stack
+#define STACK_DIE_CTRL_SR_MASTER_PRIORITY_PRIORITY_M                           \
+  0x00000003 // 00 : Equal Priority 01 : Stack
 // Processor have priority 10 : Base
 // Processor have priority 11 :
 // Unused
@@ -294,15 +279,15 @@
 // STACK_DIE_CTRL_O_STK_SR_ACC_CTL_BK2 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK2_STK_UP_ACCSS \
-                                0x00000002  // Stack Processor should clear it
+#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK2_STK_UP_ACCSS                         \
+  0x00000002 // Stack Processor should clear it
 // when it is done with the sram
 // bank usage. Set by HW It is set
 // when Stack Processor is granted
 // the access to this bank
 
-#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK2_BASE_UP_ACCSS \
-                                0x00000001  // Base Processor should clear it
+#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK2_BASE_UP_ACCSS                        \
+  0x00000001 // Base Processor should clear it
 // when it is done wth the sram
 // usage. Set by HW It is set when
 // Base Processor is granted the
@@ -314,8 +299,8 @@
 // STACK_DIE_CTRL_O_BASE_UP_ACC_REQ_BK2 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_BASE_UP_ACC_REQ_BK2_ACCSS_REQ \
-                                0x00000001  // Base Processor will set when
+#define STACK_DIE_CTRL_BASE_UP_ACC_REQ_BK2_ACCSS_REQ                           \
+  0x00000001 // Base Processor will set when
 // Sram access is needed in Spin
 // Lock mode. In Handshake mode
 // Stack Processor will set to
@@ -330,8 +315,8 @@
 // STACK_DIE_CTRL_O_STK_UP_ACC_REQ_BK2 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_STK_UP_ACC_REQ_BK2_ACCSS_REQ \
-                                0x00000001  // Stack Processor will set when
+#define STACK_DIE_CTRL_STK_UP_ACC_REQ_BK2_ACCSS_REQ                            \
+  0x00000001 // Stack Processor will set when
 // Sram access is needed in Spin
 // Lock mode. In Handshake mode Base
 // Processor will set to inform
@@ -344,15 +329,15 @@
 // STACK_DIE_CTRL_O_STK_SR_ACC_CTL_BK3 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK3_STK_UP_ACCSS \
-                                0x00000002  // Stack Processor should clear it
+#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK3_STK_UP_ACCSS                         \
+  0x00000002 // Stack Processor should clear it
 // when it is done with the sram
 // bank usage. Set by HW It is set
 // when Stack Processor is granted
 // the access to this bank.
 
-#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK3_BASE_UP_ACCSS \
-                                0x00000001  // Base Processor should clear it
+#define STACK_DIE_CTRL_STK_SR_ACC_CTL_BK3_BASE_UP_ACCSS                        \
+  0x00000001 // Base Processor should clear it
 // when it is done wth the sram
 // usage. Set by HW it is set when
 // Base Processor is granted the
@@ -364,8 +349,8 @@
 // STACK_DIE_CTRL_O_BASE_UP_ACC_REQ_BK3 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_BASE_UP_ACC_REQ_BK3_ACCSS_REQ \
-                                0x00000001  // Base Processor will set when
+#define STACK_DIE_CTRL_BASE_UP_ACC_REQ_BK3_ACCSS_REQ                           \
+  0x00000001 // Base Processor will set when
 // Sram access is needed in Spin
 // Lock mode. Not used in handshake
 // mode.
@@ -376,8 +361,8 @@
 // STACK_DIE_CTRL_O_STK_UP_ACC_REQ_BK3 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_STK_UP_ACC_REQ_BK3_ACCSS_REQ \
-                                0x00000001  // Stack Processor will set when
+#define STACK_DIE_CTRL_STK_UP_ACC_REQ_BK3_ACCSS_REQ                            \
+  0x00000001 // Stack Processor will set when
 // Sram access is needed in Spin
 // Lock mode.
 
@@ -387,27 +372,27 @@
 // STACK_DIE_CTRL_O_RDSM_CFG_CPU register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_RDSM_CFG_CPU_FLCLK_PULSE_WIDTH_M \
-                                0x000000C0  // Bank Clock Hi Time 00 : HCLK
+#define STACK_DIE_CTRL_RDSM_CFG_CPU_FLCLK_PULSE_WIDTH_M                        \
+  0x000000C0 // Bank Clock Hi Time 00 : HCLK
 // pulse 01 : 1 cycle of HCLK 10 :
 // 1.5 cycles of HCLK 11 : 2 cycles
 // of HCLK
 
 #define STACK_DIE_CTRL_RDSM_CFG_CPU_FLCLK_PULSE_WIDTH_S 6
-#define STACK_DIE_CTRL_RDSM_CFG_CPU_FLCLK_SENSE \
-                                0x00000020  // FLCLK 0 : indicates flash clock
+#define STACK_DIE_CTRL_RDSM_CFG_CPU_FLCLK_SENSE                                \
+  0x00000020 // FLCLK 0 : indicates flash clock
 // rise aligns on HCLK rise 1 :
 // indicates flash clock rise aligns
 // on HCLK fall
 
-#define STACK_DIE_CTRL_RDSM_CFG_CPU_PIPELINE_FLDATA \
-                                0x00000010  // 0 : Always register flash rdata
+#define STACK_DIE_CTRL_RDSM_CFG_CPU_PIPELINE_FLDATA                            \
+  0x00000010 // 0 : Always register flash rdata
 // before sending to CPU 1 : Drive
 // Flash rdata directly out on MISS
 // (Both ICODE / DCODE)
 
-#define STACK_DIE_CTRL_RDSM_CFG_CPU_READ_WAIT_STATE_M \
-                                0x0000000F  // Number of wait states inserted
+#define STACK_DIE_CTRL_RDSM_CFG_CPU_READ_WAIT_STATE_M                          \
+  0x0000000F // Number of wait states inserted
 
 #define STACK_DIE_CTRL_RDSM_CFG_CPU_READ_WAIT_STATE_S 0
 //******************************************************************************
@@ -416,27 +401,27 @@
 // STACK_DIE_CTRL_O_RDSM_CFG_EE register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_RDSM_CFG_EE_FLCLK_PULSE_WIDTH_M \
-                                0x000000C0  // Bank Clock Hi Time 00 : HCLK
+#define STACK_DIE_CTRL_RDSM_CFG_EE_FLCLK_PULSE_WIDTH_M                         \
+  0x000000C0 // Bank Clock Hi Time 00 : HCLK
 // pulse 01 : 1 cycle of HCLK 10 :
 // 1.5 cycles of HCLK 11 : 2 cycles
 // of HCLK
 
 #define STACK_DIE_CTRL_RDSM_CFG_EE_FLCLK_PULSE_WIDTH_S 6
-#define STACK_DIE_CTRL_RDSM_CFG_EE_FLCLK_SENSE \
-                                0x00000020  // FLCLK 0 : indicates flash clock
+#define STACK_DIE_CTRL_RDSM_CFG_EE_FLCLK_SENSE                                 \
+  0x00000020 // FLCLK 0 : indicates flash clock
 // rise aligns on HCLK rise 1 :
 // indicates flash clock rise aligns
 // on HCLK fall
 
-#define STACK_DIE_CTRL_RDSM_CFG_EE_PIPELINE_FLDATA \
-                                0x00000010  // 0 : Always register flash rdata
+#define STACK_DIE_CTRL_RDSM_CFG_EE_PIPELINE_FLDATA                             \
+  0x00000010 // 0 : Always register flash rdata
 // before sending to CPU 1 : Drive
 // Flash rdata directly out on MISS
 // (Both ICODE / DCODE)
 
-#define STACK_DIE_CTRL_RDSM_CFG_EE_READ_WAIT_STATE_M \
-                                0x0000000F  // Number of wait states inserted
+#define STACK_DIE_CTRL_RDSM_CFG_EE_READ_WAIT_STATE_M                           \
+  0x0000000F // Number of wait states inserted
 
 #define STACK_DIE_CTRL_RDSM_CFG_EE_READ_WAIT_STATE_S 0
 //******************************************************************************
@@ -445,24 +430,24 @@
 // STACK_DIE_CTRL_O_BASE_UP_IRQ_LOG register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK3_REL \
-                                0x00000010  // Set when Relinquish Interrupt
+#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK3_REL                              \
+  0x00000010 // Set when Relinquish Interrupt
 // sent to Base processor for Bank3.
 
-#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK2_RELEASE \
-                                0x00000008  // Set when Relinquish Interrupt
+#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK2_RELEASE                          \
+  0x00000008 // Set when Relinquish Interrupt
 // sent to Base processor for Bank2.
 
-#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK3_GRANT \
-                                0x00000004  // Set when Bank3 is granted to
+#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK3_GRANT                            \
+  0x00000004 // Set when Bank3 is granted to
 // Base processor.
 
-#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK2_GRANT \
-                                0x00000002  // Set when Bank2 is granted to
+#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_BK2_GRANT                            \
+  0x00000002 // Set when Bank2 is granted to
 // BAse processor.
 
-#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_INVAL_ACCSS \
-                                0x00000001  // Set when there Base processor do
+#define STACK_DIE_CTRL_BASE_UP_IRQ_LOG_SR_INVAL_ACCSS                          \
+  0x00000001 // Set when there Base processor do
 // an Invalid access to Sram. Ex :
 // Accessing the bank which is not
 // granted for BAse processor.
@@ -473,22 +458,22 @@
 // STACK_DIE_CTRL_O_STK_UP_IRQ_LOG register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK3_REL \
-                                0x00000008  // Set when Relinquish Interrupt
+#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK3_REL                               \
+  0x00000008 // Set when Relinquish Interrupt
 // sent to Stack processor for
 // Bank3.
 
-#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK2_REL \
-                                0x00000004  // Set when Relinquish Interrupt
+#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK2_REL                               \
+  0x00000004 // Set when Relinquish Interrupt
 // sent to Stack processor for
 // Bank2.
 
-#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK3_GRANT \
-                                0x00000002  // Set when Bank3 is granted to
+#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK3_GRANT                             \
+  0x00000002 // Set when Bank3 is granted to
 // Stack processor.
 
-#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK2_GRANT \
-                                0x00000001  // Set when Bank2 is granted to
+#define STACK_DIE_CTRL_STK_UP_IRQ_LOG_SR_BK2_GRANT                             \
+  0x00000001 // Set when Bank2 is granted to
 // Stack processor.
 
 //******************************************************************************
@@ -497,15 +482,15 @@
 // STACK_DIE_CTRL_O_STK_CLK_EN register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_STK_CLK_EN_SR_CLK \
-                                0x00000004  // Enable the clock going to sram.
+#define STACK_DIE_CTRL_STK_CLK_EN_SR_CLK                                       \
+  0x00000004 // Enable the clock going to sram.
 
-#define STACK_DIE_CTRL_STK_CLK_EN_DFT_CTRL_CLK \
-                                0x00000002  // Enable the clock going to dft
+#define STACK_DIE_CTRL_STK_CLK_EN_DFT_CTRL_CLK                                 \
+  0x00000002 // Enable the clock going to dft
 // control block
 
-#define STACK_DIE_CTRL_STK_CLK_EN_STK_UP_CLK \
-                                0x00000001  // Enable the clock going to Cm3
+#define STACK_DIE_CTRL_STK_CLK_EN_STK_UP_CLK                                   \
+  0x00000001 // Enable the clock going to Cm3
 
 //******************************************************************************
 //
@@ -513,8 +498,8 @@
 // STACK_DIE_CTRL_O_SPIN_LOCK_MODE register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_SPIN_LOCK_MODE_MODE \
-                                0x00000001  // 0 : Handshake Mode 1 : Spinlock
+#define STACK_DIE_CTRL_SPIN_LOCK_MODE_MODE                                     \
+  0x00000001 // 0 : Handshake Mode 1 : Spinlock
 // mode.
 
 //******************************************************************************
@@ -523,8 +508,7 @@
 // STACK_DIE_CTRL_O_BUS_FAULT_ADDR register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_BUS_FAULT_ADDR_ADDRESS_M \
-                                0xFFFFFFFF  // Fault Address
+#define STACK_DIE_CTRL_BUS_FAULT_ADDR_ADDRESS_M 0xFFFFFFFF // Fault Address
 
 #define STACK_DIE_CTRL_BUS_FAULT_ADDR_ADDRESS_S 0
 //******************************************************************************
@@ -533,8 +517,8 @@
 // STACK_DIE_CTRL_O_BUS_FAULT_CLR register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_BUS_FAULT_CLR_CLEAR \
-                                0x00000001  // When set it'll clear the bust
+#define STACK_DIE_CTRL_BUS_FAULT_CLR_CLEAR                                     \
+  0x00000001 // When set it'll clear the bust
 // fault address register to store
 // the new bus fault address
 
@@ -544,8 +528,7 @@
 // STACK_DIE_CTRL_O_RESET_CAUSE register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_RESET_CAUSE_RST_CAUSE_M \
-                                0xFFFFFFFF
+#define STACK_DIE_CTRL_RESET_CAUSE_RST_CAUSE_M 0xFFFFFFFF
 
 #define STACK_DIE_CTRL_RESET_CAUSE_RST_CAUSE_S 0
 //******************************************************************************
@@ -554,8 +537,7 @@
 // STACK_DIE_CTRL_O_WDOG_TIMER_EVENT register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_WDOG_TIMER_EVENT_WDOG_TMR_EVNT_M \
-                                0xFFFFFFFF
+#define STACK_DIE_CTRL_WDOG_TIMER_EVENT_WDOG_TMR_EVNT_M 0xFFFFFFFF
 
 #define STACK_DIE_CTRL_WDOG_TIMER_EVENT_WDOG_TMR_EVNT_S 0
 //******************************************************************************
@@ -564,12 +546,12 @@
 // STACK_DIE_CTRL_O_DMA_REQ register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_DMA_REQ_DMAREQ1 \
-                                0x00000002  // Generate DMAREQ1 on setting this
+#define STACK_DIE_CTRL_DMA_REQ_DMAREQ1                                         \
+  0x00000002 // Generate DMAREQ1 on setting this
 // bit.
 
-#define STACK_DIE_CTRL_DMA_REQ_DMAREQ0 \
-                                0x00000001  // Generate DMAREQ0 on setting this
+#define STACK_DIE_CTRL_DMA_REQ_DMAREQ0                                         \
+  0x00000001 // Generate DMAREQ0 on setting this
 // bit.
 
 //******************************************************************************
@@ -578,8 +560,7 @@
 // STACK_DIE_CTRL_O_SRAM_JUMP_OFFSET_ADDR register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_SRAM_JUMP_OFFSET_ADDR_ADDR_M \
-                                0xFFFFFFFF
+#define STACK_DIE_CTRL_SRAM_JUMP_OFFSET_ADDR_ADDR_M 0xFFFFFFFF
 
 #define STACK_DIE_CTRL_SRAM_JUMP_OFFSET_ADDR_ADDR_S 0
 //******************************************************************************
@@ -588,8 +569,7 @@
 // STACK_DIE_CTRL_O_SW_REG1 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_SW_REG1_NEWBITFIELD1_M \
-                                0xFFFFFFFF
+#define STACK_DIE_CTRL_SW_REG1_NEWBITFIELD1_M 0xFFFFFFFF
 
 #define STACK_DIE_CTRL_SW_REG1_NEWBITFIELD1_S 0
 //******************************************************************************
@@ -598,8 +578,7 @@
 // STACK_DIE_CTRL_O_SW_REG2 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_SW_REG2_NEWBITFIELD1_M \
-                                0xFFFFFFFF
+#define STACK_DIE_CTRL_SW_REG2_NEWBITFIELD1_M 0xFFFFFFFF
 
 #define STACK_DIE_CTRL_SW_REG2_NEWBITFIELD1_S 0
 //******************************************************************************
@@ -608,12 +587,11 @@
 // STACK_DIE_CTRL_O_FMC_SLEEP_CTL register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_FMC_SLEEP_CTL_FMC_LPM_ACK \
-                                0x00000002  // captures the status of of
+#define STACK_DIE_CTRL_FMC_SLEEP_CTL_FMC_LPM_ACK                               \
+  0x00000002 // captures the status of of
 // fmc_lpm_ack
 
-#define STACK_DIE_CTRL_FMC_SLEEP_CTL_FMC_LPM_REQ \
-                                0x00000001  // When set assert
+#define STACK_DIE_CTRL_FMC_SLEEP_CTL_FMC_LPM_REQ 0x00000001 // When set assert
 // iflpe2fmc_lpm_req to FMC.
 
 //******************************************************************************
@@ -622,24 +600,21 @@
 // STACK_DIE_CTRL_O_MISC_CTL register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_MISC_CTL_WDOG_RESET \
-                                0x00000080  // 1 : will reset the async wdog
+#define STACK_DIE_CTRL_MISC_CTL_WDOG_RESET                                     \
+  0x00000080 // 1 : will reset the async wdog
 // timer runing on piosc clock
 
-#define STACK_DIE_CTRL_MISC_CTL_FW_IRQ2 \
-                                0x00000020  // Setting this Will send to
+#define STACK_DIE_CTRL_MISC_CTL_FW_IRQ2 0x00000020 // Setting this Will send to
 // interttupt to CM3
 
-#define STACK_DIE_CTRL_MISC_CTL_FW_IRQ1 \
-                                0x00000010  // Setting this Will send to
+#define STACK_DIE_CTRL_MISC_CTL_FW_IRQ1 0x00000010 // Setting this Will send to
 // interttupt to CM3
 
-#define STACK_DIE_CTRL_MISC_CTL_FW_IRQ0 \
-                                0x00000008  // Setting this Will send to
+#define STACK_DIE_CTRL_MISC_CTL_FW_IRQ0 0x00000008 // Setting this Will send to
 // interttupt to CM3
 
-#define STACK_DIE_CTRL_MISC_CTL_FLB_TEST_MUX_CTL_BK3 \
-                                0x00000004  // While testing Flash Setting this
+#define STACK_DIE_CTRL_MISC_CTL_FLB_TEST_MUX_CTL_BK3                           \
+  0x00000004 // While testing Flash Setting this
 // bit will Control the
 // CE/STR/AIN/CLKIN going to flash
 // banks 12 and 3. 0 : Control
@@ -648,8 +623,8 @@
 // signals coming from FMC for Bank
 // 0 goes to Bank2
 
-#define STACK_DIE_CTRL_MISC_CTL_FLB_TEST_MUX_CTL_BK2 \
-                                0x00000002  // While testing Flash Setting this
+#define STACK_DIE_CTRL_MISC_CTL_FLB_TEST_MUX_CTL_BK2                           \
+  0x00000002 // While testing Flash Setting this
 // bit will Control the
 // CE/STR/AIN/CLKIN going to flash
 // banks 12 and 3. 0 : Control
@@ -658,8 +633,8 @@
 // signals coming from FMC for Bank
 // 0 goes to Bank2
 
-#define STACK_DIE_CTRL_MISC_CTL_FLB_TEST_MUX_CTL_BK1 \
-                                0x00000001  // While testing Flash Setting this
+#define STACK_DIE_CTRL_MISC_CTL_FLB_TEST_MUX_CTL_BK1                           \
+  0x00000001 // While testing Flash Setting this
 // bit will Control the
 // CE/STR/AIN/CLKIN going to flash
 // banks 12 and 3. 0 : Control
@@ -674,55 +649,55 @@
 // STACK_DIE_CTRL_O_SW_DFT_CTL register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_SW_DFT_CTL_FL_CTRL_OWNS \
-                                0x20000000  // when set to '1' all flash
+#define STACK_DIE_CTRL_SW_DFT_CTL_FL_CTRL_OWNS                                 \
+  0x20000000 // when set to '1' all flash
 // control signals switch over to
 // CM3 control when '0' it is under
 // the D2D interface control
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_SWIF_CPU_READ \
-                                0x10000000  // 1 indicates in SWIF mode the
+#define STACK_DIE_CTRL_SW_DFT_CTL_SWIF_CPU_READ                                \
+  0x10000000 // 1 indicates in SWIF mode the
 // control signals to flash are from
 // FMC CPU read controls the clock
 // and address. that is one can give
 // address via FMC and read through
 // IDMEM.
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_CPU_DONE \
-                                0x00800000  // 'CPU Done' bit for PBIST. Write
+#define STACK_DIE_CTRL_SW_DFT_CTL_CPU_DONE                                     \
+  0x00800000 // 'CPU Done' bit for PBIST. Write
 // '1' to indicate test done.
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_CPU_FAIL \
-                                0x00400000  // 'CPU Fail' bit for PBIST. Write
+#define STACK_DIE_CTRL_SW_DFT_CTL_CPU_FAIL                                     \
+  0x00400000 // 'CPU Fail' bit for PBIST. Write
 // '1' to indicate test failed.
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK4_OWNS \
-                                0x00001000  // when set to '1' flash bank 4
+#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK4_OWNS                                   \
+  0x00001000 // when set to '1' flash bank 4
 // (EEPROM) is owned by the CM3for
 // reads over DCODE bus. When '0'
 // access control given to D2D
 // interface.
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK3_OWNS \
-                                0x00000800  // when set to '1' flash bank 3 is
+#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK3_OWNS                                   \
+  0x00000800 // when set to '1' flash bank 3 is
 // owned by the CM3for reads over
 // DCODE bus. When '0' access
 // control given to D2D interface.
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK2_OWNS \
-                                0x00000400  // when set to '1' flash bank 2 is
+#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK2_OWNS                                   \
+  0x00000400 // when set to '1' flash bank 2 is
 // owned by the CM3for reads over
 // DCODE bus. When '0' access
 // control given to D2D interface.
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK1_OWNS \
-                                0x00000200  // when set to '1' flash bank 1 is
+#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK1_OWNS                                   \
+  0x00000200 // when set to '1' flash bank 1 is
 // owned by the CM3for reads over
 // DCODE bus. When '0' access
 // control given to D2D interface.
 
-#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK0_OWNS \
-                                0x00000100  // when set to '1' flash bank 0 is
+#define STACK_DIE_CTRL_SW_DFT_CTL_FLBK0_OWNS                                   \
+  0x00000100 // when set to '1' flash bank 0 is
 // owned by the CM3 for reads over
 // DCODE bus. When '0' access
 // control given to D2D interface.
@@ -733,32 +708,29 @@
 // STACK_DIE_CTRL_O_PADN_CTL_0 register.
 //
 //******************************************************************************
-#define STACK_DIE_CTRL_PADN_CTL_0_SPARE_PAD_DOUT \
-                                0x00000008  // This bit is valid for only the
+#define STACK_DIE_CTRL_PADN_CTL_0_SPARE_PAD_DOUT                               \
+  0x00000008 // This bit is valid for only the
 // spare pads ie for n=57 to 59.
 // value to drive at the output of
 // the pad
 
-#define STACK_DIE_CTRL_PADN_CTL_0_SPARE_PAD_DIN \
-                                0x00000004  // This bit is valid for only the
+#define STACK_DIE_CTRL_PADN_CTL_0_SPARE_PAD_DIN                                \
+  0x00000004 // This bit is valid for only the
 // spare pads ie for n=57 to 59.
 // captures the 'Y' pin of the pad
 // which is the data being driven
 // into the die
 
-#define STACK_DIE_CTRL_PADN_CTL_0_OEN2X \
-                                0x00000002  // OEN2X control when '1' enables
+#define STACK_DIE_CTRL_PADN_CTL_0_OEN2X                                        \
+  0x00000002 // OEN2X control when '1' enables
 // the output with 1x. Total drive
 // strength is decided bu oen1x
 // setting + oen2x setting.
 
-#define STACK_DIE_CTRL_PADN_CTL_0_OEN1X \
-                                0x00000001  // OEN1X control when '1' enables
+#define STACK_DIE_CTRL_PADN_CTL_0_OEN1X                                        \
+  0x00000001 // OEN1X control when '1' enables
 // the output with 1x . Total drive
 // strength is decided bu oen1x
 // setting + oen2x setting.
-
-
-
 
 #endif // __HW_STACK_DIE_CTRL_H__

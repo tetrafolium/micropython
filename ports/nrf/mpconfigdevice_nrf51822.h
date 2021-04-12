@@ -27,35 +27,35 @@
 // Board overridable build configuration.
 
 #ifndef MICROPY_MBFS
-#define MICROPY_MBFS                       (1)
+#define MICROPY_MBFS (1)
 #endif
 
 #ifndef MICROPY_VFS
-#define MICROPY_VFS                        (0)
+#define MICROPY_VFS (0)
 #endif
 
 // Board overridable feature configuration.
 
 #ifndef MICROPY_PY_ARRAY_SLICE_ASSIGN
 #if defined(BLUETOOTH_SD)
-#define MICROPY_PY_ARRAY_SLICE_ASSIGN      (0)
+#define MICROPY_PY_ARRAY_SLICE_ASSIGN (0)
 #else
-#define MICROPY_PY_ARRAY_SLICE_ASSIGN      (1)
+#define MICROPY_PY_ARRAY_SLICE_ASSIGN (1)
 #endif
 #endif
 
 #ifndef MICROPY_PY_SYS_STDFILES
 #if defined(BLUETOOTH_SD)
-#define MICROPY_PY_SYS_STDFILES            (0)
+#define MICROPY_PY_SYS_STDFILES (0)
 #else
-#define MICROPY_PY_SYS_STDFILES            (1)
+#define MICROPY_PY_SYS_STDFILES (1)
 #endif
 #endif
 
 #ifndef MICROPY_PY_UBINASCII
 #if defined(BLUETOOTH_SD)
-#define MICROPY_PY_UBINASCII               (0)
+#define MICROPY_PY_UBINASCII (0)
 #else
-#define MICROPY_PY_UBINASCII               (1)
+#define MICROPY_PY_UBINASCII (1)
 #endif
 #endif

@@ -24,50 +24,38 @@
  * THE SOFTWARE.
  */
 
+#include "py/gc.h"
+#include "py/mphal.h"
+#include <errno.h>
 #include <stdint.h>
 #include <stdio.h>
-#include <errno.h>
-#include "py/mphal.h"
-#include "py/gc.h"
 
 // Functions for external libs like axTLS, BerkeleyDB, etc.
 
 void *malloc(size_t size) {
-    void *p = gc_alloc(size, false);
-    if (p == NULL) {
-        // POSIX requires ENOMEM to be set in case of error
-        errno = ENOMEM;
-    }
-    return p;
+  void *p = gc_alloc(size, false);
+  if (p == NULL) {
+    // POSIX requires ENOMEM to be set in case of error
+    errno = ENOMEM;
+  }
+  return p;
 }
-void free(void *ptr) {
-    gc_free(ptr);
-}
-void *calloc(size_t nmemb, size_t size) {
-    return malloc(nmemb * size);
-}
+void free(void *ptr) { gc_free(ptr); }
+void *calloc(size_t nmemb, size_t size) { return malloc(nmemb * size); }
 void *realloc(void *ptr, size_t size) {
-    void *p = gc_realloc(ptr, size, true);
-    if (p == NULL) {
-        // POSIX requires ENOMEM to be set in case of error
-        errno = ENOMEM;
-    }
-    return p;
+  void *p = gc_realloc(ptr, size, true);
+  if (p == NULL) {
+    // POSIX requires ENOMEM to be set in case of error
+    errno = ENOMEM;
+  }
+  return p;
 }
 
 #undef htonl
 #undef ntohl
-uint32_t ntohl(uint32_t netlong) {
-    return MP_BE32TOH(netlong);
-}
-uint32_t htonl(uint32_t netlong) {
-    return MP_HTOBE32(netlong);
-}
+uint32_t ntohl(uint32_t netlong) { return MP_BE32TOH(netlong); }
+uint32_t htonl(uint32_t netlong) { return MP_HTOBE32(netlong); }
 
-time_t time(time_t *t) {
-    return mp_hal_ticks_ms() / 1000;
-}
+time_t time(time_t *t) { return mp_hal_ticks_ms() / 1000; }
 
-time_t mktime(void *tm) {
-    return 0;
-}
+time_t mktime(void *tm) { return 0; }

@@ -28,14 +28,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "inc/hw_memmap.h"
+#include "mperror.h"
+#include "osi.h"
 #include "py/mpconfig.h"
 #include "py/mphal.h"
 #include "py/obj.h"
-#include "inc/hw_memmap.h"
 #include "pybuart.h"
-#include "osi.h"
-#include "mperror.h"
-
 
 //*****************************************************************************
 //
@@ -46,12 +45,11 @@
 //! \return none
 //!
 //*****************************************************************************
-void vApplicationIdleHook (void)
-{
-    // signal that we are alive and kicking
-    mperror_heartbeat_signal();
-    // gate the processor's clock to save power
-    __WFI();
+void vApplicationIdleHook(void) {
+  // signal that we are alive and kicking
+  mperror_heartbeat_signal();
+  // gate the processor's clock to save power
+  __WFI();
 }
 
 //*****************************************************************************
@@ -63,14 +61,13 @@ void vApplicationIdleHook (void)
 //! \return none
 //!
 //*****************************************************************************
-void vApplicationMallocFailedHook (void)
-{
+void vApplicationMallocFailedHook(void) {
 #ifdef DEBUG
-    // break into the debugger
-    __asm volatile ("bkpt #0  \n");
+  // break into the debugger
+  __asm volatile("bkpt #0  \n");
 #endif
 
-    __fatal_error("FreeRTOS malloc failed!");
+  __fatal_error("FreeRTOS malloc failed!");
 }
 
 //*****************************************************************************
@@ -82,14 +79,14 @@ void vApplicationMallocFailedHook (void)
 //! \return none
 //!
 //*****************************************************************************
-void vApplicationStackOverflowHook (OsiTaskHandle *pxTask, signed char *pcTaskName)
-{
+void vApplicationStackOverflowHook(OsiTaskHandle *pxTask,
+                                   signed char *pcTaskName) {
 #ifdef DEBUG
-    // Break into the debugger
-    __asm volatile ("bkpt #0  \n");
+  // Break into the debugger
+  __asm volatile("bkpt #0  \n");
 #endif
 
-    __fatal_error("Stack overflow!");
+  __fatal_error("Stack overflow!");
 }
 
 //*****************************************************************************
@@ -101,7 +98,4 @@ void vApplicationStackOverflowHook (OsiTaskHandle *pxTask, signed char *pcTaskNa
 //! \return none
 //!
 //*****************************************************************************
-void vApplicationTickHook (void)
-{
-    HAL_IncrementTick();
-}
+void vApplicationTickHook(void) { HAL_IncrementTick(); }

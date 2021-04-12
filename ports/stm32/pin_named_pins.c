@@ -27,57 +27,59 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "py/runtime.h"
-#include "py/mphal.h"
 #include "pin.h"
+#include "py/mphal.h"
+#include "py/runtime.h"
 
 const mp_obj_type_t pin_cpu_pins_obj_type = {
-    { &mp_type_type },
+    {&mp_type_type},
     .name = MP_QSTR_cpu,
     .locals_dict = (mp_obj_dict_t *)&pin_cpu_pins_locals_dict,
 };
 
 const mp_obj_type_t pin_board_pins_obj_type = {
-    { &mp_type_type },
+    {&mp_type_type},
     .name = MP_QSTR_board,
     .locals_dict = (mp_obj_dict_t *)&pin_board_pins_locals_dict,
 };
 
-const pin_obj_t *pin_find_named_pin(const mp_obj_dict_t *named_pins, mp_obj_t name) {
-    const mp_map_t *named_map = &named_pins->map;
-    mp_map_elem_t *named_elem = mp_map_lookup((mp_map_t *)named_map, name, MP_MAP_LOOKUP);
-    if (named_elem != NULL && named_elem->value != MP_OBJ_NULL) {
-        return MP_OBJ_TO_PTR(named_elem->value);
-    }
-    return NULL;
+const pin_obj_t *pin_find_named_pin(const mp_obj_dict_t *named_pins,
+                                    mp_obj_t name) {
+  const mp_map_t *named_map = &named_pins->map;
+  mp_map_elem_t *named_elem =
+      mp_map_lookup((mp_map_t *)named_map, name, MP_MAP_LOOKUP);
+  if (named_elem != NULL && named_elem->value != MP_OBJ_NULL) {
+    return MP_OBJ_TO_PTR(named_elem->value);
+  }
+  return NULL;
 }
 
-const pin_af_obj_t *pin_find_af(const pin_obj_t *pin, uint8_t fn, uint8_t unit) {
-    const pin_af_obj_t *af = pin->af;
-    for (mp_uint_t i = 0; i < pin->num_af; i++, af++) {
-        if (af->fn == fn && af->unit == unit) {
-            return af;
-        }
+const pin_af_obj_t *pin_find_af(const pin_obj_t *pin, uint8_t fn,
+                                uint8_t unit) {
+  const pin_af_obj_t *af = pin->af;
+  for (mp_uint_t i = 0; i < pin->num_af; i++, af++) {
+    if (af->fn == fn && af->unit == unit) {
+      return af;
     }
-    return NULL;
+  }
+  return NULL;
 }
 
-const pin_af_obj_t *pin_find_af_by_index(const pin_obj_t *pin, mp_uint_t af_idx) {
-    const pin_af_obj_t *af = pin->af;
-    for (mp_uint_t i = 0; i < pin->num_af; i++, af++) {
-        if (af->idx == af_idx) {
-            return af;
-        }
+const pin_af_obj_t *pin_find_af_by_index(const pin_obj_t *pin,
+                                         mp_uint_t af_idx) {
+  const pin_af_obj_t *af = pin->af;
+  for (mp_uint_t i = 0; i < pin->num_af; i++, af++) {
+    if (af->idx == af_idx) {
+      return af;
     }
-    return NULL;
+  }
+  return NULL;
 }
 
 /* unused
-const pin_af_obj_t *pin_find_af_by_name(const pin_obj_t *pin, const char *name) {
-    const pin_af_obj_t *af = pin->af;
-    for (mp_uint_t i = 0; i < pin->num_af; i++, af++) {
-        if (strcmp(name, qstr_str(af->name)) == 0) {
-            return af;
+const pin_af_obj_t *pin_find_af_by_name(const pin_obj_t *pin, const char *name)
+{ const pin_af_obj_t *af = pin->af; for (mp_uint_t i = 0; i < pin->num_af; i++,
+af++) { if (strcmp(name, qstr_str(af->name)) == 0) { return af;
         }
     }
     return NULL;

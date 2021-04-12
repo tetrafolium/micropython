@@ -31,10 +31,10 @@
 
 #include "tusb.h"
 
+#include "fsl_clock.h"
 #include "fsl_device_registers.h"
 #include "fsl_gpio.h"
 #include "fsl_iomuxc.h"
-#include "fsl_clock.h"
 #include "fsl_lpuart.h"
 
 #include "clock_config.h"
@@ -43,58 +43,59 @@
 
 volatile uint32_t systick_ms = 0;
 
-const uint8_t dcd_data[] = { 0x00 };
+const uint8_t dcd_data[] = {0x00};
 
 void board_init(void) {
-    // Init clock
-    BOARD_BootClockRUN();
-    SystemCoreClockUpdate();
+  // Init clock
+  BOARD_BootClockRUN();
+  SystemCoreClockUpdate();
 
-    // Enable IOCON clock
-    CLOCK_EnableClock(kCLOCK_Iomuxc);
+  // Enable IOCON clock
+  CLOCK_EnableClock(kCLOCK_Iomuxc);
 
-    // 1ms tick timer
-    SysTick_Config(SystemCoreClock / 1000);
+  // 1ms tick timer
+  SysTick_Config(SystemCoreClock / 1000);
 
-    // ------------- USB0 ------------- //
+  // ------------- USB0 ------------- //
 
-    // Clock
-    CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, 480000000U);
-    CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, 480000000U);
+  // Clock
+  CLOCK_EnableUsbhs0PhyPllClock(kCLOCK_Usbphy480M, 480000000U);
+  CLOCK_EnableUsbhs0Clock(kCLOCK_Usb480M, 480000000U);
 
 #ifdef USBPHY1
-    USBPHY_Type *usb_phy = USBPHY1;
+  USBPHY_Type *usb_phy = USBPHY1;
 #else
-    USBPHY_Type *usb_phy = USBPHY;
+  USBPHY_Type *usb_phy = USBPHY;
 #endif
 
-    // Enable PHY support for Low speed device + LS via FS Hub
-    usb_phy->CTRL |= USBPHY_CTRL_SET_ENUTMILEVEL2_MASK | USBPHY_CTRL_SET_ENUTMILEVEL3_MASK;
+  // Enable PHY support for Low speed device + LS via FS Hub
+  usb_phy->CTRL |=
+      USBPHY_CTRL_SET_ENUTMILEVEL2_MASK | USBPHY_CTRL_SET_ENUTMILEVEL3_MASK;
 
-    // Enable all power for normal operation
-    usb_phy->PWD = 0;
+  // Enable all power for normal operation
+  usb_phy->PWD = 0;
 
-    // TX Timing
-    uint32_t phytx = usb_phy->TX;
-    phytx &= ~(USBPHY_TX_D_CAL_MASK | USBPHY_TX_TXCAL45DM_MASK | USBPHY_TX_TXCAL45DP_MASK);
-    phytx |= USBPHY_TX_D_CAL(0x0C) | USBPHY_TX_TXCAL45DP(0x06) | USBPHY_TX_TXCAL45DM(0x06);
-    usb_phy->TX = phytx;
+  // TX Timing
+  uint32_t phytx = usb_phy->TX;
+  phytx &= ~(USBPHY_TX_D_CAL_MASK | USBPHY_TX_TXCAL45DM_MASK |
+             USBPHY_TX_TXCAL45DP_MASK);
+  phytx |= USBPHY_TX_D_CAL(0x0C) | USBPHY_TX_TXCAL45DP(0x06) |
+           USBPHY_TX_TXCAL45DM(0x06);
+  usb_phy->TX = phytx;
 
-    // USB1
-    //  CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, 480000000U);
-    //  CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, 480000000U);
+  // USB1
+  //  CLOCK_EnableUsbhs1PhyPllClock(kCLOCK_Usbphy480M, 480000000U);
+  //  CLOCK_EnableUsbhs1Clock(kCLOCK_Usb480M, 480000000U);
 }
 
-void SysTick_Handler(void) {
-    systick_ms++;
-}
+void SysTick_Handler(void) { systick_ms++; }
 
 void USB_OTG1_IRQHandler(void) {
-    tud_isr(0);
-    tud_task();
+  tud_isr(0);
+  tud_task();
 }
 
 void USB_OTG2_IRQHandler(void) {
-    tud_isr(1);
-    tud_task();
+  tud_isr(1);
+  tud_task();
 }

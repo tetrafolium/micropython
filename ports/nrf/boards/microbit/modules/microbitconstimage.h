@@ -28,15 +28,15 @@
 #define __MICROPY_INCLUDED_MICROBIT_CONSTIMAGE_H__
 
 typedef struct _image_tuple_12 {
-    mp_obj_base_t base;
-    size_t len;
-    mp_rom_obj_t items[12];
+  mp_obj_base_t base;
+  size_t len;
+  mp_rom_obj_t items[12];
 } image_tuple_12_t;
 
 typedef struct _image_tuple_8 {
-    mp_obj_base_t base;
-    size_t len;
-    mp_rom_obj_t items[8];
+  mp_obj_base_t base;
+  size_t len;
+  mp_rom_obj_t items[8];
 } image_tuple_8_t;
 
 extern const image_tuple_12_t microbit_const_image_all_clocks_tuple_obj;

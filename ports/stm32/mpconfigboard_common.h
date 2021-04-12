@@ -199,7 +199,8 @@
 // Configuration for STM32F7 series
 #elif defined(STM32F7)
 
-#if defined(STM32F722xx) || defined(STM32F723xx) || defined(STM32F732xx) || defined(STM32F733xx)
+#if defined(STM32F722xx) || defined(STM32F723xx) || defined(STM32F732xx) ||    \
+    defined(STM32F733xx)
 #define MP_HAL_UNIQUE_ID_ADDRESS (0x1ff07a10)
 #else
 #define MP_HAL_UNIQUE_ID_ADDRESS (0x1ff0f420)
@@ -279,7 +280,8 @@
 #endif
 
 // If disabled then try normal (non-bypass) LSE first, with fallback to LSI.
-// If enabled first try LSE in bypass mode.  If that fails to start, try non-bypass mode, with fallback to LSI.
+// If enabled first try LSE in bypass mode.  If that fails to start, try
+// non-bypass mode, with fallback to LSI.
 #ifndef MICROPY_HW_RTC_USE_BYPASS
 #define MICROPY_HW_RTC_USE_BYPASS (0)
 #endif
@@ -291,10 +293,11 @@
 #define MICROPY_HW_BDEV_WRITEBLOCK flash_bdev_writeblock
 #endif
 
-// Whether to enable caching for external SPI flash, to allow block writes that are
-// smaller than the native page-erase size of the SPI flash, eg when FAT FS is used.
-// Enabling this enables spi_bdev_readblocks() and spi_bdev_writeblocks() functions,
-// and requires a valid mp_spiflash_config_t.cache pointer.
+// Whether to enable caching for external SPI flash, to allow block writes that
+// are smaller than the native page-erase size of the SPI flash, eg when FAT FS
+// is used. Enabling this enables spi_bdev_readblocks() and
+// spi_bdev_writeblocks() functions, and requires a valid
+// mp_spiflash_config_t.cache pointer.
 #ifndef MICROPY_HW_SPIFLASH_ENABLE_CACHE
 #define MICROPY_HW_SPIFLASH_ENABLE_CACHE (0)
 #endif
@@ -307,15 +310,16 @@
 #endif
 
 // Enable hardware I2C if there are any peripherals defined
-#if defined(MICROPY_HW_I2C1_SCL) || defined(MICROPY_HW_I2C2_SCL) \
-    || defined(MICROPY_HW_I2C3_SCL) || defined(MICROPY_HW_I2C4_SCL)
+#if defined(MICROPY_HW_I2C1_SCL) || defined(MICROPY_HW_I2C2_SCL) ||            \
+    defined(MICROPY_HW_I2C3_SCL) || defined(MICROPY_HW_I2C4_SCL)
 #define MICROPY_HW_ENABLE_HW_I2C (1)
 #else
 #define MICROPY_HW_ENABLE_HW_I2C (0)
 #endif
 
 // Enable CAN if there are any peripherals defined
-#if defined(MICROPY_HW_CAN1_TX) || defined(MICROPY_HW_CAN2_TX) || defined(MICROPY_HW_CAN3_TX)
+#if defined(MICROPY_HW_CAN1_TX) || defined(MICROPY_HW_CAN2_TX) ||              \
+    defined(MICROPY_HW_CAN3_TX)
 #define MICROPY_HW_ENABLE_CAN (1)
 #if defined(STM32H7)
 #define MICROPY_HW_ENABLE_FDCAN (1) // define for MCUs with FDCAN
@@ -339,7 +343,8 @@
 #define MICROPY_HW_USB_IS_MULTI_OTG (1)
 #endif
 
-// Configure maximum number of CDC VCP interfaces, and whether MSC/HID are supported
+// Configure maximum number of CDC VCP interfaces, and whether MSC/HID are
+// supported
 #ifndef MICROPY_HW_USB_CDC_NUM
 #define MICROPY_HW_USB_CDC_NUM (1)
 #endif
@@ -355,12 +360,16 @@
 
 // D-cache clean/invalidate helpers
 #if __DCACHE_PRESENT == 1
-#define MP_HAL_CLEANINVALIDATE_DCACHE(addr, size) \
-    (SCB_CleanInvalidateDCache_by_Addr((uint32_t *)((uint32_t)addr & ~0x1f), \
-    ((uint32_t)((uint8_t *)addr + size + 0x1f) & ~0x1f) - ((uint32_t)addr & ~0x1f)))
-#define MP_HAL_CLEAN_DCACHE(addr, size) \
-    (SCB_CleanDCache_by_Addr((uint32_t *)((uint32_t)addr & ~0x1f), \
-    ((uint32_t)((uint8_t *)addr + size + 0x1f) & ~0x1f) - ((uint32_t)addr & ~0x1f)))
+#define MP_HAL_CLEANINVALIDATE_DCACHE(addr, size)                              \
+  (SCB_CleanInvalidateDCache_by_Addr(                                          \
+      (uint32_t *)((uint32_t)addr & ~0x1f),                                    \
+      ((uint32_t)((uint8_t *)addr + size + 0x1f) & ~0x1f) -                    \
+          ((uint32_t)addr & ~0x1f)))
+#define MP_HAL_CLEAN_DCACHE(addr, size)                                        \
+  (SCB_CleanDCache_by_Addr(                                                    \
+      (uint32_t *)((uint32_t)addr & ~0x1f),                                    \
+      ((uint32_t)((uint8_t *)addr + size + 0x1f) & ~0x1f) -                    \
+          ((uint32_t)addr & ~0x1f)))
 #else
 #define MP_HAL_CLEANINVALIDATE_DCACHE(addr, size)
 #define MP_HAL_CLEAN_DCACHE(addr, size)

@@ -25,37 +25,36 @@
  * THE SOFTWARE.
  */
 
-#include "py/runtime.h"
 #include "extmod/machine_mem.h"
 #include "led.h"
+#include "py/runtime.h"
 
 #include CPU_HEADER_H
 
 STATIC mp_obj_t machine_reset(void) {
-    NVIC_SystemReset();
-    return mp_const_none;
+  NVIC_SystemReset();
+  return mp_const_none;
 }
 MP_DEFINE_CONST_FUN_OBJ_0(machine_reset_obj, machine_reset);
 
-STATIC mp_obj_t machine_freq(void) {
-    return MP_OBJ_NEW_SMALL_INT(0);
-}
+STATIC mp_obj_t machine_freq(void) { return MP_OBJ_NEW_SMALL_INT(0); }
 MP_DEFINE_CONST_FUN_OBJ_0(machine_freq_obj, machine_freq);
 
 STATIC const mp_rom_map_elem_t machine_module_globals_table[] = {
-    { MP_ROM_QSTR(MP_QSTR___name__),            MP_ROM_QSTR(MP_QSTR_umachine) },
-    { MP_ROM_QSTR(MP_QSTR_reset),               MP_ROM_PTR(&machine_reset_obj) },
-    { MP_ROM_QSTR(MP_QSTR_freq),                MP_ROM_PTR(&machine_freq_obj) },
-    { MP_ROM_QSTR(MP_QSTR_mem8),                MP_ROM_PTR(&machine_mem8_obj) },
-    { MP_ROM_QSTR(MP_QSTR_mem16),               MP_ROM_PTR(&machine_mem16_obj) },
-    { MP_ROM_QSTR(MP_QSTR_mem32),               MP_ROM_PTR(&machine_mem32_obj) },
+    {MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_umachine)},
+    {MP_ROM_QSTR(MP_QSTR_reset), MP_ROM_PTR(&machine_reset_obj)},
+    {MP_ROM_QSTR(MP_QSTR_freq), MP_ROM_PTR(&machine_freq_obj)},
+    {MP_ROM_QSTR(MP_QSTR_mem8), MP_ROM_PTR(&machine_mem8_obj)},
+    {MP_ROM_QSTR(MP_QSTR_mem16), MP_ROM_PTR(&machine_mem16_obj)},
+    {MP_ROM_QSTR(MP_QSTR_mem32), MP_ROM_PTR(&machine_mem32_obj)},
 #if NUM_LEDS
-    { MP_ROM_QSTR(MP_QSTR_LED),                 MP_ROM_PTR(&machine_led_type) },
+    {MP_ROM_QSTR(MP_QSTR_LED), MP_ROM_PTR(&machine_led_type)},
 #endif
 };
-STATIC MP_DEFINE_CONST_DICT(machine_module_globals, machine_module_globals_table);
+STATIC MP_DEFINE_CONST_DICT(machine_module_globals,
+                            machine_module_globals_table);
 
 const mp_obj_module_t mp_module_machine = {
-    .base = { &mp_type_module },
+    .base = {&mp_type_module},
     .globals = (mp_obj_dict_t *)&machine_module_globals,
 };

@@ -26,8 +26,8 @@
 
 #include <string.h>
 
-#include "py/mphal.h"
 #include "mboot.h"
+#include "py/mphal.h"
 #include "vfs.h"
 
 #if MBOOT_FSLOAD && (MBOOT_VFS_LFS1 || MBOOT_VFS_LFS2)
@@ -41,7 +41,7 @@
 #define MBOOT_ERRNO_VFS_LFS_OPEN_FAILED MBOOT_ERRNO_VFS_LFS1_OPEN_FAILED
 
 #define LFSx_MACRO(s) LFS1##s
-#define LFSx_API(x) lfs1_ ## x
+#define LFSx_API(x) lfs1_##x
 #define VFS_LFSx_CONTEXT_T vfs_lfs1_context_t
 #define VFS_LFSx_MOUNT vfs_lfs1_mount
 #define VFS_LFSx_STREAM_METHODS vfs_lfs1_stream_methods
@@ -56,7 +56,7 @@ static uint8_t lfs_lookahead_buffer[LFS_LOOKAHEAD_SIZE / 8];
 #define MBOOT_ERRNO_VFS_LFS_OPEN_FAILED MBOOT_ERRNO_VFS_LFS2_OPEN_FAILED
 
 #define LFSx_MACRO(s) LFS2##s
-#define LFSx_API(x) lfs2_ ## x
+#define LFSx_API(x) lfs2_##x
 #define VFS_LFSx_CONTEXT_T vfs_lfs2_context_t
 #define VFS_LFSx_MOUNT vfs_lfs2_mount
 #define VFS_LFSx_STREAM_METHODS vfs_lfs2_stream_methods
@@ -67,90 +67,97 @@ static uint8_t lfs_lookahead_buffer[LFS_LOOKAHEAD_SIZE];
 
 #endif
 
-static int dev_read(const struct LFSx_API (config) * c, LFSx_API(block_t) block, LFSx_API(off_t) off, void *buffer, LFSx_API(size_t) size) {
-    VFS_LFSx_CONTEXT_T *ctx = c->context;
-    if (0 <= block && block < ctx->config.block_count) {
-        hw_read(ctx->bdev_base_addr + block * ctx->config.block_size + off, size, buffer);
-        return LFSx_MACRO(_ERR_OK);
-    }
-    return LFSx_MACRO(_ERR_IO);
-}
-
-static int dev_prog(const struct LFSx_API (config) * c, LFSx_API(block_t) block, LFSx_API(off_t) off, const void *buffer, LFSx_API(size_t) size) {
-    return LFSx_MACRO(_ERR_IO);
-}
-
-static int dev_erase(const struct LFSx_API (config) * c, LFSx_API(block_t) block) {
-    return LFSx_MACRO(_ERR_IO);
-}
-
-static int dev_sync(const struct LFSx_API (config) * c) {
+static int dev_read(const struct LFSx_API(config) * c, LFSx_API(block_t) block,
+                    LFSx_API(off_t) off, void *buffer, LFSx_API(size_t) size) {
+  VFS_LFSx_CONTEXT_T *ctx = c->context;
+  if (0 <= block && block < ctx->config.block_count) {
+    hw_read(ctx->bdev_base_addr + block * ctx->config.block_size + off, size,
+            buffer);
     return LFSx_MACRO(_ERR_OK);
+  }
+  return LFSx_MACRO(_ERR_IO);
 }
 
-int VFS_LFSx_MOUNT(VFS_LFSx_CONTEXT_T *ctx, uint32_t base_addr, uint32_t byte_len, uint32_t block_size) {
-    ctx->bdev_base_addr = base_addr;
+static int dev_prog(const struct LFSx_API(config) * c, LFSx_API(block_t) block,
+                    LFSx_API(off_t) off, const void *buffer,
+                    LFSx_API(size_t) size) {
+  return LFSx_MACRO(_ERR_IO);
+}
 
-    struct LFSx_API (config) *config = &ctx->config;
-    memset(config, 0, sizeof(*config));
+static int dev_erase(const struct LFSx_API(config) * c,
+                     LFSx_API(block_t) block) {
+  return LFSx_MACRO(_ERR_IO);
+}
 
-    config->context = ctx;
+static int dev_sync(const struct LFSx_API(config) * c) {
+  return LFSx_MACRO(_ERR_OK);
+}
 
-    config->read = dev_read;
-    config->prog = dev_prog;
-    config->erase = dev_erase;
-    config->sync = dev_sync;
+int VFS_LFSx_MOUNT(VFS_LFSx_CONTEXT_T *ctx, uint32_t base_addr,
+                   uint32_t byte_len, uint32_t block_size) {
+  ctx->bdev_base_addr = base_addr;
 
-    config->read_size = LFS_READ_SIZE;
-    config->prog_size = LFS_PROG_SIZE;
-    config->block_size = block_size;
-    config->block_count = byte_len / block_size;
+  struct LFSx_API(config) *config = &ctx->config;
+  memset(config, 0, sizeof(*config));
+
+  config->context = ctx;
+
+  config->read = dev_read;
+  config->prog = dev_prog;
+  config->erase = dev_erase;
+  config->sync = dev_sync;
+
+  config->read_size = LFS_READ_SIZE;
+  config->prog_size = LFS_PROG_SIZE;
+  config->block_size = block_size;
+  config->block_count = byte_len / block_size;
 
 #if MBOOT_VFS_LFS1
-    config->lookahead = LFS_LOOKAHEAD_SIZE;
-    config->read_buffer = lfs_read_buffer;
-    config->prog_buffer = lfs_prog_buffer;
-    config->lookahead_buffer = lfs_lookahead_buffer;
+  config->lookahead = LFS_LOOKAHEAD_SIZE;
+  config->read_buffer = lfs_read_buffer;
+  config->prog_buffer = lfs_prog_buffer;
+  config->lookahead_buffer = lfs_lookahead_buffer;
 #else
-    config->block_cycles = 100;
-    config->cache_size = LFS_CACHE_SIZE;
-    config->lookahead_size = LFS_LOOKAHEAD_SIZE;
-    config->read_buffer = lfs_read_buffer;
-    config->prog_buffer = lfs_prog_buffer;
-    config->lookahead_buffer = lfs_lookahead_buffer;
+  config->block_cycles = 100;
+  config->cache_size = LFS_CACHE_SIZE;
+  config->lookahead_size = LFS_LOOKAHEAD_SIZE;
+  config->read_buffer = lfs_read_buffer;
+  config->prog_buffer = lfs_prog_buffer;
+  config->lookahead_buffer = lfs_lookahead_buffer;
 #endif
 
-    int ret = LFSx_API(mount)(&ctx->lfs, &ctx->config);
-    if (ret < 0) {
-        return -MBOOT_ERRNO_VFS_LFS_MOUNT_FAILED;
-    }
-    return 0;
+  int ret = LFSx_API(mount)(&ctx->lfs, &ctx->config);
+  if (ret < 0) {
+    return -MBOOT_ERRNO_VFS_LFS_MOUNT_FAILED;
+  }
+  return 0;
 }
 
 static int vfs_lfs_stream_open(void *stream_in, const char *fname) {
-    VFS_LFSx_CONTEXT_T *ctx = stream_in;
-    memset(&ctx->file, 0, sizeof(ctx->file));
-    memset(&ctx->filecfg, 0, sizeof(ctx->filecfg));
-    ctx->filecfg.buffer = &ctx->filebuf[0];
-    int ret = LFSx_API(file_opencfg)(&ctx->lfs, &ctx->file, fname, LFSx_MACRO(_O_RDONLY), &ctx->filecfg);
-    if (ret < 0) {
-        return -MBOOT_ERRNO_VFS_LFS_OPEN_FAILED;
-    }
-    return 0;
+  VFS_LFSx_CONTEXT_T *ctx = stream_in;
+  memset(&ctx->file, 0, sizeof(ctx->file));
+  memset(&ctx->filecfg, 0, sizeof(ctx->filecfg));
+  ctx->filecfg.buffer = &ctx->filebuf[0];
+  int ret = LFSx_API(file_opencfg)(&ctx->lfs, &ctx->file, fname,
+                                   LFSx_MACRO(_O_RDONLY), &ctx->filecfg);
+  if (ret < 0) {
+    return -MBOOT_ERRNO_VFS_LFS_OPEN_FAILED;
+  }
+  return 0;
 }
 
 static void vfs_lfs_stream_close(void *stream_in) {
-    VFS_LFSx_CONTEXT_T *ctx = stream_in;
-    LFSx_API(file_close)(&ctx->lfs, &ctx->file);
+  VFS_LFSx_CONTEXT_T *ctx = stream_in;
+  LFSx_API(file_close)(&ctx->lfs, &ctx->file);
 }
 
 static int vfs_lfs_stream_read(void *stream_in, uint8_t *buf, size_t len) {
-    VFS_LFSx_CONTEXT_T *ctx = stream_in;
-    LFSx_API(ssize_t) sz = LFSx_API(file_read)(&ctx->lfs, &ctx->file, buf, len);
-    if (sz < 0) {
-        return -1;
-    }
-    return sz;
+  VFS_LFSx_CONTEXT_T *ctx = stream_in;
+  LFSx_API(ssize_t) sz = LFSx_API(file_read)(&ctx->lfs, &ctx->file, buf, len);
+  if (sz < 0) {
+    return -1;
+  }
+  return sz;
 }
 
 const stream_methods_t VFS_LFSx_STREAM_METHODS = {

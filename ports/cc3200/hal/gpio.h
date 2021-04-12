@@ -47,8 +47,7 @@
 //
 //*****************************************************************************
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 //*****************************************************************************
@@ -57,14 +56,14 @@ extern "C"
 // of the APIs.
 //
 //*****************************************************************************
-#define GPIO_PIN_0              0x00000001  // GPIO pin 0
-#define GPIO_PIN_1              0x00000002  // GPIO pin 1
-#define GPIO_PIN_2              0x00000004  // GPIO pin 2
-#define GPIO_PIN_3              0x00000008  // GPIO pin 3
-#define GPIO_PIN_4              0x00000010  // GPIO pin 4
-#define GPIO_PIN_5              0x00000020  // GPIO pin 5
-#define GPIO_PIN_6              0x00000040  // GPIO pin 6
-#define GPIO_PIN_7              0x00000080  // GPIO pin 7
+#define GPIO_PIN_0 0x00000001 // GPIO pin 0
+#define GPIO_PIN_1 0x00000002 // GPIO pin 1
+#define GPIO_PIN_2 0x00000004 // GPIO pin 2
+#define GPIO_PIN_3 0x00000008 // GPIO pin 3
+#define GPIO_PIN_4 0x00000010 // GPIO pin 4
+#define GPIO_PIN_5 0x00000020 // GPIO pin 5
+#define GPIO_PIN_6 0x00000040 // GPIO pin 6
+#define GPIO_PIN_7 0x00000080 // GPIO pin 7
 
 //*****************************************************************************
 //
@@ -72,8 +71,8 @@ extern "C"
 // returned from GPIODirModeGet.
 //
 //*****************************************************************************
-#define GPIO_DIR_MODE_IN        0x00000000  // Pin is a GPIO input
-#define GPIO_DIR_MODE_OUT       0x00000001  // Pin is a GPIO output
+#define GPIO_DIR_MODE_IN 0x00000000  // Pin is a GPIO input
+#define GPIO_DIR_MODE_OUT 0x00000001 // Pin is a GPIO output
 
 //*****************************************************************************
 //
@@ -81,11 +80,11 @@ extern "C"
 // returned from GPIOIntTypeGet.
 //
 //*****************************************************************************
-#define GPIO_FALLING_EDGE       0x00000000  // Interrupt on falling edge
-#define GPIO_RISING_EDGE        0x00000004  // Interrupt on rising edge
-#define GPIO_BOTH_EDGES         0x00000001  // Interrupt on both edges
-#define GPIO_LOW_LEVEL          0x00000002  // Interrupt on low level
-#define GPIO_HIGH_LEVEL         0x00000006  // Interrupt on high level
+#define GPIO_FALLING_EDGE 0x00000000 // Interrupt on falling edge
+#define GPIO_RISING_EDGE 0x00000004  // Interrupt on rising edge
+#define GPIO_BOTH_EDGES 0x00000001   // Interrupt on both edges
+#define GPIO_LOW_LEVEL 0x00000002    // Interrupt on low level
+#define GPIO_HIGH_LEVEL 0x00000006   // Interrupt on high level
 
 //*****************************************************************************
 //
@@ -93,15 +92,15 @@ extern "C"
 // in the ulIntFlags parameter.
 //
 //*****************************************************************************
-#define GPIO_INT_DMA            0x00000100
-#define GPIO_INT_PIN_0          0x00000001
-#define GPIO_INT_PIN_1          0x00000002
-#define GPIO_INT_PIN_2          0x00000004
-#define GPIO_INT_PIN_3          0x00000008
-#define GPIO_INT_PIN_4          0x00000010
-#define GPIO_INT_PIN_5          0x00000020
-#define GPIO_INT_PIN_6          0x00000040
-#define GPIO_INT_PIN_7          0x00000080
+#define GPIO_INT_DMA 0x00000100
+#define GPIO_INT_PIN_0 0x00000001
+#define GPIO_INT_PIN_1 0x00000002
+#define GPIO_INT_PIN_2 0x00000004
+#define GPIO_INT_PIN_3 0x00000008
+#define GPIO_INT_PIN_4 0x00000010
+#define GPIO_INT_PIN_5 0x00000020
+#define GPIO_INT_PIN_6 0x00000040
+#define GPIO_INT_PIN_7 0x00000080
 
 //*****************************************************************************
 //
@@ -120,8 +119,7 @@ extern void GPIOIntEnable(unsigned long ulPort, unsigned long ulIntFlags);
 extern void GPIOIntDisable(unsigned long ulPort, unsigned long ulIntFlags);
 extern long GPIOIntStatus(unsigned long ulPort, tBoolean bMasked);
 extern void GPIOIntClear(unsigned long ulPort, unsigned long ulIntFlags);
-extern void GPIOIntRegister(unsigned long ulPort,
-                            void (*pfnIntHandler)(void));
+extern void GPIOIntRegister(unsigned long ulPort, void (*pfnIntHandler)(void));
 extern void GPIOIntUnregister(unsigned long ulPort);
 extern long GPIOPinRead(unsigned long ulPort, unsigned char ucPins);
 extern void GPIOPinWrite(unsigned long ulPort, unsigned char ucPins,

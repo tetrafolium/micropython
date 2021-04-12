@@ -55,9 +55,9 @@
 //
 //*****************************************************************************
 #if defined(DEBUG) && !defined(BOOTLOADER)
-#define ASSERT(expr)        assert(expr)
+#define ASSERT(expr) assert(expr)
 #else
-#define ASSERT(expr)        (void)(expr)
+#define ASSERT(expr) (void)(expr)
 #endif
 
 #endif // __DEBUG_H__

@@ -24,35 +24,35 @@
  * THE SOFTWARE.
  */
 
-#include <stdio.h>
 #include <stdint.h>
+#include <stdio.h>
 
-#include "py/mpstate.h"
-#include "py/gc.h"
-#include "py/mpthread.h"
-#include "lib/utils/gchelper.h"
 #include "gccollect.h"
+#include "lib/utils/gchelper.h"
+#include "py/gc.h"
+#include "py/mpstate.h"
+#include "py/mpthread.h"
 #include "systick.h"
 
 void gc_collect(void) {
-    // get current time, in case we want to time the GC
+  // get current time, in case we want to time the GC
 #if 0
     uint32_t start = mp_hal_ticks_us();
 #endif
 
-    // start the GC
-    gc_collect_start();
+  // start the GC
+  gc_collect_start();
 
-    // trace the stack and registers
-    gc_helper_collect_regs_and_stack();
+  // trace the stack and registers
+  gc_helper_collect_regs_and_stack();
 
-    // trace root pointers from any threads
+  // trace root pointers from any threads
 #if MICROPY_PY_THREAD
-    mp_thread_gc_others();
+  mp_thread_gc_others();
 #endif
 
-    // end the GC
-    gc_collect_end();
+  // end the GC
+  gc_collect_end();
 
 #if 0
     // print GC info

@@ -27,16 +27,16 @@
 #define MICROPY_INCLUDED_STM32_PYBTHREAD_H
 
 typedef struct _pyb_thread_t {
-    void *sp;
-    uint32_t local_state;
-    void *arg;                  // thread Python args, a GC root pointer
-    void *stack;                // pointer to the stack
-    size_t stack_len;           // number of words in the stack
-    uint32_t timeslice;
-    struct _pyb_thread_t *all_next;
-    struct _pyb_thread_t *run_prev;
-    struct _pyb_thread_t *run_next;
-    struct _pyb_thread_t *queue_next;
+  void *sp;
+  uint32_t local_state;
+  void *arg;        // thread Python args, a GC root pointer
+  void *stack;      // pointer to the stack
+  size_t stack_len; // number of words in the stack
+  uint32_t timeslice;
+  struct _pyb_thread_t *all_next;
+  struct _pyb_thread_t *run_prev;
+  struct _pyb_thread_t *run_next;
+  struct _pyb_thread_t *queue_next;
 } pyb_thread_t;
 
 typedef pyb_thread_t *pyb_mutex_t;
@@ -47,27 +47,28 @@ extern pyb_thread_t *volatile pyb_thread_cur;
 
 void pyb_thread_init(pyb_thread_t *th);
 void pyb_thread_deinit();
-uint32_t pyb_thread_new(pyb_thread_t *th, void *stack, size_t stack_len, void *entry, void *arg);
+uint32_t pyb_thread_new(pyb_thread_t *th, void *stack, size_t stack_len,
+                        void *entry, void *arg);
 void pyb_thread_dump(void);
 
 static inline uint32_t pyb_thread_get_id(void) {
-    return (uint32_t)pyb_thread_cur;
+  return (uint32_t)pyb_thread_cur;
 }
 
 static inline void pyb_thread_set_local(void *value) {
-    pyb_thread_cur->local_state = (uint32_t)value;
+  pyb_thread_cur->local_state = (uint32_t)value;
 }
 
 static inline void *pyb_thread_get_local(void) {
-    return (void *)pyb_thread_cur->local_state;
+  return (void *)pyb_thread_cur->local_state;
 }
 
 static inline void pyb_thread_yield(void) {
-    if (pyb_thread_cur->run_next == pyb_thread_cur) {
-        __WFI();
-    } else {
-        SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
-    }
+  if (pyb_thread_cur->run_next == pyb_thread_cur) {
+    __WFI();
+  } else {
+    SCB->ICSR = SCB_ICSR_PENDSVSET_Msk;
+  }
 }
 
 void pyb_mutex_init(pyb_mutex_t *m);

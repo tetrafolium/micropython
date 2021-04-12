@@ -49,9 +49,11 @@ const char esp32_help_text[] =
     "\n"
     "import network\n"
     "sta_if = network.WLAN(network.STA_IF); sta_if.active(True)\n"
-    "sta_if.scan()                             # Scan for available access points\n"
+    "sta_if.scan()                             # Scan for available access "
+    "points\n"
     "sta_if.connect(\"<AP_name>\", \"<password>\") # Connect to an AP\n"
-    "sta_if.isconnected()                      # Check for successful connection\n"
+    "sta_if.isconnected()                      # Check for successful "
+    "connection\n"
     "\n"
     "Control commands:\n"
     "  CTRL-A        -- on a blank line, enter raw REPL mode\n"
@@ -61,5 +63,4 @@ const char esp32_help_text[] =
     "  CTRL-E        -- on a blank line, enter paste mode\n"
     "\n"
     "For further help on a specific object, type help(obj)\n"
-    "For a list of available modules, type help('modules')\n"
-    ;
+    "For a list of available modules, type help('modules')\n";

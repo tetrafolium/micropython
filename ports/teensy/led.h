@@ -2,7 +2,7 @@
 #define MICROPY_INCLUDED_TEENSY_LED_H
 
 typedef enum {
-    PYB_LED_BUILTIN = 1,
+  PYB_LED_BUILTIN = 1,
 } pyb_led_t;
 
 void led_init(void);

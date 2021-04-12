@@ -29,9 +29,9 @@
 /******************************************************************************
  DEFINE CONSTANTS
  ******************************************************************************/
-#define MICROPY_TASK_PRIORITY                   (2)
-#define MICROPY_TASK_STACK_SIZE                 ((6 * 1024) + 512) // in bytes
-#define MICROPY_TASK_STACK_LEN                  (MICROPY_TASK_STACK_SIZE / sizeof(StackType_t))
+#define MICROPY_TASK_PRIORITY (2)
+#define MICROPY_TASK_STACK_SIZE ((6 * 1024) + 512) // in bytes
+#define MICROPY_TASK_STACK_LEN (MICROPY_TASK_STACK_SIZE / sizeof(StackType_t))
 
 /******************************************************************************
  EXPORTED DATA

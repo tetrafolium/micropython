@@ -44,13 +44,13 @@
 //
 //*****************************************************************************
 
+#include "wdt.h"
+#include "debug.h"
 #include "inc/hw_ints.h"
 #include "inc/hw_memmap.h"
 #include "inc/hw_types.h"
 #include "inc/hw_wdt.h"
-#include "debug.h"
 #include "interrupt.h"
-#include "wdt.h"
 
 //*****************************************************************************
 //
@@ -64,18 +64,16 @@
 //! if it is not.
 //
 //*****************************************************************************
-tBoolean
-WatchdogRunning(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+tBoolean WatchdogRunning(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // See if the watchdog timer module is enabled, and return.
-    //
-    return(HWREG(ulBase + WDT_O_CTL) & WDT_CTL_INTEN);
+  //
+  // See if the watchdog timer module is enabled, and return.
+  //
+  return (HWREG(ulBase + WDT_O_CTL) & WDT_CTL_INTEN);
 }
 
 //*****************************************************************************
@@ -94,18 +92,16 @@ WatchdogRunning(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogEnable(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogEnable(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Enable the watchdog timer module.
-    //
-    HWREG(ulBase + WDT_O_CTL) |= WDT_CTL_INTEN;
+  //
+  // Enable the watchdog timer module.
+  //
+  HWREG(ulBase + WDT_O_CTL) |= WDT_CTL_INTEN;
 }
 
 //*****************************************************************************
@@ -119,19 +115,17 @@ WatchdogEnable(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogLock(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogLock(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Lock out watchdog register writes.  Writing anything to the WDT_O_LOCK
-    // register causes the lock to go into effect.
-    //
-    HWREG(ulBase + WDT_O_LOCK) = WDT_LOCK_LOCKED;
+  //
+  // Lock out watchdog register writes.  Writing anything to the WDT_O_LOCK
+  // register causes the lock to go into effect.
+  //
+  HWREG(ulBase + WDT_O_LOCK) = WDT_LOCK_LOCKED;
 }
 
 //*****************************************************************************
@@ -145,18 +139,16 @@ WatchdogLock(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogUnlock(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogUnlock(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Unlock watchdog register writes.
-    //
-    HWREG(ulBase + WDT_O_LOCK) = WDT_LOCK_UNLOCK;
+  //
+  // Unlock watchdog register writes.
+  //
+  HWREG(ulBase + WDT_O_LOCK) = WDT_LOCK_UNLOCK;
 }
 
 //*****************************************************************************
@@ -171,18 +163,16 @@ WatchdogUnlock(unsigned long ulBase)
 //! \b false if they are not locked.
 //
 //*****************************************************************************
-tBoolean
-WatchdogLockState(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+tBoolean WatchdogLockState(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Get the lock state.
-    //
-    return((HWREG(ulBase + WDT_O_LOCK) == WDT_LOCK_LOCKED) ? true : false);
+  //
+  // Get the lock state.
+  //
+  return ((HWREG(ulBase + WDT_O_LOCK) == WDT_LOCK_LOCKED) ? true : false);
 }
 
 //*****************************************************************************
@@ -206,18 +196,16 @@ WatchdogLockState(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogReloadSet(unsigned long ulBase, unsigned long ulLoadVal)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogReloadSet(unsigned long ulBase, unsigned long ulLoadVal) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Set the load register.
-    //
-    HWREG(ulBase + WDT_O_LOAD) = ulLoadVal;
+  //
+  // Set the load register.
+  //
+  HWREG(ulBase + WDT_O_LOAD) = ulLoadVal;
 }
 
 //*****************************************************************************
@@ -234,18 +222,16 @@ WatchdogReloadSet(unsigned long ulBase, unsigned long ulLoadVal)
 //! \return None.
 //
 //*****************************************************************************
-unsigned long
-WatchdogReloadGet(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+unsigned long WatchdogReloadGet(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Get the load register.
-    //
-    return(HWREG(ulBase + WDT_O_LOAD));
+  //
+  // Get the load register.
+  //
+  return (HWREG(ulBase + WDT_O_LOAD));
 }
 
 //*****************************************************************************
@@ -259,18 +245,16 @@ WatchdogReloadGet(unsigned long ulBase)
 //! \return Returns the current value of the watchdog timer.
 //
 //*****************************************************************************
-unsigned long
-WatchdogValueGet(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+unsigned long WatchdogValueGet(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Get the current watchdog timer register value.
-    //
-    return(HWREG(ulBase + WDT_O_VALUE));
+  //
+  // Get the current watchdog timer register value.
+  //
+  return (HWREG(ulBase + WDT_O_VALUE));
 }
 
 //*****************************************************************************
@@ -297,20 +281,18 @@ WatchdogValueGet(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogIntRegister(unsigned long ulBase, void (*pfnHandler)(void)) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Register the interrupt handler and
-    // Enable the watchdog timer interrupt.
-    //
-    IntRegister(INT_WDT, pfnHandler);
-    IntEnable(INT_WDT);
+  //
+  // Register the interrupt handler and
+  // Enable the watchdog timer interrupt.
+  //
+  IntRegister(INT_WDT, pfnHandler);
+  IntEnable(INT_WDT);
 }
 
 //*****************************************************************************
@@ -334,22 +316,20 @@ WatchdogIntRegister(unsigned long ulBase, void (*pfnHandler)(void))
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogIntUnregister(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogIntUnregister(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Disable the interrupt
-    IntDisable(INT_WDT);
+  //
+  // Disable the interrupt
+  IntDisable(INT_WDT);
 
-    //
-    // Unregister the interrupt handler.
-    //
-    IntUnregister(INT_WDT);
+  //
+  // Unregister the interrupt handler.
+  //
+  IntUnregister(INT_WDT);
 }
 
 //*****************************************************************************
@@ -368,26 +348,21 @@ WatchdogIntUnregister(unsigned long ulBase)
 //! watchdog interrupt is active, and a 0 indicates that it is not active.
 //
 //*****************************************************************************
-unsigned long
-WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+unsigned long WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Return either the interrupt status or the raw interrupt status as
-    // requested.
-    //
-    if(bMasked)
-    {
-        return(HWREG(ulBase + WDT_O_MIS));
-    }
-    else
-    {
-        return(HWREG(ulBase + WDT_O_RIS));
-    }
+  //
+  // Return either the interrupt status or the raw interrupt status as
+  // requested.
+  //
+  if (bMasked) {
+    return (HWREG(ulBase + WDT_O_MIS));
+  } else {
+    return (HWREG(ulBase + WDT_O_RIS));
+  }
 }
 
 //*****************************************************************************
@@ -411,18 +386,16 @@ WatchdogIntStatus(unsigned long ulBase, tBoolean bMasked)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogIntClear(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogIntClear(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Clear the interrupt source.
-    //
-    HWREG(ulBase + WDT_O_ICR) = WDT_INT_TIMEOUT;
+  //
+  // Clear the interrupt source.
+  //
+  HWREG(ulBase + WDT_O_ICR) = WDT_INT_TIMEOUT;
 }
 
 //*****************************************************************************
@@ -442,18 +415,16 @@ WatchdogIntClear(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogStallEnable(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogStallEnable(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Enable timer stalling.
-    //
-    HWREG(ulBase + WDT_O_TEST) |= WDT_TEST_STALL;
+  //
+  // Enable timer stalling.
+  //
+  HWREG(ulBase + WDT_O_TEST) |= WDT_TEST_STALL;
 }
 
 //*****************************************************************************
@@ -469,18 +440,16 @@ WatchdogStallEnable(unsigned long ulBase)
 //! \return None.
 //
 //*****************************************************************************
-void
-WatchdogStallDisable(unsigned long ulBase)
-{
-    //
-    // Check the arguments.
-    //
-    ASSERT((ulBase == WDT_BASE));
+void WatchdogStallDisable(unsigned long ulBase) {
+  //
+  // Check the arguments.
+  //
+  ASSERT((ulBase == WDT_BASE));
 
-    //
-    // Disable timer stalling.
-    //
-    HWREG(ulBase + WDT_O_TEST) &= ~(WDT_TEST_STALL);
+  //
+  // Disable timer stalling.
+  //
+  HWREG(ulBase + WDT_O_TEST) &= ~(WDT_TEST_STALL);
 }
 
 //*****************************************************************************

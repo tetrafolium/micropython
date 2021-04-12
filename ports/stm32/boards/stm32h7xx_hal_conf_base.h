@@ -27,13 +27,12 @@
 #define MICROPY_INCLUDED_STM32H7XX_HAL_CONF_BASE_H
 
 // Include various HAL modules for convenience
-#include "stm32h7xx_hal_dma.h"
-#include "stm32h7xx_hal_mdma.h"
 #include "stm32h7xx_hal_adc.h"
 #include "stm32h7xx_hal_cortex.h"
 #include "stm32h7xx_hal_crc.h"
 #include "stm32h7xx_hal_dac.h"
 #include "stm32h7xx_hal_dcmi.h"
+#include "stm32h7xx_hal_dma.h"
 #include "stm32h7xx_hal_fdcan.h"
 #include "stm32h7xx_hal_flash.h"
 #include "stm32h7xx_hal_gpio.h"
@@ -42,6 +41,7 @@
 #include "stm32h7xx_hal_i2c.h"
 #include "stm32h7xx_hal_i2s.h"
 #include "stm32h7xx_hal_iwdg.h"
+#include "stm32h7xx_hal_mdma.h"
 #include "stm32h7xx_hal_pcd.h"
 #include "stm32h7xx_hal_pwr.h"
 #include "stm32h7xx_hal_rcc.h"
@@ -92,9 +92,9 @@
 #define TICK_INT_PRIORITY (0x00)
 
 // Miscellaneous HAL settings
-#define USE_RTOS            0
-#define USE_SD_TRANSCEIVER  0
-#define USE_SPI_CRC         1
+#define USE_RTOS 0
+#define USE_SD_TRANSCEIVER 0
+#define USE_SPI_CRC 1
 
 // HAL parameter assertions are disabled
 #define assert_param(expr) ((void)0)

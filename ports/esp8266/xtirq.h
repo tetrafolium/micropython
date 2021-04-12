@@ -30,30 +30,28 @@
 
 // returns the value of "intlevel" from the PS register
 static inline uint32_t query_irq(void) {
-    uint32_t ps;
-    __asm__ volatile ("rsr %0, ps" : "=a" (ps));
-    return ps & 0xf;
+  uint32_t ps;
+  __asm__ volatile("rsr %0, ps" : "=a"(ps));
+  return ps & 0xf;
 }
 
 // irqs with a priority value lower or equal to "intlevel" will be disabled
 // "intlevel" should be between 0 and 15 inclusive, and should be an integer
 static inline uint32_t raise_irq_pri(uint32_t intlevel) {
-    uint32_t old_ps;
-    __asm__ volatile ("rsil %0, %1" : "=a" (old_ps) : "I" (intlevel));
-    return old_ps;
+  uint32_t old_ps;
+  __asm__ volatile("rsil %0, %1" : "=a"(old_ps) : "I"(intlevel));
+  return old_ps;
 }
 
 // "ps" should be the value returned from raise_irq_pri
 static inline void restore_irq_pri(uint32_t ps) {
-    __asm__ volatile ("wsr %0, ps; rsync" : : "a" (ps));
+  __asm__ volatile("wsr %0, ps; rsync" : : "a"(ps));
 }
 
-static inline uint32_t disable_irq(void) {
-    return raise_irq_pri(15);
-}
+static inline uint32_t disable_irq(void) { return raise_irq_pri(15); }
 
 static inline void enable_irq(uint32_t irq_state) {
-    restore_irq_pri(irq_state);
+  restore_irq_pri(irq_state);
 }
 
 #endif // MICROPY_INCLUDED_ESP8266_XTIRQ_H

@@ -41,7 +41,7 @@
 // The following are defines for the FLASH_CTRL register offsets.
 //
 //*****************************************************************************
-#define FLASH_CTRL_O_FMA        0x00000000  // Flash Memory Address (FMA)
+#define FLASH_CTRL_O_FMA 0x00000000 // Flash Memory Address (FMA)
 // offset 0x000 During a write
 // operation this register contains
 // a 4-byte-aligned address and
@@ -54,7 +54,7 @@
 // requirements must be met by
 // software or the results of the
 // operation are unpredictable.
-#define FLASH_CTRL_O_FMD        0x00000004  // Flash Memory Data (FMD) offset
+#define FLASH_CTRL_O_FMD 0x00000004 // Flash Memory Data (FMD) offset
 // 0x004 This register contains the
 // data to be written during the
 // programming cycle or read during
@@ -63,7 +63,7 @@
 // undefined for a read access of an
 // execute-only block. This register
 // is not used during erase cycles.
-#define FLASH_CTRL_O_FMC        0x00000008  // Flash Memory Control (FMC)
+#define FLASH_CTRL_O_FMC 0x00000008 // Flash Memory Control (FMC)
 // offset 0x008 When this register
 // is written the Flash memory
 // controller initiates the
@@ -80,7 +80,7 @@
 // control bits in the lower byte of
 // this register are used to
 // initiate memory operations.
-#define FLASH_CTRL_O_FCRIS      0x0000000C  // Flash Controller Raw Interrupt
+#define FLASH_CTRL_O_FCRIS 0x0000000C // Flash Controller Raw Interrupt
 // Status (FCRIS) offset 0x00C This
 // register indicates that the Flash
 // memory controller has an
@@ -89,12 +89,12 @@
 // controller only if the
 // corresponding FCIM register bit
 // is set.
-#define FLASH_CTRL_O_FCIM       0x00000010  // Flash Controller Interrupt Mask
+#define FLASH_CTRL_O_FCIM 0x00000010 // Flash Controller Interrupt Mask
 // (FCIM) offset 0x010 This register
 // controls whether the Flash memory
 // controller generates interrupts
 // to the controller.
-#define FLASH_CTRL_O_FCMISC     0x00000014  // Flash Controller Masked
+#define FLASH_CTRL_O_FCMISC 0x00000014 // Flash Controller Masked
 // Interrupt Status and Clear
 // (FCMISC) offset 0x014 This
 // register provides two functions.
@@ -104,7 +104,7 @@
 // signalling the interrupt. Second
 // it serves as the method to clear
 // the interrupt reporting.
-#define FLASH_CTRL_O_FMC2       0x00000020  // Flash Memory Control 2 (FMC2)
+#define FLASH_CTRL_O_FMC2 0x00000020 // Flash Memory Control 2 (FMC2)
 // offset 0x020 When this register
 // is written the Flash memory
 // controller initiates the
@@ -117,7 +117,7 @@
 // written. This register must be
 // the final register written as it
 // initiates the memory operation.
-#define FLASH_CTRL_O_FWBVAL     0x00000030  // Flash Write Buffer Valid
+#define FLASH_CTRL_O_FWBVAL 0x00000030 // Flash Write Buffer Valid
 // (FWBVAL) offset 0x030 This
 // register provides a bitwise
 // status of which FWBn registers
@@ -145,7 +145,7 @@
 // corresponding FWB[n] bit to
 // preserve the existing data when
 // the next write operation occurs.
-#define FLASH_CTRL_O_FWB1       0x00000100  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB1 0x00000100 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -171,7 +171,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB2       0x00000104  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB2 0x00000104 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -197,7 +197,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB3       0x00000108  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB3 0x00000108 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -223,7 +223,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB4       0x0000010C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB4 0x0000010C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -249,7 +249,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB5       0x00000110  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB5 0x00000110 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -275,7 +275,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB6       0x00000114  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB6 0x00000114 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -301,7 +301,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB7       0x00000118  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB7 0x00000118 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -327,7 +327,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB8       0x0000011C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB8 0x0000011C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -353,7 +353,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB9       0x00000120  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB9 0x00000120 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -379,7 +379,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB10      0x00000124  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB10 0x00000124 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -405,7 +405,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB11      0x00000128  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB11 0x00000128 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -431,7 +431,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB12      0x0000012C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB12 0x0000012C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -457,7 +457,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB13      0x00000130  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB13 0x00000130 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -483,7 +483,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB14      0x00000134  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB14 0x00000134 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -509,7 +509,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB15      0x00000138  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB15 0x00000138 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -535,7 +535,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB16      0x0000013C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB16 0x0000013C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -561,7 +561,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB17      0x00000140  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB17 0x00000140 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -587,7 +587,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB18      0x00000144  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB18 0x00000144 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -613,7 +613,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB19      0x00000148  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB19 0x00000148 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -639,7 +639,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB20      0x0000014C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB20 0x0000014C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -665,7 +665,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB21      0x00000150  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB21 0x00000150 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -691,7 +691,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB22      0x00000154  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB22 0x00000154 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -717,7 +717,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB23      0x00000158  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB23 0x00000158 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -743,7 +743,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB24      0x0000015C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB24 0x0000015C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -769,7 +769,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB25      0x00000160  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB25 0x00000160 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -795,7 +795,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB26      0x00000164  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB26 0x00000164 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -821,7 +821,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB27      0x00000168  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB27 0x00000168 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -847,7 +847,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB28      0x0000016C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB28 0x0000016C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -873,7 +873,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB29      0x00000170  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB29 0x00000170 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -899,7 +899,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB30      0x00000174  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB30 0x00000174 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -925,7 +925,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB31      0x00000178  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB31 0x00000178 // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -951,7 +951,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FWB32      0x0000017C  // Flash Write Buffer n (FWBn)
+#define FLASH_CTRL_O_FWB32 0x0000017C // Flash Write Buffer n (FWBn)
 // offset 0x100 - 0x17C These 32
 // registers hold the contents of
 // the data to be written into the
@@ -977,7 +977,7 @@
 // that is 1 leaves the content of
 // the Flash memory bit at its
 // previous value.
-#define FLASH_CTRL_O_FSIZE      0x00000FC0  // Flash Size (FSIZE) offset 0xFC0
+#define FLASH_CTRL_O_FSIZE 0x00000FC0 // Flash Size (FSIZE) offset 0xFC0
 // This register indicates the size
 // of the on-chip Flash memory.
 // Important: This register should
@@ -993,7 +993,7 @@
 // register for memory sizes that
 // are not listed in the DC0
 // register description.
-#define FLASH_CTRL_O_SSIZE      0x00000FC4  // SRAM Size (SSIZE) offset 0xFC4
+#define FLASH_CTRL_O_SSIZE 0x00000FC4 // SRAM Size (SSIZE) offset 0xFC4
 // This register indicates the size
 // of the on-chip SRAM. Important:
 // This register should be used to
@@ -1009,32 +1009,33 @@
 // are not listed in the DC0
 // register description.
 
-
-
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FMA register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FMA
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FMA_OFFSET_M 0x0003FFFF  // Address Offset Address offset in
+#define FLASH_CTRL_FMA_OFFSET_M 0x0003FFFF // Address Offset Address offset in
 // Flash memory where operation is
 // performed except for nonvolatile
 // registers
 #define FLASH_CTRL_FMA_OFFSET_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FMD register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FMD
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FMD_DATA_M   0xFFFFFFFF  // Data Value Data value for write
+#define FLASH_CTRL_FMD_DATA_M 0xFFFFFFFF // Data Value Data value for write
 // operation.
-#define FLASH_CTRL_FMD_DATA_S   0
+#define FLASH_CTRL_FMD_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FMC register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FMC
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FMC_WRKEY_M  0xFFFF0000  // Flash Memory Write Key This
+#define FLASH_CTRL_FMC_WRKEY_M 0xFFFF0000 // Flash Memory Write Key This
 // field contains a write key which
 // is used to minimize the incidence
 // of accidental Flash memory
@@ -1045,8 +1046,8 @@
 // without this WRKEY value are
 // ignored. A read of this field
 // returns the value 0.
-#define FLASH_CTRL_FMC_WRKEY_S  16
-#define FLASH_CTRL_FMC_COMT     0x00000008  // Commit Register Value This bit
+#define FLASH_CTRL_FMC_WRKEY_S 16
+#define FLASH_CTRL_FMC_COMT 0x00000008 // Commit Register Value This bit
 // is used to commit writes to
 // Flash-memory-resident registers
 // and to monitor the progress of
@@ -1061,7 +1062,7 @@
 // When read a 0 indicates that the
 // previous commit access is
 // complete.
-#define FLASH_CTRL_FMC_MERASE1  0x00000004  // Mass Erase Flash Memory This bit
+#define FLASH_CTRL_FMC_MERASE1 0x00000004 // Mass Erase Flash Memory This bit
 // is used to mass erase the Flash
 // main memory and to monitor the
 // progress of that process. Value
@@ -1074,7 +1075,7 @@
 // When read a 0 indicates that the
 // previous mass erase access is
 // complete.
-#define FLASH_CTRL_FMC_ERASE    0x00000002  // Erase a Page of Flash Memory
+#define FLASH_CTRL_FMC_ERASE 0x00000002 // Erase a Page of Flash Memory
 // This bit is used to erase a page
 // of Flash memory and to monitor
 // the progress of that process.
@@ -1088,7 +1089,7 @@
 // state of this bit. When read a 0
 // indicates that the previous page
 // erase access is complete.
-#define FLASH_CTRL_FMC_WRITE    0x00000001  // Write a Word into Flash Memory
+#define FLASH_CTRL_FMC_WRITE 0x00000001 // Write a Word into Flash Memory
 // This bit is used to write a word
 // into Flash memory and to monitor
 // the progress of that process.
@@ -1110,8 +1111,7 @@
 // FLASH_CTRL_O_FCRIS register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FCRIS_PROGRIS \
-                                0x00002000  // Program Verify Error Raw
+#define FLASH_CTRL_FCRIS_PROGRIS 0x00002000 // Program Verify Error Raw
 // Interrupt Status Value
 // Description 1 An interrupt is
 // pending because the verify of a
@@ -1121,7 +1121,7 @@
 // the PROGMISC bit in the FCMISC
 // register.
 
-#define FLASH_CTRL_FCRIS_ERRIS  0x00000800  // Erase Verify Error Raw Interrupt
+#define FLASH_CTRL_FCRIS_ERRIS 0x00000800 // Erase Verify Error Raw Interrupt
 // Status Value Description 1 An
 // interrupt is pending because the
 // verify of an ERASE operation
@@ -1129,8 +1129,7 @@
 // occurred. This bit is cleared by
 // writing a 1 to the ERMISC bit in
 // the FCMISC register.
-#define FLASH_CTRL_FCRIS_INVDRIS \
-                                0x00000400  // Invalid Data Raw Interrupt
+#define FLASH_CTRL_FCRIS_INVDRIS 0x00000400 // Invalid Data Raw Interrupt
 // Status Value Description 1 An
 // interrupt is pending because a
 // bit that was previously
@@ -1141,8 +1140,7 @@
 // writing a 1 to the INVMISC bit in
 // the FCMISC register.
 
-#define FLASH_CTRL_FCRIS_VOLTRIS \
-                                0x00000200  // Pump Voltage Raw Interrupt
+#define FLASH_CTRL_FCRIS_VOLTRIS 0x00000200 // Pump Voltage Raw Interrupt
 // Status Value Description 1 An
 // interrupt is pending because the
 // regulated voltage of the pump
@@ -1153,7 +1151,7 @@
 // by writing a 1 to the VOLTMISC
 // bit in the FCMISC register.
 
-#define FLASH_CTRL_FCRIS_ERIS   0x00000004  // EEPROM Raw Interrupt Status This
+#define FLASH_CTRL_FCRIS_ERIS 0x00000004 // EEPROM Raw Interrupt Status This
 // bit provides status EEPROM
 // operation. Value Description 1 An
 // EEPROM interrupt has occurred. 0
@@ -1161,7 +1159,7 @@
 // occurred. This bit is cleared by
 // writing a 1 to the EMISC bit in
 // the FCMISC register.
-#define FLASH_CTRL_FCRIS_PRIS   0x00000002  // Programming Raw Interrupt Status
+#define FLASH_CTRL_FCRIS_PRIS 0x00000002 // Programming Raw Interrupt Status
 // This bit provides status on
 // programming cycles which are
 // write or erase actions generated
@@ -1177,7 +1175,7 @@
 // set. This bit is cleared by
 // writing a 1 to the PMISC bit in
 // the FCMISC register.
-#define FLASH_CTRL_FCRIS_ARIS   0x00000001  // Access Raw Interrupt Status
+#define FLASH_CTRL_FCRIS_ARIS 0x00000001 // Access Raw Interrupt Status
 // Value Description 1 A program or
 // erase action was attempted on a
 // block of Flash memory that
@@ -1194,18 +1192,18 @@
 // register.
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FCIM register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FCIM
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FCIM_ILLMASK 0x00004000  // Illegal Address Interrupt Mask
+#define FLASH_CTRL_FCIM_ILLMASK 0x00004000 // Illegal Address Interrupt Mask
 // Value Description 1 An interrupt
 // is sent to the interrupt
 // controller when the ILLARIS bit
 // is set. 0 The ILLARIS interrupt
 // is suppressed and not sent to the
 // interrupt controller.
-#define FLASH_CTRL_FCIM_PROGMASK \
-                                0x00002000  // PROGVER Interrupt Mask Value
+#define FLASH_CTRL_FCIM_PROGMASK 0x00002000 // PROGVER Interrupt Mask Value
 // Description 1 An interrupt is
 // sent to the interrupt controller
 // when the PROGRIS bit is set. 0
@@ -1213,22 +1211,21 @@
 // suppressed and not sent to the
 // interrupt controller.
 
-#define FLASH_CTRL_FCIM_PREMASK 0x00001000  // PREVER Interrupt Mask Value
+#define FLASH_CTRL_FCIM_PREMASK 0x00001000 // PREVER Interrupt Mask Value
 // Description 1 An interrupt is
 // sent to the interrupt controller
 // when the PRERIS bit is set. 0 The
 // PRERIS interrupt is suppressed
 // and not sent to the interrupt
 // controller.
-#define FLASH_CTRL_FCIM_ERMASK  0x00000800  // ERVER Interrupt Mask Value
+#define FLASH_CTRL_FCIM_ERMASK 0x00000800 // ERVER Interrupt Mask Value
 // Description 1 An interrupt is
 // sent to the interrupt controller
 // when the ERRIS bit is set. 0 The
 // ERRIS interrupt is suppressed and
 // not sent to the interrupt
 // controller.
-#define FLASH_CTRL_FCIM_INVDMASK \
-                                0x00000400  // Invalid Data Interrupt Mask
+#define FLASH_CTRL_FCIM_INVDMASK 0x00000400 // Invalid Data Interrupt Mask
 // Value Description 1 An interrupt
 // is sent to the interrupt
 // controller when the INVDRIS bit
@@ -1236,8 +1233,7 @@
 // is suppressed and not sent to the
 // interrupt controller.
 
-#define FLASH_CTRL_FCIM_VOLTMASK \
-                                0x00000200  // VOLT Interrupt Mask Value
+#define FLASH_CTRL_FCIM_VOLTMASK 0x00000200 // VOLT Interrupt Mask Value
 // Description 1 An interrupt is
 // sent to the interrupt controller
 // when the VOLTRIS bit is set. 0
@@ -1245,8 +1241,7 @@
 // suppressed and not sent to the
 // interrupt controller.
 
-#define FLASH_CTRL_FCIM_LOCKMASK \
-                                0x00000100  // LOCK Interrupt Mask Value
+#define FLASH_CTRL_FCIM_LOCKMASK 0x00000100 // LOCK Interrupt Mask Value
 // Description 1 An interrupt is
 // sent to the interrupt controller
 // when the LOCKRIS bit is set. 0
@@ -1254,14 +1249,14 @@
 // suppressed and not sent to the
 // interrupt controller.
 
-#define FLASH_CTRL_FCIM_EMASK   0x00000004  // EEPROM Interrupt Mask Value
+#define FLASH_CTRL_FCIM_EMASK 0x00000004 // EEPROM Interrupt Mask Value
 // Description 1 An interrupt is
 // sent to the interrupt controller
 // when the ERIS bit is set. 0 The
 // ERIS interrupt is suppressed and
 // not sent to the interrupt
 // controller.
-#define FLASH_CTRL_FCIM_PMASK   0x00000002  // Programming Interrupt Mask This
+#define FLASH_CTRL_FCIM_PMASK 0x00000002 // Programming Interrupt Mask This
 // bit controls the reporting of the
 // programming raw interrupt status
 // to the interrupt controller.
@@ -1271,7 +1266,7 @@
 // set. 0 The PRIS interrupt is
 // suppressed and not sent to the
 // interrupt controller.
-#define FLASH_CTRL_FCIM_AMASK   0x00000001  // Access Interrupt Mask This bit
+#define FLASH_CTRL_FCIM_AMASK 0x00000001 // Access Interrupt Mask This bit
 // controls the reporting of the
 // access raw interrupt status to
 // the interrupt controller. Value
@@ -1287,8 +1282,7 @@
 // FLASH_CTRL_O_FCMISC register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FCMISC_ILLMISC \
-                                0x00004000  // Illegal Address Masked Interrupt
+#define FLASH_CTRL_FCMISC_ILLMISC 0x00004000 // Illegal Address Masked Interrupt
 // Status and Clear Value
 // Description 1 When read a 1
 // indicates that an unmasked
@@ -1301,8 +1295,7 @@
 // write of 0 has no effect on the
 // state of this bit.
 
-#define FLASH_CTRL_FCMISC_PROGMISC \
-                                0x00002000  // PROGVER Masked Interrupt Status
+#define FLASH_CTRL_FCMISC_PROGMISC 0x00002000 // PROGVER Masked Interrupt Status
 // and Clear Value Description 1
 // When read a 1 indicates that an
 // unmasked interrupt was signaled.
@@ -1314,8 +1307,7 @@
 // occurred. A write of 0 has no
 // effect on the state of this bit.
 
-#define FLASH_CTRL_FCMISC_PREMISC \
-                                0x00001000  // PREVER Masked Interrupt Status
+#define FLASH_CTRL_FCMISC_PREMISC 0x00001000 // PREVER Masked Interrupt Status
 // and Clear Value Description 1
 // When read a 1 indicates that an
 // unmasked interrupt was signaled.
@@ -1327,8 +1319,7 @@
 // write of 0 has no effect on the
 // state of this bit.
 
-#define FLASH_CTRL_FCMISC_ERMISC \
-                                0x00000800  // ERVER Masked Interrupt Status
+#define FLASH_CTRL_FCMISC_ERMISC 0x00000800 // ERVER Masked Interrupt Status
 // and Clear Value Description 1
 // When read a 1 indicates that an
 // unmasked interrupt was signaled.
@@ -1339,8 +1330,7 @@
 // not occurred. A write of 0 has no
 // effect on the state of this bit.
 
-#define FLASH_CTRL_FCMISC_INVDMISC \
-                                0x00000400  // Invalid Data Masked Interrupt
+#define FLASH_CTRL_FCMISC_INVDMISC 0x00000400 // Invalid Data Masked Interrupt
 // Status and Clear Value
 // Description 1 When read a 1
 // indicates that an unmasked
@@ -1353,8 +1343,8 @@
 // write of 0 has no effect on the
 // state of this bit.
 
-#define FLASH_CTRL_FCMISC_VOLTMISC \
-                                0x00000200  // VOLT Masked Interrupt Status and
+#define FLASH_CTRL_FCMISC_VOLTMISC                                             \
+  0x00000200 // VOLT Masked Interrupt Status and
 // Clear Value Description 1 When
 // read a 1 indicates that an
 // unmasked interrupt was signaled.
@@ -1366,8 +1356,8 @@
 // occurred. A write of 0 has no
 // effect on the state of this bit.
 
-#define FLASH_CTRL_FCMISC_LOCKMISC \
-                                0x00000100  // LOCK Masked Interrupt Status and
+#define FLASH_CTRL_FCMISC_LOCKMISC                                             \
+  0x00000100 // LOCK Masked Interrupt Status and
 // Clear Value Description 1 When
 // read a 1 indicates that an
 // unmasked interrupt was signaled.
@@ -1379,7 +1369,7 @@
 // occurred. A write of 0 has no
 // effect on the state of this bit.
 
-#define FLASH_CTRL_FCMISC_EMISC 0x00000004  // EEPROM Masked Interrupt Status
+#define FLASH_CTRL_FCMISC_EMISC 0x00000004 // EEPROM Masked Interrupt Status
 // and Clear Value Description 1
 // When read a 1 indicates that an
 // unmasked interrupt was signaled.
@@ -1389,7 +1379,7 @@
 // 0 indicates that an interrupt has
 // not occurred. A write of 0 has no
 // effect on the state of this bit.
-#define FLASH_CTRL_FCMISC_PMISC 0x00000002  // Programming Masked Interrupt
+#define FLASH_CTRL_FCMISC_PMISC 0x00000002 // Programming Masked Interrupt
 // Status and Clear Value
 // Description 1 When read a 1
 // indicates that an unmasked
@@ -1402,7 +1392,7 @@
 // cycle complete interrupt has not
 // occurred. A write of 0 has no
 // effect on the state of this bit.
-#define FLASH_CTRL_FCMISC_AMISC 0x00000001  // Access Masked Interrupt Status
+#define FLASH_CTRL_FCMISC_AMISC 0x00000001 // Access Masked Interrupt Status
 // and Clear Value Description 1
 // When read a 1 indicates that an
 // unmasked interrupt was signaled
@@ -1420,10 +1410,11 @@
 // of this bit.
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FMC2 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FMC2
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FMC2_WRKEY_M 0xFFFF0000  // Flash Memory Write Key This
+#define FLASH_CTRL_FMC2_WRKEY_M 0xFFFF0000 // Flash Memory Write Key This
 // field contains a write key which
 // is used to minimize the incidence
 // of accidental Flash memory
@@ -1434,7 +1425,7 @@
 // value are ignored. A read of this
 // field returns the value 0.
 #define FLASH_CTRL_FMC2_WRKEY_S 16
-#define FLASH_CTRL_FMC2_WRBUF   0x00000001  // Buffered Flash Memory Write This
+#define FLASH_CTRL_FMC2_WRBUF 0x00000001 // Buffered Flash Memory Write This
 // bit is used to start a buffered
 // write to Flash memory. Value
 // Description 1 Set this bit to
@@ -1456,8 +1447,7 @@
 // FLASH_CTRL_O_FWBVAL register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWBVAL_FWBN_M \
-                                0xFFFFFFFF  // Flash Memory Write Buffer Value
+#define FLASH_CTRL_FWBVAL_FWBN_M 0xFFFFFFFF // Flash Memory Write Buffer Value
 // Description 1 The corresponding
 // FWBn register has been updated
 // since the last buffer write
@@ -1472,83 +1462,92 @@
 #define FLASH_CTRL_FWBVAL_FWBN_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB1 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB1
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB1_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB1_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB1_DATA_S  0
+#define FLASH_CTRL_FWB1_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB2 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB2
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB2_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB2_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB2_DATA_S  0
+#define FLASH_CTRL_FWB2_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB3 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB3
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB3_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB3_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB3_DATA_S  0
+#define FLASH_CTRL_FWB3_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB4 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB4
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB4_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB4_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB4_DATA_S  0
+#define FLASH_CTRL_FWB4_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB5 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB5
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB5_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB5_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB5_DATA_S  0
+#define FLASH_CTRL_FWB5_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB6 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB6
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB6_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB6_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB6_DATA_S  0
+#define FLASH_CTRL_FWB6_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB7 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB7
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB7_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB7_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB7_DATA_S  0
+#define FLASH_CTRL_FWB7_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB8 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB8
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB8_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB8_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB8_DATA_S  0
+#define FLASH_CTRL_FWB8_DATA_S 0
 //******************************************************************************
 //
-// The following are defines for the bit fields in the FLASH_CTRL_O_FWB9 register.
+// The following are defines for the bit fields in the FLASH_CTRL_O_FWB9
+// register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB9_DATA_M  0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB9_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
-#define FLASH_CTRL_FWB9_DATA_S  0
+#define FLASH_CTRL_FWB9_DATA_S 0
 //******************************************************************************
 //
 // The following are defines for the bit fields in the
 // FLASH_CTRL_O_FWB10 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB10_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB10_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB10_DATA_S 0
 //******************************************************************************
@@ -1557,7 +1556,7 @@
 // FLASH_CTRL_O_FWB11 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB11_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB11_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB11_DATA_S 0
 //******************************************************************************
@@ -1566,7 +1565,7 @@
 // FLASH_CTRL_O_FWB12 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB12_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB12_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB12_DATA_S 0
 //******************************************************************************
@@ -1575,7 +1574,7 @@
 // FLASH_CTRL_O_FWB13 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB13_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB13_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB13_DATA_S 0
 //******************************************************************************
@@ -1584,7 +1583,7 @@
 // FLASH_CTRL_O_FWB14 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB14_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB14_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB14_DATA_S 0
 //******************************************************************************
@@ -1593,7 +1592,7 @@
 // FLASH_CTRL_O_FWB15 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB15_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB15_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB15_DATA_S 0
 //******************************************************************************
@@ -1602,7 +1601,7 @@
 // FLASH_CTRL_O_FWB16 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB16_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB16_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB16_DATA_S 0
 //******************************************************************************
@@ -1611,7 +1610,7 @@
 // FLASH_CTRL_O_FWB17 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB17_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB17_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB17_DATA_S 0
 //******************************************************************************
@@ -1620,7 +1619,7 @@
 // FLASH_CTRL_O_FWB18 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB18_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB18_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB18_DATA_S 0
 //******************************************************************************
@@ -1629,7 +1628,7 @@
 // FLASH_CTRL_O_FWB19 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB19_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB19_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB19_DATA_S 0
 //******************************************************************************
@@ -1638,7 +1637,7 @@
 // FLASH_CTRL_O_FWB20 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB20_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB20_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB20_DATA_S 0
 //******************************************************************************
@@ -1647,7 +1646,7 @@
 // FLASH_CTRL_O_FWB21 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB21_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB21_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB21_DATA_S 0
 //******************************************************************************
@@ -1656,7 +1655,7 @@
 // FLASH_CTRL_O_FWB22 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB22_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB22_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB22_DATA_S 0
 //******************************************************************************
@@ -1665,7 +1664,7 @@
 // FLASH_CTRL_O_FWB23 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB23_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB23_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB23_DATA_S 0
 //******************************************************************************
@@ -1674,7 +1673,7 @@
 // FLASH_CTRL_O_FWB24 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB24_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB24_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB24_DATA_S 0
 //******************************************************************************
@@ -1683,7 +1682,7 @@
 // FLASH_CTRL_O_FWB25 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB25_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB25_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB25_DATA_S 0
 //******************************************************************************
@@ -1692,7 +1691,7 @@
 // FLASH_CTRL_O_FWB26 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB26_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB26_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB26_DATA_S 0
 //******************************************************************************
@@ -1701,7 +1700,7 @@
 // FLASH_CTRL_O_FWB27 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB27_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB27_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB27_DATA_S 0
 //******************************************************************************
@@ -1710,7 +1709,7 @@
 // FLASH_CTRL_O_FWB28 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB28_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB28_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB28_DATA_S 0
 //******************************************************************************
@@ -1719,7 +1718,7 @@
 // FLASH_CTRL_O_FWB29 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB29_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB29_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB29_DATA_S 0
 //******************************************************************************
@@ -1728,7 +1727,7 @@
 // FLASH_CTRL_O_FWB30 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB30_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB30_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB30_DATA_S 0
 //******************************************************************************
@@ -1737,7 +1736,7 @@
 // FLASH_CTRL_O_FWB31 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB31_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB31_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB31_DATA_S 0
 //******************************************************************************
@@ -1746,7 +1745,7 @@
 // FLASH_CTRL_O_FWB32 register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FWB32_DATA_M 0xFFFFFFFF  // Data Data to be written into the
+#define FLASH_CTRL_FWB32_DATA_M 0xFFFFFFFF // Data Data to be written into the
 // Flash memory.
 #define FLASH_CTRL_FWB32_DATA_S 0
 //******************************************************************************
@@ -1755,7 +1754,7 @@
 // FLASH_CTRL_O_FSIZE register.
 //
 //******************************************************************************
-#define FLASH_CTRL_FSIZE_SIZE_M 0x0000FFFF  // Flash Size Indicates the size of
+#define FLASH_CTRL_FSIZE_SIZE_M 0x0000FFFF // Flash Size Indicates the size of
 // the on-chip Flash memory. Value
 // Description 0x0003 8 KB of Flash
 // 0x0007 16 KB of Flash 0x000F 32
@@ -1770,8 +1769,8 @@
 // FLASH_CTRL_O_SSIZE register.
 //
 //******************************************************************************
-#define FLASH_CTRL_SSIZE_SRAM_SIZE_M \
-                                0x0000FFFF  // SRAM Size Indicates the size of
+#define FLASH_CTRL_SSIZE_SRAM_SIZE_M                                           \
+  0x0000FFFF // SRAM Size Indicates the size of
 // the on-chip SRAM. Value
 // Description 0x0007 2 KB of SRAM
 // 0x000F 4 KB of SRAM 0x0017 6 KB
@@ -1782,81 +1781,80 @@
 // of SRAM
 
 #define FLASH_CTRL_SSIZE_SRAM_SIZE_S 0
-#define FLASH_CTRL_FMC_WRKEY    0xA4420000  // FLASH write key
-#define FLASH_CTRL_FMC2_WRKEY   0xA4420000  // FLASH write key
-#define FLASH_CTRL_O_FWBN       FLASH_CTRL_O_FWB1
-#define FLASH_ERASE_SIZE        0x00000400
-#define FLASH_PROTECT_SIZE      0x00000800
-#define FLASH_FMP_BLOCK_0       0x00000001  // Enable for block 0
+#define FLASH_CTRL_FMC_WRKEY 0xA4420000  // FLASH write key
+#define FLASH_CTRL_FMC2_WRKEY 0xA4420000 // FLASH write key
+#define FLASH_CTRL_O_FWBN FLASH_CTRL_O_FWB1
+#define FLASH_ERASE_SIZE 0x00000400
+#define FLASH_PROTECT_SIZE 0x00000800
+#define FLASH_FMP_BLOCK_0 0x00000001 // Enable for block 0
 
-#define FLASH_FMPRE0            0x400FE200  // Flash Memory Protection Read
+#define FLASH_FMPRE0 0x400FE200 // Flash Memory Protection Read
 // Enable 0
-#define FLASH_FMPRE1            0x400FE204  // Flash Memory Protection Read
+#define FLASH_FMPRE1 0x400FE204 // Flash Memory Protection Read
 // Enable 1
-#define FLASH_FMPRE2            0x400FE208  // Flash Memory Protection Read
+#define FLASH_FMPRE2 0x400FE208 // Flash Memory Protection Read
 // Enable 2
-#define FLASH_FMPRE3            0x400FE20C  // Flash Memory Protection Read
+#define FLASH_FMPRE3 0x400FE20C // Flash Memory Protection Read
 // Enable 3
-#define FLASH_FMPRE4            0x400FE210  // Flash Memory Protection Read
+#define FLASH_FMPRE4 0x400FE210 // Flash Memory Protection Read
 // Enable 4
-#define FLASH_FMPRE5            0x400FE214  // Flash Memory Protection Read
+#define FLASH_FMPRE5 0x400FE214 // Flash Memory Protection Read
 // Enable 5
-#define FLASH_FMPRE6            0x400FE218  // Flash Memory Protection Read
+#define FLASH_FMPRE6 0x400FE218 // Flash Memory Protection Read
 // Enable 6
-#define FLASH_FMPRE7            0x400FE21C  // Flash Memory Protection Read
+#define FLASH_FMPRE7 0x400FE21C // Flash Memory Protection Read
 // Enable 7
-#define FLASH_FMPRE8            0x400FE220  // Flash Memory Protection Read
+#define FLASH_FMPRE8 0x400FE220 // Flash Memory Protection Read
 // Enable 8
-#define FLASH_FMPRE9            0x400FE224  // Flash Memory Protection Read
+#define FLASH_FMPRE9 0x400FE224 // Flash Memory Protection Read
 // Enable 9
-#define FLASH_FMPRE10           0x400FE228  // Flash Memory Protection Read
+#define FLASH_FMPRE10 0x400FE228 // Flash Memory Protection Read
 // Enable 10
-#define FLASH_FMPRE11           0x400FE22C  // Flash Memory Protection Read
+#define FLASH_FMPRE11 0x400FE22C // Flash Memory Protection Read
 // Enable 11
-#define FLASH_FMPRE12           0x400FE230  // Flash Memory Protection Read
+#define FLASH_FMPRE12 0x400FE230 // Flash Memory Protection Read
 // Enable 12
-#define FLASH_FMPRE13           0x400FE234  // Flash Memory Protection Read
+#define FLASH_FMPRE13 0x400FE234 // Flash Memory Protection Read
 // Enable 13
-#define FLASH_FMPRE14           0x400FE238  // Flash Memory Protection Read
+#define FLASH_FMPRE14 0x400FE238 // Flash Memory Protection Read
 // Enable 14
-#define FLASH_FMPRE15           0x400FE23C  // Flash Memory Protection Read
+#define FLASH_FMPRE15 0x400FE23C // Flash Memory Protection Read
 // Enable 15
 
-#define FLASH_FMPPE0            0x400FE400  // Flash Memory Protection Program
+#define FLASH_FMPPE0 0x400FE400 // Flash Memory Protection Program
 // Enable 0
-#define FLASH_FMPPE1            0x400FE404  // Flash Memory Protection Program
+#define FLASH_FMPPE1 0x400FE404 // Flash Memory Protection Program
 // Enable 1
-#define FLASH_FMPPE2            0x400FE408  // Flash Memory Protection Program
+#define FLASH_FMPPE2 0x400FE408 // Flash Memory Protection Program
 // Enable 2
-#define FLASH_FMPPE3            0x400FE40C  // Flash Memory Protection Program
+#define FLASH_FMPPE3 0x400FE40C // Flash Memory Protection Program
 // Enable 3
-#define FLASH_FMPPE4            0x400FE410  // Flash Memory Protection Program
+#define FLASH_FMPPE4 0x400FE410 // Flash Memory Protection Program
 // Enable 4
-#define FLASH_FMPPE5            0x400FE414  // Flash Memory Protection Program
+#define FLASH_FMPPE5 0x400FE414 // Flash Memory Protection Program
 // Enable 5
-#define FLASH_FMPPE6            0x400FE418  // Flash Memory Protection Program
+#define FLASH_FMPPE6 0x400FE418 // Flash Memory Protection Program
 // Enable 6
-#define FLASH_FMPPE7            0x400FE41C  // Flash Memory Protection Program
+#define FLASH_FMPPE7 0x400FE41C // Flash Memory Protection Program
 // Enable 7
-#define FLASH_FMPPE8            0x400FE420  // Flash Memory Protection Program
+#define FLASH_FMPPE8 0x400FE420 // Flash Memory Protection Program
 // Enable 8
-#define FLASH_FMPPE9            0x400FE424  // Flash Memory Protection Program
+#define FLASH_FMPPE9 0x400FE424 // Flash Memory Protection Program
 // Enable 9
-#define FLASH_FMPPE10           0x400FE428  // Flash Memory Protection Program
+#define FLASH_FMPPE10 0x400FE428 // Flash Memory Protection Program
 // Enable 10
-#define FLASH_FMPPE11           0x400FE42C  // Flash Memory Protection Program
+#define FLASH_FMPPE11 0x400FE42C // Flash Memory Protection Program
 // Enable 11
-#define FLASH_FMPPE12           0x400FE430  // Flash Memory Protection Program
+#define FLASH_FMPPE12 0x400FE430 // Flash Memory Protection Program
 // Enable 12
-#define FLASH_FMPPE13           0x400FE434  // Flash Memory Protection Program
+#define FLASH_FMPPE13 0x400FE434 // Flash Memory Protection Program
 // Enable 13
-#define FLASH_FMPPE14           0x400FE438  // Flash Memory Protection Program
+#define FLASH_FMPPE14 0x400FE438 // Flash Memory Protection Program
 // Enable 14
-#define FLASH_FMPPE15           0x400FE43C  // Flash Memory Protection Program
+#define FLASH_FMPPE15 0x400FE43C // Flash Memory Protection Program
 // Enable 15
 
-#define FLASH_USECRL            0x400FE140  // USec Reload
-#define FLASH_CTRL_ERASE_SIZE   0x00000400
-
+#define FLASH_USECRL 0x400FE140 // USec Reload
+#define FLASH_CTRL_ERASE_SIZE 0x00000400
 
 #endif // __HW_FLASH_CTRL_H__

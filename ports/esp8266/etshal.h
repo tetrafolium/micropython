@@ -16,7 +16,8 @@ void ets_install_putc1();
 void uart_div_modify(uint8_t uart, uint32_t divisor);
 void ets_set_idle_cb(void (*handler)(void *), void *arg);
 
-void ets_timer_arm_new(os_timer_t *tim, uint32_t millis, bool repeat, bool is_milli_timer);
+void ets_timer_arm_new(os_timer_t *tim, uint32_t millis, bool repeat,
+                       bool is_milli_timer);
 void ets_timer_setfn(os_timer_t *tim, ETSTimerFunc callback, void *cb_data);
 void ets_timer_disarm(os_timer_t *tim);
 

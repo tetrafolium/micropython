@@ -8,9 +8,7 @@
 
 static void LBF_DFU_If_Needed(void);
 
-void LIMIFROG_board_early_init(void) {
-    LBF_DFU_If_Needed();
-}
+void LIMIFROG_board_early_init(void) { LBF_DFU_If_Needed(); }
 
 /*******************************************************************************
  * LBF_DFU_If_Needed.c
@@ -28,35 +26,30 @@ void LIMIFROG_board_early_init(void) {
 /*  ==== BTLE (excl UART)       ======================================== */
 // PC9 = BT_RST (active high)
 
-#define BT_RST_PIN  GPIO_PIN_9
+#define BT_RST_PIN GPIO_PIN_9
 #define BT_RST_PORT GPIOC
 
 // Position 10
 #ifdef __LIMIFROG_01
-#define   CONN_POS10_PIN      GPIO_PIN_9
-#define   CONN_POS10_PORT     GPIOB
+#define CONN_POS10_PIN GPIO_PIN_9
+#define CONN_POS10_PORT GPIOB
 #else
-#define   CONN_POS10_PIN      GPIO_PIN_8
-#define   CONN_POS10_PORT     GPIOB
+#define CONN_POS10_PIN GPIO_PIN_8
+#define CONN_POS10_PORT GPIOB
 #endif
 
-static inline void  GPIO_HIGH(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
-{
-    GPIOx->BSRR = (uint32_t)GPIO_Pin;
+static inline void GPIO_HIGH(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
+  GPIOx->BSRR = (uint32_t)GPIO_Pin;
 }
 
-static inline int  IS_GPIO_RESET(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
-{
-    GPIO_PinState bitstatus;
-    if((GPIOx->IDR & GPIO_Pin) != (uint32_t)GPIO_PIN_RESET)
-    {
-        bitstatus = GPIO_PIN_SET;
-    }
-    else
-    {
-        bitstatus = GPIO_PIN_RESET;
-    }
-    return (bitstatus==GPIO_PIN_RESET);
+static inline int IS_GPIO_RESET(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin) {
+  GPIO_PinState bitstatus;
+  if ((GPIOx->IDR & GPIO_Pin) != (uint32_t)GPIO_PIN_RESET) {
+    bitstatus = GPIO_PIN_SET;
+  } else {
+    bitstatus = GPIO_PIN_RESET;
+  }
+  return (bitstatus == GPIO_PIN_RESET);
 }
 
 /**************************************************************
@@ -94,61 +87,52 @@ static inline int  IS_GPIO_RESET(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
 
   ********************************************************************/
 
-static void LBF_DFU_If_Needed(void)
-{
+static void LBF_DFU_If_Needed(void) {
 
+  GPIO_InitTypeDef GPIO_InitStruct;
 
-    GPIO_InitTypeDef GPIO_InitStruct;
+  // Initialize and assert pin BTLE_RST
+  // (hw reset to BLE module, so it won't drive UART3)
 
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  GPIO_InitStruct.Pin = BT_RST_PIN;
+  HAL_GPIO_Init(BT_RST_PORT, &GPIO_InitStruct);
 
-    // Initialize and assert pin BTLE_RST
-    // (hw reset to BLE module, so it won't drive UART3)
+  GPIO_HIGH(BT_RST_PORT, BT_RST_PIN); // assert BTLE reset
 
-    __HAL_RCC_GPIOC_CLK_ENABLE();
-    GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-    GPIO_InitStruct.Pull = GPIO_NOPULL;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-    GPIO_InitStruct.Pin = BT_RST_PIN;
-    HAL_GPIO_Init(BT_RST_PORT, &GPIO_InitStruct);
+  /* -- Bootloader will be called if position 10 on the extension port
+        is actively pulled low -- */
+  // Note - this is an arbitrary choice, code could be modified to
+  // monitor another GPIO of the STM32 and/or decide that active level
+  // is high rather than low
 
-    GPIO_HIGH(BT_RST_PORT, BT_RST_PIN); // assert BTLE reset
+  // Initialize Extension Port Position 10 = PB8 (bears I2C1_SCL)
+  // Use weak pull-up to detect if pin is externally pulled low
 
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  GPIO_InitStruct.Pin = CONN_POS10_PIN;
+  HAL_GPIO_Init(CONN_POS10_PORT, &GPIO_InitStruct);
 
-    /* -- Bootloader will be called if position 10 on the extension port
-          is actively pulled low -- */
-    // Note - this is an arbitrary choice, code could be modified to
-    // monitor another GPIO of the STM32 and/or decide that active level
-    // is high rather than low
+  // If selection pin pulled low...
+  if (IS_GPIO_RESET(CONN_POS10_PORT, CONN_POS10_PIN))
 
+  {
+    // Remap bootloader ROM (ie System Flash) to address 0x0
+    SYSCFG->MEMRMP = 0x00000001;
 
-    // Initialize Extension Port Position 10 = PB8 (bears I2C1_SCL)
-    // Use weak pull-up to detect if pin is externally pulled low
+    // Init stack pointer with value residing at ROM base
+    asm("LDR     R0, =0x00000000\n\t" // load ROM base address"
+        "LDR     SP,[R0, #0]\n\t"     // assign main stack pointer"
+    );
 
-    __HAL_RCC_GPIOB_CLK_ENABLE();
-    GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-    GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Pin = CONN_POS10_PIN;
-    HAL_GPIO_Init(CONN_POS10_PORT, &GPIO_InitStruct);
+    // Jump to address pointed by 0x00000004 -- */
 
-    // If selection pin pulled low...
-    if ( IS_GPIO_RESET(CONN_POS10_PORT, CONN_POS10_PIN ))
-
-    {
-        // Remap bootloader ROM (ie System Flash) to address 0x0
-        SYSCFG->MEMRMP = 0x00000001;
-
-        // Init stack pointer with value residing at ROM base
-        asm (
-            "LDR     R0, =0x00000000\n\t"  // load ROM base address"
-            "LDR     SP,[R0, #0]\n\t"      // assign main stack pointer"
-        );
-
-        // Jump to address pointed by 0x00000004 -- */
-
-        asm (
-            "LDR     R0,[R0, #4]\n\t"      // load bootloader address
-            "BX      R0\n\t"
-        );
-
-    }
+    asm("LDR     R0,[R0, #4]\n\t" // load bootloader address
+        "BX      R0\n\t");
+  }
 }

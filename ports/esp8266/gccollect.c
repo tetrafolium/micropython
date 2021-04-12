@@ -26,27 +26,28 @@
 
 #include <stdio.h>
 
-#include "py/mpconfig.h"
-#include "py/gc.h"
 #include "gccollect.h"
+#include "py/gc.h"
+#include "py/mpconfig.h"
 
 // As we do not have control over the application entry point, there is no way
 // to figure out the real stack base on runtime, so it needs to be hardcoded
-#define STACK_END   0x40000000
+#define STACK_END 0x40000000
 
 mp_uint_t gc_helper_get_regs_and_sp(mp_uint_t *regs);
 
 void gc_collect(void) {
-    // start the GC
-    gc_collect_start();
+  // start the GC
+  gc_collect_start();
 
-    // get the registers and the sp
-    mp_uint_t regs[8];
-    mp_uint_t sp = gc_helper_get_regs_and_sp(regs);
+  // get the registers and the sp
+  mp_uint_t regs[8];
+  mp_uint_t sp = gc_helper_get_regs_and_sp(regs);
 
-    // trace the stack, including the registers (since they live on the stack in this function)
-    gc_collect_root((void **)sp, (STACK_END - sp) / sizeof(uint32_t));
+  // trace the stack, including the registers (since they live on the stack in
+  // this function)
+  gc_collect_root((void **)sp, (STACK_END - sp) / sizeof(uint32_t));
 
-    // end the GC
-    gc_collect_end();
+  // end the GC
+  gc_collect_end();
 }

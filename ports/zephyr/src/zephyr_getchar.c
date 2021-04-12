@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <zephyr.h>
-#include <drivers/uart.h>
-#include <drivers/console/uart_console.h>
-#include <sys/printk.h>
 #include "zephyr_getchar.h"
+#include <drivers/console/uart_console.h>
+#include <drivers/uart.h>
+#include <sys/printk.h>
+#include <zephyr.h>
 
 extern int mp_interrupt_char;
 void mp_keyboard_interrupt(void);
@@ -28,38 +28,37 @@ static struct k_sem uart_sem;
 static uint8_t uart_ringbuf[UART_BUFSIZE];
 static uint8_t i_get, i_put;
 
-static int console_irq_input_hook(uint8_t ch)
-{
-    int i_next = (i_put + 1) & (UART_BUFSIZE - 1);
-    if (i_next == i_get) {
-        printk("UART buffer overflow - char dropped\n");
-        return 1;
-    }
-    if (ch == mp_interrupt_char) {
-        mp_keyboard_interrupt();
-        return 1;
-    } else {
-        uart_ringbuf[i_put] = ch;
-        i_put = i_next;
-    }
-    //printk("%x\n", ch);
-    k_sem_give(&uart_sem);
-    k_yield();
+static int console_irq_input_hook(uint8_t ch) {
+  int i_next = (i_put + 1) & (UART_BUFSIZE - 1);
+  if (i_next == i_get) {
+    printk("UART buffer overflow - char dropped\n");
     return 1;
+  }
+  if (ch == mp_interrupt_char) {
+    mp_keyboard_interrupt();
+    return 1;
+  } else {
+    uart_ringbuf[i_put] = ch;
+    i_put = i_next;
+  }
+  // printk("%x\n", ch);
+  k_sem_give(&uart_sem);
+  k_yield();
+  return 1;
 }
 
 uint8_t zephyr_getchar(void) {
-    k_sem_take(&uart_sem, K_FOREVER);
-    unsigned int key = irq_lock();
-    uint8_t c = uart_ringbuf[i_get++];
-    i_get &= UART_BUFSIZE - 1;
-    irq_unlock(key);
-    return c;
+  k_sem_take(&uart_sem, K_FOREVER);
+  unsigned int key = irq_lock();
+  uint8_t c = uart_ringbuf[i_get++];
+  i_get &= UART_BUFSIZE - 1;
+  irq_unlock(key);
+  return c;
 }
 
 void zephyr_getchar_init(void) {
-    k_sem_init(&uart_sem, 0, UINT_MAX);
-    uart_console_in_debug_hook_install(console_irq_input_hook);
-    // All NULLs because we're interested only in the callback above
-    uart_register_input(NULL, NULL, NULL);
+  k_sem_init(&uart_sem, 0, UINT_MAX);
+  uart_console_in_debug_hook_install(console_irq_input_hook);
+  // All NULLs because we're interested only in the callback above
+  uart_register_input(NULL, NULL, NULL);
 }

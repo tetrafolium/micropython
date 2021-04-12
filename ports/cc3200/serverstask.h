@@ -29,21 +29,21 @@
 /******************************************************************************
  DEFINE CONSTANTS
  ******************************************************************************/
-#define SERVERS_PRIORITY                        2
-#define SERVERS_STACK_SIZE                      1024 // in bytes
-#define SERVERS_STACK_LEN                       (SERVERS_STACK_SIZE / sizeof(StackType_t))
+#define SERVERS_PRIORITY 2
+#define SERVERS_STACK_SIZE 1024 // in bytes
+#define SERVERS_STACK_LEN (SERVERS_STACK_SIZE / sizeof(StackType_t))
 
-#define SERVERS_SSID_LEN_MAX                    16
-#define SERVERS_KEY_LEN_MAX                     16
+#define SERVERS_SSID_LEN_MAX 16
+#define SERVERS_KEY_LEN_MAX 16
 
-#define SERVERS_USER_PASS_LEN_MAX               32
+#define SERVERS_USER_PASS_LEN_MAX 32
 
-#define SERVERS_CYCLE_TIME_MS                   2
+#define SERVERS_CYCLE_TIME_MS 2
 
-#define SERVERS_DEF_USER                        "micro"
-#define SERVERS_DEF_PASS                        "python"
-#define SERVERS_DEF_TIMEOUT_MS                  300000        // 5 minutes
-#define SERVERS_MIN_TIMEOUT_MS                  5000          // 5 seconds
+#define SERVERS_DEF_USER "micro"
+#define SERVERS_DEF_PASS "python"
+#define SERVERS_DEF_TIMEOUT_MS 300000 // 5 minutes
+#define SERVERS_MIN_TIMEOUT_MS 5000   // 5 seconds
 
 /******************************************************************************
  DEFINE TYPES

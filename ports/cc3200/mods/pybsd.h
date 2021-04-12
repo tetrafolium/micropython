@@ -30,9 +30,9 @@
  DEFINE PUBLIC TYPES
  ******************************************************************************/
 typedef struct {
-    mp_obj_base_t base;
-    mp_obj_t      pin_clk;
-    bool          enabled;
+  mp_obj_base_t base;
+  mp_obj_t pin_clk;
+  bool enabled;
 } pybsd_obj_t;
 
 /******************************************************************************

@@ -33,23 +33,22 @@
 //
 //****************************************************************************
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif
 
 //*****************************************************************************
 // User image tokens
 //*****************************************************************************
-#define FACTORY_IMG_TOKEN       0x5555AAAA
-#define UPDATE_IMG_TOKEN        0xAA5555AA
-#define USER_BOOT_INFO_TOKEN    0xA5A55A5A
+#define FACTORY_IMG_TOKEN 0x5555AAAA
+#define UPDATE_IMG_TOKEN 0xAA5555AA
+#define USER_BOOT_INFO_TOKEN 0xA5A55A5A
 
 //*****************************************************************************
 // Macros
 //*****************************************************************************
-#define APP_IMG_SRAM_OFFSET     0x20004000
-#define DEVICE_IS_CC3101RS      0x18
-#define DEVICE_IS_CC3101S       0x1B
+#define APP_IMG_SRAM_OFFSET 0x20004000
+#define DEVICE_IS_CC3101RS 0x18
+#define DEVICE_IS_CC3101S 0x1B
 
 //*****************************************************************************
 // Function prototype

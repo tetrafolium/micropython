@@ -30,32 +30,36 @@
 #include "nrf52840_bitfields.h"
 
 bool uicr_REGOUT0_erased() {
-    if (NRF_UICR->REGOUT0 == 0xFFFFFFFFUL) {
-        return true;
-    }
-    return false;
+  if (NRF_UICR->REGOUT0 == 0xFFFFFFFFUL) {
+    return true;
+  }
+  return false;
 }
 
-void board_modules_init0(void)
-{
-    if (uicr_REGOUT0_erased()) {
+void board_modules_init0(void) {
+  if (uicr_REGOUT0_erased()) {
 
-        // Wait for pending NVMC operations to finish.
-        while (NRF_NVMC->READY != NVMC_READY_READY_Ready);
+    // Wait for pending NVMC operations to finish.
+    while (NRF_NVMC->READY != NVMC_READY_READY_Ready)
+      ;
 
-        // Enable write mode in NVMC.
-        NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen;
-        while (NRF_NVMC->READY != NVMC_READY_READY_Ready);
+    // Enable write mode in NVMC.
+    NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Wen;
+    while (NRF_NVMC->READY != NVMC_READY_READY_Ready)
+      ;
 
-        // Write 3v3 value to UICR->REGOUT0.
-        NRF_UICR->REGOUT0 = (UICR_REGOUT0_VOUT_3V3 & UICR_REGOUT0_VOUT_Msk) << UICR_REGOUT0_VOUT_Pos;
-        while (NRF_NVMC->READY != NVMC_READY_READY_Ready);
+    // Write 3v3 value to UICR->REGOUT0.
+    NRF_UICR->REGOUT0 = (UICR_REGOUT0_VOUT_3V3 & UICR_REGOUT0_VOUT_Msk)
+                        << UICR_REGOUT0_VOUT_Pos;
+    while (NRF_NVMC->READY != NVMC_READY_READY_Ready)
+      ;
 
-        // Enable read mode in NVMC.
-        NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
-        while (NRF_NVMC->READY != NVMC_READY_READY_Ready);
+    // Enable read mode in NVMC.
+    NRF_NVMC->CONFIG = NVMC_CONFIG_WEN_Ren;
+    while (NRF_NVMC->READY != NVMC_READY_READY_Ready)
+      ;
 
-        // Reset to apply the update.
-        NVIC_SystemReset();
-    }
+    // Reset to apply the update.
+    NVIC_SystemReset();
+  }
 }
